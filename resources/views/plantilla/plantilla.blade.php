@@ -93,12 +93,18 @@
 				</div>
 				
 				<!-- Cart -->
-				<div class="cart"><a href="cart.html"><div><img class="svg" src="{{asset('asset/images/cart.svg')}}" alt="https://www.flaticon.com/authors/freepik"><div>1</div></div></a></div>
-				<!-- Phone -->
+				<div class="cart px-2"><a href="cart.html"><div><img class="svg" src="{{asset('asset/images/cart.svg')}}" alt="https://www.flaticon.com/authors/freepik"><div>1</div></div></a></div>
+			
+				<a class="btn btn-outline-success" href="{{ route('login') }}">{{ __('Iniciar Sesion') }}</a>
+
+				<!--user
+
+				
 				<div class="header_phone d-flex flex-row align-items-center justify-content-start">
-					<div><div><img src="{{asset('asset/images/phone.svg')}}" alt="https://www.flaticon.com/authors/freepik"></div></div>
-					<div>+1 912-252-7350</div>
+					<div><div><img src="{{asset('asset/images/user.svg')}}" alt="https://www.flaticon.com/authors/freepik"></div></div>
+					<div>Jhon contreras</div>
 				</div>
+				-->
 			</div>
 		</div>
 	</header>

@@ -95,16 +95,30 @@
 				<!-- Cart -->
 				<div class="cart px-2"><a href="cart.html"><div><img class="svg" src="{{asset('asset/images/cart.svg')}}" alt="https://www.flaticon.com/authors/freepik"><div>1</div></div></a></div>
 			
-				<a class="btn btn-outline-success" href="{{ route('login') }}">{{ __('Iniciar Sesion') }}</a>
-
-				<!--user
-
+				@guest
+					<a class="btn btn-outline-success" href="{{ route('login') }}">{{ __('Iniciar Sesión') }}</a>
+				@else
+					
 				
-				<div class="header_phone d-flex flex-row align-items-center justify-content-start">
-					<div><div><img src="{{asset('asset/images/user.svg')}}" alt="https://www.flaticon.com/authors/freepik"></div></div>
-					<div>Jhon contreras</div>
-				</div>
-				-->
+				<li class="nav-item dropdown">
+					<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+						{{Auth::user()->nombre}} <span class="caret"></span>
+					</a>
+
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="{{ route('logout') }}"
+						   onclick="event.preventDefault();
+										 document.getElementById('logout-form').submit();">
+							{{ __('Salir') }}
+						</a>
+
+						<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+							@csrf
+						</form>
+					</div>
+				</li>
+
+				@endguest
 			</div>
 		</div>
 	</header>

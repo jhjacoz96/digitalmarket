@@ -3,17 +3,16 @@
 Route::get('/', function () {
     return view('tienda.index');
 });
-Route::get('/adminltee', function () {
-    return view('admin.comprador.crear');
-});
-Route::get('/logeo', function () {
-    return view('auth.login');
-});
-Route::get('/registrar', function () {
-    return view('auth.register');
-});
+
 
 Auth::routes();
 
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::resource('Comprador', 'compradorController');
+
+Route::get('Contraseña/{comprador}','compradorController@showPassword')->name('Comprador.password');
+
+Route::post('ActualizarContraseña/{comprador}','compradorController@updatePassword')->name('comprador.updatePassword');

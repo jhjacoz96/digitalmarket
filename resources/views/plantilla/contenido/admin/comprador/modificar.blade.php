@@ -22,47 +22,45 @@
             <!-- jquery validation -->
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title">Agregar comprador</h3>
+                <h3 class="card-title">Actualizar comprador</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-            <form role="form" action="{{route('Comprador.store')}}" method="post" id="quickForm">
+            <form role="form" action="{{route('Comprador.update',$comprador)}}" method="post" id="quickForm">
+                @method('PUT')
                 @csrf
+                
                 <div class="card-body">
 
                   <div class="form-group">
                     <label for="exampleInputEmail1">Nombre</label>
-                    <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="Ingrese su nombre">
+                <input type="text" required="true" name="nombre" value="{{$comprador->nombre}}" class="form-control" id="nombre" placeholder="Ingrese su nombre">
                   </div>
 
                   <div class="form-group">
                     <label for="exampleInputEmail1">Apellido</label>
-                    <input type="text" required="true" name="apellido" class="form-control" id="apellido" placeholder="Ingrese su apellido">
+                    <input type="text" required="true" value="{{$comprador->apellido}}"
+                    name="apellido" class="form-control" id="apellido" placeholder="Ingrese su apellido">
                   </div>
 
                   <div class="form-group">
                     <label for="exampleInputEmail1">Correo electrónico</label>
-                    <input type="text" required="true" name="correo" class="form-control" id="correo" placeholder="Ingrese un correo electrónico">
+                    <input type="text" required="true" name="correo" class="form-control" value="{{$comprador->correo}}"id="correo" placeholder="Ingrese un correo electrónico">
                   </div>
 
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Contraseña</label>
-                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Ingrese su contraseña">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Confirme su contraseña</label>
-                    <input type="password" name="password_confirmation" class="form-control" required id="exampleInputPassword1" placeholder="Ingrese de nuevo su contraseña" autocomplete="new-password">
-                    
-                  </div>
+                  
                   
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary float-right">Agregar comprador</button>
+               
+                <a type="submit" href="{{route('Comprador.password',$comprador)}}" class="btn btn-secondary float-left">Actualizar contraseña</a>
+
+                <button type="submit"  class="btn btn-primary float-right">Actualizar comprador</button>
                 </div>
 
               </form>
+              
             </div>
             <!-- /.card -->
             </div>

@@ -7,8 +7,15 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-       
+       <h1>Comprador</h1>
         </div>
+
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+          <li class="breadcrumb-item"><a href="{{route('Comprador.index')}}">Consultar</a></li>
+            <li class="breadcrumb-item active">Agregar</li>
+          </ol>
 
       </div>
     </div><!-- /.container-fluid -->
@@ -30,30 +37,37 @@
                 @csrf
                 <div class="card-body">
 
+                  
+
                   <div class="form-group">
                     <label for="exampleInputEmail1">Nombre</label>
                     <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="Ingrese su nombre">
+                    {!!$errors->first('nombre','<small>:message</small><br>')!!}
+
                   </div>
 
                   <div class="form-group">
                     <label for="exampleInputEmail1">Apellido</label>
                     <input type="text" required="true" name="apellido" class="form-control" id="apellido" placeholder="Ingrese su apellido">
+                    {!!$errors->first('apellido','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group">
                     <label for="exampleInputEmail1">Correo electrónico</label>
-                    <input type="text" required="true" name="correo" class="form-control" id="correo" placeholder="Ingrese un correo electrónico">
+                    <input type="email" required="true" name="correo" class="form-control" id="correo" placeholder="Ingrese un correo electrónico">
+                    {!!$errors->first('correo','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group">
                     <label for="exampleInputPassword1">Contraseña</label>
                     <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Ingrese su contraseña">
+                    {!!$errors->first('password','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group">
                     <label for="exampleInputPassword1">Confirme su contraseña</label>
                     <input type="password" name="password_confirmation" class="form-control" required id="exampleInputPassword1" placeholder="Ingrese de nuevo su contraseña" autocomplete="new-password">
-                    
+                    {!!$errors->first('password_confirmation','<small>:message</small><br>')!!}
                   </div>
                   
                 </div>

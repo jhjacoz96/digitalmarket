@@ -7,17 +7,15 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-      <h1>Comprador</h1>
+       <h1>Plan de afiliación</h1>
         </div>
 
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-          <li class="breadcrumb-item"><a href="{{route('Comprador.index')}}">Consultar</a></li>
-          <li class="breadcrumb-item active">Actualizar </li>
+          <li class="breadcrumb-item"><a href="{{route('Plan.index')}}">Consultar</a></li>
+            <li class="breadcrumb-item active">Actualizar</li>
           </ol>
-
-      </div>
 
       </div>
     </div><!-- /.container-fluid -->
@@ -31,31 +29,29 @@
             <!-- jquery validation -->
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title">Actualizar comprador</h3>
+                <h3 class="card-title">Actualizar plan de afiliación</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-            <form role="form" action="{{route('Comprador.update',$comprador)}}" method="post" id="quickForm">
+            <form role="form" action="{{route('Plan.update',$plan)}}" method="post" id="quickForm">
                 @method('PUT')
                 @csrf
-                
                 <div class="card-body">
-<!--
+
+                  
+                  
+
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Nombre</label>
-                <input type="text" required="true" name="nombre" value="{{$comprador->nombre}}" class="form-control" id="nombre" placeholder="Ingrese su nombre">
+                    <label for="exampleInputEmail1">Descripción</label>
+                    
+                    <textarea required="true" name="descripcion" value="{{$plan->descripcion}}" id="descripcion" class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                    {!!$errors->first('descripcion','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Apellido</label>
-                    <input type="text" required="true" value="{{$comprador->apellido}}"
-                    name="apellido" class="form-control" id="apellido" placeholder="Ingrese su apellido">
-                  </div>
-                -->
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Correo electrónico</label>
-                    <input type="text" required="true" name="correo" class="form-control" value="{{$comprador->correo}}"id="correo" placeholder="Ingrese un correo electrónico">
-                    {!!$errors->first('correo','<small>:message</small><br>')!!}
+                    <label for="exampleInputEmail1">Procentaje</label>
+                    <input type="text" value="{{$plan->precio}}" required="true" name="porcentaje" class="form-control" id="porcentaje"  placeholder="Ingrese  porcentaje un porcentaje  ">
+                    {!!$errors->first('porcentaje','<small>:message</small><br>')!!}
                   </div>
 
                   
@@ -63,14 +59,10 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-               
-                <a type="submit" href="{{route('Comprador.password',$comprador)}}" class="btn btn-secondary float-left">Actualizar contraseña</a>
-
-                <button type="submit"  class="btn btn-primary float-right">Actualizar comprador</button>
+                  <button type="submit"  class="btn btn-primary float-right">Actualizar Plan de afiliación</button>
                 </div>
 
               </form>
-              
             </div>
             <!-- /.card -->
             </div>

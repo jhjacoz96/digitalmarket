@@ -71,9 +71,12 @@
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            Perfil
-          </a>
+          
+          @if (Auth::user()->rol_id=="3")
+        <a href="{{route('administrador.show',Auth::user()->id)}}" class="dropdown-item">
+              Perfil
+            </a>
+          @endif
 
           <div class="dropdown-divider"></div>
 

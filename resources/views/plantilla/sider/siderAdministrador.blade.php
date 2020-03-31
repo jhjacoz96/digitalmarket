@@ -26,13 +26,20 @@
          
           <li class="nav-item">
           <a href="{{route('Comprador.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-users"></i>
               <p>
                 Consultar Compradores
               </p>
             </a>
           </li>
-         
+          <li class="nav-item">
+          <a href="{{route('Plan.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-percentage"></i>
+              <p>
+                Planes de afiliación
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Comprador;
 use App\User;
-
+use Laracasts\Flash\Flash;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
-
+use App\Http\Requests\compradorRequest;
 class compradorController extends Controller
 {
     /**
@@ -41,22 +42,37 @@ class compradorController extends Controller
      */
     public function store(Request $request)
     {
-        $user=new User();
-        $user->nombre=$request->nombre;
-        $user->apellido=$request->apellido;
-        $user->email=$request->correo;
-        $user->password =  Hash::make( $request->password);
-        $user->rol_id=1;
-        $user->save();
 
-        $comprador=new Comprador();
-        $comprador->nombre=$request->nombre;
-        $comprador->apellido=$request->apellido;
-        $comprador->correo=$request->correo;
-        $comprador->user_id=$user->id;
-        $comprador->save();
+        $v=Validator::make($request->all(),[
+            'nombre'=>'min:2|required',
+            'apellido'=>'min:2|required',
+            'correo'=>'email|required|unique:compradors,correo',
+            'password_confirmation'=>'required|min:8',
+            'password'=>'required|min:8|confirmed',
+        ]);
 
-        return redirect()->route('Comprador.index');
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+        
+            $user=new User();
+            $user->nombre=$request->nombre;
+            $user->apellido=$request->apellido;
+            $user->email=$request->correo;
+            $user->password =  Hash::make( $request->password);
+            $user->rol_id=1;
+            $user->save();
+
+            $comprador=new Comprador();
+            $comprador->nombre=$request->nombre;
+            $comprador->apellido=$request->apellido;
+            $comprador->correo=$request->correo;
+            $comprador->user_id=$user->id;
+            $comprador->save();
+
+            flash('Comprador agregado con exito')->success()->important();
+
+            return redirect()->route('Comprador.index');
     }
 
     /**
@@ -92,19 +108,29 @@ class compradorController extends Controller
     public function update(Request $request, $id)
     {
         
+        $v=Validator::make($request->all(),[
+        
+            'correo'=>'email|required|unique:compradors,correo',
+            
+        ]);
+
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+
         $comprador=Comprador::findOrFail($id);
+        /*
         $comprador->nombre=$request->nombre;
         $comprador->apellido=$request->apellido;
+        */
         $comprador->correo=$request->correo;
         $comprador->save();
 
         $user=User::findOrFail($comprador->user_id);
-        $user->nombre=$request->nombre;
-        $user->apellido=$request->apellido;
         $user->email=$request->correo;
         $user->update();
         
-
+        flash('Comprador modificado con éxito')->success()->important();
         return redirect()->route('Comprador.index');
     }
 
@@ -123,10 +149,11 @@ class compradorController extends Controller
   
             $user->password =  Hash::make($request->password);
             $user->save();
+            
             return redirect()->route('Comprador.edit',$comprador);   
          }
          else{
-            flash('la contraseña ingresada no coincide con la registrada!')->warning();
+            flash('La contraseña ingresada no coincide con la registrada!')->warning();
 
             return redirect()->route('Comprador.password',$comprador);
          }
@@ -148,6 +175,7 @@ class compradorController extends Controller
         $comprador->estatus='I';
         $comprador->update();
         $usuario->delete();
+        flash('Comprador eliminado con exito')->success()->important();
         return redirect()->route('Comprador.index');
     }
 }

@@ -16,8 +16,8 @@ class CreatePlanAfilizacionsTable extends Migration
         Schema::create('plan_afilizacions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre');
-            $table->string('descripcion');
-            $table->float('precio');
+            $table->text('descripcion');
+            $table->float('precio')->default(0);
             $table->string('estatus')->default('A');
 
             $table->timestamps();

@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-          <h1>Cantidad de compradores: {{count($comprador)}}</h1>
+          <h1>Cantidad de planes:{{count($plan)}}</h1>
           </div>
 
           <div class="col-sm-6">
@@ -33,7 +33,7 @@
                </div>
 
                 <div class="card-header">
-                  <h3 class="card-title">Consultar Comprador</h3>
+                  <h3 class="card-title">Consultar Plan de afiliación</h3>
   
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -53,44 +53,46 @@
                       <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Correo electrónico</th>
+                        <th>Descripcion</th>
+                        <th>Porcentaje</th>
                         <th>Acción</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach ($comprador as $item)
-                        <tr>
-                            <td class="mailbox-star">{{$item->id}}</td>
-                            <td class="mailbox-star">{{$item->nombre}}</td>
-                            <td class="mailbox-star">{{$item->apellido}}</td>
-                            <td class="mailbox-star">{{$item->correo}}</td>
-                            
-                            <td class="mailbox-star">
-                                <div class="btn-group">
-                                <a href="{{route('Comprador.edit',$item)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
+                       @foreach ($plan as $item)
+                           
+                       <tr>
+                       <td class="mailbox-star">{{$item->id}}</td>
+                           <td class="mailbox-star">{{$item->nombre}}</td>
+                           <td class="mailbox-star">{{$item->descripcion}}</td>
+                           <td class="mailbox-star">{{$item->precio}}%</td>
+                           
+                           <td class="mailbox-star">
+                               <div class="btn-group">
+                               <a href="{{route('Plan.edit',$item)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
 
-                                    
-                                    
-                                    <form action="{{route('Comprador.destroy',$item)}}" method="POST"  >
-                                        @method('DELETE')
-                                        @csrf
-                                        <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este comprador?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
-                                      </form>
-                                    
-                                    
-                                  
-                                </div>
-                            </td>
-                        </tr>
+                                   
+                                   
+                                   <form action="{{route('Plan.destroy',$item)}}" method="POST"  >
+                                       @method('DELETE')
+                                       @csrf
+                                       <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este comprador?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
+                                     </form>
+                                   
+                                   
+                                 
+                               </div>
+                           </td>
+                       </tr>
+                       @endforeach
                             
-                        @endforeach
+                        
                     
                      
                     </tbody>
                   </table>
                   <div class="box-footer p-3 float-right">
-                  <a href="{{route('Comprador.create')}}"  class="btn  btn-info ">Registrar Comprador</a>
+                  <a href=" {{route('Plan.create')}} "  class="btn  btn-info ">Agregar Plan de afilización</a>
             
                   </div>
                 </div>

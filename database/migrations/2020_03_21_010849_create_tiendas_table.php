@@ -23,9 +23,9 @@ class CreateTiendasTable extends Migration
             $table->String('direccion');
             $table->String('estatus')->default('A');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('planAfiliacion_id')->nullable();
+            $table->unsignedBigInteger('planAfilizacion_id')->nullable();
 
-            $table->foreign('planAfiliacion_id')->references('id')->on('plan_afilizacions');
+            $table->foreign('planAfilizacion_id')->references('id')->on('plan_afilizacions');
             $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();

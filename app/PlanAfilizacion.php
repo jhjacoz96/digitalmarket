@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlanAfilizacion extends Model
 {
-    //
+    protected $fillable=[
+        'nombre',
+        'descripcion',
+        'precio',
+        
+    ];
 }

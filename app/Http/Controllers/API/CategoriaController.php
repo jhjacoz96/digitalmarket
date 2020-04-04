@@ -23,6 +23,7 @@ class CategoriaController extends Controller
         $categoria->save();
         return $categoria;*/
         
+        return view('plantilla.contenido.admin.categorias.crear');
 
     }
 

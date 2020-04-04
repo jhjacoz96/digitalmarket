@@ -36,3 +36,5 @@ Route::get('Contraseña/{comprador}','compradorController@showPassword')->name('
 Route::post('ActualizarContraseña/{comprador}','compradorController@updatePassword')->name('comprador.updatePassword');
 
 Route::resource('Plan', 'planController');
+
+Route::resource('categoria','categoriaController');

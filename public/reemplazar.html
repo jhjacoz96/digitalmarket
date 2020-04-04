@@ -82,7 +82,7 @@
         },
         methods: {
             getCategoria(){
-                let url='api/Categoria/'+this.slug
+                let url='categoria/'+this.slug
                 axios.get(url).then(res=>{
                     this.divMensajeSlug=res.data
                     if(this.divMensajeSlug=="Slug disponible"){

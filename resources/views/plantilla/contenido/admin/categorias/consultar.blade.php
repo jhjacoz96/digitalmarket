@@ -60,7 +60,7 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Slug</th>
-                        <th>Descripción</th>
+                        <th>Sub categorias</th>
                         <th>Acción</th>
                       </tr>
                     </thead>
@@ -71,7 +71,13 @@
                        <td class="mailbox-star">{{$item->id}}</td>
                            <td class="mailbox-star">{{$item->nombre}}</td>
                            <td class="mailbox-star">{{$item->slug}}</td>
-                           <td class="mailbox-star">{{$item->descripcion}}</td>
+                           <td class="mailbox-star">
+                             <select class="form-control " name="" id="">
+                               @foreach ($item->subCategoria as $sub)
+                             <option value="">{{$sub->nombre}}</option>
+                               @endforeach
+                             </select>
+                            </td>
                            
                            <td class="mailbox-star">
                                <div class="btn-group">

@@ -38,3 +38,7 @@ Route::post('ActualizarContraseña/{comprador}','compradorController@updatePassw
 Route::resource('Plan', 'planController');
 
 Route::resource('categoria','categoriaController');
+Route::resource('SubCategoria','subCategoriaController');
+
+Route::get('traerCategoria/{categoria}',
+'subCategoriaController@traer')->name('traerCategoria.traer');

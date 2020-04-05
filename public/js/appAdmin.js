@@ -14638,6 +14638,110 @@ var categoria = new Vue({
         this.deshabilitarBoton = 1;
         this.divAparecer = true;
       }
+    },
+    getSubCategoria: function getSubCategoria() {
+      var _this2 = this;
+
+      if (this.slug) {
+        var url = '/SubCategoria/' + this.slug;
+        axios.get(url).then(function (res) {
+          _this2.divMensajeSlug = res.data;
+
+          if (_this2.divMensajeSlug == "Slug disponible") {
+            _this2.divClaseSlug = 'badge badge-success';
+            _this2.deshabilitarBoton = 0;
+          } else {
+            _this2.divClaseSlug = 'badge badge-danger';
+            _this2.deshabilitarBoton = 1;
+          }
+
+          _this2.divAparecer = true;
+        });
+      } else {
+        this.divClaseSlug = 'badge badge-danger';
+        this.divMensajeSlug = "Debe ingresar una sub categoria";
+        this.deshabilitarBoton = 1;
+        this.divAparecer = true;
+      }
+    }
+  },
+  mounted: function mounted() {
+    if (document.getElementById('editar').innerHTML) {
+      this.nombre = document.getElementById('nombretemp').innerHTML;
+      this.deshabilitarBoton = 0;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/subCategoria.js":
+/*!********************************************!*\
+  !*** ./resources/js/admin/subCategoria.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var subCategoria = new Vue({
+  el: '#subCategoria',
+  data: {
+    nombre: '',
+    slug: '',
+    divMensajeSlug: '',
+    divClaseSlug: '',
+    divAparecer: false,
+    deshabilitarBoton: 1
+  },
+  computed: {
+    generarSlug: function generarSlug() {
+      var _char = {
+        "á": "a",
+        "é": "e",
+        "í": "i",
+        "ó": "o",
+        "ú": "u",
+        "Á": "A",
+        "É": "E",
+        "Í": "I",
+        "Ó": "O",
+        "Ú": "U",
+        "ñ": "n",
+        "Ñ": "n",
+        " ": "-",
+        "_": "-"
+      };
+      var exp = /[áéíóúÁÉÍÓÚ_ ]/g;
+      this.slug = this.nombre.trim().replace(exp, function (e) {
+        return _char[e];
+      }).toLowerCase();
+      return this.slug; //return this.nombre.trim().replace(/ /,'-')
+    }
+  },
+  methods: {
+    getCategoria: function getCategoria() {
+      var _this = this;
+
+      if (this.slug) {
+        var url = '/SubCategoria/' + this.slug;
+        axios.get(url).then(function (res) {
+          _this.divMensajeSlug = res.data;
+
+          if (_this.divMensajeSlug == "Slug disponible") {
+            _this.divClaseSlug = 'badge badge-success';
+            _this.deshabilitarBoton = 0;
+          } else {
+            _this.divClaseSlug = 'badge badge-danger';
+            _this.deshabilitarBoton = 1;
+          }
+
+          _this.divAparecer = true;
+        });
+      } else {
+        this.divClaseSlug = 'badge badge-danger';
+        this.divMensajeSlug = "Debe ingresar una categoria";
+        this.deshabilitarBoton = 1;
+        this.divAparecer = true;
+      }
     }
   },
   mounted: function mounted() {
@@ -14751,6 +14855,10 @@ if (document.getElementById('app')) {
 
 if (document.getElementById('categoria')) {
   __webpack_require__(/*! ./admin/categoria */ "./resources/js/admin/categoria.js");
+}
+
+if (document.getElementById('subCategoria')) {
+  __webpack_require__(/*! ./admin/subCategoria */ "./resources/js/admin/subCategoria.js");
 }
 
 /***/ }),

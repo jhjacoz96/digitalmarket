@@ -17,6 +17,11 @@ if(document.getElementById('categoria')){
 
 }
 
+if(document.getElementById('subCategoria')){
+    require('./admin/subCategoria'); 
+
+}
+
 
 
 

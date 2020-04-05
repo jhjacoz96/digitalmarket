@@ -1,6 +1,7 @@
-const categoria= new Vue({
-    el:'#categoria',
+const subCategoria= new Vue({
+    el:'#subCategoria',
     data:{
+        
         nombre:'',
         slug:'',
         divMensajeSlug:'',
@@ -28,7 +29,7 @@ const categoria= new Vue({
         getCategoria(){
 
             if(this.slug){
-                let url='/categoria/'+this.slug 
+                let url='/SubCategoria/'+this.slug 
                 axios.get(url).then(res=>{
                     this.divMensajeSlug=res.data
                     
@@ -49,31 +50,6 @@ const categoria= new Vue({
                 this.divAparecer=true
                 
             }
-        },
-        getSubCategoria(){
-
-            if(this.slug){
-                let url='/SubCategoria/'+this.slug 
-                axios.get(url).then(res=>{
-                    this.divMensajeSlug=res.data
-                    
-                    if(this.divMensajeSlug=="Slug disponible"){
-                        this.divClaseSlug='badge badge-success'
-                        this.deshabilitarBoton=0
-                    }else{
-                        this.divClaseSlug='badge badge-danger'
-                        this.deshabilitarBoton=1
-                    }
-                    this.divAparecer=true
-                    
-                })
-            }else{
-                this.divClaseSlug='badge badge-danger'
-                this.divMensajeSlug="Debe ingresar una sub categoria"
-                this.deshabilitarBoton=1 
-                this.divAparecer=true
-                
-            }
         }
     },
     mounted() {
@@ -82,7 +58,7 @@ const categoria= new Vue({
             this.deshabilitarBoton=0
         }
         
-    }
+    },
     
 
 });

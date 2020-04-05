@@ -12,4 +12,13 @@ class Categoria extends Model
         'tipoLinea',
         'slug'
     ];
+    
+
+    public function subCategoria(){
+        
+        return $this->hasMany('App\SubCategoria');
+        
+    }
+
+    
 }

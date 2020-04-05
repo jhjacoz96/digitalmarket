@@ -7,6 +7,10 @@
 
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
+  <div class="p-2">
+    @include('flash::message')
+ </div>
+
  
   <section class="content-header">
     <div class="container-fluid">
@@ -30,7 +34,7 @@
       <div class="container-fluid">
         <div class="row">
           <!-- left column -->
-          <div class="col-md-12">
+          <div class="col-md-8">
             <!-- jquery validation -->
             <div class="card card-secondary">
               <div class="card-header">
@@ -46,7 +50,7 @@
                         display: none" id="editar">{{$editar}}</span>
                         <span style="
                         display: none"  id="nombretemp">{{$categoria->nombre}}</span>
-
+<!--
                           <div class="form-group">
                             <label for="">Tipo de línea</label>
                             <select name="tipoLinea" id="tipoLinea" 
@@ -61,12 +65,10 @@
                             @else
                               <option value="Blanca" selected>Blanca</option>              <option value="Marrón">Marrón</option>    
                             @endif
-                        
-                               
-
+                         
                             </select>
                           </div>
-
+ -->  
                             <div class="form-group">
                                 <label  for="">Nombre</label>
                                 <input 
@@ -101,13 +103,74 @@
                           :disabled="deshabilitarBoton==1"
                           class="btn btn-primary float-right" type="submit" value="Actualizar categoria"  >
                         </div>
-                    
-                    @{{slug}}
-                
+ 
           
             </div>
             <!-- /.card -->
+          </div>
+
+
+          <div class="col-md-4">
+            <!-- jquery validation -->
+            <div class="card card-secondary">
+              <div class="card-header">
+              <h3 class="card-title">{{$categoria->nombre}}</h3>
+              
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+            
+                        <div class="card-body">
+                          
+                          @foreach ($categoria->subCategoria as $subCategoria)
+                          
+                            <div class="info-box">
+                              
+                
+                              <div class="info-box-content align-items-center">
+                                <span class="info-box-text">{{$subCategoria->nombre}}</span>
+                              </div>
+
+                              <span class="">
+
+                                <div class="btn-group">
+                               
+                                <a href="{{route('SubCategoria.edit',$subCategoria)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
+   
+                                      
+                                      
+                                <form action="{{route('SubCategoria.destroy',$subCategoria)}}" method="POST">
+                                          @method('DELETE')
+                                          @csrf
+                                          <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar esta sub categoría?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
+                                        </form>
+                                      
+                                      
+                                    
+                                  </div>
+
+                              </span>
+                              <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                         
+                          @endforeach
+
+                        </div> 
+                        
+                        <div class="card-footer ">
+                        <a href="{{route('traerCategoria.traer',$categoria)}}" class="btn btn-primary float-right">agregar sub categorias</a>
+                        </div>
+                         
+          
+              </div>
+            <!-- /.card -->
             </div>
+
+
+
+
+
           <!--/.col (left) -->
           <!-- right column -->
           <div class="col-md-6">

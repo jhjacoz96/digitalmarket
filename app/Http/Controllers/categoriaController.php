@@ -8,11 +8,6 @@ use App\Categoria;
 class categoriaController extends Controller
 {
 
-
-    public function __construct(){
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +17,7 @@ class categoriaController extends Controller
     {
         $nombre=$request->get('nombre');
         
-        $categoria=Categoria::where('nombre','like',"%$nombre%")->orderBy('nombre')->paginate(5);
+        $categoria=Categoria::where('nombre','like',"%$nombre%")->paginate(5);
         return \view('plantilla.contenido.admin.categorias.consultar',\compact('categoria'));    
     }
 
@@ -54,7 +49,7 @@ class categoriaController extends Controller
 
         \flash('Categoria creada con exito')->success()->important();
 
-        return  redirect()->route('categoria.index');
+        return \redirect()->route('traerCategoria.traer',compact('categoria'));
        //return Categoria::create($request->all());
     }
 
@@ -101,7 +96,7 @@ class categoriaController extends Controller
         $categoria=Categoria::findOrFail($id);
         $categoria->nombre=$request->nombre;
         $categoria->slug=$request->slug;
-        $categoria->tipoLinea=$request->tipoLinea;
+        
         $categoria->descripcion=$request->descripcion;
         $categoria->save();
         \flash('Categoria actualizada con éxito')->success()->important();
@@ -117,8 +112,18 @@ class categoriaController extends Controller
     public function destroy($id)
     {
         $categoria=Categoria::findOrFail($id);
-        $categoria->delete();
-        flash('Categoria eliminada con exito')->success()->important();
-        return redirect()->route('categoria.index');
+        $sub=$categoria->subCategoria;
+        
+        
+        if(count($sub)>0){
+            \flash('No es posible eliminar esta categoria, ya que posee ' . count($sub) . ' sub categoria(s)')->warning()->important();
+            return redirect()->route('categoria.index');
+        
+        }else{
+            $categoria->delete();
+            flash('Categoria eliminada con exito')->success()->important();
+            return redirect()->route('categoria.index');
+        }
     }
+   
 }

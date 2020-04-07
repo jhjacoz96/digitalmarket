@@ -3,14 +3,15 @@ use App\User;
 
 Route::get('/', function () {
     return view('tienda.index');
+/*
+    $user=new User();
+    $user->nombre= 'jhon';
+    $user->apellido = 'contreras';
+    $user->email = 'jhjacoz96@gmail.com';
+    $user->password = Hash::make('12345678');
+    $user->rol_id =3;
+    $user->save();*/
 
-   /* $user=new User();
-            $user->nombre= 'jhon';
-            $user->apellido = 'contreras';
-            $user->email = 'jhjacoz96@gmail.com';
-            $user->password = Hash::make('12345678');
-            $user->rol_id =3;
-            $user->save();*/
 });
 
 
@@ -42,3 +43,6 @@ Route::resource('SubCategoria','subCategoriaController');
 
 Route::get('traerCategoria/{categoria}',
 'subCategoriaController@traer')->name('traerCategoria.traer');
+
+Route::get('obtenerCategoria/{categoria_id}','productoController@getSubCategoria');
+Route::resource('producto','productoController');

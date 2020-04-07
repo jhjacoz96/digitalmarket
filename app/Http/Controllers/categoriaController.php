@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Categoria;
+use Laracasts\Flash\Flash;
+use Illuminate\Support\Facades\Validator;
 
 class categoriaController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Display a listing of the resource.
@@ -39,6 +46,17 @@ class categoriaController extends Controller
      */
     public function store(Request $request)
     {
+
+        $v=Validator::make($request->all(),[
+            'nombre'=>'min:2|required|unique:categorias,nombre',
+            'slug'=>'min:2|required|unique:categorias,slug',
+            'tipoLinea'=>'required',
+        ]);
+
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+
 
         $categoria=new Categoria();
         $categoria->nombre=$request->nombre;
@@ -93,6 +111,17 @@ class categoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $v=Validator::make($request->all(),[
+            'nombre'=>'min:2|required|unique:categorias,nombre',
+            'slug'=>'min:2|required|unique:categorias,slug',
+            'tipoLinea'=>'required',
+        ]);
+
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+
         $categoria=Categoria::findOrFail($id);
         $categoria->nombre=$request->nombre;
         $categoria->slug=$request->slug;

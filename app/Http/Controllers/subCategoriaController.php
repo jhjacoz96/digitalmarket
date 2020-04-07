@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Categoria;
 use App\SubCategoria;
+use Laracasts\Flash\Flash;
+use Illuminate\Support\Facades\Validator;
 
 class subCategoriaController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +23,7 @@ class subCategoriaController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -33,6 +41,7 @@ class subCategoriaController extends Controller
         return view('plantilla.contenido.admin.categorias.crearSub',compact('categoria'));
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -42,6 +51,17 @@ class subCategoriaController extends Controller
 
     public function store(Request $request)
     {
+
+        $v=Validator::make($request->all(),[
+            'nombre'=>'min:2|required|unique:sub_categorias,nombre',
+            'slug'=>'min:2|required|unique:sub_categorias,slug',
+           
+        ]);
+
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+
        
         $subCategoria=new SubCategoria();
         $subCategoria->nombre=$request->nombre;

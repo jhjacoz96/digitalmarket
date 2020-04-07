@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\compradorRequest;
 class compradorController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,6 +24,7 @@ class compradorController extends Controller
      */
     public function index()
     {
+
         
         $comprador=Comprador::where('estatus','A')->get();
         return view('plantilla.contenido.admin.comprador.consultar')->with('comprador',$comprador);

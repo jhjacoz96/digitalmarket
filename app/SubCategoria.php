@@ -8,7 +8,7 @@ class SubCategoria extends Model
 {
     protected $fillable=[
         'nombre',
-        //'descripcion',
+        'descripcion',
         'slug'
     ];
     
@@ -18,4 +18,12 @@ class SubCategoria extends Model
         return $this->belongsTo('App\Categoria');
         
     }
+
+    public function producto()
+    {
+        return $this->hasMany('App\Producto');
+    }
+
+
+
 }

@@ -15,10 +15,8 @@ class Categoria extends Model
     
 
     public function subCategoria(){
-        
         return $this->hasMany('App\SubCategoria');
         
     }
-
     
 }

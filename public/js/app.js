@@ -49595,6 +49595,110 @@ var categoria = new Vue({
 
 /***/ }),
 
+/***/ "./resources/js/admin/producto.js":
+/*!****************************************!*\
+  !*** ./resources/js/admin/producto.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var producto = new Vue({
+  el: '#producto',
+  data: {
+    nombre: '',
+    slug: '',
+    divMensajeSlug: '',
+    divClaseSlug: '',
+    divAparecer: false,
+    deshabilitarBoton: 1,
+    selectedCategoria: '',
+    selectedSubCategoria: '',
+    obtenerSubCategorias: []
+  },
+  computed: {
+    generarSlug: function generarSlug() {
+      var _char = {
+        "á": "a",
+        "é": "e",
+        "í": "i",
+        "ó": "o",
+        "ú": "u",
+        "Á": "A",
+        "É": "E",
+        "Í": "I",
+        "Ó": "O",
+        "Ú": "U",
+        "ñ": "n",
+        "Ñ": "n",
+        " ": "-",
+        "_": "-"
+      };
+      var exp = /[áéíóúÁÉÍÓÚ_ ]/g;
+      this.slug = this.nombre.trim().replace(exp, function (e) {
+        return _char[e];
+      }).toLowerCase();
+      return this.slug; //return this.nombre.trim().replace(/ /,'-')
+    }
+  },
+  methods: {
+    getProducto: function getProducto() {
+      var _this = this;
+
+      if (this.slug) {
+        var url = '/producto/' + this.slug;
+        axios.get(url).then(function (res) {
+          _this.divMensajeSlug = res.data;
+
+          if (_this.divMensajeSlug == "Slug disponible") {
+            _this.divClaseSlug = 'badge badge-success';
+            _this.deshabilitarBoton = 0;
+          } else {
+            _this.divClaseSlug = 'badge badge-danger';
+            _this.deshabilitarBoton = 1;
+          }
+
+          _this.divAparecer = true;
+        });
+      } else {
+        this.divClaseSlug = 'badge badge-danger';
+        this.divMensajeSlug = "Debe ingresar una categoria";
+        this.deshabilitarBoton = 1;
+        this.divAparecer = true();
+      }
+    },
+    cargarSubCategorias: function cargarSubCategorias() {
+      var _this2 = this;
+
+      this.selectedSubCategoria = '';
+      document.getElementById('subCategoria_id').disabled = false;
+
+      if (this.selectedCategoria != '') {
+        var url = '/obtenerCategoria/' + this.selectedCategoria;
+        axios.get(url).then(function (res) {
+          _this2.obtenerSubCategorias = res.data;
+          document.getElementById('subCategoria_id').disabled = false;
+        });
+      }
+    }
+  },
+  mounted: function mounted() {
+    /*if(document.getElementById('editar').innerHTML){
+         this.nombre=document.getElementById('nombretemp').innerHTML
+         this.deshabilitarBoton=0
+     }*/
+    document.getElementById('subCategoria_id').disabled = true;
+    this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
+
+    if (this.selectedCategoria != '') {
+      this.cargarSubCategorias();
+    }
+
+    this.selectedSubCategoria = document.getElementById('subCategoria_id').getAttribute('data-old');
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/subCategoria.js":
 /*!********************************************!*\
   !*** ./resources/js/admin/subCategoria.js ***!
@@ -49778,6 +49882,10 @@ if (document.getElementById('categoria')) {
 
 if (document.getElementById('subCategoria')) {
   __webpack_require__(/*! ./admin/subCategoria */ "./resources/js/admin/subCategoria.js");
+}
+
+if (document.getElementById('producto')) {
+  __webpack_require__(/*! ./admin/producto */ "./resources/js/admin/producto.js");
 }
 
 /***/ }),

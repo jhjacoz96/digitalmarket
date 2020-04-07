@@ -22,6 +22,11 @@ if(document.getElementById('subCategoria')){
 
 }
 
+if(document.getElementById('producto')){
+    require('./admin/producto'); 
+
+}
+
 
 
 

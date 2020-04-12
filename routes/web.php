@@ -1,5 +1,23 @@
 <?php
 use App\User;
+use App\Imagen;
+use App\Categoria;
+
+//Rutas para imagenes:
+//1)
+Route::get('/prueba', function () {
+
+   $producto=App\Producto::with('imagen','subCategoria')->orderBy('id','DESC')->get();
+   return $producto;
+});
+
+//2)
+//Mostrar resultados 
+Route::get('/resultados', function () {
+    
+    $imagen=App\Imagen::orderBy('id','Desc')->get();
+    return $imagen; 
+});
 
 Route::get('/', function () {
     return view('tienda.index');
@@ -10,7 +28,8 @@ Route::get('/', function () {
     $user->email = 'jhjacoz96@gmail.com';
     $user->password = Hash::make('12345678');
     $user->rol_id =3;
-    $user->save();*/
+    $user->save();
+*/
 
 });
 
@@ -46,3 +65,12 @@ Route::get('traerCategoria/{categoria}',
 
 Route::get('obtenerCategoria/{categoria_id}','productoController@getSubCategoria');
 Route::resource('producto','productoController');
+
+Route::delete('/eliminarImagen/{id}','productoController@eliminarImagen')->name('delete.imagen');
+
+//autocomplete
+route::get('/autoComplete','HomeController@autoComplete')->name('autocomplete');
+
+//crear filtro direccion direcciones 
+route::resource('filtroDireccion','filtroDireccionController');
+

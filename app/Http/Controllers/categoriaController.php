@@ -87,6 +87,8 @@ class categoriaController extends Controller
             return 'Slug disponible';
         }
     }
+
+
     /**
      * Show the form for editing the specified resource.
      *

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script> 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js" ></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="container">
+        <div id="app">
+         
+            
+
+            <div class="card card-success">
+                <div class="card-header">
+                  <h3 class="card-title">Sección de Precios</h3>
+      
+                  
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <div class="row">
+      
+      
+      
+                    <div class="col-md-3">
+                      <div class="form-group">
+      
+                        <label>Precio anterior</label>
+                        
+      
+      
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">$</span>
+                        </div>
+                        <input 
+                        v-model="precioAnterior"
+                        class="form-control" type="number" id="precioAnterior" name="precioAnterior" min="0" value="0" step=".01">                 
+                      </div>
+                       
+                      </div>
+                      <!-- /.form-group -->
+                      
+                    </div>
+                    <!-- /.col -->
+      
+      
+      
+                    <div class="col-md-3">
+                      <div class="form-group">
+      
+                        <label>Precio actual</label>
+                         <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">$</span>
+                        </div>
+                        <input 
+                        v-model="precioActual"
+                        class="form-control" type="number" id="precioActual" name="precioActual" min="0" value="0" step=".01">                 
+                      </div>
+      
+                      <br>
+                      <span id="descuento">
+                          {{generarDescuento}}
+                      </span>
+                      </div>
+                      <!-- /.form-group -->
+          
+                    </div>
+                    <!-- /.col -->
+      
+      
+      
+      
+                    <div class="col-md-6">
+                      <div class="form-group">
+      
+                        <label>Porcentaje de descuento</label>
+                         <div class="input-group">                  
+                        <input 
+                        v-model="porcentajeDescuento"
+                        class="form-control" type="number" id="porcentajeDescuento" name="porcentajeDescuento" step="any" min="0" max="100" value="0" >    <div class="input-group-prepend">
+                          <span class="input-group-text">%</span>
+                        </div>  
+      
+                      </div>
+      
+                      <br>
+                      <div class="progress">
+                          <div id="barraprogreso" class="progress-bar" role="progressbar" 
+
+                          v-bind:style="{width:porcentajeDescuento+'%'}"
+
+                          aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{porcentajeDescuento}}%</div>
+                      </div>
+                      </div>
+                      <!-- /.form-group -->
+                      
+                    </div>
+                    <!-- /.col -->
+      
+      
+                  </div>
+                  <!-- /.row -->
+      
+      
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  
+                </div>
+              </div>
+
+
+            
+        </div>
+    </div>
+
+ 
+    
+
+
+<script>
+    var app= new Vue({
+        el:'#app',
+        data:{
+            precioAnterior:0,
+            precioActual:0,
+            descuento:0,
+            porcentajeDescuento:0,
+            descuentoMensaje:'0'
+
+        },
+        computed: {
+            generarDescuento:function(){
+
+
+                if(this.porcentajeDescuento>100){
+                     
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'No se pude poner un valor mayor a 100!'
+                    })
+                   
+                    this.porcentajeDescuento=100
+                    this.descuento=(this.precioAnterior*this.porcentajeDescuento)/100
+                    this.precioActual=(this.precioAnterior-this.descuento)
+                    this.descuentoMensaje='Este producto tiene un 100% de descuento, por ende es gratis'
+                    return this.descuentoMensaje
+                }
+
+                if(this.porcentajeDescuento<0){
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'No puedes porner valores negativos!'
+                    })
+
+                    this.porcentajeDescuento=0
+                    this.descuento=(this.precioAnterior*this.porcentajeDescuento)/100
+                    this.precioActual=(this.precioAnterior-this.descuento)
+                    this.descuentoMensaje=''
+                    return this.descuentoMensaje
+                }
+  
+                if(this.porcentajeDescuento>0){
+
+                    this.descuento=(this.precioAnterior*this.porcentajeDescuento)/100
+                    this.precioActual=(this.precioAnterior-this.descuento)
+
+                    if(this.porcentajeDescuento==100){
+                        this.descuentoMensaje='Este producto tiene un 100% de descuento, por ende es gratis'
+
+                    }else{
+                        this.descuentoMensaje='Hay un descuento de Bs'+this.descuento
+                    }
+
+                    return this.descuentoMensaje
+                }else{
+
+                    this.descuento=''
+
+                  
+                    this.precioActual=this.precioAnterior
+
+                        this.descuentoMensaje=''
+
+                    }
+
+                    return this.descuentoMensaje
+
+                }
+
+                
+            }
+        
+
+    });
+</script>
+
+</body>
+</html>             
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+            

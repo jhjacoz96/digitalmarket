@@ -27,6 +27,11 @@ if(document.getElementById('producto')){
 
 }
 
+if(document.getElementById('searchAutoComplete')){
+    require('./admin/searchAutoComplete'); 
+
+}
+
 
 
 

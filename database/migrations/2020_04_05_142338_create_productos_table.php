@@ -15,17 +15,17 @@ class CreateProductosTable extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre');
-            $table->string('slug');
-            $table->unsignedbigInteger('subCategoria_id');
+            $table->string('nombre')->unique();
+            $table->string('slug')->unique();
+            $table->unsignedbigInteger('subCategoria_id')->nullable();
             $table->bigInteger('cantidad')->unsigned()->default(0);
             $table->decimal('precioActual',12,2)->default(0);
             $table->decimal('precioAnterior',12,2)->default(0);
             $table->integer('porcentajeDescuento')->designed()->default(0);
-            $table->text('descripcionCorta');
-            $table->text('descripcionLarga');
-            $table->text('especificaciones');
-            $table->text('datosInteres');
+            $table->text('descripcionCorta')->nullable();
+            $table->text('descripcionLarga')->nullable();
+            $table->text('especificaciones')->nullable();
+            $table->text('datosInteres')->nullable();
             $table->unsignedBigInteger('visitas')->default(0);
             $table->unsignedBigInteger('ventas')->default(0);
             $table->string('status')->default('A');

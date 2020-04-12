@@ -6,7 +6,11 @@ const categoria= new Vue({
         divMensajeSlug:'',
         divClaseSlug:'',
         divAparecer:false,
-        deshabilitarBoton:1
+        deshabilitarBoton:1,
+
+        selectedCategoria:'',
+        selectedSubCategoria:'',
+        obtenerSubCategorias:[]
 
     },
     computed: {
@@ -40,6 +44,8 @@ const categoria= new Vue({
                         this.deshabilitarBoton=1
                     }
                     this.divAparecer=true
+
+                    
                     
                 })
             }else{
@@ -49,6 +55,16 @@ const categoria= new Vue({
                 this.divAparecer=true
                 
             }
+
+            if(document.getElementById('editar').innerHTML){
+                if(document.getElementById('nombretemp').innerHTML===this.nombre ){
+                    this.deshabilitarBoton=0;
+                    this.divMensajeSlug=''
+                    this.divClaseSlug=''
+                    this.divAparecer=false
+                }
+            }
+
         },
         getSubCategoria(){
 
@@ -73,6 +89,27 @@ const categoria= new Vue({
                 this.deshabilitarBoton=1 
                 this.divAparecer=true
                 
+            }
+
+            if(document.getElementById('editar').innerHTML){
+                if(document.getElementById('nombretemp').innerHTML===this.nombre ){
+                    this.deshabilitarBoton=0;
+                    this.divMensajeSlug=''
+                    this.divClaseSlug=''
+                    this.divAparecer=false
+                }
+            }
+
+        },
+        cargarSubCategorias(){
+            this.selectedSubCategoria='';
+            document.getElementById('subCategoria_id').disabled=true
+            if(this.selectedCategoria!=''){
+                let url='/obtenerCategoria/'+this.selectedCategoria
+                axios.get(url).then((res)=>{
+                    this.obtenerSubCategorias=res.data;
+                    document.getElementById('subCategoria_id').disabled=false
+                })
             }
         }
     },

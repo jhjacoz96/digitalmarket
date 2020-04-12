@@ -9,7 +9,15 @@ const producto= new Vue({
         deshabilitarBoton:1,
         selectedCategoria:'',
         selectedSubCategoria:'',
-        obtenerSubCategorias:[]
+        obtenerSubCategorias:[],
+        categorias:[],
+
+        //Variables de precio
+        precioAnterior:0,   
+        precioActual:0,
+        descuento:0,
+        porcentajeDescuento:0,
+        descuentoMensaje:'0'
 
     },
     computed: {
@@ -25,9 +33,110 @@ const producto= new Vue({
             }).toLowerCase()
             return  this.slug;
            //return this.nombre.trim().replace(/ /,'-')
-        }
+        },
+
+        generarDescuento:function(){
+
+
+            if(this.porcentajeDescuento>100){
+                 
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No se pude poner un valor mayor a 100!'
+                })
+               
+                this.porcentajeDescuento=100
+                this.descuento=(this.precioAnterior*this.porcentajeDescuento)/100
+                this.precioActual=(this.precioAnterior-this.descuento)
+                this.descuentoMensaje='Este producto tiene un 100% de descuento, por ende es gratis'
+                return this.descuentoMensaje
+            }
+
+            if(this.porcentajeDescuento<0){
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No puedes porner valores negativos!'
+                })
+
+                this.porcentajeDescuento=0
+                this.descuento=(this.precioAnterior*this.porcentajeDescuento)/100
+                this.precioActual=(this.precioAnterior-this.descuento)
+                this.descuentoMensaje=''
+                return this.descuentoMensaje
+            }
+
+            if(this.porcentajeDescuento>0){
+
+                this.descuento=(this.precioAnterior*this.porcentajeDescuento)/100
+                this.precioActual=(this.precioAnterior-this.descuento)
+
+                if(this.porcentajeDescuento==100){
+                    this.descuentoMensaje='Este producto tiene un 100% de descuento, por ende es gratis'
+
+                }else{
+                    this.descuentoMensaje='Hay un descuento de Bs'+this.descuento
+                }
+
+                return this.descuentoMensaje
+            }else{
+
+                this.descuento=''
+
+              
+                this.precioActual=this.precioAnterior
+
+                    this.descuentoMensaje=''
+
+                }
+
+                return this.descuentoMensaje
+
+            }
+            
+
     },
     methods: {
+        cagarCategoria(){
+            axios.get('/categoria').then(res=>{
+                this.categorias=res.data
+            })
+        },
+        eliminarImagen(imagen){
+            Swal.fire({
+                title: '¿Esta seguro que desea eliminar esta imagen?',
+                text: "¡No podras revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Si, eliminar!'
+              }).then((result) => {
+                if (result.value) {
+
+                //eliminar la imagen
+
+                let url='/eliminarImagen/'+imagen.id
+                axios.delete(url).then(res=>{
+                        console.log(res.data)
+                })  
+
+                var elemento=document.getElementById('idimagen-'+imagen.id)
+                elemento.parentNode.removeChild(elemento)
+                
+
+                  Swal.fire(
+                    'Eliminado!',
+                    'Su archivo se ha elimianda',
+                    'success'
+                  )
+                }
+              })
+
+        },
         getProducto(){
 
             if(this.slug){
@@ -43,6 +152,15 @@ const producto= new Vue({
                         this.deshabilitarBoton=1
                     }
                     this.divAparecer=true
+
+                    if(data.datos.nombre){
+                        if(data.datos.nombre===this.nombre ){
+                            this.deshabilitarBoton=0;
+                            this.divMensajeSlug=''
+                            this.divClaseSlug=''
+                            this.divAparecer=false
+                        }
+                    }
                     
                 })
             }else{
@@ -50,29 +168,59 @@ const producto= new Vue({
                 this.divMensajeSlug="Debe ingresar una categoria"
                 this.deshabilitarBoton=1 
                 this.divAparecer=true
-                ()
             }
+
+           
         },
         cargarSubCategorias(){
-            this.selectedSubCategoria='';
-            document.getElementById('subCategoria_id').disabled=false
-            if(this.selectedCategoria!=''){
-                let url='/obtenerCategoria/'+this.selectedCategoria
-                axios.get(url).then((res)=>{
-                    this.obtenerSubCategorias=res.data;
-                    document.getElementById('subCategoria_id').disabled=false
-                })
-            }
+            
+       
+                
+                this.selectedSubCategoria='';
+                document.getElementById('subCategoria_id').disabled=true
+                if(this.selectedCategoria!=''){
+                    let url='/obtenerCategoria/'+this.selectedCategoria
+                    axios.get(url).then((res)=>{
+                        this.obtenerSubCategorias=res.data;
+                        document.getElementById('subCategoria_id').disabled=false   
+                    })
+                }
+
+            
+
+         
         }
 
     },
     mounted() {
-       /*if(document.getElementById('editar').innerHTML){
-            this.nombre=document.getElementById('nombretemp').innerHTML
-            this.deshabilitarBoton=0
-        }*/
-        document.getElementById('subCategoria_id').disabled=true
 
+    
+
+        if(data.editar=='si'){
+
+            document.getElementById('subCategoria_id').disabled=false
+
+            this.nombre=data.datos.nombre;
+            this.precioAnterior=data.datos.precioAnterior
+            this.precioActual=data.datos.precioActual
+            this.porcentajeDescuento=data.datos.porcentajeDescuento
+            this.selectedCategoria=data.datos.selectedCategoria
+
+            this.selectedCategoria=document.getElementById('categoria_id').getAttribute('data-old');
+            if(this.selectedCategoria!=''){
+                this.cargarSubCategorias()
+            }
+            this.selectedSubCategoria=document.getElementById('subCategoria_id').getAttribute('data-old');
+
+          
+            
+
+        }
+
+
+       if(data.editar=='no'){
+
+        document.getElementById('subCategoria_id').disabled=true
 
         this.selectedCategoria=document.getElementById('categoria_id').getAttribute('data-old');
         if(this.selectedCategoria!=''){
@@ -80,6 +228,10 @@ const producto= new Vue({
         }
         this.selectedSubCategoria=document.getElementById('subCategoria_id').getAttribute('data-old');
         
+
+       }
+
+       
         
     }
     

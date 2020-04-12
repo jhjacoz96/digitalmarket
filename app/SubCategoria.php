@@ -21,7 +21,7 @@ class SubCategoria extends Model
 
     public function producto()
     {
-        return $this->hasMany('App\Producto');
+        return $this->hasMany('App\Producto','subCategoria_id');
     }
 
 

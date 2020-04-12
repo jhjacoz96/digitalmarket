@@ -104,7 +104,7 @@
 
               <div class="col-md-4">
                 <!-- jquery validation -->
-                <div class="card card-secondary">
+                <div class="card card-secondary ">
                   <div class="card-header">
                   <h3 class="card-title">Categorias disponibles</h3>
                   </div>

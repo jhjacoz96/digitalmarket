@@ -1,8 +1,27 @@
 @extends('layouts.appAdmin')
 @section('contenido')
     <!-- Content Wrapper. Contains page content -->
+
+  <style>
+    .table{
+      width: 100%;
+      margin-bottom: 1rem;
+      color:#212529;
+      text-align: center;
+    }
+
+    .table th, .table td {
+      padding: .75rem;
+      vertical-align: center;
+      border-top: 1px solid #dee2e6;
+    }
+
+  </style>
+
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+
+ 
    
     <section class="content-header">
       <div class="container-fluid">
@@ -10,7 +29,7 @@
           <div class="col-sm-6">
           <h1>Cantidad de productos:{{count($producto)}}</h1>
           </div>
-
+ 
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
@@ -28,6 +47,7 @@
         <div class="row">
             <div class="col-12">
               <div class="card">
+                
                 <div class="p-2">
                   @include('flash::message')
                </div>
@@ -58,9 +78,11 @@
                     <thead>
                       <tr>
                         <th>ID</th>
+                        <th>Imagen</th>
                         <th>Nombre</th>
-                        <th>Slug</th>
-                        <th>Sub productos</th>
+                        <th>Cantidad disponible</th>
+                        <th>Sub categoria</th>
+                        <th>Categoria</th>
                         <th>Acción</th>
                       </tr>
                     </thead>
@@ -68,17 +90,24 @@
                        @foreach ($producto as $item)
                            
                        <tr>
-                       <td class="mailbox-star">{{$item->id}}</td>
+                          <td class="mailbox-star">{{$item->id}}</td>
+
                            <td class="mailbox-star">{{$item->nombre}}</td>
-                           <td class="mailbox-star">{{$item->slug}}</td>
+
                            <td class="mailbox-star">
-                             <select class="form-control " name="" id="">
-                               @foreach ($item->subproducto as $sub)
-                             <option value="">{{$sub->nombre}}</option>
-                               @endforeach
-                             </select>
-                            </td>
-                           
+                             @if($item->imagen->count()<=0)
+                                <img style="height:100px; width:100px; border-radius:10px;" src="/imagenes/avatar.png" >
+                              @else
+                            <img style="height:100px; width:100px; border-radius:10px;" src="{{$item->imagen->random()->url}}" >
+                             @endif    
+                          </td>
+                        
+                           <td class="mailbox-star">{{$item->cantidad}}</td>
+
+                           <td class="mailbox-star">{{$item->subCategoria->nombre}}</td>
+
+                           <td class="mailbox-star">{{$item->subCategoria->categoria->nombre}}</td>
+                          
                            <td class="mailbox-star">
                                <div class="btn-group">
                                
@@ -90,7 +119,7 @@
                                    <form action="{{route('producto.destroy',$item)}}" method="POST">
                                        @method('DELETE')
                                        @csrf
-                                       <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar esta categoría?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
+                                       <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este producto?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
                                      </form>
                                    
                                    

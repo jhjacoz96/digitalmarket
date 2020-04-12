@@ -1,7 +1,32 @@
 <!DOCTYPE html>
 <html>
 
-@include('template.headHome')
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 3 | Blank Page</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{asset('adminlte/plugins/fontawesome-free/css/all.min.css')}}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    
+    
+    @yield('estilos')
+
+    <!-- overlayScrollbars -->
+
+    <link rel="stylesheet" href="{{asset('adminlte/dist/css/adminlte.min.css')}}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+
+
+  </head>
 
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -19,17 +44,39 @@
       
     </ul>
 
+
+     
     <!-- SEARCH FORM -->
+    <div id="searchAutoComplete" style="position: relative">
     <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
+        <div class="input-group input-group-sm">
+        <input class="form-control form-control-navbar" type="search" placeholder="Buscar producto" name="nombre" id="nombre" href="{{route('producto.index')}}" v-model="palabraBuscar" v-on:keyup="autoComplete" 
+          v-on:keyup.enter="submitForm" 
+          aria-label="Search">
+          <div class="input-group-append">
+            <button id="miBoton" class="btn btn-navbar" ref="submitButtonSearch" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
         </div>
+      </form>
+
+      <div class="panel-footer"v-if="resultados.length" style="position: absolute; z-index: 3; left: 9px;"> 
+
+        <ul class="list-group">
+          <li class="list-group-item" v-for="resultado in resultados">
+            <a class="dropdown-item"
+            v-on:click.prevent=" select(resultado)" >
+            <span v-html="resultado.nameNegrita">
+
+            </span>
+          </a>
+          </li>
+        </ul>
+
       </div>
-    </form>
+
+    </div>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
@@ -120,8 +167,25 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-@include('template.scrHome')
+<script src="{{asset('adminlte/plugins/jquery/jquery.min.js')}}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{asset('adminlte/dist/js/adminlte.min.js')}}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{asset('adminlte/dist/js/demo.js')}}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+
+<!-- Bootstrap4 Duallistbox -->
+<script src="{{asset('adminlte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
+
+
+<script src="{{ asset('js/appAdmin.js') }}" defer></script>
+
+
+@yield('scripts')
 
 </body>
 </html>

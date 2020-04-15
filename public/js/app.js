@@ -50382,6 +50382,71 @@ var categoria = new Vue({
 
 /***/ }),
 
+/***/ "./resources/js/admin/filtroDireccion.js":
+/*!***********************************************!*\
+  !*** ./resources/js/admin/filtroDireccion.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var filtroDireccion = new Vue({
+  el: '#filtroDireccion',
+  data: {
+    estado: '',
+    municipio: '',
+    listaMunicipio: [],
+    listar: true
+  },
+  computed: {
+    formatEstado: function formatEstado() {
+      this.estado = this.estado.toLowerCase().charAt(0).toUpperCase() + this.estado.toLowerCase().slice(1);
+      return this.estado;
+    }
+  },
+  methods: {
+    eliminarEstado: function eliminarEstado(estados) {},
+    agregarMunicipio: function agregarMunicipio() {
+      var muni = this.municipio.trim();
+
+      if (muni == '') {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Debe llenar este campo!'
+        });
+      } else {
+        var listo = muni.toLowerCase().charAt(0).toUpperCase() + muni.toLowerCase().slice(1);
+        var param = this.listaMunicipio;
+
+        if (param.length <= 0) {
+          this.listaMunicipio.push(listo);
+        } else {
+          for (var index = 0; index < param.length; index++) {
+            if (param[index] == listo) {
+              this.listar = false;
+              alert('Ya ha ingreado un municipio con este nombre');
+            }
+          }
+
+          if (this.listar) {
+            this.listaMunicipio.push(listo);
+          }
+        }
+      }
+
+      this.listar = true;
+      this.municipio = '';
+    }
+  },
+  mounted: function mounted() {
+    if (data.editar == 'si') {
+      this.estado = data.datos.nombre;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/producto.js":
 /*!****************************************!*\
   !*** ./resources/js/admin/producto.js ***!
@@ -50436,7 +50501,7 @@ var producto = new Vue({
     generarDescuento: function generarDescuento() {
       if (this.porcentajeDescuento > 100) {
         Swal.fire({
-          icon: 'error',
+          icon: 'warning',
           title: 'Oops...',
           text: 'No se pude poner un valor mayor a 100!'
         });
@@ -50863,6 +50928,10 @@ if (document.getElementById('producto')) {
 
 if (document.getElementById('searchAutoComplete')) {
   __webpack_require__(/*! ./admin/searchAutoComplete */ "./resources/js/admin/searchAutoComplete.js");
+}
+
+if (document.getElementById('filtroDireccion')) {
+  __webpack_require__(/*! ./admin/filtroDireccion */ "./resources/js/admin/filtroDireccion.js");
 }
 
 /***/ }),

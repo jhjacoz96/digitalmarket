@@ -69,6 +69,24 @@
   </section>
     <!-- Main content -->
     <section class="content">
+
+      <section class="content">
+
+        <div class="callout callout-info">
+
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-bullhorn"></i>
+              Imporfacion importante
+            </h3>
+          </div>
+
+          <h5></h5>
+
+          <p>Follow the steps to continue to payment.</p>
+        </div>
+      </section>
+
       <div class="container-fluid">
         <div class="row">
           <!-- left column -->
@@ -77,56 +95,6 @@
 
           <div class="col-md-12">
 
-
-            <div class="card card-success">
-                <div class="card-header">
-                  <h3 class="card-title">Datos generados automáticamente</h3>
-      
-                 
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-      
-                   <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-      
-                        <label>Visitas</label>
-                        <input nombre=""  class="form-control" type="number" id="visitas" name="visitas">
-      
-                       
-                      </div>
-                      <!-- /.form-group -->
-                      
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-6">
-                      <div class="form-group">
-      
-                        <label>Ventas</label>
-                        <input  class="form-control" type="number" id="ventas" name="ventas" >
-                      </div>
-                      <!-- /.form-group -->
-          
-                    </div>
-                    <!-- /.col -->
-                  </div>
-                  <!-- /.row -->
-      
-      
-      
-      
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                  
-                </div>
-              </div>
-              <!-- /.card -->
-      
-      
-      
-      
               <div class="card card-info">
                 <div class="card-header">
                   <h3 class="card-title">Datos del producto</h3>
@@ -426,11 +394,11 @@
                      accept="image/*" >
                      
                      <div class="description">
-                       Un número ilimitado de archivos pueden ser argado en este campo.
+                       Imágenes aquí  
                        <br>
-                       Limite de 2048MB por imagen.
+                       Tamaño recomendado 800 x 800px 
                        <br>
-                       Tipos permitidos: jpeg,png,jpg,gif,svg.
+                       Formatos permitidos permitidos: jpeg,png,jpg,gif,svg.
                        <br>
                      
                       </div>

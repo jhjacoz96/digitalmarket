@@ -32,6 +32,11 @@ if(document.getElementById('searchAutoComplete')){
 
 }
 
+if(document.getElementById('filtroDireccion')){
+    require('./admin/filtroDireccion'); 
+
+}
+
 
 
 

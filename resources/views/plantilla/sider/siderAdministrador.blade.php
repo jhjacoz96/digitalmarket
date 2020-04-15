@@ -48,6 +48,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+          <a href="{{route('filtroDireccion.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-percentage"></i>
+              <p>
+                Filtros  para direcciones
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

@@ -71,6 +71,28 @@ Route::delete('/eliminarImagen/{id}','productoController@eliminarImagen')->name(
 //autocomplete
 route::get('/autoComplete','HomeController@autoComplete')->name('autocomplete');
 
-//crear filtro direccion direcciones 
-route::resource('filtroDireccion','filtroDireccionController');
+//------crear filtro direccion direcciones-------------
 
+//parroquia
+route::get('filtroDireccion/{id}/eliminarParroquia','filtroDireccionController@eliminarParroquia')->name('filtroDireccion.parroquia.eliminar');
+
+route::get('filtroDireccion/{id}/editParroquia','filtroDireccionController@editParroquia')->name('filtroDireccion.parroquia.edit');
+
+route::put('filtroDireccion/{parroquia}/updateParroquia','filtroDireccionController@updateParroquia')->name('filtroDireccion.parroquia.update');
+//parroquia//
+
+//Municipio
+route::get('filtroDireccion/{id}/eliminarMunicipio','filtroDireccionController@eliminarMunicipio')->name('filtroDireccion.municipio.eliminar');
+
+route::get('filtroDireccion/{id}/editMunicipio','filtroDireccionController@editMunicipio')->name('filtroDireccion.municipio.edit');
+
+route::put('filtroDireccion/{municipio}/updateMunicipio','filtroDireccionController@updateMunicipio')->name('filtroDireccion.municipio.update');
+//fin Municipio//
+
+//estado
+route::get('filtroDireccion/{id}/eliminarEstado','filtroDireccionController@eliminarEstado')->name('filtroDireccion.estado.eliminar');
+
+route::resource('filtroDireccion','filtroDireccionController');
+//fin estado
+
+//------fin filtro direccion direcciones-------------

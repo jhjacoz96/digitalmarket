@@ -41,7 +41,7 @@ const producto= new Vue({
             if(this.porcentajeDescuento>100){
                  
                 Swal.fire({
-                    icon: 'error',
+                    icon: 'warning',
                     title: 'Oops...',
                     text: 'No se pude poner un valor mayor a 100!'
                 })

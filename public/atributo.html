@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script> 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js" ></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="container">
+        <div id="app">
+         
+            
+
+            <div class="card card-success">
+                <div class="card-header">
+                  <h3 class="card-title">Sección de Precios</h3>
+                </div>  
+                    <div class="card-body">
+                        
+                        
+
+                    <section>
+
+                        <div class="row">
+                            <div class="col-md-4 ">
+                                <div class="form-group">
+    
+                                    <label for="">grupo</label>
+                                    <input type="text" v-model="grupo.nombre" class="form-control">
+                                </div>
+                            </div>
+    
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+
+                                    <label for="">Atributo</label>
+
+                                    <div class="btn-group" >
+                                        <input type="text" v-model="atributo" class="form-control  mb-2" >
+                                        <button class="btn btn-info btn-group mx-2 mb-2"  v-on:click.prevent="agregarAtributo()">mas</button>
+
+                                    </div>
+
+                                    <select name="" class="form-control"   multiple id="">
+                                        <option v-for="atr in grupo.selectAtributos" value="atr">{{atr}}</option>
+                                    </select>
+                                </div>
+    
+                            </div>
+                    </div>
+                    
+                        <button class="btn btn-info" v-on:click.prevent="generarLista()">Agregar grupo</button>
+
+                    </section>
+                    
+
+                    
+                  <div class="row mt-3">
+                    <div class="col-md-6">
+
+                        <ul class="list-group">
+                            <li class="list-group-item" v-for="(item, index) in grupos" :key="index">
+                                <p>item.index</p>
+                                <p>{{item.nombre}}</p>
+                                
+                                <button @click="eliminarGrupo(item,index)" class="btn btn-danger btn-sm">eliminar</button>
+                            </li>
+                        </ul>
+
+                        </div>
+                    </div>
+
+                  </div>  
+                                
+
+                    
+
+                    {{grupo.selectAtributos}}   {{atributos}} {{listaCombinacion}} 
+
+                    
+
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover">
+                            <thead>
+                              <tr >
+                                <th scope="col">#</th>
+                                <th scope="col">Variantes</th>
+                                <th scope="col">Cantidad</th>
+                                <th>Precio</th>
+                                
+                                
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="( items, index) in listaCombinacion" :key="index">
+    
+                                <td scope="row">{{index+1}}</td>
+                                
+                                <td >
+                                    <div v-for="(item, index) in items.elemento" :key="index" >
+                                       {{item}} 
+                                    </div>
+                                </td>
+    
+                                <td>
+                                    <input v-model="items.cantidad" class="col-md-4" type="text">
+                                </td>
+    
+                                <td>
+                                    <input  class="col-md-4" type="text">
+                                </td>
+
+                                <td>
+
+                                    <input  type="checkbox" id="customCheck1" v-model="items.estado">
+
+                                   
+                                </td>
+                                
+                              </tr>
+                             
+
+
+                            </tbody>
+                          </table>
+                    </div>
+
+                </div> 
+                  
+                </div>
+               
+            
+              </div>
+
+
+            
+        </div>
+    
+
+ 
+    
+
+
+<script>
+    var app= new Vue({
+        el:'#app',
+        data:{
+            
+            grupos:[],
+            grupo:{
+                nombre:'',
+                selectAtributos:[]
+            },
+            atributo:'',
+            
+            //combinaciones
+        
+            combinacion:{
+                cantidad:0,
+                elemento:[],
+                estado:false
+            },
+            atributos:[],
+            listaCombinacion:[]
+
+        },
+       
+        computed: { 
+            
+        },
+        methods: {
+            eliminarGrupo(item,index){
+                this.grupos.splice(index,1)
+
+                
+
+            },
+            agregarAtributo(){
+                var atributo=this.atributo
+
+                this.grupo.selectAtributos.push(atributo)
+                this.atributo=''
+
+            },
+            generarLista(){
+                const param={nombre:this.grupo.nombre,atributos:this.grupo.selectAtributos}
+                
+                this.grupos.push(param)
+                this.atributos.push(this.grupo.selectAtributos)
+                console.log(this.grupos)
+                this.grupo.nombre=''
+                this.grupo.selectAtributos=[]
+                
+                var r = [], elem=this.combinacion, arg = this.atributos, max = arg.length - 1
+                
+                function helper(arr, i) {
+
+                        
+                   
+                    for (var j = 0, l = arg[i].length; j < l; j++) {
+                        var a = arr.slice(0); // clone arr
+                        
+                        a.push(arg[i][j]); 
+                        
+                        if (i == max){
+                            elem.elemento=a
+                            const param={cantidad:elem.cantidad,elemento:elem.elemento,estado:elem.estado}
+                            r.push(param)
+                            elem.elemento=[]
+
+                        }
+                        else{
+
+                            helper(a, i + 1)
+
+                        }
+                    }
+                }
+               helper([], 0);
+               
+               this.listaCombinacion=r
+
+               console.log(this.listaCombinacion)                
+
+
+            },
+            
+            cartesian() {
+                
+                
+                
+           
+
+            }
+        }
+    })
+</script>
+
+
+</body>
+</html>             
+               
+               
+               
+            

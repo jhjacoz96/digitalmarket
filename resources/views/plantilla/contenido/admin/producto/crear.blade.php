@@ -398,7 +398,7 @@
                        <br>
                        Tamaño recomendado 800 x 800px 
                        <br>
-                       Formatos permitidos permitidos: jpeg,png,jpg,gif,svg.
+                       Formatos permitidos: jpeg,png,jpg,gif,svg.
                        <br>
                      
                       </div>
@@ -415,6 +415,37 @@
                 </div>
               </div>
               <!-- /.card -->
+
+
+              <div class="card card-primary">
+                <div class="card-header">
+                  <div class="card-title">
+                    Galería de imagenes
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+
+                    @foreach ($producto->imagen as $imagen)
+
+                  <div class="col-sm-2" id="idimagen-{{$imagen->id}}">
+                      <a href=" {{$imagen->url}}" data-toggle="lightbox" data-title="id:{{$imagen->id}}" data-gallery="gallery">
+                          <img  src="{{$imagen->url}}" class="img-fluid mb-2"/>
+                        </a>
+                        <br>
+                        <a href="{{$imagen->url}}"
+                          v-on:click.prevent="eliminarImagen({{$imagen}})"
+                          >
+                          <i class="fas fa-trash-alt" style="color:red;  "></i>{{$imagen->id}}
+                        </a>
+                      </div>
+                      
+                    @endforeach
+
+                  </div>
+                </div>
+              </div>
+
       
       
             <div class="card card-danger">

@@ -15544,6 +15544,7 @@ var producto = new Vue({
     divAparecer: false,
     deshabilitarBoton: 1,
     selectedCategoria: '',
+    selectedCategoriaa: '',
     selectedSubCategoria: '',
     obtenerSubCategorias: [],
     categorias: [],
@@ -15553,6 +15554,13 @@ var producto = new Vue({
     descuento: 0,
     porcentajeDescuento: 0,
     descuentoMensaje: '0'
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/producto/categoria').then(function (res) {
+      _this.categorias = res.data;
+    });
   },
   computed: {
     generarSlug: function generarSlug() {
@@ -15626,13 +15634,6 @@ var producto = new Vue({
     }
   },
   methods: {
-    cagarCategoria: function cagarCategoria() {
-      var _this = this;
-
-      axios.get('/categoria').then(function (res) {
-        _this.categorias = res.data;
-      });
-    },
     eliminarImagen: function eliminarImagen(imagen) {
       Swal.fire({
         title: '¿Esta seguro que desea eliminar esta imagen?',

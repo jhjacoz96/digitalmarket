@@ -64,6 +64,7 @@ Route::get('traerCategoria/{categoria}',
 'subCategoriaController@traer')->name('traerCategoria.traer');
 
 Route::get('obtenerCategoria/{categoria_id}','productoController@getSubCategoria');
+Route::get('producto/categoria','productoController@categoria')->name('producto.categoria');
 Route::resource('producto','productoController');
 
 Route::delete('/eliminarImagen/{id}','productoController@eliminarImagen')->name('delete.imagen');
@@ -96,3 +97,5 @@ route::resource('filtroDireccion','filtroDireccionController');
 //fin estado
 
 //------fin filtro direccion direcciones-------------
+
+

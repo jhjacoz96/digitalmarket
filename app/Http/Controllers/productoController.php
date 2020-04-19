@@ -19,11 +19,8 @@ class productoController extends Controller
     {
         $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
+
     public function index(Request $request)
     {
     
@@ -34,11 +31,14 @@ class productoController extends Controller
         return view('plantilla.contenido.admin.producto.consultar',compact('producto'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
+    
+
+    public function Categoria(){
+        $categoria=Categoria::orderBy('nombre')->get();
+        return $categoria;
+    }
+
     public function create()
     {
         $categoria=Categoria::orderBy('nombre')->get();

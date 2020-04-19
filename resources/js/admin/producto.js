@@ -8,6 +8,7 @@ const producto= new Vue({
         divAparecer:false,
         deshabilitarBoton:1,
         selectedCategoria:'',
+        selectedCategoriaa:'',
         selectedSubCategoria:'',
         obtenerSubCategorias:[],
         categorias:[],
@@ -19,6 +20,11 @@ const producto= new Vue({
         porcentajeDescuento:0,
         descuentoMensaje:'0'
 
+    },
+    created(){
+        axios.get('/producto/categoria').then(res=>{
+            this.categorias=res.data
+        })
     },
     computed: {
         generarSlug : function(){
@@ -99,11 +105,7 @@ const producto= new Vue({
 
     },
     methods: {
-        cagarCategoria(){
-            axios.get('/categoria').then(res=>{
-                this.categorias=res.data
-            })
-        },
+        
         eliminarImagen(imagen){
             Swal.fire({
                 title: '¿Esta seguro que desea eliminar esta imagen?',

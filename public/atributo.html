@@ -26,16 +26,13 @@
     
     <div class="container">
         <div id="app">
-         
             
-
+            
             <div class="card card-success">
                 <div class="card-header">
-                  <h3 class="card-title">Sección de Precios</h3>
+                  <h3 class="card-title">Combinaciones</h3>
                 </div>  
-                    <div class="card-body">
-                        
-                        
+                    <div class="card-body">   
 
                     <section>
 
@@ -79,7 +76,7 @@
 
                         <ul class="list-group">
                             <li class="list-group-item" v-for="(item, index) in grupos" :key="index">
-                                <p>item.index</p>
+                                <p>{{index+1}}</p>
                                 <p>{{item.nombre}}</p>
                                 
                                 <button @click="eliminarGrupo(item,index)" class="btn btn-danger btn-sm">eliminar</button>
@@ -89,14 +86,8 @@
                         </div>
                     </div>
 
-                  </div>  
-                                
-
-                    
-
-                    {{grupo.selectAtributos}}   {{atributos}} {{listaCombinacion}} 
-
-                    
+                  
+                                                    
 
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover">
@@ -143,10 +134,17 @@
                             </tbody>
                           </table>
                     </div>
+                </div>  
+
+                <div class="card-footer" >
+                    <button class="btn btn-primary" type="submit">
+                        agregar
+                    </button>
+                </div>
 
                 </div> 
                   
-                </div>
+                
                
             
               </div>
@@ -188,10 +186,11 @@
             
         },
         methods: {
+            agregar(){
+                
+            },
             eliminarGrupo(item,index){
                 this.grupos.splice(index,1)
-
-                
 
             },
             agregarAtributo(){

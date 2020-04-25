@@ -55,6 +55,7 @@ class productoController extends Controller
     public function store(Request $request)
     {
         
+        
         $v=Validator::make($request->all(),[
             'nombre'=>'min:2|required|unique:productos,nombre',
             'slug'=>'min:2|required|unique:productos,slug',
@@ -100,6 +101,10 @@ class productoController extends Controller
         $producto->datosInteres=$request->datosInteres;
         $producto->status=$request->status;
 
+        //$Producto->tipoProducto=$request->tipoProd;
+
+
+
         if($request->sliderPrincipal){
             $producto->sliderPrincipal='si';
         }else{  
@@ -111,6 +116,8 @@ class productoController extends Controller
         }else{
             $producto->status='no';
         }
+
+        
   
 
         $producto->save();
@@ -118,6 +125,18 @@ class productoController extends Controller
         $producto->imagen()->createMany($urlImagenes);
 
         
+        $d=json_decode(($request['value']),true);
+        if($d!=null){
+            for ($i=0; $i < count($d) ; $i++) { 
+                $combinacion = new Combinacion();
+                $combinacion->cantidad=$d[$i]['cantidad'];
+                $combinacion->save();
+                $s=$d[$i]['elemento'];
+                for ($j=0; $j <count($s) ; $j++) { 
+                    $combinacion->atributo()->attach($s[$j]['id']);
+                }
+            }
+        }
 
        \flash('Producto creado con exito')->success()->important();
 

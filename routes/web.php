@@ -98,4 +98,12 @@ route::resource('filtroDireccion','filtroDireccionController');
 
 //------fin filtro direccion direcciones-------------
 
+//------atributosProductos------------
+Route::post('combinacion/atributos','atributoController@guardarCombinacion')->name('guardarCombinacion');
+route::resource('combinacion','atributoController');
 
+route::get('grupoAtributo/{id}/eliminadarAtributo','grupoAtributoController@eliminarAtributo')->name('grupoAtributo.atributo.delete');
+Route::resource('grupoAtributo', 'grupoAtributoController');
+
+Route::resource('atributo', 'atributosController');
+//------fin atributosProductos------------//

@@ -15323,6 +15323,232 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./resources/js/admin/atributos.js":
+/*!*****************************************!*\
+  !*** ./resources/js/admin/atributos.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var atributos = new Vue({
+  el: '#atributos',
+  data: {
+    hola: 'fff',
+    grupos: [],
+    grupo: {
+      nombre: '',
+      selectAtributos: []
+    },
+    atributo: '',
+    com: {
+      id: '',
+      nombre: ''
+    },
+    selected: null,
+    value: [],
+    //combinaciones
+    aparecer: false,
+    select: [],
+    item: [],
+    combinacion: {
+      cantidad: 0,
+      atributo: []
+    },
+    atributos: [],
+    listaCombinacion: []
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/combinacion/create').then(function (res) {
+      _this.grupos = res.data; //console.log(this.grupos)
+    })["catch"](function (e) {
+      console.log(e.respose);
+    });
+    axios.get('/atributo/create').then(function (res) {
+      _this.listaCombinacion = res.data;
+    })["catch"](function (e) {
+      console.log(e.respose);
+    });
+  },
+  mounted: function mounted() {
+    if (data.editar == 'si') {
+      this.aparecer = true;
+    }
+  },
+  computed: {
+    reset: function reset() {
+      this.aparecer = false;
+      this.listaCombinacion = [];
+      return this.listaCombinacion;
+    }
+  },
+  methods: {
+    convertir: function convertir() {
+      this.value = JSON.stringify(this.listaCombinacion);
+      console.log(this.value);
+      return this.value;
+    },
+    eliminarCombinacion: function eliminarCombinacion(items, index) {
+      var _this2 = this;
+
+      Swal.fire({
+        title: '¿Esta seguro que desea eliminar esta combinación?',
+        text: "¡No podras revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, eliminar!'
+      }).then(function (result) {
+        if (result.value) {
+          if (data.editar == 'no') {
+            _this2.listaCombinacion.splice(index, 1);
+          }
+
+          if (data.editar == 'si') {
+            axios["delete"]("/combinacion/".concat(item.id)).then(function () {
+              _this2.grupos.splice(index, 1);
+            })["catch"](function (e) {
+              console.log(e.respose);
+            });
+
+            _this2.generarLista();
+          }
+
+          Swal.fire('Eliminado!', 'Su combinación  se ha elimiando', 'success');
+        }
+      });
+    },
+    addTag: function addTag(newTag) {
+      var tag = {
+        name: newTag,
+        id: newTag
+      };
+      this.options.push(tag);
+      this.value.push(tag);
+    },
+    agregar: function agregar() {
+      var _this3 = this;
+
+      var param = {
+        nombre: this.grupo.nombre,
+        atributos: this.grupo.selectAtributos
+      };
+      axios.post('/combinacion', param).then(function (res) {
+        console.log(res.data);
+
+        _this3.grupos.push(res.data);
+
+        _this3.grupo.nombre = '';
+        _this3.grupo.selectAtributos = [];
+
+        _this3.generarLista();
+      })["catch"](function (e) {
+        console.log(e.response);
+      });
+    },
+    eliminarGrupo: function eliminarGrupo(item, index) {
+      var _this4 = this;
+
+      axios["delete"]("/combinacion/".concat(item.id)).then(function () {
+        _this4.grupos.splice(index, 1);
+      })["catch"](function (e) {
+        console.log(e.respose);
+      });
+      this.generarLista();
+    },
+    agregarAtributo: function agregarAtributo() {
+      var atributo = this.atributo;
+      this.grupo.selectAtributos.push(atributo);
+      this.atributo = '';
+    },
+    generarLista: function generarLista() {
+      var f = this.select;
+
+      if (f.length == 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Debe seleccionar almenos un atributo!'
+        });
+      } else {
+        var helper = function helper(arr, i) {
+          for (var j = 0, l = arg[i].length; j < l; j++) {
+            var a = arr.slice(0); // clone arr
+
+            a.push(arg[i][j]);
+
+            if (i == max) {
+              elem.atributo = a;
+              var param = {
+                cantidad: elem.cantidad,
+                atributo: elem.atributo
+              };
+              r.push(param);
+              elem.atributo = [];
+            } else {
+              helper(a, i + 1);
+            }
+          }
+        };
+
+        this.aparecer = true; //this.atributos=[]
+        //console.log(this.grupos)
+        //esta funcionalidad recorre todos los grupos y exrae los aatrbutos de cada grupo
+
+        /*var d=this.grupos, items=[], para={id:'',nombre:''} 
+                          for (let i = 0; i < d.length; i++) {
+              var r=d[i].atributo
+            for (let f = 0; f < r.length; f++) {
+                //const element = array[index];
+                para={id:r[f].id,
+                nombre:r[f].nombre}
+                
+                items.push(para)
+                para=para={id:'',nombre:''}
+            }
+            //console.log(items)
+            
+            this.atributos.push(items)
+            items=[]
+            
+        }*/
+        // console.log(this.atributos)
+
+        /*this.atributos.push(this.grupo.selectAtributos)
+        console.log(this.grupos)
+        this.grupo.nombre=''
+        this.grupo.selectAtributos=[]*/
+
+        this.atributos.push(this.select);
+        var r = [],
+            elem = this.combinacion,
+            arg = this.atributos,
+            max = arg.length - 1,
+            o = this.listaCombinacion;
+        helper([], 0);
+
+        if (this.listaCombinacion.length == 0) {
+          this.listaCombinacion = releaseEvents;
+        } else {}
+
+        console.log(this.listaCombinacion);
+      }
+    },
+    guardar: function guardar() {
+      axios.post('/combinacion/atributos', this.listaCombinacion).then(function (res) {
+        console.log(res);
+      })["catch"](function (e) {
+        console.log(e);
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/categoria.js":
 /*!*****************************************!*\
   !*** ./resources/js/admin/categoria.js ***!
@@ -15527,6 +15753,71 @@ var filtroDireccion = new Vue({
 
 /***/ }),
 
+/***/ "./resources/js/admin/grupoAtributo.js":
+/*!*********************************************!*\
+  !*** ./resources/js/admin/grupoAtributo.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var grupoAtributo = new Vue({
+  el: '#grupoAtributo',
+  data: {
+    grupo: '',
+    atributos: '',
+    listaatributo: [],
+    listar: true
+  },
+  computed: {
+    formatEstado: function formatEstado() {
+      this.grupo = this.grupo.toLowerCase().charAt(0).toUpperCase() + this.grupo.toLowerCase().slice(1);
+      return this.grupo;
+    }
+  },
+  methods: {
+    eliminarEstado: function eliminarEstado(estados) {},
+    agregarGrupo: function agregarGrupo() {
+      var atr = this.atributos.trim();
+
+      if (atr == '') {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Debe llenar este campo!'
+        });
+      } else {
+        var listo = atr.toLowerCase().charAt(0).toUpperCase() + atr.toLowerCase().slice(1);
+        var param = this.listaatributo;
+
+        if (param.length <= 0) {
+          this.listaatributo.push(listo);
+        } else {
+          for (var index = 0; index < param.length; index++) {
+            if (param[index] == listo) {
+              this.listar = false;
+              alert('Ya ha ingreado un atributos con este nombre');
+            }
+          }
+
+          if (this.listar) {
+            this.listaatributo.push(listo);
+          }
+        }
+      }
+
+      this.listar = true;
+      this.atributos = '';
+    }
+  },
+  mounted: function mounted() {
+    if (data.editar == 'si') {
+      this.grupo = data.datos.grupo;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/producto.js":
 /*!****************************************!*\
   !*** ./resources/js/admin/producto.js ***!
@@ -15553,14 +15844,34 @@ var producto = new Vue({
     precioActual: 0,
     descuento: 0,
     porcentajeDescuento: 0,
-    descuentoMensaje: '0'
+    descuentoMensaje: '0',
+    //convinaciones
+    grupos: [],
+    value: [],
+    aparecer: false,
+    select: [],
+    item: [],
+    combinacion: {
+      cantidad: 0,
+      elemento: []
+    },
+    atributos: [],
+    listaCombinacion: [],
+    tipoProducto: 'comun',
+    disableCantidad: false
   },
   created: function created() {
     var _this = this;
 
-    axios.get('/producto/categoria').then(function (res) {
-      _this.categorias = res.data;
+    axios.get('/combinacion/create').then(function (res) {
+      _this.grupos = res.data;
+      console.log(_this.grupos);
+    })["catch"](function (e) {
+      console.log(e.respose);
     });
+    /*axios.get('/producto/categoria').then(res=>{
+        this.categorias=res.data
+    })*/
   },
   computed: {
     generarSlug: function generarSlug() {
@@ -15631,9 +15942,31 @@ var producto = new Vue({
       }
 
       return this.descuentoMensaje;
+    },
+    //combinaciones
+    reset: function reset() {
+      this.aparecer = false;
+      this.listaCombinacion = [];
+      this.atributos = [];
+      return this.listaCombinacion;
     }
   },
   methods: {
+    tipoProd: function tipoProd() {
+      if (document.getElementById('customRadio1').checked) {
+        document.getElementById('customRadio1').checked = true;
+        this.tipoProducto = 'comun';
+        this.disableCantidad = false;
+        return this.tipoProducto;
+      }
+
+      if (document.getElementById('customRadio2').checked) {
+        document.getElementById('customRadio2').checked = true;
+        this.tipoProducto = 'combinacion';
+        this.disableCantidad = true;
+        return this.tipoProducto;
+      }
+    },
     eliminarImagen: function eliminarImagen(imagen) {
       Swal.fire({
         title: '¿Esta seguro que desea eliminar esta imagen?',
@@ -15703,6 +16036,113 @@ var producto = new Vue({
           _this3.obtenerSubCategorias = res.data;
           document.getElementById('subCategoria_id').disabled = false;
         });
+      }
+    },
+    //combinaciones
+    convertir: function convertir() {
+      this.value = JSON.stringify(this.listaCombinacion);
+      console.log(this.value);
+      return this.value;
+    },
+    eliminarCombinacion: function eliminarCombinacion(items, index) {
+      var _this4 = this;
+
+      Swal.fire({
+        title: '¿Esta seguro que desea eliminar esta combinación?',
+        text: "¡No podras revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, eliminar!'
+      }).then(function (result) {
+        if (result.value) {
+          _this4.listaCombinacion.splice(index, 1);
+
+          Swal.fire('Eliminado!', 'Su combinación  se ha elimiando', 'success');
+        }
+      });
+    },
+    generarLista: function generarLista() {
+      var f = this.select;
+
+      if (f.length == 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Debe seleccionar almenos un atributo!'
+        });
+      } else {
+        var helper = function helper(arr, i) {
+          for (var j = 0, l = arg[i].length; j < l; j++) {
+            var a = arr.slice(0); // clone arr
+
+            a.push(arg[i][j]);
+
+            if (i == max) {
+              elem.elemento = a;
+              var param = {
+                cantidad: elem.cantidad,
+                elemento: elem.elemento
+              };
+              r.push(param);
+              elem.elemento = [];
+            } else {
+              helper(a, i + 1);
+            }
+          }
+        };
+
+        if (this.atributos.length != 0) {
+          for (var i = 0; i < this.atributos.length; i++) {
+            if (this.atributos[i] == this.select) {
+              Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Ya ha seleccionado estos atributos!'
+              });
+            }
+          }
+        }
+
+        this.aparecer = true; //this.atributos=[]
+        //console.log(this.grupos)
+        //esta funcionalidad recorre todos los grupos y exrae los aatrbutos de cada grupo
+
+        /*var d=this.grupos, items=[], para={id:'',nombre:''} 
+                      for (let i = 0; i < d.length; i++) {
+              var r=d[i].atributo
+            for (let f = 0; f < r.length; f++) {
+                //const element = array[index];
+                para={id:r[f].id,
+                nombre:r[f].nombre}
+                
+                items.push(para)
+                para=para={id:'',nombre:''}
+            }
+            //console.log(items)
+            
+            this.atributos.push(items)
+            items=[]
+            
+        }*/
+        // console.log(this.atributos)
+
+        /*this.atributos.push(this.grupo.selectAtributos)
+        console.log(this.grupos)
+        this.grupo.nombre=''
+        this.grupo.selectAtributos=[]*/
+
+        this.atributos.push(this.select);
+        var r = [],
+            elem = this.combinacion,
+            arg = this.atributos,
+            max = arg.length - 1;
+        helper([], 0);
+        this.combinacion.elemento = [];
+        this.listaCombinacion = r;
+        console.log(this.listaCombinacion);
       }
     }
   },
@@ -15988,7 +16428,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
+Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]); //Vue.component('vue-multiselect', window.VueMultiselect.default)
 
 if (document.getElementById('app')) {
   var app = new Vue({
@@ -16014,6 +16454,14 @@ if (document.getElementById('searchAutoComplete')) {
 
 if (document.getElementById('filtroDireccion')) {
   __webpack_require__(/*! ./admin/filtroDireccion */ "./resources/js/admin/filtroDireccion.js");
+}
+
+if (document.getElementById('atributos')) {
+  __webpack_require__(/*! ./admin/atributos */ "./resources/js/admin/atributos.js");
+}
+
+if (document.getElementById('grupoAtributo')) {
+  __webpack_require__(/*! ./admin/grupoAtributo */ "./resources/js/admin/grupoAtributo.js");
 }
 
 /***/ }),

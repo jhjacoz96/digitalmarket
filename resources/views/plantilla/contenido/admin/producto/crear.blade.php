@@ -70,22 +70,7 @@
     <!-- Main content -->
     <section class="content">
 
-      <section class="content">
-
-        <div class="callout callout-info">
-
-          <div class="card-header">
-            <h3 class="card-title">
-              <i class="fas fa-bullhorn"></i>
-              Imporfacion importante
-            </h3>
-          </div>
-
-          <h5></h5>
-
-          <p>Follow the steps to continue to payment.</p>
-        </div>
-      </section>
+      
 
       <div class="container-fluid">
         <div class="row">
@@ -95,7 +80,8 @@
 
           <div class="col-md-12">
 
-              <div class="card card-info">
+
+              <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Datos del producto</h3>
       
@@ -104,7 +90,33 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                   <div class="row">
+                    
+                    <div class="callout callout-info">
+                      <h5>Tipos de producto</h5>
+    
+                      <p>Puede elegir entre dos tipos de productos:<p> <p></a><strong>Común</strong>, solo podrá indicar una  cantidad de produtos de forma general.</p>
+                      <p><strong>Variantes de atributos</strong>, Tendra la posibilidad de realizar combinaciones entre los atributos de los distintos grupos de atributos, y asi poder asignar un stock distinto a cada combinación generada.</p>
+                    </div>
+
+                    <div class="col-md-12">
+                      
+                      <div class="form-group">
+                        <label for="">Seleccione un tipo de producto</label>
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input"  @click="tipoProd()" v-bind:value="tipoProducto" type="radio" id="customRadio1" name="tipoProd">
+                          <label for="customRadio1" class="custom-control-label">Producto común</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input" type="radio" id="customRadio2" v-bind:value="tipoProducto" name="tipoProd" @click="tipoProd()">
+                          <label for="customRadio2" class="custom-control-label">Producto con variación de atributos</label>
+                        </div>
+                      </div>
+                    </div>
+                    
+
                     <div class="col-md-6">
+
+
                       <div class="form-group">
       
                         <label>Nombre</label>
@@ -154,7 +166,8 @@
           
                             </select>
                            
-                         
+                            
+
                         </div>
                             <div class="col-md-6">
                              
@@ -174,16 +187,19 @@
                         </div>
                         
                         <label>Cantidad</label>
-                        <input class="form-control" type="number" id="cantidad" name="cantidad" value="0" >
+                        <input class="form-control" :disabled="disableCantidad==true" type="number" id="cantidad"  name="cantidad" value="0" >
                       </div>
                       <!-- /.form-group -->
-          
+                      
+                      
+
                     </div>
+                    
                     <!-- /.col -->
                   </div>
                   <!-- /.row -->
       
-      
+                 
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
@@ -192,10 +208,124 @@
             </div>
       
               <!-- /.card -->
+
+              
+              <div class="card card-secondary" v-if="tipoProducto=='combinacion'">
+                                
+                <div class="card-header">
+                    <h3 class="card-title">Combinaciones</h3>
+                </div>
+                <div class="card-body">
+
+                  <div class="callout callout-info">
+    
+                    <div class="card-header">
+                      <h3 class="card-title">
+                        <i class="fas fa-bullhorn"></i>
+                        Imporfacion importante
+                      </h3>
+                    </div>
+          
+                    <h5></h5>
+          
+                    <p>Follow the steps to continue to payment.</p>
+                  </div>
+
+                  <div class="row">
+
+                    <div class="col-md-4">
+                     
+                          <div class="form-group" v-for="(item,index) in grupos">
+                            <label for="">@{{item.nombre}}</label>
+                            <select v-model="select"   class="form-control"  multiple   >
+                            <option   :value="items" v-for="(items,index) in item.atributo">@{{items.nombre}}</option>
+                            </select>
+                          </div>
+                       
+                    </div>
+                    <div class="col-md-8">
+  
+                        <div class="form-group">
+                            
+                            <button type="button" class="btn btn-secondary float-right" v-on:click="generarLista()">
+                                combinar
+                            </button>
+    
+                            <button type="button" class="btn btn-outline-secondary float-left " v-if="aparecer" v-on:click.prevent="reset">
+                                resetear
+                            </button>
+                           
+                        </div>
+                        
+                        <input type="hidden" v-model="value" name="value">
+                        
+    
+                        <div class="card-body table-responsive p-0" v-if="aparecer">
+                            <table class="table table-hover"  >
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Variante</th>
+                                        <th scope="col">Cantidad</th>
+                                      
+    
+    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="( items, index) in listaCombinacion"  :key="index"  >
+    
+                                        <td scope="row">@{{index+1}}</td>
+    
+                                        <td>
+                                            <div v-for="(item, index) in items.elemento" :key="index">
+                                               @{{item.nombre}}
+                                            </div>
+                                        </td>
+    
+                                        <td>
+                                            <input v-model="items.cantidad" class="col-md-4" type="text">
+                                        </td>
+    
+                                        
+    
+                                        <td>
+    
+                                            <a href="" @click.prevent="eliminarCombinacion(items,index)">
+                                                <i class="fas fa-trash-alt" style="color:red;"></i>
+                                            </a>
+    
+    
+                                        </td>
+    
+                                    </tr>
+    
+                                    
+    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  </div>
+                 
+                
+                </div>
+                
+                <div class="card-footer">
+                        
+                        <button v-on:click.prevent="convertir()" class="btn btn-primary" type="button" >
+                            formato
+                        </button>
+                    
+                </div>
+           
+            </div>
+
+
+
+
       
-      
-      
-              <div class="card card-success">
+              <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Sección de Precios</h3>
       
@@ -306,7 +436,7 @@
          <div class="row">
                 <div class="col-md-6">
       
-                  <div class="card card-primary">
+                  <div class="card card-secondary">
                     <div class="card-header">
                       <h3 class="card-title">Descripciones del producto</h3>
                     </div>
@@ -340,7 +470,7 @@
       
                 <div class="col-md-6">
       
-                  <div class="card card-info">
+                  <div class="card card-secondary">
                     <div class="card-header">
                       <h3 class="card-title">Especificaciones y otros datos</h3>
                     </div>
@@ -377,7 +507,7 @@
       
       
       
-               <div class="card card-warning">
+               <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Imagenes</h3>
       
@@ -417,38 +547,11 @@
               <!-- /.card -->
 
 
-              <div class="card card-primary">
-                <div class="card-header">
-                  <div class="card-title">
-                    Galería de imagenes
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-
-                    @foreach ($producto->imagen as $imagen)
-
-                  <div class="col-sm-2" id="idimagen-{{$imagen->id}}">
-                      <a href=" {{$imagen->url}}" data-toggle="lightbox" data-title="id:{{$imagen->id}}" data-gallery="gallery">
-                          <img  src="{{$imagen->url}}" class="img-fluid mb-2"/>
-                        </a>
-                        <br>
-                        <a href="{{$imagen->url}}"
-                          v-on:click.prevent="eliminarImagen({{$imagen}})"
-                          >
-                          <i class="fas fa-trash-alt" style="color:red;  "></i>{{$imagen->id}}
-                        </a>
-                      </div>
-                      
-                    @endforeach
-
-                  </div>
-                </div>
-              </div>
+              
 
       
       
-            <div class="card card-danger">
+            <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Administración</h3>
                 </div>
@@ -499,10 +602,8 @@
                     <div class="col-md-12">
                       <div class="form-group">
       
-                         <a class="btn btn-danger" href="">Cancelar</a>
-                         <input  
-                         :disabled="deshabilitarBoton==1"        
-                        type="submit" value="Guardar" class="btn btn-primary">
+                         
+                         
                        
                       </div>
                       <!-- /.form-group -->
@@ -526,7 +627,10 @@
          
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  
+                <a class="btn btn-secondary float-left"  href="{{route('producto.index')}}">Volver</a>
+                  <input  
+                         :disabled="deshabilitarBoton==1"        
+                        type="submit" value="Agregar producto" class="btn btn-primary float-right">
                 </div>
               </div>
               <!-- /.card -->

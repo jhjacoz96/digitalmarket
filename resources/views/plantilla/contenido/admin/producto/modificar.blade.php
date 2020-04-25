@@ -102,7 +102,7 @@
           <div class="col-md-12">
 
 
-            <div class="card card-success">
+            <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Datos generados automáticamente</h3>
       
@@ -155,94 +155,120 @@
       
       
       
-              <div class="card card-info">
+              <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Datos del producto</h3>
       
                 
                 </div>
-                <!-- /.card-header -->
+                <!-- /.card-ºheader -->
                 <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-      
-                        <label>Nombre</label>
-                        <input v-model="nombre" class="form-control" type="text" id="nombre" name="nombre"
-                        @blur="getProducto"
-                        @focus="divAparecer=true"
-                        >
-                        {!!$errors->first('nombre','<small>:message</small><br>')!!}
-                        <label>Slug</label>
-                        <input class="form-control" type="text" id="slug" name="slug" 
-                        readonly
-                        v-model="generarSlug"
-                        >
-                        <div v-if="divAparecer " v-bind:class="divClaseSlug">
-                            @{{divMensajeSlug}}
-                        </div>
-                        <br v-if="divAparecer">
-                        {!!$errors->first('slug','<small>:message</small><br>')!!}
-                      </div>
-                      <!-- /.form-group -->
-                      
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        
-                        <div class="row">
-                          
-                          <div class="col-md-6">
-                          
-                          <label>Categoria</label>
-                          
-                          <select v-model="selectedCategoria"  data-old="{{old('categoria_id')}}" @change="cargarSubCategorias" name="categoria_id" id="categoria_id" class="form-control" style="width: 100%;">
-  
-                              <option value=""  >Seleccione una categoria</option>
-                              
-                              @foreach($categoria as $categorias)
-                              
-                               @if ($categorias->id==$producto->subCategoria->categoria->id)
-                                  <option value="{{ $categorias->id }}" selected="selected">{{ $categorias->nombre }}</option>
-                               @else
-                                  <option value="{{ $categorias->id }}">{{ $categorias->nombre }}</option>                         
-                              @endif
-                              @endforeach
-          
-          
-                            </select>
-                           
-                         
-                        </div>
-                            <div class="col-md-6">
-                             
-                             
-                          <label>Sub categoria</label>
-                          
-                            <select v-model="selectedSubCategoria" name="subCategoria_id" id="subCategoria_id" data-old="{{old('subCategoria_id')}}" class="form-control select2" style="width: 100%;">
-  
-                              <option value="" selected="selected" >Seleccione una categoria</option>
-                              
-                              <option v-for="(subCategoria,index) in obtenerSubCategorias"  v-bind:value="index" >@{{subCategoria}}</option>
-                            </select>
-                         
-                          </div>
 
+                  <div class="row">
+
+                    <div class="callout callout-info">
+                      <h5>Tipos de producto</h5>
+    
+                      <p>Puede elegir entre dos tipos de productos:<p> <p></a><strong>Común</strong>, solo podrá indicar una  cantidad de produtos de forma general.</p>
+                      <p><strong>Variantes de atributos</strong>, Tendra la posibilidad de realizar combinaciones entre los atributos de los distintos grupos de atributos, y asi poder asignar un stock distinto a cada combinación generada.</p>
+                    </div>
+
+                    <div class="col-md-12">
+
+
+                      <div class="form-group">
+                        <label for="">Seleccione un tipo de producto</label>
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input"  @click="tipoProd()" v-bind:value="tipoProducto" type="radio" id="customRadio1" name="tipoProd">
+                          <label for="customRadio1" class="custom-control-label">Producto común</label>
                         </div>
-                        
-                        <label>Cantidad</label>
-                    <input class="form-control" type="number" id="cantidad" name="cantidad" value="{{$producto->cantidad}}" >
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input" type="radio" id="customRadio2" v-bind:value="tipoProducto" name="tipoProd" @click="tipoProd()">
+                          <label for="customRadio2" class="custom-control-label">Producto con variación de atributos</label>
+                        </div>
                       </div>
-                      <!-- /.form-group -->
-          
+                    </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          
+                          <label>Nombre</label>
+                          <input v-model="nombre" class="form-control" type="text" id="nombre" name="nombre"
+                          @blur="getProducto"
+                          @focus="divAparecer=true"
+                          >
+                          {!!$errors->first('nombre','<small>:message</small><br>')!!}
+                          <label>Slug</label>
+                          <input class="form-control" type="text" id="slug" name="slug" 
+                          readonly
+                          v-model="generarSlug"
+                          >
+                          <div v-if="divAparecer " v-bind:class="divClaseSlug">
+                              @{{divMensajeSlug}}
+                          </div>
+                          <br v-if="divAparecer">
+                          {!!$errors->first('slug','<small>:message</small><br>')!!}
+                        </div>
+                        <!-- /.form-group -->
+                        
+                      </div>
+                      <!-- /.col -->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          
+                          <div class="row">
+                            
+                            <div class="col-md-6">
+                            
+                            <label>Categoria</label>
+                            
+                            <select v-model="selectedCategoria"  data-old="{{old('categoria_id')}}" @change="cargarSubCategorias" name="categoria_id" id="categoria_id" class="form-control" style="width: 100%;">
+    
+                                <option value=""  >Seleccione una categoria</option>
+                                
+                                @foreach($categoria as $categorias)
+                                
+                                 @if ($categorias->id==$producto->subCategoria->categoria->id)
+                                    <option value="{{ $categorias->id }}" selected="selected">{{ $categorias->nombre }}</option>
+                                 @else`
+                                    <option value="{{ $categorias->id }}">{{ $categorias->nombre }}</option>                         
+                                @endif
+                                @endforeach
+            
+            
+                              </select>
+                             
+                           
+                          </div>
+                              <div class="col-md-6">
+                               
+                               
+                            <label>Sub categoria</label>
+                            
+                              <select v-model="selectedSubCategoria" name="subCategoria_id" id="subCategoria_id" data-old="{{old('subCategoria_id')}}" class="form-control select2" style="width: 100%;">
+    
+                                <option value="" selected="selected" >Seleccione una categoria</option>
+                                
+                                <option v-for="(subCategoria,index) in obtenerSubCategorias"  v-bind:value="index" >@{{subCategoria}}</option>
+                              </select>
+                           
+                            </div>
+  
+                          </div>
+                          
+                          <label>Cantidad</label>
+                      <input class="form-control" type="number" id="cantidad" name="cantidad" :disabled="disableCantidad==true" value="{{$producto->cantidad}}" >
+                        </div>
+                        <!-- /.form-group -->
+            
+                      </div>
                     </div>
                     <!-- /.col -->
                   </div>
                   <!-- /.row -->
       
       
-                </div>
+                
                 <!-- /.card-body -->
                 <div class="card-footer">
                  
@@ -250,10 +276,125 @@
             </div>
       
               <!-- /.card -->
+
+
+
+
+              <div class="card card-secondary" v-if="tipoProducto=='combinacion'">
+                                
+                <div class="card-header">
+                    <h3 class="card-title">Combinaciones</h3>
+                </div>
+                <div class="card-body">
+
+                  <div class="callout callout-info">
+    
+                    <div class="card-header">
+                      <h3 class="card-title">
+                        <i class="fas fa-bullhorn"></i>
+                        Imporfacion importante
+                      </h3>
+                    </div>
+          
+                    <h5></h5>
+          
+                    <p>Follow the steps to continue to payment.</p>
+                  </div>
+
+                  <div class="row">
+
+                    <div class="col-md-4">
+                     
+                          <div class="form-group" v-for="(item,index) in grupos">
+                            <label for="">@{{item.nombre}}</label>
+                            <select v-model="select"   class="form-control"  multiple   >
+                            <option   :value="items" v-for="(items,index) in item.atributo">@{{items.nombre}}</option>
+                            </select>
+                          </div>
+                       
+                    </div>
+                    <div class="col-md-8">
+  
+                        <div class="form-group">
+                            
+                            <button type="button" class="btn btn-secondary float-right" v-on:click="generarLista()">
+                                combinar
+                            </button>
+    
+                            <button type="button" class="btn btn-outline-secondary float-left " v-if="aparecer" v-on:click.prevent="reset">
+                                resetear
+                            </button>
+                           
+                        </div>
+                        
+                        <input type="hidden" v-model="value" name="value">
+                        
+    
+                        <div class="card-body table-responsive p-0" v-if="aparecer">
+                            <table class="table table-hover"  >
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Variante</th>
+                                        <th scope="col">Cantidad</th>
+                                      
+    
+    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="( items, index) in listaCombinacion"  :key="index"  >
+    
+                                        <td scope="row">@{{index+1}}</td>
+    
+                                        <td>
+                                            <div v-for="(item, index) in items.elemento" :key="index">
+                                               @{{item.nombre}}
+                                            </div>
+                                        </td>
+    
+                                        <td>
+                                            <input v-model="items.cantidad" class="col-md-4" type="text">
+                                        </td>
+    
+                                        
+    
+                                        <td>
+    
+                                            <a href="" @click.prevent="eliminarCombinacion(items,index)">
+                                                <i class="fas fa-trash-alt" style="color:red;"></i>
+                                            </a>
+    
+    
+                                        </td>
+    
+                                    </tr>
+    
+                                    
+    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  </div>
+                 
+                
+                </div>
+                
+                <div class="card-footer">
+                        
+                        <button v-on:click.prevent="convertir()" class="btn btn-primary" type="button" >
+                            formato
+                        </button>
+                    
+                </div>
+           
+            </div>
+
       
       
       
-              <div class="card card-success">
+              <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Sección de Precios</h3>
       
@@ -262,8 +403,7 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                   <div class="row">
-      
-      
+  
       
                     <div class="col-md-3">
                       <div class="form-group">
@@ -364,7 +504,7 @@
          <div class="row">
                 <div class="col-md-6">
       
-                  <div class="card card-primary">
+                  <div class="card card-secondary">
                     <div class="card-header">
                       <h3 class="card-title">Descripciones del producto</h3>
                     </div>
@@ -402,7 +542,7 @@
       
                 <div class="col-md-6">
       
-                  <div class="card card-info">
+                  <div class="card card-secondary">
                     <div class="card-header">
                       <h3 class="card-title">Especificaciones y otros datos</h3>
                     </div>
@@ -443,7 +583,7 @@
       
       
       
-               <div class="card card-warning">
+               <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Imagenes</h3>
       
@@ -484,7 +624,7 @@
       
               
 
-              <div class="card card-primary">
+              <div class="card card-secondary">
                 <div class="card-header">
                   <div class="card-title">
                     Galería de imagenes
@@ -517,7 +657,7 @@
 
 
 
-            <div class="card card-danger">
+            <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Administración</h3>
                 </div>
@@ -574,10 +714,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
       
-                         <a class="btn btn-danger" href="">Cancelar</a>
-                         <input  
-                         :disabled="deshabilitarBoton==1"        
-                        type="submit" value="Actualizar productos " class="btn btn-primary">
+                         
                        
                       </div>
                       <!-- /.form-group -->
@@ -601,7 +738,10 @@
          
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  
+                <a class="btn btn-secondary float-left" href="{{route('producto.index')}}">volver</a>
+                         <input  
+                         :disabled="deshabilitarBoton==1"        
+                        type="submit" value="Actualizar productos " class="btn btn-primary float-right">
                 </div>
               </div>
               <!-- /.card -->

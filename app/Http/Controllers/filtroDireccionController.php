@@ -65,7 +65,7 @@ class filtroDireccionController extends Controller
         $estado->save();
         
         
-        if(coun($request->municipio)>0){
+        if(count($request->municipio)>0){
             for ($i=0; $i < count($request->municipio) ; $i++) { 
                 
                 $municipio=new Municipio();
@@ -73,6 +73,7 @@ class filtroDireccionController extends Controller
                 $municipio->estado_id=$estado->id;
                 $municipio->save();
             }
+            return 'guardado'; 
         }  
 
         \flash('Estado agregado con exito')->important()->success();

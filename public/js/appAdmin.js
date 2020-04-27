@@ -15427,7 +15427,7 @@ var atributos = new Vue({
         id: newTag
       };
       this.options.push(tag);
-      this.value.push(tag);
+      this.select.push(tag);
     },
     agregar: function agregar() {
       var _this3 = this;
@@ -15529,11 +15529,7 @@ var atributos = new Vue({
             max = arg.length - 1,
             o = this.listaCombinacion;
         helper([], 0);
-
-        if (this.listaCombinacion.length == 0) {
-          this.listaCombinacion = releaseEvents;
-        } else {}
-
+        this.listaCombinacion = r;
         console.log(this.listaCombinacion);
       }
     },
@@ -15825,11 +15821,16 @@ var grupoAtributo = new Vue({
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+var _data;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var producto = new Vue({
   el: '#producto',
-  data: {
+  data: (_data = {
     nombre: '',
     slug: '',
+    tipoProducto: '',
     divMensajeSlug: '',
     divClaseSlug: '',
     divAparecer: false,
@@ -15857,15 +15858,19 @@ var producto = new Vue({
     },
     atributos: [],
     listaCombinacion: [],
-    tipoProducto: 'comun',
-    disableCantidad: false
-  },
+    listaCombinacion2: []
+  }, _defineProperty(_data, "tipoProducto", ''), _defineProperty(_data, "disableCantidad", false), _defineProperty(_data, "editarActivo", false), _data),
   created: function created() {
     var _this = this;
 
     axios.get('/combinacion/create').then(function (res) {
       _this.grupos = res.data;
-      console.log(_this.grupos);
+    })["catch"](function (e) {
+      console.log(e.respose);
+    });
+    axios.get("/combinacion/".concat(data.datos.id, "/edit")).then(function (res) {
+      _this.listaCombinacion2 = res.data;
+      console.log(_this.listaCombinacion2);
     })["catch"](function (e) {
       console.log(e.respose);
     });
@@ -15942,16 +15947,16 @@ var producto = new Vue({
       }
 
       return this.descuentoMensaje;
-    },
-    //combinaciones
+    } //combinaciones
+
+  },
+  methods: {
     reset: function reset() {
       this.aparecer = false;
       this.listaCombinacion = [];
       this.atributos = [];
       return this.listaCombinacion;
-    }
-  },
-  methods: {
+    },
     tipoProd: function tipoProd() {
       if (document.getElementById('customRadio1').checked) {
         document.getElementById('customRadio1').checked = true;
@@ -16064,6 +16069,39 @@ var producto = new Vue({
         }
       });
     },
+    eliminarCombinacionDB: function eliminarCombinacionDB(item, index) {
+      var _this5 = this;
+
+      Swal.fire({
+        title: '¿Esta seguro que desea eliminar esta combinación?',
+        text: "¡Se eliminará de sus registros!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, eliminar!'
+      }).then(function (result) {
+        if (result.value) {
+          _this5.listaCombinacion2.splice(index, 1);
+
+          axios["delete"]("/combinacion/".concat(item.id)).then(function (res) {
+            console.log(res);
+          })["catch"](function (e) {
+            console.log(es.respose);
+          });
+          Swal.fire('Eliminado!', 'Su combinación  se ha elimiando', 'success');
+        }
+      });
+    },
+    addTag: function addTag(newTag) {
+      var tag = {
+        name: newTag,
+        id: newTag
+      };
+      this.options.push(tag);
+      this.select.push(tag);
+    },
     generarLista: function generarLista() {
       var f = this.select;
 
@@ -16086,7 +16124,7 @@ var producto = new Vue({
                 cantidad: elem.cantidad,
                 elemento: elem.elemento
               };
-              r.push(param);
+              o.push(param);
               elem.elemento = [];
             } else {
               helper(a, i + 1);
@@ -16095,14 +16133,37 @@ var producto = new Vue({
         };
 
         if (this.atributos.length != 0) {
-          for (var i = 0; i < this.atributos.length; i++) {
-            if (this.atributos[i] == this.select) {
+          for (var _i = 0; _i < this.atributos.length; _i++) {
+            if (this.atributos[_i] == this.select) {
               Swal.fire({
                 icon: 'warning',
                 title: 'Oops...',
                 text: 'Ya ha seleccionado estos atributos!'
               });
             }
+          }
+        }
+        /* var result=this.select.reduce((h,grupo)=>Object.assign(h,{[grupo.grupoAtributo_id]:(h[grupo.gruAtributo_id]|| []).concat({id:grupo.id,nombre:grupo.nombre,grupoAtributo_id:grupo.grupoAtributo_id})}),{})
+        console.log(JSON.stringify(result))*/
+
+
+        this.select.sort(function (a, b) {
+          return a.grupoAtributo_id - b.grupoAtributo_id;
+        });
+        this.atributos = [];
+        var t = this.select;
+
+        for (i = 0; i < t.length; i++) {
+          select = t[i];
+          var grupoAct;
+          var grupo = [];
+
+          if (grupoAct !== select.grupoAtributo_id) {
+            grupoAct = select.grupoAtributo_id;
+            grupo = t.filter(function (grupo) {
+              return grupo.grupoAtributo_id === grupoAct;
+            });
+            this.atributos.push(grupo);
           }
         }
 
@@ -16133,17 +16194,54 @@ var producto = new Vue({
         console.log(this.grupos)
         this.grupo.nombre=''
         this.grupo.selectAtributos=[]*/
+        //this.atributos.push(this.select)
+        //this.select=[]
 
-        this.atributos.push(this.select);
         var r = [],
             elem = this.combinacion,
             arg = this.atributos,
-            max = arg.length - 1;
+            max = arg.length - 1,
+            o = this.listaCombinacion;
         helper([], 0);
-        this.combinacion.elemento = [];
-        this.listaCombinacion = r;
+        this.combinacion.elemento = []; //this.listaCombinacion = JSON.stringify(r)
+        //this.listaCombinacion=r
+
+        this.select = [];
         console.log(this.listaCombinacion);
       }
+    },
+    editarCombinacion: function editarCombinacion(items) {
+      this.editarActivo = true;
+      this.combinacion.cantidad = items.cantidad;
+      this.combinacion.id = items.id;
+      console.log(this.combinacion);
+    },
+    actualizarCombinacion: function actualizarCombinacion(combinacion) {
+      var _this6 = this;
+
+      var param = {
+        cantidad: combinacion.cantidad
+      };
+      axios.put("/combinacion/".concat(combinacion.id), param).then(function (res) {
+        console.log(res);
+
+        var index = _this6.listaCombinacion2.findIndex(function (combinacionBuscar) {
+          return combinacionBuscar.id === res.data.id;
+        });
+
+        _this6.listaCombinacion2[index].cantidad = res.data.cantidad;
+        _this6.combinacion = {
+          cantidad: ''
+        };
+        axios.get("/combinacion/".concat(data.datos.id, "/edit")).then(function (res) {
+          _this6.listaCombinacion2 = res.data;
+          console.log(_this6.listaCombinacion2);
+        })["catch"](function (e) {
+          console.log(e.respose);
+        });
+      })["catch"](function (e) {
+        console.log(e);
+      });
     }
   },
   mounted: function mounted() {
@@ -16154,6 +16252,15 @@ var producto = new Vue({
       this.precioActual = data.datos.precioActual;
       this.porcentajeDescuento = data.datos.porcentajeDescuento;
       this.selectedCategoria = data.datos.selectedCategoria;
+
+      if (data.datos.tipoCliente == 'combinacion') {
+        document.getElementById('customRadio2').checked = true;
+        this.tipoProducto = 'combinacion';
+      } else {
+        document.getElementById('customRadio1').checked = true;
+        this.tipoProducto = 'comun';
+      }
+
       this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
 
       if (this.selectedCategoria != '') {
@@ -16428,7 +16535,8 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]); //Vue.component('vue-multiselect', window.VueMultiselect.default)
+Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
+Vue.component('vue-multiselect', window.VueMultiselect["default"]);
 
 if (document.getElementById('app')) {
   var app = new Vue({

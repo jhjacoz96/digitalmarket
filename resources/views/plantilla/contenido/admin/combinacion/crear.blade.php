@@ -61,15 +61,23 @@ window.data={
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                    <div class="form-group" v-for="(item,index) in grupos">
+                                  <!--  <div class="form-group" v-for="(item,index) in grupos">
                                         <label for="">@{{item.nombre}}</label>
                                         <select v-model="select" class="form-control"  multiple   >
                                         <option :value="items" v-for="(items,index) in item.atributo">@{{items.nombre}}</option>
                                         </select>
-                                    </div>
-                                           
+                                    </div>-->
+                                       
+                                    <div class="form-group" v-for="(item,index) in grupos">
+                                    <label for="">@{{item.nombre}}</label>
+                                    <vue-multiselect v-model="select" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="nombre" track-by="id"
                                     
-                                   
+                                    :options="item.atributo"
+                                    :multiple="true" :taggable="true" @tag="addTag"></vue-multiselect>
+                                    </div>
+                                    <pre class="language-json"><code>@{{ select  }}</code></pre>
+                                    
+
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -86,7 +94,7 @@ window.data={
                                     
                                     <input type="hidden" v-model="value" name="value">
                                     
-                                    @{{listaCombinacion}}
+                                  
                                     <div class="card-body table-responsive p-0" >
                                         <table class="table table-hover" v-if="aparecer" >
                                             <thead>

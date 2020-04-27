@@ -23,11 +23,9 @@ class atributosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        $combinacion=Combinacion::with('atributo')->get();
-        return $combinacion;
-       // return \view('planilla.admin.grupoAtributo.crear');
+        
     }
 
     /**

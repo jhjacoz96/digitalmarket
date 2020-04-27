@@ -17,10 +17,10 @@ class CreateAtributoCombinacionTable extends Migration
             $table->bigIncrements('id');
 
             $table->unsignedBigInteger('combinacion_id');
-            $table->foreign('combinacion_id')->references('id')->on('combinacions')->onDelete('cascade')->onUpdate('restrict');
+            $table->foreign('combinacion_id')->references('id')->on('combinacions')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedBigInteger('atributo_id');
-            $table->foreign('atributo_id')->references('id')->on('atributos')->onDelete('cascade')->onUpdate('restrict');
+            $table->foreign('atributo_id')->references('id')->on('atributos')->onDelete('cascade')->onUpdate('cascade');
 
 
             $table->timestamps();

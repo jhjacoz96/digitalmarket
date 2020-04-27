@@ -1,7 +1,7 @@
 @extends('layouts.appAdmin')
 
 @section('estilos')
-    
+<!--<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">-->
 <!-- Select2 -->
 <link rel="stylesheet" href="{{asset('adminlte/plugins/select2/css/select2.min.css')}}">
 <link rel="stylesheet" href="{{asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
@@ -9,7 +9,7 @@
 @endsection
 
 @section('scripts')
-    
+<!--<script src="https://unpkg.com/vue-multiselect@2.1.0"></script>-->
 <script src="/adminlte/ckeditor/ckeditor.js"></script>
 
 <!-- select2---->
@@ -95,7 +95,7 @@
                       <h5>Tipos de producto</h5>
     
                       <p>Puede elegir entre dos tipos de productos:<p> <p></a><strong>Común</strong>, solo podrá indicar una  cantidad de produtos de forma general.</p>
-                      <p><strong>Variantes de atributos</strong>, Tendra la posibilidad de realizar combinaciones entre los atributos de los distintos grupos de atributos, y asi poder asignar un stock distinto a cada combinación generada.</p>
+                      <p><strong>Variantes de atributos</strong>, Las combinaciones son las diferentes variaciones de un producto, con atributos como su tamaño, peso o color que toman diferentes valores. ¿Su producto requiere combinaciones?.</p>
                     </div>
 
                     <div class="col-md-12">
@@ -187,7 +187,7 @@
                         </div>
                         
                         <label>Cantidad</label>
-                        <input class="form-control" :disabled="disableCantidad==true" type="number" id="cantidad"  name="cantidad" value="0" >
+                        <input class="form-control"  type="number" id="cantidad"  name="cantidad" value="0" >
                       </div>
                       <!-- /.form-group -->
                       
@@ -228,7 +228,8 @@
           
                     <h5></h5>
           
-                    <p>Follow the steps to continue to payment.</p>
+                    <p>  Para agregar combinaciones, primero debe crear grupos de atributos y atributos adecuados en <a href="{{route('grupoAtributo.index')}}">Grupos de atributos</a> .
+                      Cuando termine, puede ingresar los atributos deseados (como "tamaño" o "color") y sus respectivos valores ("10kg", "rojo", etc.) en el campo a continuación; o simplemente selecciónelos de la columna derecha. Luego haga clic en "Generar": ¡creará automáticamente todas las combinaciones para usted!</p>
                   </div>
 
                   <div class="row">
@@ -237,11 +238,14 @@
                      
                           <div class="form-group" v-for="(item,index) in grupos">
                             <label for="">@{{item.nombre}}</label>
-                            <select v-model="select"   class="form-control"  multiple   >
+                            <!--<select v-model="select"   class="form-control"  multiple   >
                             <option   :value="items" v-for="(items,index) in item.atributo">@{{items.nombre}}</option>
-                            </select>
+                            </select>-->
+                            <vue-multiselect v-model="select" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="nombre" track-by="id"      
+                            :options="item.atributo"
+                            :multiple="true" :taggable="true" @tag="addTag"></vue-multiselect>
                           </div>
-                       
+                         
                     </div>
                     <div class="col-md-8">
   

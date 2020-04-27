@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Producto;
 use App\Categoria;
 use App\SubCategoria;
+use App\Combinacion;
+use App\Atributo;
+use App\GrupoAtributo;
 use App\Imagen;
 use Illuminate\Support\Facades\File;
 use Laracasts\Flash\Flash;
@@ -27,7 +30,7 @@ class productoController extends Controller
       $nombre=$request->get('nombre');
         
         $producto=Producto::with('imagen','subCategoria')->where('nombre','like',"%$nombre%")->paginate(2);
-
+        
         return view('plantilla.contenido.admin.producto.consultar',compact('producto'));
     }
 
@@ -54,8 +57,8 @@ class productoController extends Controller
      */
     public function store(Request $request)
     {
-        
-        
+       
+       
         $v=Validator::make($request->all(),[
             'nombre'=>'min:2|required|unique:productos,nombre',
             'slug'=>'min:2|required|unique:productos,slug',
@@ -117,6 +120,15 @@ class productoController extends Controller
             $producto->status='no';
         }
 
+        if($request->tipoProd=='comun'){
+            $producto->tipoCliente='comun';
+        }else{
+
+            if($request->tipoProd=='combinacion'){
+    
+                $producto->tipoCliente='combinacion';
+            }
+        }
         
   
 
@@ -130,6 +142,7 @@ class productoController extends Controller
             for ($i=0; $i < count($d) ; $i++) { 
                 $combinacion = new Combinacion();
                 $combinacion->cantidad=$d[$i]['cantidad'];
+                $combinacion->producto_id=$producto->id;
                 $combinacion->save();
                 $s=$d[$i]['elemento'];
                 for ($j=0; $j <count($s) ; $j++) { 
@@ -193,10 +206,11 @@ class productoController extends Controller
      */
     public function edit($slug)
     {
-        $producto=Producto::with('imagen','subCategoria')->where('slug',$slug)->firstOrFail();
-
+        
+        $producto=Producto::with('imagen','subCategoria','combinacion')->where('slug',$slug)->firstOrFail();
+        
         $categoria=Categoria::orderBy('nombre')->get();
-
+        
 
         return view('plantilla.contenido.admin.producto.modificar',compact('producto','categoria'));
     }
@@ -210,11 +224,11 @@ class productoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+       
         $v=Validator::make($request->all(),[
             'nombre'=>'min:2|required|unique:productos,nombre,'.$id,
             'slug'=>'min:2|required|unique:productos,slug,'.$id,
-            'imagenes.*'=>'image|mimes:jpg,png,jpeg,gif,svg|max:2048'
+            'imagenes.*'=>'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             
         ]);
 
@@ -267,13 +281,36 @@ class productoController extends Controller
         }else{
             $producto->status='no';
         }
+
+        if($request->tipoProd=='comun'){
+            $producto->tipoCliente='comun';
+        }else{
+
+            if($request->tipoProd=='combinacion'){
+    
+                $producto->tipoCliente='combinacion';
+            }
+        }
+        
   
 
         $producto->save();
 
         $producto->imagen()->createMany($urlImagenes);
 
-        
+        $d=json_decode(($request['value']),true);
+        if($d!=null){
+            for ($i=0; $i < count($d) ; $i++) { 
+                $combinacion = new Combinacion();
+                $combinacion->cantidad=$d[$i]['cantidad'];
+                $combinacion->producto_id=$producto->id;
+                $combinacion->save();
+                $s=$d[$i]['elemento'];
+                for ($j=0; $j <count($s) ; $j++) { 
+                    $combinacion->atributo()->attach($s[$j]['id']);
+                }
+            }
+        }
 
        \flash('Producto actualizado con exito')->success()->important();
 

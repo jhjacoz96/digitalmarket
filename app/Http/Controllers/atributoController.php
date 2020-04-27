@@ -23,6 +23,7 @@ class atributoController extends Controller
      */
     public function index()
     {
+        
         $combinacion=Combinacion::with('atributo')->get();
 
         return view('plantilla.contenido.admin.combinacion.crear',compact('combinacion'));
@@ -104,7 +105,8 @@ class atributoController extends Controller
      */
     public function edit($id)
     {
-        
+        $combinacion=Combinacion::with('atributo')->where('producto_id',$id)->get();
+        return $combinacion;
     }
 
     /**
@@ -116,7 +118,10 @@ class atributoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+         $combinacion=Combinacion::findOrfail($id);
+         $combinacion->cantidad=$request->cantidad;
+            $combinacion->save();
+        return $combinacion;
     }
 
     /**
@@ -128,8 +133,9 @@ class atributoController extends Controller
     public function destroy($id)
     {
        
-       $grupoAtributo=GrupoAtributo::findOrFail($id);
-        $grupoAtributo->delete();
+       $combinacion=Combinacion::findOrFail($id);
+       $combinacion->delete();
+       
 
     }
 }

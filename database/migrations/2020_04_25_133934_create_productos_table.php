@@ -17,7 +17,9 @@ class CreateProductosTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre')->unique();
             $table->string('slug')->unique();
+            $table->string('tipoCliente');
             $table->unsignedbigInteger('subCategoria_id')->nullable();
+            $table->unsignedbigInteger('marca_id')->nullable();
             $table->bigInteger('cantidad')->unsigned()->default(0);
             $table->decimal('precioActual',12,2)->default(0);
             $table->decimal('precioAnterior',12,2)->default(0);
@@ -32,7 +34,9 @@ class CreateProductosTable extends Migration
             $table->char('sliderPrincipal',2);
             
 
+
             $table->foreign('subCategoria_id')->references('id')->on('sub_categorias');
+            $table->foreign('marca_id')->references('id')->on('marcas');
 
             $table->timestamps();
         });

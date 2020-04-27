@@ -22,6 +22,8 @@
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 
@@ -50,7 +52,7 @@
     <div id="searchAutoComplete" style="position: relative">
     <form class="form-inline ml-3">
         <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Buscar producto" name="nombre" id="nombre" href="{{route('producto.index')}}" v-model="palabraBuscar" v-on:keyup="autoComplete" 
+        <input class="form-control form-control-navbar" type="search" placeholder="Buscar producto" name="nombre" id="nombree" href="{{route('producto.index')}}" v-model="palabraBuscar" v-on:keyup="autoComplete" 
           v-on:keyup.enter="submitForm" 
           aria-label="Search">
           <div class="input-group-append">
@@ -177,6 +179,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
+<script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
 
 <!-- Bootstrap4 Duallistbox -->
 <script src="{{asset('adminlte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>

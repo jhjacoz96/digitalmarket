@@ -2,7 +2,7 @@
 
 @section('estilos')
     
-<!-- Select2 -->
+<!--<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">-->
 <link rel="stylesheet" href="{{asset('adminlte/plugins/select2/css/select2.min.css')}}">
 <link rel="stylesheet" href="{{asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 
@@ -12,6 +12,8 @@
 
 @section('scripts')
     
+<!--<script src="https://unpkg.com/vue-multiselect@2.1.0"></script>-->
+
 <script src="/adminlte/ckeditor/ckeditor.js"></script>
 
 <!-- select2---->
@@ -29,8 +31,12 @@
         "precioAnterior":"{{$producto->precioAnterior}}",
         "precioActual":"{{$producto->precioActual}}",
         "porcentajeDescuento":"{{$producto->porcentajeDescuento}}",
-        "selectedCategoria":"{{$producto->subCategoria->categoria->id}}"
-          }
+        "selectedCategoria":"{{$producto->subCategoria->categoria->id}}",
+        "tipoCliente":"{{$producto->tipoCliente}}",
+        "slug":"{{$producto->slug}}",
+        "id":"{{$producto->id}}"
+      }
+          
   
     }
 
@@ -104,7 +110,7 @@
 
             <div class="card card-secondary">
                 <div class="card-header">
-                  <h3 class="card-title">Datos generados automáticamente</h3>
+                  <h3 class="card-title">Información del producto </h3>
       
                  
                 </div>
@@ -115,10 +121,17 @@
                     <div class="col-md-6">
                       <div class="form-group">
       
-                        <label>Visitas</label>
-                        <input nombre=""  class="form-control" type="number" id="visitas" name="visitas"
-                      readonly value="{{$producto->visitas}}"
-                        >
+
+                        <div class="info-box">
+                          <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+            
+                          <div class="info-box-content">
+                            <span class="info-box-text">Visitas</span>
+                            <span class="info-box-number">{{$producto->visitas}}</span>
+                          </div>
+                          <!-- /.info-box-content -->
+                        </div>
+
                         
                        
                       </div>
@@ -129,10 +142,18 @@
                     <div class="col-md-6">
                       <div class="form-group">
       
-                        <label>Ventas</label>
-                        <input  class="form-control" type="number" id="ventas" name="ventas" 
-                        readonly value="{{$producto->ventas}}"
-                        >
+
+                        <div class="info-box">
+                          <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+            
+                          <div class="info-box-content">
+                            <span class="info-box-text">Ventas</span>
+                            <span class="info-box-number">{{$producto->ventas}}</span>
+                          </div>
+                          <!-- /.info-box-content -->
+                        </div>
+
+                       
                       </div>
                       <!-- /.form-group -->
           
@@ -169,7 +190,7 @@
                     <div class="callout callout-info">
                       <h5>Tipos de producto</h5>
     
-                      <p>Puede elegir entre dos tipos de productos:<p> <p></a><strong>Común</strong>, solo podrá indicar una  cantidad de produtos de forma general.</p>
+                      <p>Puede elegir entre dos tipos de productos:<p> <strong>Común</strong>, solo podrá indicar una  cantidad de produtos de forma general.</p>
                       <p><strong>Variantes de atributos</strong>, Tendra la posibilidad de realizar combinaciones entre los atributos de los distintos grupos de atributos, y asi poder asignar un stock distinto a cada combinación generada.</p>
                     </div>
 
@@ -277,9 +298,6 @@
       
               <!-- /.card -->
 
-
-
-
               <div class="card card-secondary" v-if="tipoProducto=='combinacion'">
                                 
                 <div class="card-header">
@@ -298,7 +316,8 @@
           
                     <h5></h5>
           
-                    <p>Follow the steps to continue to payment.</p>
+                    <p>  Para agregar combinaciones, primero debe crear grupos de atributos y atributos adecuados en <a href="{{route('grupoAtributo.index')}}">Grupos de atributos</a> .
+                      Cuando termine, puede ingresar los atributos deseados (como "tamaño" o "color") y sus respectivos valores ("10kg", "rojo", etc.) en el campo a continuación; o simplemente selecciónelos de la columna derecha. Luego haga clic en "Generar": ¡creará automáticamente todas las combinaciones para usted!</p>
                   </div>
 
                   <div class="row">
@@ -306,17 +325,27 @@
                     <div class="col-md-4">
                      
                           <div class="form-group" v-for="(item,index) in grupos">
+                            
                             <label for="">@{{item.nombre}}</label>
-                            <select v-model="select"   class="form-control"  multiple   >
+                            <!--<select v-model="select"   class="form-control"  multiple   >
                             <option   :value="items" v-for="(items,index) in item.atributo">@{{items.nombre}}</option>
-                            </select>
+                            </select>-->
+                            <vue-multiselect v-model="select" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="nombre" track-by="id"      
+                            :options="item.atributo"
+                            :multiple="true" :taggable="true" @tag="addTag"></vue-multiselect>
+                            
                           </div>
+
+
+                         
                        
                     </div>
                     <div class="col-md-8">
   
                         <div class="form-group">
                             
+                         
+
                             <button type="button" class="btn btn-secondary float-right" v-on:click="generarLista()">
                                 combinar
                             </button>
@@ -329,7 +358,7 @@
                         
                         <input type="hidden" v-model="value" name="value">
                         
-    
+                            
                         <div class="card-body table-responsive p-0" v-if="aparecer">
                             <table class="table table-hover"  >
                                 <thead>
@@ -382,7 +411,7 @@
                 </div>
                 
                 <div class="card-footer">
-                        
+                
                         <button v-on:click.prevent="convertir()" class="btn btn-primary" type="button" >
                             formato
                         </button>
@@ -391,13 +420,105 @@
            
             </div>
 
+
+
+                  <div class="card card-secondary" v-if="tipoProducto=='combinacion'">
+                                
+                    <div class="card-header">
+                        <h3 class="card-title">Mis combinaciones</h3>
+                    </div>
+                    <div class="card-body">
+
+                  
+
+                      <div class="row">
+
       
+                        
+                        <div class="col-md-6 col-sm-6" v-if="editarActivo">
+                         
+                            <div class="form-group">
+                              <input class="form-control" type="text" v-model='combinacion.cantidad'>
+                            </div>
+                            <button class="btn btn-secondary" @click.prevent="editarActivo=false"  >
+                              Cancelar
+                            </button>
+                            <button type="button" @click.prevent="actualizarCombinacion(combinacion)" class="btn btn-primary float-right">Modificar combinación</button>
+                          
+                        </div>
+                        
+                        <div class="col-md-6">
+                      
+                          <div class="card-body table-responsive p-0" >
+                           <table class="table table-hover"  >
+                               <thead>
+                                   <tr>
+                                       <th scope="col">#</th>
+                                       <th scope="col">Variante</th>
+                                       <th scope="col">Cantidad</th>
+                                     
+   
+   
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <tr v-for="( items, index) in listaCombinacion2"  :key="index"  >
+   
+                                       <td scope="row">@{{index+1}}</td>
+   
+                                       <td>
+                                           <div v-for="(item, index) in items.atributo" :key="index">
+                                              @{{item.nombre}}
+                                           </div>
+                                       </td>
+   
+                                       <td>
+                                           <input v-model="items.cantidad" class="col-md-4" type="text">
+                                       </td>
+   
+                                       
+   
+                                       <td>
+                                           <a href="" @click.prevent="eliminarCombinacionDB(items,index)">
+                                               <i class="fas fa-trash-alt" style="color:red;"></i>
+                                           </a>
+                                       </td>
+                                       
+                                       <td>
+                                           <a href="" @click.prevent="editarCombinacion(items,index)">
+                                               <i class="fas fa-edit" 
+                                               ></i>
+                                           </a>
+                                       </td>
+   
+                                   </tr>
+   
+                                   
+   
+                               </tbody>
+                            </table>
+                          </div>   
+    
+                        </div>
+                      </div>
+                 
+                
+                    </div>
+                    
+                    <div class="card-footer">
+           
+                    </div>
+           
+                  </div>
+
+
+            
       
       
               <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Sección de Precios</h3>
-      
+      v
                   
                 </div>
                 <!-- /.card-header -->

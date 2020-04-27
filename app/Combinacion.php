@@ -15,4 +15,8 @@ class Combinacion extends Model
         return $this->belongsToMany('App\Atributo','atributo_combinacion','combinacion_id','atributo_id');
     }
 
+    public function producto(){
+        return $this->belongsTo('App\Producto','producto_id');
+    }
+
 }

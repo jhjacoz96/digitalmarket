@@ -3,6 +3,7 @@ const producto = new Vue({
     data: {
         nombre: '',
         slug: '',
+        tipoProducto:'',
         divMensajeSlug: '',
         divClaseSlug: '',
         divAparecer: false,
@@ -20,6 +21,8 @@ const producto = new Vue({
         porcentajeDescuento: 0,
         descuentoMensaje: '0',
 
+        
+
         //convinaciones
         grupos:[],
         value: [],
@@ -27,23 +30,37 @@ const producto = new Vue({
         select: [],
         item: [],
         combinacion: {
+            
             cantidad: 0,
             elemento: []
         },
         atributos: [],
         listaCombinacion: [],
+        listaCombinacion2: [],
 
-        tipoProducto:'comun',
-        disableCantidad:false
+        tipoProducto:'',
+        disableCantidad:false,
+
+        //diarCombinacion
+        editarActivo:false
 
     },
     created() {
         axios.get('/combinacion/create').then(res => {
             this.grupos = res.data
-            console.log(this.grupos)
+            
         }).catch(e => {
             console.log(e.respose)
         })
+        
+        axios.get(`/combinacion/${data.datos.id}/edit`).then(res=>{
+            this.listaCombinacion2=res.data
+            console.log(this.listaCombinacion2)
+        }).catch(e=>{
+            console.log(e.respose)
+        })
+        
+
         /*axios.get('/producto/categoria').then(res=>{
             this.categorias=res.data
         })*/
@@ -122,20 +139,21 @@ const producto = new Vue({
 
             return this.descuentoMensaje
 
-        },
+        }
 
         //combinaciones
+        
+
+
+    },
+    methods: {
         reset: function () {
             this.aparecer = false
             this.listaCombinacion = []
             this.atributos=[]
             return this.listaCombinacion
 
-        }
-
-
-    },
-    methods: {
+        },
         tipoProd: function(){
             if(document.getElementById('customRadio1').checked){
                 document.getElementById('customRadio1').checked=true
@@ -268,8 +286,48 @@ const producto = new Vue({
             })
 
         },
+        eliminarCombinacionDB(item, index) {
+            Swal.fire({
+                title: '¿Esta seguro que desea eliminar esta combinación?',
+                text: "¡Se eliminará de sus registros!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Si, eliminar!'
+            }).then((result) => {
+                if (result.value) {
+
+                    this.listaCombinacion2.splice(index, 1)
+                    axios.delete(`/combinacion/${item.id}`).then((res)=>{
+                        console.log(res)
+                    }).catch(e=>{
+                        console.log(es.respose)
+                    })
+
+                    Swal.fire(
+                        'Eliminado!',
+                        'Su combinación  se ha elimiando',
+                        'success'
+                    )
+                }
+            })
+
+        },
+         
+        addTag(newTag) {
+            const tag={
+                name:newTag,
+                id:newTag,
+                
+            }
+            this.options.push(tag)
+            this.select.push(tag)
+        },
 
         generarLista() {
+
 
             const f = this.select
             if (f.length == 0) {
@@ -279,6 +337,7 @@ const producto = new Vue({
                     text: 'Debe seleccionar almenos un atributo!'
                 })
             } else {
+                
                 if(this.atributos.length!=0){
                     for (let i = 0; i < this.atributos.length; i++) {
                          if(this.atributos[i]==this.select){
@@ -294,10 +353,35 @@ const producto = new Vue({
                 }
 
 
+                /* var result=this.select.reduce((h,grupo)=>Object.assign(h,{[grupo.grupoAtributo_id]:(h[grupo.gruAtributo_id]|| []).concat({id:grupo.id,nombre:grupo.nombre,grupoAtributo_id:grupo.grupoAtributo_id})}),{})
+                console.log(JSON.stringify(result))*/
+                
+
+                this.select.sort(function (a, b) {
+                    return (a.grupoAtributo_id - b.grupoAtributo_id)
+                })
+                
+                this.atributos=[]
+
+
+                const t=this.select
+                for (i = 0; i < t.length; i++) {
+                    select = t[i];
+                    var grupoAct;
+                    var grupo = [];
+
+                    if (grupoAct !== select.grupoAtributo_id) {
+                        grupoAct = select.grupoAtributo_id;
+                        grupo = t.filter(grupo => grupo.grupoAtributo_id === grupoAct);
+                        this.atributos.push(grupo);
+                    }
+                }
+
+
                 this.aparecer = true
                 //this.atributos=[]
 
-            
+                
 
                 //console.log(this.grupos)
                 //esta funcionalidad recorre todos los grupos y exrae los aatrbutos de cada grupo
@@ -329,9 +413,9 @@ const producto = new Vue({
                 this.grupo.selectAtributos=[]*/
 
 
-                this.atributos.push(this.select)
-
-                var r = [], elem = this.combinacion, arg = this.atributos, max = arg.length - 1
+                //this.atributos.push(this.select)
+                //this.select=[]
+                var r = [], elem = this.combinacion, arg = this.atributos, max = arg.length - 1,o=this.listaCombinacion
 
                 function helper(arr, i) {
 
@@ -345,7 +429,7 @@ const producto = new Vue({
                         if (i == max) {
                             elem.elemento = a
                             const param = { cantidad: elem.cantidad, elemento: elem.elemento }
-                            r.push(param)
+                            o.push(param)
                             elem.elemento = []
 
                         }
@@ -358,13 +442,41 @@ const producto = new Vue({
                 }
                 helper([], 0);
                 this.combinacion.elemento = []
-                this.listaCombinacion = r
+                //this.listaCombinacion = JSON.stringify(r)
+                //this.listaCombinacion=r
+                this.select=[]
                 console.log(this.listaCombinacion)
 
             }
+        },
+        editarCombinacion(items){
+            this.editarActivo=true
+            this.combinacion.cantidad=items.cantidad
+            this.combinacion.id=items.id
+            console.log(this.combinacion)
+        },
+
+        actualizarCombinacion(combinacion){
+             const param={cantidad:combinacion.cantidad}
+            axios.put(`/combinacion/${combinacion.id}`,param).then(res=>{
+                console.log(res)
+                    
+                const index=this.listaCombinacion2.findIndex(combinacionBuscar=>combinacionBuscar.id===res.data.id )
+                this.listaCombinacion2[index].cantidad = res.data.cantidad
+                this.combinacion={cantidad:''}
+
+                axios.get(`/combinacion/${data.datos.id}/edit`).then(res=>{
+                    this.listaCombinacion2=res.data
+                    console.log(this.listaCombinacion2)
+                }).catch(e=>{
+                    console.log(e.respose)
+                })
+
+
+            }).catch(e=>{
+                console.log(e)
+            })
         }
-
-
 
     },
     mounted() {
@@ -380,6 +492,20 @@ const producto = new Vue({
             this.precioActual = data.datos.precioActual
             this.porcentajeDescuento = data.datos.porcentajeDescuento
             this.selectedCategoria = data.datos.selectedCategoria
+
+            
+           
+            if(data.datos.tipoCliente=='combinacion'){
+                document.getElementById('customRadio2').checked=true
+                
+                this.tipoProducto='combinacion'
+            
+            }else{
+                
+                document.getElementById('customRadio1').checked=true
+                this.tipoProducto='comun'
+            }
+            
 
             this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
             if (this.selectedCategoria != '') {

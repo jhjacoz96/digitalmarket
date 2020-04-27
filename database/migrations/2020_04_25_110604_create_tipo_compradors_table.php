@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompradorsTable extends Migration
+class CreateTipoCompradorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateCompradorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('compradors', function (Blueprint $table) {
+        Schema::create('tipo_compradors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre');
-            $table->string('apellido');
-            $table->string('correo');
+            $table->integer('porcentajeDescuento')->designed()->default(0);
             $table->string('estatus')->default('A');
-            $table->unsignedBigInteger('user_id')->nullable();
-
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->boolean('mostrarPrecio')->default(false);
+            $table->boolean('envioGratis')->default(false);
 
             $table->timestamps();
         });
@@ -34,6 +32,6 @@ class CreateCompradorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('compradors');
+        Schema::dropIfExists('tipo_compradors');
     }
 }

@@ -21,15 +21,15 @@ Route::get('/resultados', function () {
 
 Route::get('/', function () {
     return view('tienda.index');
-/*
-    $user=new User();
+
+   /* $user=new User();
     $user->nombre= 'jhon';
     $user->apellido = 'contreras';
     $user->email = 'jhjacoz96@gmail.com';
     $user->password = Hash::make('12345678');
     $user->rol_id =3;
-    $user->save();
-*/
+    $user->save();*/
+
 
 });
 
@@ -99,6 +99,7 @@ route::resource('filtroDireccion','filtroDireccionController');
 //------fin filtro direccion direcciones-------------
 
 //------atributosProductos------------
+
 Route::post('combinacion/atributos','atributoController@guardarCombinacion')->name('guardarCombinacion');
 route::resource('combinacion','atributoController');
 

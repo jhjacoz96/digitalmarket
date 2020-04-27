@@ -14,8 +14,6 @@
                 id:'',
                 nombre:''
             },
-
-
             
             selected:null,
             value:[],
@@ -118,10 +116,11 @@
                 const tag={
                     name:newTag,
                     id:newTag,
-
+                    
                 }
                 this.options.push(tag)
-                this.value.push(tag) 
+                this.select.push(tag)
+
                 
             },
             agregar(){
@@ -181,6 +180,10 @@
                     })
                 }else
                     {
+
+                    
+
+                        
                         
                         this.aparecer=true
                     //this.atributos=[]
@@ -246,11 +249,9 @@
                         }
                     }
                 helper([], 0);
-                if(this.listaCombinacion.length==0){
-                    this.listaCombinacion=releaseEvents
-                }else{
-                    
-                }
+               
+                    this.listaCombinacion=r
+                
                 
                 console.log(this.listaCombinacion)                
                 

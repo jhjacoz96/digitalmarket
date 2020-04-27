@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDireccionsTable extends Migration
+class CreateMonedasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateDireccionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('direccions', function (Blueprint $table) {
+        Schema::create('monedas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre');
-
-            $table->unsignedBigInteger('parroquia_id')->nullable();
-            $table->foreign('parroquia_id')->references('id')->on('parroquias');
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ class CreateDireccionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('direccions');
+        Schema::dropIfExists('monedas');
     }
 }

@@ -19,7 +19,11 @@ class Producto extends Model
         'descripcionLarga',
         'especificaciones',
         'datosInteres',
-        'status'
+        'status',
+        'tipoCliente',
+        'marca_id',
+        'visitas',
+        'ventas'
     ];
 
 
@@ -30,5 +34,9 @@ class Producto extends Model
 
     public function imagen(){
         return $this->morphMany('App\Imagen','imageable');
+    }
+
+    public function combinacion(){
+        return $this->hasMany('App\Combinacion','producto_id');
     }
 }

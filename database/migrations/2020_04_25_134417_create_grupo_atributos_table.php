@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCombinacionsTable extends Migration
+class CreateGrupoAtributosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateCombinacionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('combinacions', function (Blueprint $table) {
+        Schema::create('grupo_atributos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('cantidad')->unsigned()->default(0);
+            $table->string('nombre');
+            
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateCombinacionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('combinacions');
+        Schema::dropIfExists('grupo_atributos');
     }
 }

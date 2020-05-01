@@ -51386,6 +51386,30 @@ __webpack_require__(/*! ./comun */ "./resources/js/comun.js");
 
 /***/ }),
 
+/***/ "./resources/js/autenticacion/login.js":
+/*!*********************************************!*\
+  !*** ./resources/js/autenticacion/login.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var _data;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var login = new Vue({
+  el: '#login',
+  data: (_data = {
+    rol_id: 1,
+    nombre: '',
+    apellido: '',
+    email: '',
+    password: ''
+  }, _defineProperty(_data, "password", ''), _defineProperty(_data, "password_confirmation", ''), _data)
+});
+
+/***/ }),
+
 /***/ "./resources/js/components/ExampleComponent.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/ExampleComponent.vue ***!
@@ -51498,6 +51522,10 @@ if (document.getElementById('atributos')) {
 
 if (document.getElementById('grupoAtributo')) {
   __webpack_require__(/*! ./admin/grupoAtributo */ "./resources/js/admin/grupoAtributo.js");
+}
+
+if (document.getElementById('login')) {
+  __webpack_require__(/*! ./autenticacion/login */ "./resources/js/autenticacion/login.js");
 }
 
 /***/ }),

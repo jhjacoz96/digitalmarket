@@ -23,13 +23,12 @@ Route::get('/', function () {
     return view('tienda.index');
 
     /*$user=new User();
-    $user->nombre= 'jhon';
-    $user->apellido = 'contreras';
+  
     $user->email = 'jhjacoz96@gmail.com';
     $user->password = Hash::make('12345678');
     $user->rol_id =3;
-    $user->save();
-*/
+    $user->save();*/
+
 
 });
 
@@ -113,3 +112,7 @@ Route::resource('atributo', 'atributosController');
 Route::resource('tipoComprador','tipoCompradorController');
  
 //----fin de tipos de cliente--------
+
+//-----Direcciones de compradores-----
+Route::resource('comprador/direccion', 'direccionController');
+//----fun de direcciones de compradores------

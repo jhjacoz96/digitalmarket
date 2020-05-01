@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use App\Comprador;
+use App\Tienda;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -67,23 +68,55 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         
-            $user=new User();
-            $user->nombre= $data['nombre'];
-            $user->apellido = $data['apellido'];
-            $user->email = $data['email'];
-            $user->password = Hash::make($data['password']);
-            $user->rol_id = 1;
-            $user->save();
+            
 
-            $comprador=new Comprador();
-            $comprador->nombre=$data['nombre'];
-            $comprador->apellido=$data['apellido'];
-            $comprador->correo=$data['email'];
-            $comprador->user_id=$user->id;
-            $comprador->tipoComprador_id=1;
-            $comprador->save();
+            if($data['rol_id']==1){
 
-            return $user;
+                $user=new User();
+            /* $user->nombre= $data['nombre'];
+                $user->apellido = $data['apellido'];*/
+                $user->email = $data['email'];
+                $user->password = Hash::make($data['password']);
+                $user->rol_id = $data['rol_id'];
+                $user->save();
+
+                $comprador=new Comprador();
+                $comprador->nombre=$data['nombre'];
+                $comprador->apellido=$data['apellido'];
+                $comprador->correo=$data['email'];
+                $comprador->user_id=$user->id;
+                $comprador->tipoComprador_id=1;
+                $comprador->save();
+    
+                return $user;
+            }
+
+            if($data['rol_id']==2){
+                $user=new User();
+            /* $user->nombre= $data['nombre'];
+                $user->apellido = $data['apellido'];*/
+                $user->email = $data['email'];
+                $user->password = Hash::make($data['password']);
+                $user->rol_id = $data['rol_id'];
+                $user->save();
+
+                $tienda=new Tienda();
+                $tienda->nombre=$data['nombre'];
+                $tienda->correo=$data['email'];
+
+                $numero=count(Tienda::All()) + 1;
+                $nombre=strtoupper($data['nombre']);
+                
+
+                $tienda->codigo=$nombre[0].$nombre[1]. 00 .$numero;
+                $tienda->user_id=$user->id;
+                $tienda->planAfilizacion_id=1;
+                $tienda->save();
+
+                return $user;
+            }
 
     }
+
+    
 }

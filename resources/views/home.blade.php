@@ -4,8 +4,11 @@
 
 @endif 
 
+@if(Auth::user()->rol_id=="2")
+ <h1>hola tienda</h1>:{{Auth::user()->nombre}}
+@endif
 
-
+	@if(Auth::user()->rol_id=="3")
 	@extends('layouts.appAdmin')
 
 	@section('contenido')
@@ -15,5 +18,5 @@
 		@endif	
 
 	@endsection
-
+	@endif
 

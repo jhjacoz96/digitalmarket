@@ -17,10 +17,10 @@ class CreateTiendasTable extends Migration
             $table->bigIncrements('id');
             $table->String('nombre');
             $table->String('correo');
-            $table->String('rif');
-            $table->String('telefono');
+            $table->String('rif')->nullable();
+            $table->String('telefono')->nullable();
             $table->String('codigo');
-            $table->String('direccion');
+            $table->String('direccion')->nullable();
             $table->String('estatus')->default('A');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('planAfilizacion_id')->nullable();

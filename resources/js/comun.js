@@ -48,6 +48,10 @@ if(document.getElementById('grupoAtributo')){
     require('./admin/grupoAtributo'); 
 
 }
+if(document.getElementById('login')){
+    require('./autenticacion/login'); 
+
+}
 
 
 

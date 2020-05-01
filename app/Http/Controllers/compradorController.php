@@ -64,8 +64,8 @@ class compradorController extends Controller
         }
         
             $user=new User();
-            $user->nombre=$request->nombre;
-            $user->apellido=$request->apellido;
+            /*$user->nombre=$request->nombre;
+            $user->apellido=$request->apellido;*/
             $user->email=$request->correo;
             $user->password =  Hash::make( $request->password);
             $user->rol_id=1;            
@@ -141,7 +141,8 @@ class compradorController extends Controller
         if ($v->fails()) {
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
-       
+      
+
         $comprador=Comprador::findOrFail($id);
         
         $comprador->nombre=$request->nombre;

@@ -9,7 +9,7 @@ const producto = new Vue({
         divAparecer: false,
         deshabilitarBoton: 1,
         selectedCategoria: '',
-        selectedCategoriaa: '',
+        selectedSubCategoriaa:'',
         selectedSubCategoria: '',
         obtenerSubCategorias: [],
         categorias: [],
@@ -46,6 +46,7 @@ const producto = new Vue({
 
     },
     created() {
+        
         axios.get('/combinacion/create').then(res => {
             this.grupos = res.data
             
@@ -53,17 +54,23 @@ const producto = new Vue({
             console.log(e.respose)
         })
         
-        axios.get(`/combinacion/${data.datos.id}/edit`).then(res=>{
-            this.listaCombinacion2=res.data
-            console.log(this.listaCombinacion2)
+        if(data.editar=='si'){
+            axios.get(`/combinacion/${data.datos.id}/edit`).then(res=>{
+                this.listaCombinacion2=res.data
+                //console.log(this.listaCombinacion2)
+            }).catch(e=>{
+                console.log(e.respose)
+            })
+        }
+        
+
+        axios.get('/producto/categoria').then(res=>{
+            this.categorias=res.data
+            console.log(this.categorias)
         }).catch(e=>{
             console.log(e.respose)
         })
         
-
-        /*axios.get('/producto/categoria').then(res=>{
-            this.categorias=res.data
-        })*/
     },
     computed: {
         generarSlug: function () {
@@ -219,12 +226,14 @@ const producto = new Vue({
                     }
                     this.divAparecer = true
 
-                    if (data.datos.nombre) {
-                        if (data.datos.nombre === this.nombre) {
-                            this.deshabilitarBoton = 0;
-                            this.divMensajeSlug = ''
-                            this.divClaseSlug = ''
-                            this.divAparecer = false
+                    if(data.editar=='si'){
+                        if (data.datos.slug) {
+                            if (data.datos.slug === this.slug) {
+                                this.deshabilitarBoton = 0;
+                                this.divMensajeSlug = ''
+                                this.divClaseSlug = ''
+                                this.divAparecer = false
+                            }
                         }
                     }
 
@@ -492,7 +501,11 @@ const producto = new Vue({
             this.precioActual = data.datos.precioActual
             this.porcentajeDescuento = data.datos.porcentajeDescuento
             this.selectedCategoria = data.datos.selectedCategoria
-
+            /*this.selectedSubCategoriaa = data.datos.selectedSubCategoria
+            this.selectedSubCategoria = data.datos.selectedSubCategoria
+            this.cargarSubCategorias();*/
+            
+           
             
            
             if(data.datos.tipoCliente=='combinacion'){
@@ -507,11 +520,11 @@ const producto = new Vue({
             }
             
 
-            this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
+           //this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
             if (this.selectedCategoria != '') {
                 this.cargarSubCategorias()
             }
-            this.selectedSubCategoria = document.getElementById('subCategoria_id').getAttribute('data-old');
+        this.selectedSubCategoria = document.getElementById('subCategoria_id').getAttribute('data-old');
 
 
 
@@ -523,7 +536,7 @@ const producto = new Vue({
 
             document.getElementById('subCategoria_id').disabled = true
 
-            this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
+            //this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
             if (this.selectedCategoria != '') {
                 this.cargarSubCategorias()
             }

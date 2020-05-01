@@ -74,11 +74,13 @@ class RegisterController extends Controller
             $user->password = Hash::make($data['password']);
             $user->rol_id = 1;
             $user->save();
+
             $comprador=new Comprador();
             $comprador->nombre=$data['nombre'];
             $comprador->apellido=$data['apellido'];
             $comprador->correo=$data['email'];
             $comprador->user_id=$user->id;
+            $comprador->tipoComprador_id=1;
             $comprador->save();
 
             return $user;

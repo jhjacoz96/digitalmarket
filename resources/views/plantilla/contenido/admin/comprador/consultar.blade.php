@@ -37,7 +37,7 @@
   
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                      <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                      <input type="text" name="table_search" class="form-control float-right" placeholder="Buscar comprador">
   
                       <div class="input-group-append">
                         <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
@@ -55,20 +55,30 @@
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Correo electrónico</th>
+                        <th>Fecha de registro</th>
+                        <th>Estado</th>
                         <th>Acción</th>
                       </tr>
                     </thead>
                     <tbody>
                         @foreach ($comprador as $item)
-                        <tr>
+                    <tr >
                             <td class="mailbox-star">{{$item->id}}</td>
                             <td class="mailbox-star">{{$item->nombre}}</td>
                             <td class="mailbox-star">{{$item->apellido}}</td>
-                            <td class="mailbox-star">{{$item->correo}}</td>
-                            
+                            <td class="mailbox-star">{{$item->correo}}</td> 
+                        <td class="mailbox-star">{{$item->created_at}}</td>
+                    <td class="mailbox-star">
+                      @if($item->estatus=='A')
+                      <span>Si</span>
+                      @else
+                      <span>No</span>
+                      @endif  
+                    </td>
                             <td class="mailbox-star">
                                 <div class="btn-group">
-                                <a href="{{route('Comprador.edit',$item)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
+                                 <a class="btn btn-default btn-sm" href="{{route('Comprador.show',$item)}}"><span class="fas fa-eye"></span></a>
+                                <a href="{{route('Comprador.edit',$item)}}" class="btn btn-default btn-sm mx-1">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
 
                                     
                                     

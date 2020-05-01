@@ -27,9 +27,9 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-          <h1>Cantidad de productos:{{count($producto)}}</h1>
+          <h1>Cantidad de tipos de clientes :{{count($tipo)}}</h1>
           </div>
- 
+         
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
@@ -53,14 +53,14 @@
                </div>
 
                 <div class="card-header">
-                  <h3 class="card-title">Consultar productos</h3>
+                  <h3 class="card-title">Consultar tipos de clientes</h3>
   
                   <div class="card-tools">
 
                     <form >
                       <div class="input-group input-group-sm" style="width: 150px;">
                         <input type="text" name="nombre" class="form-control float-right" placeholder="Buscar"
-                      value="{{request()->get('nombree')}}"
+                      value="{{request()->get('nombre')}}"
                         >
     
                         <div class="input-group-append">
@@ -78,16 +78,16 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Imagen</th>
                         <th>Nombre</th>
-                        <th>Cantidad disponible</th>
-                        <th>Sub categoria</th>
-                        <th>Categoria</th>
+                        <th>Miembros</th>
+                        <th>Descuento</th>
+                        <th>Envio gratis</th>
+                        <th>Activo</th>
                         <th>Acción</th>
                       </tr>
                     </thead>
                     <tbody>
-                       @foreach ($producto as $item)
+                       @foreach ($tipo as $item)
                            
                        <tr>
                           <td class="mailbox-star">{{$item->id}}</td>
@@ -95,32 +95,43 @@
                            <td class="mailbox-star">{{$item->nombre}}</td>
 
                            <td class="mailbox-star">
-                             @if($item->imagen->count()<=0)
-                                <img style="height:100px; width:100px; border-radius:10px;" src="/imagenes/avatar.png" >
-                              @else
-                            <img style="height:100px; width:100px; border-radius:10px;" src="{{$item->imagen->random()->url}}" >
-                             @endif    
-                          </td>
+                                {{count($item->comprador)}}
+                           </td>
                         
-                           <td class="mailbox-star">{{$item->cantidad}}</td>
+                           <td class="mailbox-star">{{$item->porcentajeDescuento}}%</td>
 
-                           <td class="mailbox-star">{{$item->subCategoria->nombre}}</td>
 
-                           <td class="mailbox-star">{{$item->subCategoria->categoria->nombre}}</td>
+                           <td class="mailbox-star">
+                                @if($item->envioGratis==1)
+                                <span>Si</span>
+                                @else
+                                <span>No</span>
+                                @endif
+                            </td>
+
+                           <td class="mailbox-star">
+                               @if($item->estatus==1)
+                                <span class="badge badge-success">Activo</span>
+                                @else
+                                <span class="badge badge-danger">Inacivo</span>
+                                @endif
+                            </td>
                           
                            <td class="mailbox-star">
                                <div class="btn-group">
                                
 
-                               <a href="{{route('producto.edit',$item->slug)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
+                               <a href="{{route('tipoComprador.edit',$item->id)}}" class="btn btn-default  btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
 
+                               @if ($item->nombre!='Comprador'||$item->nombre!='comprador')
                                    
-                                   
-                                   <form action="{{route('producto.destroy',$item)}}" method="POST">
-                                       @method('DELETE')
-                                       @csrf
-                                       <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este producto?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
-                                  </form>
+                               <form action="{{route('tipoComprador.destroy',$item)}}" method="POST">
+                                   @method('DELETE')
+                                   @csrf
+                                   <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este tipo de comprador?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
+                               </form>
+
+                               @endif
                                    
                                    
                                  
@@ -134,10 +145,10 @@
                      
                     </tbody>
                   </table>
-                  {{$producto->appends($_GET)->links()}}
+                  {{$tipo->appends($_GET)->links()}}
 
                   <div class="box-footer p-3 float-right">
-                  <a href=" {{route('producto.create')}} "  class="btn  btn-info ">Agregar producto</a>
+                  <a href=" {{route('tipoComprador.create')}} "  class="btn  btn-info ">Agregar tipo comprador</a>
             
                   </div>
                 </div>

@@ -15836,7 +15836,7 @@ var producto = new Vue({
     divAparecer: false,
     deshabilitarBoton: 1,
     selectedCategoria: '',
-    selectedCategoriaa: '',
+    selectedSubCategoriaa: '',
     selectedSubCategoria: '',
     obtenerSubCategorias: [],
     categorias: [],
@@ -15868,15 +15868,21 @@ var producto = new Vue({
     })["catch"](function (e) {
       console.log(e.respose);
     });
-    axios.get("/combinacion/".concat(data.datos.id, "/edit")).then(function (res) {
-      _this.listaCombinacion2 = res.data;
-      console.log(_this.listaCombinacion2);
+
+    if (data.editar == 'si') {
+      axios.get("/combinacion/".concat(data.datos.id, "/edit")).then(function (res) {
+        _this.listaCombinacion2 = res.data; //console.log(this.listaCombinacion2)
+      })["catch"](function (e) {
+        console.log(e.respose);
+      });
+    }
+
+    axios.get('/producto/categoria').then(function (res) {
+      _this.categorias = res.data;
+      console.log(_this.categorias);
     })["catch"](function (e) {
       console.log(e.respose);
     });
-    /*axios.get('/producto/categoria').then(res=>{
-        this.categorias=res.data
-    })*/
   },
   computed: {
     generarSlug: function generarSlug() {
@@ -16013,12 +16019,14 @@ var producto = new Vue({
 
           _this2.divAparecer = true;
 
-          if (data.datos.nombre) {
-            if (data.datos.nombre === _this2.nombre) {
-              _this2.deshabilitarBoton = 0;
-              _this2.divMensajeSlug = '';
-              _this2.divClaseSlug = '';
-              _this2.divAparecer = false;
+          if (data.editar == 'si') {
+            if (data.datos.slug) {
+              if (data.datos.slug === _this2.slug) {
+                _this2.deshabilitarBoton = 0;
+                _this2.divMensajeSlug = '';
+                _this2.divClaseSlug = '';
+                _this2.divAparecer = false;
+              }
             }
           }
         });
@@ -16252,6 +16260,9 @@ var producto = new Vue({
       this.precioActual = data.datos.precioActual;
       this.porcentajeDescuento = data.datos.porcentajeDescuento;
       this.selectedCategoria = data.datos.selectedCategoria;
+      /*this.selectedSubCategoriaa = data.datos.selectedSubCategoria
+      this.selectedSubCategoria = data.datos.selectedSubCategoria
+      this.cargarSubCategorias();*/
 
       if (data.datos.tipoCliente == 'combinacion') {
         document.getElementById('customRadio2').checked = true;
@@ -16259,9 +16270,8 @@ var producto = new Vue({
       } else {
         document.getElementById('customRadio1').checked = true;
         this.tipoProducto = 'comun';
-      }
+      } //this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
 
-      this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
 
       if (this.selectedCategoria != '') {
         this.cargarSubCategorias();
@@ -16271,8 +16281,7 @@ var producto = new Vue({
     }
 
     if (data.editar == 'no') {
-      document.getElementById('subCategoria_id').disabled = true;
-      this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
+      document.getElementById('subCategoria_id').disabled = true; //this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
 
       if (this.selectedCategoria != '') {
         this.cargarSubCategorias();

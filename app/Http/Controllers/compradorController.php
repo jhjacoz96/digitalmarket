@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Comprador;
 use App\User;
+use App\TipoComprador; 
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\UserRequest;
@@ -26,7 +27,7 @@ class compradorController extends Controller
     {
 
         
-        $comprador=Comprador::where('estatus','A')->get();
+        $comprador=Comprador::All();
         return view('plantilla.contenido.admin.comprador.consultar')->with('comprador',$comprador);
     }
 
@@ -37,7 +38,8 @@ class compradorController extends Controller
      */
     public function create()
     {
-        return view('plantilla.contenido.admin.comprador.crear');
+        $tipo=TipoComprador::where('estatus',1)->get();
+        return view('plantilla.contenido.admin.comprador.crear',compact('tipo'));
     }
 
     /**
@@ -48,7 +50,7 @@ class compradorController extends Controller
      */
     public function store(Request $request)
     {
-
+     
         $v=Validator::make($request->all(),[
             'nombre'=>'min:2|required',
             'apellido'=>'min:2|required',
@@ -66,7 +68,7 @@ class compradorController extends Controller
             $user->apellido=$request->apellido;
             $user->email=$request->correo;
             $user->password =  Hash::make( $request->password);
-            $user->rol_id=1;
+            $user->rol_id=1;            
             $user->save();
 
             $comprador=new Comprador();
@@ -74,6 +76,18 @@ class compradorController extends Controller
             $comprador->apellido=$request->apellido;
             $comprador->correo=$request->correo;
             $comprador->user_id=$user->id;
+            if($request->tipoComprador==null){
+                $comprador->tipoComprador_id=1;
+            }else{
+                $comprador->tipoComprador_id=$request->tipoComprador;
+            }
+
+            if($request->activo){
+                $comprador->estatus='A';
+            }else{
+                $comprador->estatus='I';
+            }
+
             $comprador->save();
 
             flash('Comprador agregado con exito')->success()->important();
@@ -89,7 +103,9 @@ class compradorController extends Controller
      */
     public function show($id)
     {
-        //
+        $comprador=Comprador::findOrFail($id);
+        
+        return view('plantilla.contenido.admin.comprador.detalle',compact('comprador'));
     }
 
     /**
@@ -101,7 +117,8 @@ class compradorController extends Controller
     public function edit($id)
     {
         $comprador=Comprador::findOrFail($id);
-        return view('plantilla.contenido.admin.comprador.modificar',compact('comprador'));
+        $tipo=TipoComprador::where('estatus',1)->get();
+        return view('plantilla.contenido.admin.comprador.modificar',compact('comprador'),compact('tipo'));
     }
 
     /**
@@ -115,24 +132,38 @@ class compradorController extends Controller
     {
         
         $v=Validator::make($request->all(),[
-        
-            'correo'=>'email|required|unique:compradors,correo',
+            'nombre'=>'min:2|required',
+            'apellido'=>'min:2|required',
+            'correo'=>'email|required|unique:compradors,correo,'.$id
             
         ]);
 
         if ($v->fails()) {
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
-
+       
         $comprador=Comprador::findOrFail($id);
-        /*
+        
         $comprador->nombre=$request->nombre;
         $comprador->apellido=$request->apellido;
-        */
+        $comprador->tipoComprador_id=$request->tipoComprador;
         $comprador->correo=$request->correo;
+        if($request->tipoComprador==null){
+            $comprador->tipoComprador_id=1;
+        }else{
+            $comprador->tipoComprador_id=$request->tipoComprador;
+        }
+        if($request->activo){
+            $comprador->estatus='A';
+        }else{
+            $comprador->estatus='I';
+        }
+
         $comprador->save();
 
         $user=User::findOrFail($comprador->user_id);
+        $user->nombre=$request->nombre;
+        $user->apellido=$request->apellido;
         $user->email=$request->correo;
         $user->update();
         

@@ -15,7 +15,7 @@ class CreateTipoCompradorsTable extends Migration
     {
         Schema::create('tipo_compradors', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre');
+            $table->string('nombre')->unique();
             $table->integer('porcentajeDescuento')->designed()->default(0);
             $table->string('estatus')->default('A');
             $table->boolean('mostrarPrecio')->default(false);

@@ -43,16 +43,92 @@
 
                   <div class="form-group">
                     <label for="exampleInputEmail1">Descripción</label>
-                    
-                    <textarea required="true" name="descripcion" value="{{$plan->descripcion}}" id="descripcion" class="form-control" rows="3" placeholder="Enter ..."></textarea>
-                    {!!$errors->first('descripcion','<small>:message</small><br>')!!}
-                  </div>
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Nombre</label>
+                    <input type="text" required="true" name="nombre"
+                    @if($plan->nombre=='Gratuita'||$plan->nombre=='gratuita')
+                    readonly
+                    @endif
+                    value="{{$plan->nombre}}" class="form-control" id="nombre" placeholder="Premium">
+                      {!!$errors->first('nombre','<small>:message</small><br>')!!}
+  
+                    </div>
+  
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1" >Exposición en el listado</label>
+                      <select name="exposicion" class="form-control" id="">
+                        <option value="">Seleccione un nivel</option >
+                         
+                          @if($plan->exposicion=='Maxima')
+                          <option value="Maxima" selected="selected">Maxima</option>
+                          <option value="Alta" >Alta</option>
+                          <option value="Baja" >Baja</option>
+                          @endif
+                          @if($plan->exposicion=='Alta')
+                          <option value="Maxima" >Maxima</option>
+                          <option value="Alta" selected="selected">Alta</option>
+                          <option value="Baja" >Baja</option>
+                          @endif
+                          @if($plan->exposicion=='Baja')
+                          <option value="Maxima">Maxima</option>
+                          <option value="Alta">Alta</option>
+                          <option value="Baja" selected="selected">Baja</option>
 
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Procentaje</label>
-                    <input type="text" value="{{$plan->precio}}" required="true" name="porcentaje" class="form-control" id="porcentaje"  placeholder="Ingrese  porcentaje un porcentaje  ">
-                    {!!$errors->first('porcentaje','<small>:message</small><br>')!!}
-                  </div>
+                          @endif
+                         
+                      </select>
+                    </div>
+  
+                    <div class="form-group col-md-6">
+                      <label for="">Duración de la publicación (Cantidad de dias)</label>
+                      <input  class="form-control" 
+                      @if($plan->tiempoPublicacion=='Ilimitado')
+                      value=""
+                      @else
+                      value=" {{$plan->tiempoPublicacion}}"
+                      @endif
+                      {{$plan->tiempoPublicacion}}
+                       placeholder="60" name="tiempoPublicacion"  type="text">
+                    </div>
+  
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Descripción</label>
+                      
+                      <textarea required="true" name="descripcion" id="descripcion" class="form-control" rows="3" laceholder="Descripción corta">{!!$plan->descripcion!!}
+                      </textarea>
+                      {!!$errors->first('descripcion','<small>:message</small><br>')!!}
+                    </div>
+  
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Porcentaje de costo por venta (Porcentaje)</label>
+                      <input type="text" required="true" value="{{$plan->precio}}" name="porcentaje" class="form-control" id="porcentaje"  placeholder="10">
+                      {!!$errors->first('porcentaje','<small>:message</small><br>')!!}
+                    </div>
+  
+  
+  
+                    <div class="form-group col-md-6">
+                      <label for="">Cantidad de publicaciones (En el mes)</label>
+                      <input  class="form-control" type="text" 
+                      @if($plan->cantidadPublicacion=='Ilimitado')
+                      value=""
+                      @else
+                      value="{{$plan->cantidadPublicacion}}"
+                      @endif
+                      
+                      name="cantidadPublicacion" placeholder="2">
+                    </div>
+  
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox"
+                        @if($plan->estatus=='A')
+                        checked
+                        @endif
+                        class="custom-control-input" id="activo" name="activo">
+                        <label class="custom-control-label" for="activo">Activo</label>
+                      </div>
+                    </div>
 
                   
                   

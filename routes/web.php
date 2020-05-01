@@ -22,14 +22,14 @@ Route::get('/resultados', function () {
 Route::get('/', function () {
     return view('tienda.index');
 
-   /* $user=new User();
+    /*$user=new User();
     $user->nombre= 'jhon';
     $user->apellido = 'contreras';
     $user->email = 'jhjacoz96@gmail.com';
     $user->password = Hash::make('12345678');
     $user->rol_id =3;
-    $user->save();*/
-
+    $user->save();
+*/
 
 });
 
@@ -64,7 +64,7 @@ Route::get('traerCategoria/{categoria}',
 'subCategoriaController@traer')->name('traerCategoria.traer');
 
 Route::get('obtenerCategoria/{categoria_id}','productoController@getSubCategoria');
-Route::get('producto/categoria','productoController@categoria')->name('producto.categoria');
+Route::get('producto/categoria','productoController@Categoria')->name('producto.categoria');
 Route::resource('producto','productoController');
 
 Route::delete('/eliminarImagen/{id}','productoController@eliminarImagen')->name('delete.imagen');
@@ -108,3 +108,8 @@ Route::resource('grupoAtributo', 'grupoAtributoController');
 
 Route::resource('atributo', 'atributosController');
 //------fin atributosProductos------------//
+
+//------tipos de compradores-------------
+Route::resource('tipoComprador','tipoCompradorController');
+ 
+//----fin de tipos de cliente--------

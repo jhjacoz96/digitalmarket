@@ -34,7 +34,7 @@
           <div class="col-md-12">
             <!-- jquery validation -->
             <div class="card card-secondary">
-              <h1>Modificar comprador</h1>
+              
               <div class="card-header">
 
                 <h3 class="card-title">Modificar comprador</h3>
@@ -53,18 +53,18 @@
 
                 <div class="card-body">
 
-                  <div class="form-group">
+                  <div class="form-group col-md-6">
                     <label for="exampleInputPassword1">Antigua contraseña</label>
                     <input type="password" name="vieja" class="form-control" id="exampleInputPassword1" placeholder="Ingrese la antigua contraseña">
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group col-md-6">
                     <label for="exampleInputPassword1">Nueva contraseña</label>
                     <input type="password" name="password" class="form-control" required id="exampleInputPassword1" placeholder="Ingrese la nueva contraseña" autocomplete="new-password">
                     
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group col-md-6">
                     <label for="exampleInputPassword1">Confirme la contraseña</label>
                     <input type="password" name="password_confirmation" class="form-control" required id="exampleInputPassword1" placeholder="Confirme la nueva contraseña" autocomplete="new-password">
                     

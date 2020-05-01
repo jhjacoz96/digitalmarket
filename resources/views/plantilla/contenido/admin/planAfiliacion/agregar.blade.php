@@ -39,27 +39,55 @@
 
                   
 
-                  <div class="form-group">
+                  <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Nombre</label>
-                    <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="Ingrese su nombre">
+                    <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="Premium">
                     {!!$errors->first('nombre','<small>:message</small><br>')!!}
 
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group col-md-6">
+                    <label for="exampleInputEmail1" >Exposición en el listado</label>
+                    <select name="exposicion" class="form-control" id="">
+                      <option value="">Seleccione un nivel</option>
+                      <option value="Maxima">Maxima</option>
+                      <option value="Alta">Alta</option>
+                      <option value="Baja">Baja</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="">Duración de la publicación (Cantidad de dias)</label>
+                    <input  class="form-control" placeholder="60" name="tiempoPublicacion"  type="text">
+                  </div>
+
+                  <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Descripción</label>
                     
-                    <textarea required="true" name="descripcion" id="descripcion" class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                    <textarea required="true" name="descripcion" id="descripcion" class="form-control" rows="3" placeholder="Ingrese una descripcón corta"></textarea>
                     {!!$errors->first('descripcion','<small>:message</small><br>')!!}
                   </div>
 
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Procentaje</label>
-                    <input type="text" required="true" name="porcentaje" class="form-control" id="porcentaje"  placeholder="Ingrese  porcentaje un porcentaje  ">
+                  <div class="form-group col-md-6">
+                    <label for="exampleInputEmail1">Porcentaje de costo por venta (Porcentaje)</label>
+                    <input type="text"  name="porcentaje" class="form-control" id="porcentaje"  placeholder="10">
                     {!!$errors->first('porcentaje','<small>:message</small><br>')!!}
                   </div>
 
-                  
+
+
+                  <div class="form-group col-md-6">
+                    <label for="">Cantidad de publicaciones (En el mes)</label>
+                    <input  class="form-control" type="text" name="cantidadPublicacion" placeholder="2">
+                  </div>
+
+                  <div class="form-group">
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox"  class="custom-control-input" id="activo" name="activo">
+                      <label class="custom-control-label" for="activo">Activo</label>
+                    </div>
+                  </div>
+
                   
                 </div>
                 <!-- /.card-body -->

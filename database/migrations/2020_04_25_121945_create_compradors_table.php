@@ -17,7 +17,7 @@ class CreateCompradorsTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre');
             $table->string('apellido');
-            $table->string('correo');
+            $table->string('correo')->unique();
             $table->string('estatus')->default('A');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('tipoComprador_id')->nullable();

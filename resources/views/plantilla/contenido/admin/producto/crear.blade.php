@@ -120,7 +120,7 @@
                       <div class="form-group">
       
                         <label>Nombre</label>
-                        <input v-model="nombre" class="form-control" type="text" id="nombre" name="nombre"
+                        <input v-model="nombre" class="form-control" type="text"  name="nombre"
                         @blur="getProducto"
                         @focus="divAparecer=true"
                         >
@@ -149,15 +149,15 @@
                           
                           <label>Categoria</label>
                           
-                          <select v-model="selectedCategoria"  data-old="{{old('categoria_id')}}" @change="cargarSubCategorias" name="categoria_id" id="categoria_id" class="form-control" style="width: 100%;">
+                          <select  v-model="selectedCategoria"  data-old="{{old('categoria_id')}}" @change="cargarSubCategorias" name="categoria_id" id="categoria_id" class="form-control" style="width: 100%;">
   
                               <option value=""  >Seleccione una categoria</option>
                               
                               @foreach($categoria as $categorias)
                               
-                               @if ($loop->first)
+                              @if ($loop->first)
                                   <option value="{{ $categorias->id }}">{{ $categorias->nombre }}</option>
-                               @else
+                              @else
                                   <option value="{{ $categorias->id }}">{{ $categorias->nombre }}</option>
                                                              
                               @endif
@@ -331,16 +331,28 @@
       
               <div class="card card-secondary">
                 <div class="card-header">
-                  <h3 class="card-title">Sección de Precios</h3>
+                  <h3 class="card-title">Sección de Precio</h3>
       
                   
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
+
                   <div class="row">
-      
-      
-      
+                    <div class="col-md-6">
+                      <label for="">Precio unitario del producto</label>
+                      <input 
+                        v-model.numer="precioAnterior"
+                        class="form-control" type="number" id="precioAnterior" name="precioAnterior" min="0" value="0" step=".01"> 
+                    </div>
+                  </div>
+
+                  <div class="row my-4">
+                   <div class="col-md-12">
+                    <h5 >
+                      Aplicar descuento
+                    </h5>
+                  </div>
                     <div class="col-md-3">
                       <div class="form-group">
       
@@ -353,8 +365,8 @@
                           <span class="input-group-text">$</span>
                         </div>
                         <input 
-                        v-model="precioAnterior"
-                        class="form-control" type="number" id="precioAnterior" name="precioAnterior" min="0" value="0" step=".01">                 
+                        v-model.numer="precioAnterior" readonly
+                        class="form-control" type="number"  min="0" value="0" step=".01">                 
                       </div>
                        
                       </div>
@@ -367,14 +379,13 @@
       
                     <div class="col-md-3">
                       <div class="form-group">
-      
-                        <label>Precio actual</label>
+                        <label>Precio con descuento</label>
                          <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text">$</span>
                         </div>
-                        <input 
-                        v-model="precioActual"
+                        <input
+                        v-model.numer="precioActual" readonly
                         class="form-control" type="number" id="precioActual" name="precioActual" min="0" value="0" step=".01">                 
                       </div>
       
@@ -397,10 +408,10 @@
                         <label>Porcentaje de descuento</label>
                          <div class="input-group">                  
                         <input 
-                        v-model="porcentajeDescuento"
+                        v-model.numer="porcentajeDescuento"
                         class="form-control" type="number" id="porcentajeDescuento" name="porcentajeDescuento" step="any" min="0" max="100" value="0" >    <div class="input-group-prepend">
                           <span class="input-group-text">%</span>
-                        </div>  
+                        </div>
       
                       </div>
       
@@ -416,11 +427,48 @@
                       <!-- /.form-group -->
                       
                     </div>
-                    <!-- /.col -->
-      
-      
-                  </div>
+
+                    
+                    </div>
                   <!-- /.row -->
+
+                  
+
+                  <div class="row">
+                    <div class="col-md-12">
+                    <h5 >
+                      Precio específico
+                    </h5>
+                  </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="">Mínimo de unidades</label>
+                        <input type="text" value="1" class="form-control">  
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="">Precio</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                          </div>
+                          <input 
+                          class="form-control" type="number" min="0" value="0" step=".01">                 
+                        </div>  
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="">Tipos compradores</label>
+                        <select name="" class="form-control" id="">
+                          <option value="">Seleccione un tipo comprador</option>
+                        </select>
+                      </div>
+                    </div>
+
+                  </div>
       
       
                 </div>

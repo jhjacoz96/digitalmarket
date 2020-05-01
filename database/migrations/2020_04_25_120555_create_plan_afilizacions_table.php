@@ -15,11 +15,13 @@ class CreatePlanAfilizacionsTable extends Migration
     {
         Schema::create('plan_afilizacions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre');
+            $table->string('nombre')->unique();
             $table->text('descripcion');
-            $table->float('precio')->default(0);
+            $table->integer('precio')->designed()->default(0);
             $table->string('estatus')->default('A');
-
+            $table->string('exposicion');
+            $table->string('tiempoPublicacion')->nullable();
+            $table->string('cantidadPublicacion')->nullable();
             $table->timestamps();
         });
     }

@@ -17,6 +17,7 @@ class CreateProductosTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre')->unique();
             $table->string('slug')->unique();
+            $table->string('sku')->nullable();
             $table->string('tipoCliente');
             $table->unsignedbigInteger('subCategoria_id')->nullable();
             $table->unsignedbigInteger('marca_id')->nullable();

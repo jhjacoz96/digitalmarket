@@ -32,6 +32,7 @@
         "precioActual":"{{$producto->precioActual}}",
         "porcentajeDescuento":"{{$producto->porcentajeDescuento}}",
         "selectedCategoria":"{{$producto->subCategoria->categoria->id}}",
+        "selectedSubCategoria":"{{$producto->subCategoria->id}}",
         "tipoCliente":"{{$producto->tipoCliente}}",
         "slug":"{{$producto->slug}}",
         "id":"{{$producto->id}}"
@@ -107,73 +108,48 @@
 
           <div class="col-md-12">
 
+            <div class="row">
 
-            <div class="card card-secondary">
-                <div class="card-header">
-                  <h3 class="card-title">Información del producto </h3>
+              <div class="col-md-6">
+                <div class="form-group">
+  
+  
+                  <div class="info-box">
+                    <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
       
+                    <div class="info-box-content">
+                      <span class="info-box-text">Ventas</span>
+                      <span class="info-box-number">{{$producto->ventas}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                  </div>
+  
                  
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-      
-                   <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-      
-
-                        <div class="info-box">
-                          <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
-            
-                          <div class="info-box-content">
-                            <span class="info-box-text">Visitas</span>
-                            <span class="info-box-number">{{$producto->visitas}}</span>
-                          </div>
-                          <!-- /.info-box-content -->
-                        </div>
-
-                        
-                       
-                      </div>
-                      <!-- /.form-group -->
-                      
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-6">
-                      <div class="form-group">
-      
-
-                        <div class="info-box">
-                          <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
-            
-                          <div class="info-box-content">
-                            <span class="info-box-text">Ventas</span>
-                            <span class="info-box-number">{{$producto->ventas}}</span>
-                          </div>
-                          <!-- /.info-box-content -->
-                        </div>
-
-                       
-                      </div>
-                      <!-- /.form-group -->
-          
-                    </div>
-                    <!-- /.col -->
-                  </div>
-                  <!-- /.row -->
-      
-      
-      
-      
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                  
-                </div>
+                <!-- /.form-group -->
+    
               </div>
-              <!-- /.card -->
+              
+              <div class="col-md-6">
+                <div class="form-group">
+  
+  
+                  <div class="info-box">
+                    <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
       
-      
+                    <div class="info-box-content">
+                      <span class="info-box-text">Visitas</span>
+                      <span class="info-box-number">{{$producto->visitas}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                  </div>
+  
+                 
+                </div>
+                <!-- /.form-group -->
+    
+              </div>
+            </div>
       
       
               <div class="card card-secondary">
@@ -243,23 +219,25 @@
                             
                             <label>Categoria</label>
                             
-                            <select v-model="selectedCategoria"  data-old="{{old('categoria_id')}}" @change="cargarSubCategorias" name="categoria_id" id="categoria_id" class="form-control" style="width: 100%;">
+                            <select v-model="selectedCategoria"  data-old="{{old('categoria_id')}}" @change="cargarSubCategorias" name="categoria_id"  class="form-control" style="width: 100%;">
     
-                                <option value=""  >Seleccione una categoria</option>
+                                <option selected="selected">Seleccione un a categoria</option>
                                 
-                                @foreach($categoria as $categorias)
-                                
-                                 @if ($categorias->id==$producto->subCategoria->categoria->id)
-                                    <option value="{{ $categorias->id }}" selected="selected">{{ $categorias->nombre }}</option>
-                                 @else`
-                                    <option value="{{ $categorias->id }}">{{ $categorias->nombre }}</option>                         
-                                @endif
-                                @endforeach
-            
+                            @foreach ($categoria as $item)
+                            @if ($item->id==$producto->subCategoria->categoria->id)
+                            <option selected value="{{$item->id}}">{{$item->nombre}}</option>
+                            @else
+                            ($item->id==$producto->subCategoria->categoria->id)
+                            <option  value="{{$item->id}}">{{$item->nombre}}</option>
+                            @endif
+                            
+                            @endforeach
+                            
             
                               </select>
                              
-                           
+                             
+                              
                           </div>
                               <div class="col-md-6">
                                
@@ -270,11 +248,13 @@
     
                                 <option value="" selected="selected" >Seleccione una categoria</option>
                                 
-                                <option v-for="(subCategoria,index) in obtenerSubCategorias"  v-bind:value="index" >@{{subCategoria}}</option>
+                                <option v-for="(subCategoria,index)    in obtenerSubCategorias" 
+                                
+                              v-bind:value="index" >@{{index}}@{{subCategoria}}</option>
                               </select>
                            
                             </div>
-  
+                           
                           </div>
                           
                           <label>Cantidad</label>
@@ -518,7 +498,7 @@
               <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Sección de Precios</h3>
-      v
+      
                   
                 </div>
                 <!-- /.card-header -->

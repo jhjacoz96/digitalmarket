@@ -10,11 +10,16 @@ class Comprador extends Model
         'nombre',
         'apellido',
         'correo',
-        'user_id'
+        'user_id',
+        'tipoComprador_id'
     ];
 
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function tipoComprador(){
+        return $this->belongsTo('App\TipoComprador','tipoComprador_id');
     }
 }

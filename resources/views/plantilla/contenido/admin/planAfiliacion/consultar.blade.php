@@ -53,8 +53,13 @@
                       <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Descripcion</th>
-                        <th>Porcentaje</th>
+                        <th>Descripción</th>
+                        <th>Exposición en los listados</th>
+                        <th>Costo por venta</th>
+                        <th>Tiempo de publicación</th>
+                        <th>Cantidad de publicaciones</th>
+                        <th>Cantidad de tiendas afiliadas</th>
+                        <th>Estado</th>
                         <th>Acción</th>
                       </tr>
                     </thead>
@@ -65,20 +70,50 @@
                        <td class="mailbox-star">{{$item->id}}</td>
                            <td class="mailbox-star">{{$item->nombre}}</td>
                            <td class="mailbox-star">{{$item->descripcion}}</td>
-                           <td class="mailbox-star">{{$item->precio}}%</td>
+                           <td class="mailbox-star">{{$item->exposicion}}</td>
+                           <td class="mailbox-star">
+                             @if($item->precio==0)
+                             <span>Gratis</span>
+                             @else
+                             {{$item->precio}}% por venta
+                             @endif
+                            </td>
+                           <td class="mailbox-star">
+                             @if($item->tiempoPublicacion==null)
+                             <span>Ilimitado</span>
+                             @else
+                             {{$item->tiempoPublicacion}} dias
+                             @endif
+                            </td>
+                           <td class="mailbox-star">
+                             @if($item->cantidadPublicacion==null)
+                              <span>Ilimitado</span>
+                              @else
+                             {{$item->cantidadPublicacion}} 
+                             @endif
+                            </td>
+                           <td class="mailbox-star">0</td>
+                           <td class="mailbox-star">
+                             @if($item->estatus=='A')
+                             <span class="badge badge-success">Activo</span>
+                             @else
+                             <span class="badge badge-danger">Inactivo</span>
+                            @endif
+                          </td>
                            
                            <td class="mailbox-star">
                                <div class="btn-group">
                                <a href="{{route('Plan.edit',$item)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
 
-                                   
-                                   
+                               @if($item->nombre!='gratuita'||$item->nombre!='Gratuita')
+                               
                                    <form action="{{route('Plan.destroy',$item)}}" method="POST"  >
                                        @method('DELETE')
                                        @csrf
                                        <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este comprador?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
                                      </form>
-                                   
+                                     
+                                  @endif
                                    
                                  
                                </div>
@@ -91,8 +126,8 @@
                      
                     </tbody>
                   </table>
-                  <div class="box-footer p-3 float-right">
-                  <a href=" {{route('Plan.create')}} "  class="btn  btn-info ">Agregar Plan de afilización</a>
+                  <div class="box-footer p-3 ">
+                  <a href=" {{route('Plan.create')}} "  class="btn  btn-info float-right">Agregar Plan de afilización</a>
             
                   </div>
                 </div>

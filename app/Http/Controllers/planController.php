@@ -21,7 +21,8 @@ class planController extends Controller
      */
     public function index()
     {
-        $plan=PlanAfilizacion::where('estatus','A')->get();
+        $plan=PlanAfilizacion::All();
+       
         return \view('plantilla.contenido.admin.planAfiliacion.consultar',compact('plan'));
     }
 
@@ -43,12 +44,15 @@ class planController extends Controller
      */
     public function store(Request $request)
     {
+        
         $v=Validator::make($request->all(),[
             'nombre'=>'min:2|required|unique:plan_afilizacions,nombre',
             'descripcion'=>'max:128|required',
-            'porcentaje'=>'required|max:2',
+            'exposicion'=>'required',
+            'porcentaje'=>'required'
+            
         ]);
-
+        
         if ($v->fails()) {
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
@@ -56,8 +60,17 @@ class planController extends Controller
         $plan=new PlanAfilizacion();
         $plan->nombre=$request->nombre;
         $plan->descripcion=$request->descripcion;
+        $plan->exposicion=$request->exposicion; $plan->tiempoPublicacion=$request->tiempoPublicacion;
+        $plan->cantidadPublicacion=$request->cantidadPublicacion;
         $plan->precio=$request->porcentaje;
+        
+        if($request->activo){
+            $plan->estatus='A';
+        }else{
+            $plan->estatus='I';
+        }
         $plan->save();
+
 
         flash('Plan de afiliación agregado con exito')->success()->important();
 
@@ -98,19 +111,37 @@ class planController extends Controller
      */
     public function update(Request $request, $id)
     {
+      
         $v=Validator::make($request->all(),[
-            
+            'nombre'=>'min:2|required|unique:plan_afilizacions,nombre,'.$id,
             'descripcion'=>'max:128|required',
-            'porcentaje'=>'required|max:2',
+            'exposicion'=>'required',
+            'porcentaje'=>'required'
+            
         ]);
-
+            
         if ($v->fails()) {
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
-
+       
         $plan=PlanAfilizacion::findOrFail($id);
+        $plan->nombre=$request->nombre;
         $plan->descripcion=$request->descripcion;
+        $plan->exposicion=$request->exposicion;
+        $plan->tiempoPublicacion=$request->tiempoPublicacion;
+        $plan->cantidadPublicacion=$request->cantidadPublicacion;
         $plan->precio=$request->porcentaje;
+        
+        if($request->activo){
+            $plan->estatus='A';
+        }else{
+            if($request->nombre=='Gratuita'||$request->nombre=='gratuita'){
+                $plan->estatus='A';
+            }else{
+
+                $plan->estatus='I';
+            }
+        }
         $plan->save();
         
         flash('Plan de afiliación modificado con exito')->success()->important();

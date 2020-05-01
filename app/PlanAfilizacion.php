@@ -10,6 +10,10 @@ class PlanAfilizacion extends Model
         'nombre',
         'descripcion',
         'precio',
+        'estatus',
+        'exposicion',
+        'tiempoPublicacion',
+        'cantidadPublicacion'
         
     ];
 }

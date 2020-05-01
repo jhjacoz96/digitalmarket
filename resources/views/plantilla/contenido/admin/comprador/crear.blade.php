@@ -39,37 +39,57 @@
 
                   
 
-                  <div class="form-group">
+                  <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Nombre</label>
                     <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="Ingrese su nombre">
                     {!!$errors->first('nombre','<small>:message</small><br>')!!}
 
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Apellido</label>
                     <input type="text" required="true" name="apellido" class="form-control" id="apellido" placeholder="Ingrese su apellido">
                     {!!$errors->first('apellido','<small>:message</small><br>')!!}
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Correo electrónico</label>
                     <input type="email" required="true" name="correo" class="form-control" id="correo" placeholder="Ingrese un correo electrónico">
                     {!!$errors->first('correo','<small>:message</small><br>')!!}
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group col-md-6">
+                    <label for="">Asignar a un tipo de cliente</label>
+                    <select class="form-control" name="tipoComprador" id="">
+                      <option value="" selected>Seleccione un tipo</option>
+                      @foreach ($tipo as $tipoc)     
+                    <option value="{{$tipoc->id}}">{{$tipoc->nombre}}</option>
+                      @endforeach
+
+                    </select>
+
+                  </div>
+
+                  <div class="form-group col-md-6">
                     <label for="exampleInputPassword1">Contraseña</label>
                     <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Ingrese su contraseña">
                     {!!$errors->first('password','<small>:message</small><br>')!!}
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group col-md-6">
                     <label for="exampleInputPassword1">Confirme su contraseña</label>
                     <input type="password" name="password_confirmation" class="form-control" required id="exampleInputPassword1" placeholder="Ingrese de nuevo su contraseña" autocomplete="new-password">
                     {!!$errors->first('password_confirmation','<small>:message</small><br>')!!}
                   </div>
                   
+                  <div class="form-group">
+                      
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox"  class="custom-control-input" id ="activo" name="activo">
+                      <label class="custom-control-label" for="activo">Activo</label>
+                    </div>
+                  </div>
+
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">

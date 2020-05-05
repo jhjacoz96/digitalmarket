@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Estado;
 use App\Parroquia;
 use App\Municipio;
+use App\Zona;
 use App\Http\requests\requestEstado;
 
 
@@ -73,7 +74,7 @@ class filtroDireccionController extends Controller
                 $municipio->estado_id=$estado->id;
                 $municipio->save();
             }
-            return 'guardado'; 
+            
         }  
 
         \flash('Estado agregado con exito')->important()->success();
@@ -156,8 +157,7 @@ class filtroDireccionController extends Controller
     }
 
     public function updateMunicipio(Request $request, $id)
-    {
-        
+    {   
         $v=Validator::make($request->all(),[
             'municipio'=>'min:3|required|unique:municipios,nombre,'.$id,
             'parroquia'=>'unique:parroquias,nombre',
@@ -169,11 +169,11 @@ class filtroDireccionController extends Controller
         if ($v->fails()) {
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
-
         
 
         $municipio=Municipio::findOrFail($id);
         $municipio->nombre=$request->municipio;
+
         $municipio->save();
         
         if($request->parroquia==null){
@@ -183,17 +183,20 @@ class filtroDireccionController extends Controller
             return \redirect()->route('filtroDireccion.municipio.edit',$municipio);
 
         } else{
-                for ($i=0; $i < count($request->parroquia) ; $i++) { 
-                    
-                    $parroquia=new Parroquia();
-                    $parroquia->nombre=$request->parroquia[$i];
-                    $parroquia->minicipio_id=$municipio->id;
-                    $parroquia->save();
-    
-                    \flash('Municipio modificado con exito')->important()->success();
-    
-                    return \redirect()->route('filtroDireccion.municipio.edit',$municipio);
-                }
+           
+            $f= $request->parroquia;
+                
+            for ($i=0; $i < count($request->parroquia) ; $i++) { 
+                
+                $parroquia=new Parroquia();
+                $parroquia->nombre=$f[$i];
+                $parroquia->minicipio_id=$municipio->id;
+                $parroquia->save();
+            }
+                \flash('Municipio modificado con exito')->important()->success();
+
+                return \redirect()->route('filtroDireccion.municipio.edit',$municipio);
+            
 
             
 
@@ -204,11 +207,13 @@ class filtroDireccionController extends Controller
     }
 
     public function updateParroquia(Request $request, $id)
-    {
+    {  
         
+
         $v=Validator::make($request->all(),[
-            'parroquia'=>'min:3|required|unique:parroquias,nombre,'.$id
-            
+            'parroquia'=>'min:3|required|unique:parroquias,nombre,'.$id,
+            'zona'=>'unique:zonas,nombre',
+            'zona.*'=>'distinct|unique:zonas,nombre'
         ]);
         
         
@@ -220,18 +225,52 @@ class filtroDireccionController extends Controller
         
 
         $parroquia=Parroquia::findOrFail($id);
-        $municipio=$parroquia->municipio;
+        //$municipio=$parroquia->municipio;
         
         $parroquia->nombre=$request->parroquia;
         $parroquia->save();
         
-        
+        if($request->zona==null){
 
-            \flash('Parroquia  modificada con exito')->important()->success();
+            \flash('Parroquia modificado con exito')->important()->success();
 
-            return \redirect()->route('filtroDireccion.municipio.edit',$municipio);
+            return \redirect()->route('filtroDireccion.parroquia.edit',$parroquia);
+
+        } else{
+            
+            $f= json_decode(($request->zona),true);
+            
+            for ($i=0; $i < count($f) ; $i++) { 
+                
+                $zona=new Zona();
+                $zona->nombre=$f[$i]['nombre'];
+                $zona->codigoPostal=$f[$i]['codigo'];
+                $zona->parroquia_id=$parroquia->id;
+                $zona->save();
+            }
+                \flash('Parroquia modificado con exito')->important()->success();
+
+                return \redirect()->route('filtroDireccion.parroquia.edit',$parroquia);
+            
+
+            
+
+        }   
  
 
+    }
+
+    public function updateZona(Request $request, $id){
+        $zona=Zona::findOrFail($id);
+       
+        $zona->nombre=$request->zona;
+        $zona->codigoPostal=$request->codigoPostal;
+
+        $zona->save();
+
+        \flash('Zona modificado con exito')->important()->success();
+
+        return \redirect()->route('filtroDireccion.parroquia.edit',$zona->parroquia);
     }
 
     /**
@@ -283,10 +322,40 @@ class filtroDireccionController extends Controller
 
         $parroquia=Parroquia::findOrFail($id);
         $municipio=$parroquia->municipio;
-        if(count())
-        $parroquia->delete();
-        \flash('Parroquia eliminado con exito')->important()->success();
-        return  \redirect()->route('filtroDireccion.municipio.edit',$municipio);
+       
+
+        if(count($municipio->parroquia)!=null ){
+
+            \flash('No puede eliminar esta parroquia ya que posee ' . count($parroquia->zona) . ' zona(s) ')->important()->warning();
+            return  \redirect()->route('filtroDireccion.municipio.edit',$municipio);
+        }else{
+
+            $parroquia->delete();
+            \flash('Parroquia eliminado con exito')->important()->success();
+            return  \redirect()->route('filtroDireccion.municipio.edit',$municipio);
+        }
+     
+    }
+
+    public function eliminarZona($id){
+
+
+        $zona=Zona::findOrFail($id);
+    
+        $parroquia=$zona->parroquia;
+        
+        if(count($zona->direccion)==0){
+
+            $zona->delete();
+            \flash('Zona eliminado con exito')->important()->success();
+            return  \redirect()->route('filtroDireccion.parroquia.edit',$parroquia);
+
+        }else{
+            
+            \flash('No puede eliminar esta zona ya que posee' . count($zona->direccion) . ' direccione(s) de envio(s). ')->important()->success();
+
+        }
+
      
     }
 
@@ -300,11 +369,21 @@ class filtroDireccionController extends Controller
 
     public function editParroquia($id){
         
-        $parroquia=Parroquia::findOrFail($id);
+        $parroquia=Parroquia::with('zona')->findOrFail($id);
         
         return view('plantilla.contenido.admin.filtroDireccion.modificarParroquia',compact('parroquia'));
         
     }
+
+    public function editZona($id){
+        
+        $zona=Zona::findOrFail($id);
+        
+        return view('plantilla.contenido.admin.filtroDireccion.modificarZona',compact('zona'));
+        
+    }
+
+
 
     public function destroy($id)
     {

@@ -1,4 +1,17 @@
 @extends('layouts.appAdmin')
+@section('scripts')
+<script>
+    window.data={
+      
+        editar:'si',
+        datos:{
+          "nombre":"{{$subCategoria->nombre}}"
+        }
+            
+    
+      }
+</script>
+@endsection
 @section('contenido')
 <div id="categoria">
   <form action="{{route('SubCategoria.update',$subCategoria)}}" method="post">
@@ -46,11 +59,7 @@
             
                         <div class="card-body">
             
-                        <span style="
-                        display: none" id="editar">{{$editar}}</span>
-                        <span style="
-                        display: none"  id="nombretemp">{{$subCategoria->nombre}}</span>
-   
+                     
                             <div class="form-group">
                                 <label  for="">Nombre</label>
                                 <input 
@@ -80,6 +89,10 @@
                             
                         </div>
                         <div class="card-footer">
+
+                        <a href="{{route('categoria.edit',$subCategoria->categoria->slug)}}" class="btn btn-secondary float-left">
+                            Atras
+                          </a>
 
                           <input 
                           :disabled="deshabilitarBoton==1"

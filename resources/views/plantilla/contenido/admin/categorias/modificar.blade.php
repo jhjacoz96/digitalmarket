@@ -1,10 +1,21 @@
 @extends('layouts.appAdmin')
+@section('scripts')
+<script>
+    window.data={
+      
+        editar:'si',
+        datos:{
+          "nombre":"{{$categoria->nombre}}"
+        }
+            
+    
+      }
+</script>
+@endsection
 @section('contenido')
 <div id="categoria">
-  <form action="{{route('categoria.update',$categoria)}}" method="post">
-    @csrf
-    @method('PUT')
-
+  
+  
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <div class="p-2">
@@ -37,44 +48,26 @@
           <div class="col-md-8">
             <!-- jquery validation -->
             <div class="card card-secondary">
+             
               <div class="card-header">
                 <h3 class="card-title">Actualizar categoría</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              
+              <form action="{{route('categoria.update',$categoria)}}" method="post">
+                @csrf
+                @method('PUT')
             
                         <div class="card-body">
-            
-                        <span style="
-                        display: none" id="editar">{{$editar}}</span>
-                        <span style="
-                        display: none"  id="nombretemp">{{$categoria->nombre}}</span>
-<!--
-                          <div class="form-group">
-                            <label for="">Tipo de línea</label>
-                            <select name="tipoLinea" id="tipoLinea" 
-                            class="form-control"
-                            required
-                            >
-                              <option value="">Seleccione una línea</option>
-                          
-                            @if ($categoria->tipoLinea=='Marrón')
-                              <option value="Marrón" selected>Marrón</option>
-                              <option value="Blanca">Blanca</option>
-                            @else
-                              <option value="Blanca" selected>Blanca</option>              <option value="Marrón">Marrón</option>    
-                            @endif
-                         
-                            </select>
-                          </div>
- -->  
+                       
+                        
+
                             <div class="form-group">
                                 <label  for="">Nombre</label>
                                 <input 
                                 @blur="getCategoria"
                                 @focus="divAparecer=true"
-                            v-model="nombre" value="{{$categoria->nombre}}" class="form-control" name="nombre" id="nombre" type="text">
+                            v-model="nombre"  class="form-control" name="nombre" id="nombre" type="text">
                             </div>
 
                             
@@ -82,7 +75,7 @@
                             <div class="form-group">
                                 <label  for="">Slug</label>
                                 <input readonly
-                            v-model="generarSlug" class="form-control" value="{{$categoria->slug}}" name="slug" id="slug" type="text">
+                            v-model="generarSlug" class="form-control"  name="slug" id="slug" type="text">
                                 <div v-if="divAparecer" v-bind:class="divClaseSlug">
                                     @{{divMensajeSlug}}
                                 </div>
@@ -103,9 +96,11 @@
                           :disabled="deshabilitarBoton==1"
                           class="btn btn-primary float-right" type="submit" value="Actualizar categoria"  >
                         </div>
- 
-          
+                        
+                  </form>
+                  
             </div>
+          
             <!-- /.card -->
           </div>
 
@@ -184,6 +179,6 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-</form>
+
 </div>
 @endsection

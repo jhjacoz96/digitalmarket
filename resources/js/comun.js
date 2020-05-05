@@ -53,6 +53,21 @@ if(document.getElementById('login')){
 
 }
 
+if(document.getElementById('direccion')){
+    require('./admin/direccion'); 
+
+}
+
+if(document.getElementById('metodoEnvio')){
+    require('./admin/metodoEnvio'); 
+
+}
+
+if(document.getElementById('metodoPago')){
+    require('./admin/metodoPago'); 
+
+}
+
 
 
 

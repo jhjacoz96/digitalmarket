@@ -22,4 +22,7 @@ class Comprador extends Model
     public function tipoComprador(){
         return $this->belongsTo('App\TipoComprador','tipoComprador_id');
     }
+    public function direccion(){
+        return $this->hasMany('App\Direccion','comprador_id');
+    }
 }

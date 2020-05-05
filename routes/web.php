@@ -2,6 +2,7 @@
 use App\User;
 use App\Imagen;
 use App\Categoria;
+use App\Rol;
 
 //Rutas para imagenes:
 //1)
@@ -22,7 +23,19 @@ Route::get('/resultados', function () {
 Route::get('/', function () {
     return view('tienda.index');
 
-    /*$user=new User();
+   /* $rol=new Rol();
+    $rol->name='comprador';
+    $rol->save();
+
+    $rol=new Rol();
+    $rol->name='tienda';
+    $rol->save();
+
+    $rol=new Rol();
+    $rol->name='administrador';
+    $rol->save();
+    
+    $user=new User();
   
     $user->email = 'jhjacoz96@gmail.com';
     $user->password = Hash::make('12345678');
@@ -73,6 +86,14 @@ route::get('/autoComplete','HomeController@autoComplete')->name('autocomplete');
 
 //------crear filtro direccion direcciones-------------
 
+//zona//
+route::get('filtroDirecccion/{id}/eliminarZona','filtroDireccionController@eliminarZona')->name('filtroDireccion.zona.eliminar');
+
+route::get('filtroDireccion/{id}/editZona','filtroDireccionController@editZona')->name('filtroDireccion.zona.edit');
+
+route::put('filtroDireccion/{zona}/updateZona','filtroDireccionController@updateZona')->name('filtroDireccion.zona.update');
+//fin zona//
+
 //parroquia
 route::get('filtroDireccion/{id}/eliminarParroquia','filtroDireccionController@eliminarParroquia')->name('filtroDireccion.parroquia.eliminar');
 
@@ -114,5 +135,23 @@ Route::resource('tipoComprador','tipoCompradorController');
 //----fin de tipos de cliente--------
 
 //-----Direcciones de compradores-----
+route::get('getZona/{id}','direccionController@getZona');
+route::get('getParroquia/{id}','direccionController@getParroquia');
+route::get('getMunicipio/{id}','direccionController@getMunicipio');
+route::get('getEstado','direccionController@getEstado');
+route::get('getComprador/{correo}','direccionController@getComprador')->name('getComprador');
 Route::resource('comprador/direccion', 'direccionController');
 //----fun de direcciones de compradores------
+
+//metodo de envio//
+
+route::resource('metodoEnvio','metodoEnvioController');
+
+// fin de metodo de envio//
+
+//metodo de pago//
+
+route::resource('metodoPago','metodoPagoController');
+route::resource('bancoMetodoPago','bancoMetodoPagoController');
+
+// fin de metodo de pago//

@@ -14,6 +14,11 @@ class Parroquia extends Model
     {
         return $this->belongsTo('App\Municipio','minicipio_id');
     }
+
+    public function zona()
+    {
+        return $this->hasMany('App\Zona','parroquia_id');
+    }
     
 }
 

@@ -98,7 +98,7 @@
                       
                         <input  v-model="formatEstado" class="form-control" id="" name="" type="hidden">
                       
-
+                      
                       <div class="input-group float-left mb-3 ">
                         <input type="text" v-model="municipio" name="parroquia" id="parroquia"
                           class="form-control rounded-0">

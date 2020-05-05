@@ -156,15 +156,10 @@ class productoController extends Controller
         return \redirect()->route('producto.index');
     }
 
-    public function getSubCategoria(Request $request){
-        if($request->ajax()){
-            
-            $subCategorias=SubCategoria::where('categoria_id',$request->categoria_id)->get();
-            foreach ($subCategorias as $subCategoria) {
-                $subCategoriaArray[$subCategoria->id]=$subCategoria->nombre;
-            }
-            return response()->json($subCategoriaArray);
-        }
+    public function getSubCategoria($id){
+        
+    $subCategorias=SubCategoria::where('categoria_id',$id)->get();
+           return $subCategorias;
     }
 
 

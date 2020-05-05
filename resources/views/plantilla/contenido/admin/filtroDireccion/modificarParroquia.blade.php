@@ -66,6 +66,10 @@
                 <h5>Parroquia:</h5>
                 <p>{{$parroquia->nombre}}</p>
               </div>
+              <div class="col">
+                <h5>Cantidad de zonas:</h5>
+                <p>{{count($parroquia->zona)}}</p>
+              </div>
             </div>
           </div>
         </section>
@@ -89,6 +93,7 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-6">
+
                       <div class="form-group">
                         <label for="">Nombre</label>
                         <input v-model="estado" class="form-control"  id="parroquia" name="parroquia" type="text">
@@ -96,10 +101,83 @@
                       </div>
                       
                         <input  v-model="formatEstado" class="form-control" id="" name="" type="hidden">
-                      
+
+                        <div class="form-group">   
+                          <label for="">Agregar zona y codigo postal</label>
+                        
+                          <div class="input-group float-left mb-3 ">
+                            <input type="text"  v-model="zona.nombre" placeholder="Nombre" 
+                              class="form-control rounded-0 ml-1">
+                            <input type="text" v-model="zona.codigo"   placeholder="Código postal" 
+                              class="form-control rounded-0 ml-1">
+                            <span class="input-group-append">
+                              <button type="button" v-on:click.prevent="agregarZona()"
+                                class="btn btn-info  btn-flat ml-1">Agregar zona</button>
+                            </span>
+                          </div>
+                        </div>
+                       <input type="hidden" v-model="listaZonaFormat" name="zona">
+                        <div class="form-group">
+                          <label>zona que desea agregar</label>
+                          <select class="select2"   
+                            multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
+                        <option selected  v-for="(zonas,index) in listaZona">Zona: @{{zonas.nombre}} código Postal: @{{zonas.codigo}}</option>
+                          </select>
+                          {!!$errors->first('zona','<small>:message</small><br>')!!}                 
+                          {!!$errors->first('zona.*','<small>:message</small><br>')!!}                  
+  
+                        </div>
+
                     </div>
 
-                    
+                    <div class="card-body table-responsive p-0 ">
+                      <label>Zonas pertenecientes a la parroquia {{$parroquia->nombre}}</label>
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>Nombre</th>
+                              <th>Código postal</th>
+                              <th>Acción</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+  
+                            @foreach ($parroquia->zona as $zona)
+                            <tr>
+                              <td class="mailbox-star">{{$zona->id}}</td>
+                              <td class="mailbox-star">{{$zona->nombre}}</td>
+
+                              <td class="mailbox-star">{{$zona->codigoPostal}}</td>
+  
+                              <td class="mailbox-star">
+                                <div class="btn-group">
+  
+                                  
+                                  <a href="{{route('filtroDireccion.zona.edit',$zona)}}" class="btn btn-default btn-sm"> <span class="fas fa-edit"
+                                    aria-hidden="true"></span></a>
+  
+  
+                                  
+  
+                                  <a href="{{route('filtroDireccion.zona.eliminar',$zona)}}"
+                                     class="btn btn-default btn-sm d-inline float-left" 
+                                      onclick="return confirm('¿Esta seguro que desea eliminar este zona?')"><span
+                                        class="fas fa-trash-alt" aria-hidden="true"></span>
+                                  </a>
+                                  
+  
+                                </div>
+                              </td>
+                            </tr>
+  
+                            @endforeach
+  
+                          </tbody>
+                        </table>
+  
+                      </div>
+
                   </div>
                 </div>
 

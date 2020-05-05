@@ -218,23 +218,14 @@
                             <div class="col-md-6">
                             
                             <label>Categoria</label>
-                            
-                            <select v-model="selectedCategoria"  data-old="{{old('categoria_id')}}" @change="cargarSubCategorias" name="categoria_id"  class="form-control" style="width: 100%;">
+                            @{{selectedCategoria}}
+                            <select v-model="selectedCategoria"  data-old="{{old('categoria_id')}}" @change="cargarSubCategorias" id="categoria_id" name="categoria_id"  class="form-control" style="width: 100%;">
     
-                                <option selected="selected">Seleccione un a categoria</option>
+                              <option value="" selected="selected">Seleccione un a categoria</option>
                                 
-                            @foreach ($categoria as $item)
-                            @if ($item->id==$producto->subCategoria->categoria->id)
-                            <option selected value="{{$item->id}}">{{$item->nombre}}</option>
-                            @else
-                            ($item->id==$producto->subCategoria->categoria->id)
-                            <option  value="{{$item->id}}">{{$item->nombre}}</option>
-                            @endif
+                              <option :value="categoria.id" v-for="(categoria,index) in categorias">@{{categoria.nombre}}</option>
                             
-                            @endforeach
-                            
-            
-                              </select>
+                            </select>
                              
                              
                               
@@ -245,12 +236,12 @@
                             <label>Sub categoria</label>
                             
                               <select v-model="selectedSubCategoria" name="subCategoria_id" id="subCategoria_id" data-old="{{old('subCategoria_id')}}" class="form-control select2" style="width: 100%;">
-    
+                                
                                 <option value="" selected="selected" >Seleccione una categoria</option>
                                 
                                 <option v-for="(subCategoria,index)    in obtenerSubCategorias" 
                                 
-                              v-bind:value="index" >@{{index}}@{{subCategoria}}</option>
+                              :value="subCategoria.id" >@{{subCategoria.nombre}}</option>
                               </select>
                            
                             </div>

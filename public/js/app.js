@@ -50523,8 +50523,17 @@ var categoria = new Vue({
             _this.divClaseSlug = 'badge badge-success';
             _this.deshabilitarBoton = 0;
           } else {
-            _this.divClaseSlug = 'badge badge-danger';
-            _this.deshabilitarBoton = 1;
+            if (data.editar == 'si') {
+              if (data.datos.nombre === _this.nombre) {
+                _this.deshabilitarBoton = 0;
+                _this.divMensajeSlug = '';
+                _this.divClaseSlug = '';
+                _this.divAparecer = false;
+              }
+            } else {
+              _this.divClaseSlug = 'badge badge-danger';
+              _this.deshabilitarBoton = 1;
+            }
           }
 
           _this.divAparecer = true;
@@ -50534,15 +50543,6 @@ var categoria = new Vue({
         this.divMensajeSlug = "Debe ingresar una categoria";
         this.deshabilitarBoton = 1;
         this.divAparecer = true;
-      }
-
-      if (document.getElementById('editar').innerHTML) {
-        if (document.getElementById('nombretemp').innerHTML === this.nombre) {
-          this.deshabilitarBoton = 0;
-          this.divMensajeSlug = '';
-          this.divClaseSlug = '';
-          this.divAparecer = false;
-        }
       }
     },
     getSubCategoria: function getSubCategoria() {
@@ -50556,27 +50556,27 @@ var categoria = new Vue({
           if (_this2.divMensajeSlug == "Slug disponible") {
             _this2.divClaseSlug = 'badge badge-success';
             _this2.deshabilitarBoton = 0;
+            _this2.divAparecer = true;
           } else {
-            _this2.divClaseSlug = 'badge badge-danger';
-            _this2.deshabilitarBoton = 1;
+            if (data.editar == 'si') {
+              if (data.datos.nombre === _this2.nombre) {
+                _this2.deshabilitarBoton = 0;
+                _this2.divMensajeSlug = '';
+                _this2.divClaseSlug = '';
+                _this2.divAparecer = false;
+              }
+            } else {
+              _this2.divClaseSlug = 'badge badge-danger';
+              _this2.deshabilitarBoton = 1;
+              _this2.divAparecer = true;
+            }
           }
-
-          _this2.divAparecer = true;
         });
       } else {
         this.divClaseSlug = 'badge badge-danger';
         this.divMensajeSlug = "Debe ingresar una sub categoria";
         this.deshabilitarBoton = 1;
         this.divAparecer = true;
-      }
-
-      if (document.getElementById('editar').innerHTML) {
-        if (document.getElementById('nombretemp').innerHTML === this.nombre) {
-          this.deshabilitarBoton = 0;
-          this.divMensajeSlug = '';
-          this.divClaseSlug = '';
-          this.divAparecer = false;
-        }
       }
     },
     cargarSubCategorias: function cargarSubCategorias() {
@@ -50595,9 +50595,221 @@ var categoria = new Vue({
     }
   },
   mounted: function mounted() {
-    if (document.getElementById('editar').innerHTML) {
-      this.nombre = document.getElementById('nombretemp').innerHTML;
+    if (data.editar == 'si') {
+      this.nombre = data.datos.nombre;
       this.deshabilitarBoton = 0;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/direccion.js":
+/*!*****************************************!*\
+  !*** ./resources/js/admin/direccion.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var direccion = new Vue({
+  el: '#direccion',
+  data: {
+    correo: '',
+    nombre: '',
+    apellido: '',
+    divMensajeSlug: '',
+    divClaseSlug: '',
+    divAparecer: false,
+    deshabilitarBoton: 1,
+    estados: [],
+    estado_id: '',
+    municipios: [],
+    municipio_id: '',
+    parroquias: [],
+    parroquia_id: '',
+    zonas: [],
+    zona_id: '',
+    codigoPostal: ''
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/getEstado').then(function (res) {
+      _this.estados = res.data;
+      console.log(_this.estados);
+    })["catch"](function (e) {
+      console.log(e.reponse);
+    });
+  },
+  methods: {
+    getCategoria: function getCategoria() {
+      var _this2 = this;
+
+      if (this.slug) {
+        var url = '/categoria/' + this.slug;
+        axios.get(url).then(function (res) {
+          _this2.divMensajeSlug = res.data;
+
+          if (_this2.divMensajeSlug == "Slug disponible") {
+            _this2.divClaseSlug = 'badge badge-success';
+            _this2.deshabilitarBoton = 0;
+          } else {
+            _this2.divClaseSlug = 'badge badge-danger';
+            _this2.deshabilitarBoton = 1;
+          }
+
+          _this2.divAparecer = true;
+        });
+      } else {
+        this.divClaseSlug = 'badge badge-danger';
+        this.divMensajeSlug = "Debe ingresar una categoria";
+        this.deshabilitarBoton = 1;
+        this.divAparecer = true;
+      }
+
+      if (document.getElementById('editar').innerHTML) {
+        if (document.getElementById('nombretemp').innerHTML === this.nombre) {
+          this.deshabilitarBoton = 0;
+          this.divMensajeSlug = '';
+          this.divClaseSlug = '';
+          this.divAparecer = false;
+        }
+      }
+    },
+    getEstado: function getEstado() {},
+    getComprador: function getComprador() {
+      var _this3 = this;
+
+      if (this.correo) {
+        var url = '/getComprador/' + this.correo;
+        axios.get(url).then(function (res) {
+          if (res.data == 'No hay registro de este comprador') {
+            _this3.nombre = '';
+            _this3.apellido = '';
+            _this3.divMensajeSlug = res.data;
+            _this3.divClaseSlug = 'badge badge-danger';
+            _this3.divAparecer = true;
+            _this3.deshabilitarBoton = 1;
+          } else {
+            _this3.divAparecer = false;
+            _this3.nombre = res.data.nombre;
+            _this3.apellido = res.data.apellido;
+            _this3.deshabilitarBoton = 0;
+          }
+        })["catch"](function (e) {
+          console.log(e.response);
+        });
+      } else {
+        this.nombre = '';
+        this.apellido = '';
+        this.divClaseSlug = 'badge badge-danger';
+        this.divMensajeSlug = "Debe ingresar  un correo válido";
+        this.deshabilitarBoton = 1;
+        this.divAparecer = true;
+        this.deshabilitarBoton = 1;
+      }
+    },
+    getMunicipio: function getMunicipio() {
+      var _this4 = this;
+
+      this.municipio_id = '';
+      document.getElementById('municipio_id').disabled = true;
+      this.parroquia_id = '';
+      document.getElementById('parroquia_id').disabled = true;
+      this.zona_id = '';
+      this.codigoPostal = '';
+      document.getElementById('zona_id').disabled = true;
+
+      if (this.estado_id != '') {
+        axios.get('/getMunicipio/' + this.estado_id).then(function (res) {
+          _this4.municipios = res.data;
+          document.getElementById('municipio_id').disabled = false;
+          console.log(_this4.municipios);
+        })["catch"](function (e) {
+          s;
+          console.log(e.response);
+        });
+      }
+    },
+    getParroquia: function getParroquia() {
+      var _this5 = this;
+
+      this.parroquia_id = '';
+      document.getElementById('parroquia_id').disabled = true;
+      this.zona_id = '';
+      this.codigoPostal = '';
+      document.getElementById('zona_id').disabled = true;
+
+      if (this.municipio_id != '' && this.estado_id != '') {
+        axios.get('/getParroquia/' + this.municipio_id).then(function (res) {
+          _this5.parroquias = res.data;
+          document.getElementById('parroquia_id').disabled = false;
+          console.log(_this5.parroquias);
+        })["catch"](function (e) {
+          console.log(e.response);
+        });
+      }
+    },
+    getZona: function getZona() {
+      var _this6 = this;
+
+      this.zona_id = '';
+      this.codigoPostal = '';
+      document.getElementById('zona_id').disabled = true;
+
+      if (this.municipio_id != '' && this.estado_id != '' && this.parroquia_id != '') {
+        axios.get('/getZona/' + this.parroquia_id).then(function (res) {
+          _this6.zonas = res.data;
+          document.getElementById('zona_id').disabled = false;
+          console.log(_this6.zonas);
+        })["catch"](function (e) {
+          console.log(e.response);
+        });
+      }
+    },
+    getCodigo: function getCodigo() {
+      if (this.zona_id != '') {
+        for (var i = 0; i < this.zonas.length; i++) {
+          if (this.zonas[i].id == this.zona_id) {
+            return this.codigoPostal = this.zonas[i].codigoPostal;
+          }
+        }
+      } else {
+        this.codigoPostal = '';
+      }
+    }
+  },
+  mounted: function mounted() {
+    if (data.editar == 'si') {
+      document.getElementById('municipio_id').disabled = false;
+      document.getElementById('parroquia_id').disabled = false;
+      document.getElementById('zona_id').disabled = false;
+      this.estado_id = data.datos.estado_id;
+      this.getMunicipio();
+      this.municipio_id = data.datos.municipio_id;
+      this.getParroquia();
+      this.parroquia_id = data.datos.parroquia_id;
+      this.getZona();
+      this.zona_id = data.datos.zona_id;
+      this.codigoPostal = data.datos.codigoPostal;
+    }
+
+    if (data.editar == 'no') {
+      document.getElementById('municipio_id').disabled = true;
+      document.getElementById('parroquia_id').disabled = true;
+      document.getElementById('zona_id').disabled = true;
+
+      if (this.estado_id != '') {
+        this.getMunicipio();
+      }
+
+      if (this.estado_id != '' && this.municipio_id != '') {
+        this.getParroquia();
+      }
+
+      if (this.estado_id != '' && this.municipio_id != '' && this.parroquia_id != '') {
+        this.getZona();
+      }
     }
   }
 });
@@ -50617,7 +50829,14 @@ var filtroDireccion = new Vue({
     estado: '',
     municipio: '',
     listaMunicipio: [],
-    listar: true
+    listar: true,
+    //editar parroquia
+    zona: {
+      nombre: '',
+      codigo: ''
+    },
+    listaZona: [],
+    listaZonaFormat: []
   },
   computed: {
     formatEstado: function formatEstado() {
@@ -50658,6 +50877,46 @@ var filtroDireccion = new Vue({
 
       this.listar = true;
       this.municipio = '';
+    },
+    agregarZona: function agregarZona() {
+      var nombre = this.zona.nombre.trim();
+
+      if (this.zona.nombre.trim() == '' || this.zona.codigo == '') {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Debe indicar la el nombre de la zona y el código postal!'
+        });
+      } else {
+        var listo = nombre.toLowerCase().charAt(0).toUpperCase() + nombre.toLowerCase().slice(1);
+        var params = {
+          nombre: listo,
+          codigo: this.zona.codigo
+        };
+
+        if (this.listaZona.length <= 0) {
+          this.listaZona.push(params);
+          this.listaZonaFormat = JSON.stringify(this.listaZona);
+          console.log(this.listaZonaFormat);
+        } else {
+          for (var index = 0; index < this.listaZona.length; index++) {
+            if (this.listaZona[index].nombre == listo) {
+              this.listar = false;
+              alert('Ya ha ingreado una zona con este nombre');
+            }
+          }
+
+          if (this.listar) {
+            this.listaZona.push(params);
+            this.listaZonaFormat = JSON.stringify(this.listaZona);
+            console.log(this.listaZonaFormat);
+          }
+        }
+      }
+
+      this.listar = true;
+      this.zona.nombre = '';
+      this.zona.codigo = '';
     }
   },
   mounted: function mounted() {
@@ -50734,6 +50993,66 @@ var grupoAtributo = new Vue({
 
 /***/ }),
 
+/***/ "./resources/js/admin/metodoEnvio.js":
+/*!*******************************************!*\
+  !*** ./resources/js/admin/metodoEnvio.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var metodoEnvio = new Vue({
+  el: '#metodoEnvio',
+  data: {
+    precioEnvio: 0,
+    envioGratis: false
+  },
+  computed: {},
+  methods: {},
+  mounted: function mounted() {
+    if (data.editar == 'si') {
+      if (data.datos.envioGratis == 'A') {
+        this.envioGratis = true;
+      } else {
+        this.envioGratis = false;
+      }
+
+      this.precioEnvio = data.datos.precioEnvio;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/metodoPago.js":
+/*!******************************************!*\
+  !*** ./resources/js/admin/metodoPago.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var metodoEnvio = new Vue({
+  el: '#metodoEnvio',
+  data: {
+    precioEnvio: 0,
+    envioGratis: false
+  },
+  computed: {},
+  methods: {},
+  mounted: function mounted() {
+    if (data.editar == 'si') {
+      if (data.datos.envioGratis == 'A') {
+        this.envioGratis = true;
+      } else {
+        this.envioGratis = false;
+      }
+
+      this.precioEnvio = data.datos.precioEnvio;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/producto.js":
 /*!****************************************!*\
   !*** ./resources/js/admin/producto.js ***!
@@ -50756,7 +51075,6 @@ var producto = new Vue({
     divAparecer: false,
     deshabilitarBoton: 1,
     selectedCategoria: '',
-    selectedSubCategoriaa: '',
     selectedSubCategoria: '',
     obtenerSubCategorias: [],
     categorias: [],
@@ -50783,6 +51101,12 @@ var producto = new Vue({
   created: function created() {
     var _this = this;
 
+    axios.get('/producto/categoria').then(function (res) {
+      _this.categorias = res.data;
+      console.log(_this.categorias);
+    })["catch"](function (e) {
+      console.log(e.respose);
+    });
     axios.get('/combinacion/create').then(function (res) {
       _this.grupos = res.data;
     })["catch"](function (e) {
@@ -50790,19 +51114,14 @@ var producto = new Vue({
     });
 
     if (data.editar == 'si') {
-      axios.get("/combinacion/".concat(data.datos.id, "/edit")).then(function (res) {
-        _this.listaCombinacion2 = res.data; //console.log(this.listaCombinacion2)
-      })["catch"](function (e) {
-        console.log(e.respose);
-      });
+      if (data.datos.tipoCliente == 'combinacion') {
+        axios.get("/combinacion/".concat(data.datos.id, "/edit")).then(function (res) {
+          _this.listaCombinacion2 = res.data; //console.log(this.listaCombinacion2)
+        })["catch"](function (e) {
+          console.log(e.respose);
+        });
+      }
     }
-
-    axios.get('/producto/categoria').then(function (res) {
-      _this.categorias = res.data;
-      console.log(_this.categorias);
-    })["catch"](function (e) {
-      console.log(e.respose);
-    });
   },
   computed: {
     generarSlug: function generarSlug() {
@@ -50967,6 +51286,7 @@ var producto = new Vue({
         var url = '/obtenerCategoria/' + this.selectedCategoria;
         axios.get(url).then(function (res) {
           _this3.obtenerSubCategorias = res.data;
+          console.log(_this3.obtenerSubCategorias);
           document.getElementById('subCategoria_id').disabled = false;
         });
       }
@@ -51174,15 +51494,13 @@ var producto = new Vue({
   },
   mounted: function mounted() {
     if (data.editar == 'si') {
-      document.getElementById('subCategoria_id').disabled = false;
       this.nombre = data.datos.nombre;
       this.precioAnterior = data.datos.precioAnterior;
       this.precioActual = data.datos.precioActual;
       this.porcentajeDescuento = data.datos.porcentajeDescuento;
       this.selectedCategoria = data.datos.selectedCategoria;
-      /*this.selectedSubCategoriaa = data.datos.selectedSubCategoria
-      this.selectedSubCategoria = data.datos.selectedSubCategoria
-      this.cargarSubCategorias();*/
+      this.cargarSubCategorias();
+      this.selectedSubCategoria = data.datos.selectedSubCategoria;
 
       if (data.datos.tipoCliente == 'combinacion') {
         document.getElementById('customRadio2').checked = true;
@@ -51526,6 +51844,18 @@ if (document.getElementById('grupoAtributo')) {
 
 if (document.getElementById('login')) {
   __webpack_require__(/*! ./autenticacion/login */ "./resources/js/autenticacion/login.js");
+}
+
+if (document.getElementById('direccion')) {
+  __webpack_require__(/*! ./admin/direccion */ "./resources/js/admin/direccion.js");
+}
+
+if (document.getElementById('metodoEnvio')) {
+  __webpack_require__(/*! ./admin/metodoEnvio */ "./resources/js/admin/metodoEnvio.js");
+}
+
+if (document.getElementById('metodoPago')) {
+  __webpack_require__(/*! ./admin/metodoPago */ "./resources/js/admin/metodoPago.js");
 }
 
 /***/ }),

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCaracteristicasTable extends Migration
+class CreateZonasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class CreateCaracteristicasTable extends Migration
      */
     public function up()
     {
-        Schema::create('caracteristicas', function (Blueprint $table) {
+        Schema::create('zonas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre');
-         
+            $table->integer('codigoPostal');
+            $table->unsignedBigInteger('parroquia_id')->nullable();
+
+            $table->foreign('parroquia_id')->references('id')->on('parroquias');
+
+
             $table->timestamps();
         });
     }
@@ -28,6 +33,6 @@ class CreateCaracteristicasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('caracteristicas');
+        Schema::dropIfExists('zonas');
     }
 }

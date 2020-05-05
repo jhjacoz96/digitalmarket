@@ -1,5 +1,18 @@
 @extends('layouts.appAdmin')
+
+@section('scripts')
+<script>
+    window.data={
+      
+        editar:'no'
+            
+      }
+</script>
+@endsection
+
 @section('contenido')
+<div id="direccion">
+
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
  
@@ -41,47 +54,67 @@
 
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Correo de comprador</label>
-                    <input type="email" required="true" name="correo" class="form-control" id="correo" placeholder="Ingrese un correo válido">
+                    <input type="email" required="true" name="correo" v-model="correo" class="form-control" id="correo"
+                    @blur="getComprador"
+                    @focus="divAparecer=false"
+                    placeholder="Ingrese un correo válido">
                     {!!$errors->first('correo','<small>:message</small><br>')!!}
                   </div>
-                  <br>
+                  <div v-if="divAparecer " v-bind:class="divClaseSlug">
+                    @{{divMensajeSlug}}
+                </div>
+                <br v-if="divAparecer">
+                <br>
+
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Nombre</label>
-                    <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="Jhon">
+                    <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="Jhon" v-model="nombre">
                     {!!$errors->first('nombre','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Apellido</label>
-                    <input type="text" required="true" name="Apellido" class="form-control" id="apellido" placeholder="Contreras">
+                    <input type="text" required="true" name="Apellido" v-model="apellido" class="form-control" id="apellido" placeholder="Contreras">
                     {!!$errors->first('apellido','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group col-md-6">
                     <label for="">Seleccione un estado</label>
-                    <select class="form-control" name="estado" id="estado">
-                      <option value="" selected>Seleccione un estado</option>
+                    <select class="form-control" id="estado_id" v-model='estado_id' @change="getMunicipio()" name="estado_id" >
+                      <option value="" selected >Seleccione un estado</option>
+                    <option :value="estado.id" v-for="(estado, index) in estados" >@{{estado.nombre}}</option>
                     </select>
                   </div>
-
+                  
                   <div class="form-group col-md-6">
                     <label for="">Seleccione un municipio</label>
-                    <select class="form-control" name="municipio" id="municipio">
+                    <select class="form-control" id="municipio_id" v-model="municipio_id" @change="getParroquia()" name="municipio_id">
                       <option value="" selected>Seleccione un municipio</option>
+                    <option :value="municipio.id" v-for="(municipio,index ) in municipios" >@{{municipio.nombre}}</option>
                     </select>
                   </div>
 
                   <div class="form-group col-md-6">
                     <label for="">Seleccione una parroquia</label>
-                    <select class="form-control" name="parroquia" id="parroquia">
+                    <select class="form-control" id="parroquia_id" @change="getZona()" v-model="parroquia_id"  name="parroquia_id">
                       <option value="" selected>Seleccione una parroquia</option>
+                    <option :value="parroquia.id" v-for="(parroquia,index ) in parroquias" >@{{parroquia.nombre}}</option>
                     </select>
                   </div>
 
                   <div class="form-group col-md-6">
-                    <label for="exampleInputEmail1">Sector</label>
-                    <input type="text" required="true" name="sector" class="form-control" id="sector" placeholder="Brisas del Obelisco">
-                    {!!$errors->first('sector','<small>:message</small><br>')!!}
+                    <label for="">Seleccione una zona</label>
+                    <select class="form-control" id="zona_id" v-model="zona_id" @change="getCodigo()"   name="zona_id">
+                      <option value="" selected>Seleccione una zona</option>
+                    <option :value="zona.id" v-for="(zona,index ) in zonas" >@{{zona.nombre}}</option>
+                    </select>
+                  </div>
+               
+        
+                  <div class="form-group col-md-6">
+                    <label for="exampleInputEmail1">Código postal</label>
+                    <input type="text" readonly required="true" name="codigoPostal" class="form-control" v-model="codigoPostal" placeholder="3355">
+                    {!!$errors->first('codigoPortal','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group col-md-6">
@@ -96,11 +129,7 @@
                     {!!$errors->first('puntoReferencia','<small>:message</small><br>')!!}
                   </div>
 
-                  <div class="form-group col-md-6">
-                    <label for="exampleInputEmail1">Código postal</label>
-                    <input type="text" required="true" name="codigoPostal" class="form-control" id="codigoPostal" placeholder="3355">
-                    {!!$errors->first('codigoPortal','<small>:message</small><br>')!!}
-                  </div>
+                  
 
                   <div class="form-group col-md-6">
                     <label>Número de Telefono 1</label>
@@ -109,7 +138,8 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-phone"></i></span>
                       </div>
-                      <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
+                      <input type="text" required="true" name="primerTelefono" class="form-control"  placeholder="Primero telefono">
+                      {!!$errors->first('primerTelefono','<small>:message</small><br>')!!}
                     </div>
                     <!-- /.input group -->
                   </div>
@@ -121,7 +151,8 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-phone"></i></span>
                       </div>
-                      <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
+                      <input type="text" required="true" name="segundoTelefono" class="form-control"  placeholder="Segundo telefono">
+                    {!!$errors->first('segundoTelefono','<small>:message</small><br>')!!}
                     </div>
                     <!-- /.input group -->
                   </div>
@@ -129,14 +160,17 @@
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Observación</label>
                     
-                    <textarea required="true" name="descripcion" id="descripcion" class="form-control" rows="3" placeholder="Ingrese una pequeña observación de su a cerca de su dirección"></textarea>
+                    <textarea  name="descripcion" id="descripcion" class="form-control" rows="3" placeholder="Ingrese una pequeña observación de su a cerca de su dirección"></textarea>
                     {!!$errors->first('observacion','<small>:message</small><br>')!!}
                   </div>
 
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary float-right">Agregar dirección</button>
+
+                  <a class="btn btn-secondary float-left" href="{{route('direccion.index')}}">Atrás</a>
+
+                  <button type="submit" :disabled='deshabilitarBoton==1' class="btn btn-primary float-right">Agregar dirección</button>
                 </div>
 
               </form>
@@ -155,5 +189,6 @@
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
+  <!-- /.content-wrapper -->  
+</div>
 @endsection

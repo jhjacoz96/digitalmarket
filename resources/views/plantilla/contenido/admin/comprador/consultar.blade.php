@@ -99,6 +99,7 @@
                      
                     </tbody>
                   </table>
+              
                   <div class="box-footer p-3 float-right">
                   <a href="{{route('Comprador.create')}}"  class="btn  btn-info ">Registrar Comprador</a>
             

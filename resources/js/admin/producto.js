@@ -9,7 +9,6 @@ const producto = new Vue({
         divAparecer: false,
         deshabilitarBoton: 1,
         selectedCategoria: '',
-        selectedSubCategoriaa:'',
         selectedSubCategoria: '',
         obtenerSubCategorias: [],
         categorias: [],
@@ -46,6 +45,13 @@ const producto = new Vue({
 
     },
     created() {
+
+        axios.get('/producto/categoria').then(res=>{
+            this.categorias=res.data
+            console.log(this.categorias)
+        }).catch(e=>{
+            console.log(e.respose)
+        })
         
         axios.get('/combinacion/create').then(res => {
             this.grupos = res.data
@@ -55,21 +61,20 @@ const producto = new Vue({
         })
         
         if(data.editar=='si'){
-            axios.get(`/combinacion/${data.datos.id}/edit`).then(res=>{
-                this.listaCombinacion2=res.data
-                //console.log(this.listaCombinacion2)
-            }).catch(e=>{
-                console.log(e.respose)
-            })
+
+            if(data.datos.tipoCliente=='combinacion'){
+                axios.get(`/combinacion/${data.datos.id}/edit`).then(res=>{
+                    this.listaCombinacion2=res.data
+                    //console.log(this.listaCombinacion2)
+                }).catch(e=>{
+                    console.log(e.respose)
+                })
+            }
+
         }
         
-
-        axios.get('/producto/categoria').then(res=>{
-            this.categorias=res.data
-            console.log(this.categorias)
-        }).catch(e=>{
-            console.log(e.respose)
-        })
+    
+        
         
     },
     computed: {
@@ -255,13 +260,12 @@ const producto = new Vue({
                 let url = '/obtenerCategoria/' + this.selectedCategoria
                 axios.get(url).then((res) => {
                     this.obtenerSubCategorias = res.data;
+                    console.log(this.obtenerSubCategorias)
                     document.getElementById('subCategoria_id').disabled = false
                 })
             }
 
         },
-
-
 
         //combinaciones
         convertir: function () {
@@ -494,18 +498,21 @@ const producto = new Vue({
 
         if (data.editar == 'si') {
 
-            document.getElementById('subCategoria_id').disabled = false
+          
 
             this.nombre = data.datos.nombre;
             this.precioAnterior = data.datos.precioAnterior
             this.precioActual = data.datos.precioActual
             this.porcentajeDescuento = data.datos.porcentajeDescuento
-            this.selectedCategoria = data.datos.selectedCategoria
-            /*this.selectedSubCategoriaa = data.datos.selectedSubCategoria
-            this.selectedSubCategoria = data.datos.selectedSubCategoria
-            this.cargarSubCategorias();*/
             
-           
+            
+            this.selectedCategoria=data.datos.selectedCategoria
+
+            this.cargarSubCategorias()
+            
+            this.selectedSubCategoria=data.datos.selectedSubCategoria
+            
+            
             
            
             if(data.datos.tipoCliente=='combinacion'){

@@ -90,6 +90,10 @@
                         </div>
                         <div class="card-footer">
 
+                          <a href="{{route('categoria.edit',$categoria->slug)}}" class="btn btn-secondary float-left">
+                            Atras
+                          </a>
+
                           <input 
                           :disabled="deshabilitarBoton==1"
                           class="btn btn-primary float-right" type="submit" value="Agregar sub categoria">

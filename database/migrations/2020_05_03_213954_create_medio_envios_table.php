@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDireccionsTable extends Migration
+class CreateMedioEnviosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateDireccionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('direccions', function (Blueprint $table) {
+        Schema::create('medio_envios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre');
-
-            $table->unsignedBigInteger('parroquia_id')->nullable();
-            $table->foreign('parroquia_id')->references('id')->on('parroquias');
+            $table->string('tiempoEntrega');
+            $table->decimal('precioEnvio',12,2)->default(0);
+            $table->string('envioGratis')->default('I');
+            $table->string('status')->default('A');
             $table->timestamps();
         });
     }
@@ -30,7 +31,6 @@ class CreateDireccionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('direccions');
+        Schema::dropIfExists('medio_envios');
     }
 }
-

@@ -103,8 +103,8 @@ class compradorController extends Controller
      */
     public function show($id)
     {
-        $comprador=Comprador::findOrFail($id);
-        
+        $comprador=Comprador::with('direccion')->findOrFail($id);
+      
         return view('plantilla.contenido.admin.comprador.detalle',compact('comprador'));
     }
 

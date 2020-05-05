@@ -40,8 +40,20 @@ const categoria= new Vue({
                         this.divClaseSlug='badge badge-success'
                         this.deshabilitarBoton=0
                     }else{
-                        this.divClaseSlug='badge badge-danger'
-                        this.deshabilitarBoton=1
+
+                        if(data.editar=='si'){
+                            if(data.datos.nombre===this.nombre ){
+                                this.deshabilitarBoton=0;
+                                this.divMensajeSlug=''
+                                this.divClaseSlug=''
+                                this.divAparecer=false
+                            }
+                        }else{
+
+                            this.divClaseSlug='badge badge-danger'
+                            this.deshabilitarBoton=1
+                        }
+
                     }
                     this.divAparecer=true
 
@@ -56,14 +68,7 @@ const categoria= new Vue({
                 
             }
 
-            if(document.getElementById('editar').innerHTML){
-                if(document.getElementById('nombretemp').innerHTML===this.nombre ){
-                    this.deshabilitarBoton=0;
-                    this.divMensajeSlug=''
-                    this.divClaseSlug=''
-                    this.divAparecer=false
-                }
-            }
+            
 
         },
         getSubCategoria(){
@@ -76,11 +81,23 @@ const categoria= new Vue({
                     if(this.divMensajeSlug=="Slug disponible"){
                         this.divClaseSlug='badge badge-success'
                         this.deshabilitarBoton=0
+                        this.divAparecer=true
                     }else{
-                        this.divClaseSlug='badge badge-danger'
-                        this.deshabilitarBoton=1
+                        if(data.editar=='si'){
+                            if(data.datos.nombre===this.nombre ){
+                                this.deshabilitarBoton=0;
+                                this.divMensajeSlug=''
+                                this.divClaseSlug=''
+                                this.divAparecer=false
+                            }
+                        }else{
+
+                            this.divClaseSlug='badge badge-danger'
+                            this.deshabilitarBoton=1
+                            this.divAparecer=true
+                        }
                     }
-                    this.divAparecer=true
+                    
                     
                 })
             }else{
@@ -91,14 +108,7 @@ const categoria= new Vue({
                 
             }
 
-            if(document.getElementById('editar').innerHTML){
-                if(document.getElementById('nombretemp').innerHTML===this.nombre ){
-                    this.deshabilitarBoton=0;
-                    this.divMensajeSlug=''
-                    this.divClaseSlug=''
-                    this.divAparecer=false
-                }
-            }
+           
 
         },
         cargarSubCategorias(){
@@ -114,8 +124,8 @@ const categoria= new Vue({
         }
     },
     mounted() {
-        if(document.getElementById('editar').innerHTML){
-            this.nombre=document.getElementById('nombretemp').innerHTML
+        if(data.editar=='si'){
+            this.nombre=data.datos.nombre
             this.deshabilitarBoton=0
         }
         

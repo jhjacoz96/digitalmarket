@@ -123,6 +123,16 @@ class subCategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $v=Validator::make($request->all(),[
+            'nombre'=>'min:2|required|unique:sub_categorias,nombre,'.$id,
+            'slug'=>'min:2|required|unique:sub_categorias,slug,'.$id
+        ]);
+
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+
         $subCategoria=SubCategoria::findOrFail($id);
         $subCategoria->nombre=$request->nombre;
         $subCategoria->slug=$request->slug;
@@ -143,10 +153,16 @@ class subCategoriaController extends Controller
      */
     public function destroy($id)
     {
+        
         $subCategoria=SubCategoria::findOrFail($id);
-        $categoria=Categoria::where('id',$subCategoria->categoria_id)->first();
-        $subCategoria->delete();
-        flash('Sub categoria eliminada con exito')->success()->important();
-        return redirect()->route('categoria.edit',$categoria->slug);
+       if( count($subCategoria->producto)!=0){
+        flash('No es posible eliminar esta sub categoria ya que posee ' . count($subCategoria->producto) . ' producto(s)')->warning()->important();
+        return redirect()->route('categoria.edit',$subCategoria->categoria->slug);
+       }else{
+           $categoria=Categoria::where('id',$subCategoria->categoria_id)->first();
+           $subCategoria->delete();
+           flash('Sub categoria eliminada con exito')->success()->important();
+           return redirect()->route('categoria.edit',$categoria->slug);
+       }
     }
 }

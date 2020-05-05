@@ -34,3 +34,4 @@ class CreateAtributosTable extends Migration
         Schema::dropIfExists('atributos');
     }
 }
+

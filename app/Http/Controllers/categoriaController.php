@@ -113,14 +113,12 @@ class categoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $v=Validator::make($request->all(),[
-            'nombre'=>'min:2|required|unique:categorias,nombre',
-            'slug'=>'min:2|required|unique:categorias,slug',
-            'tipoLinea'=>'required',
+            'nombre'=>'min:2|required|unique:categorias,nombre,'.$id,
+            'slug'=>'min:2|required|unique:categorias,slug,'.$id
         ]);
 
-        if ($v->fails()) {
+        if ($v->fails()) { 
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
 
@@ -142,6 +140,7 @@ class categoriaController extends Controller
      */
     public function destroy($id)
     {
+       
         $categoria=Categoria::findOrFail($id);
         $sub=$categoria->subCategoria;
         

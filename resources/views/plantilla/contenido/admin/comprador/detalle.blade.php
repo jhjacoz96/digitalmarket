@@ -93,13 +93,65 @@
               <!-- /.card-header -->
               <!-- form start -->
             
-                <div class="card-body text-center">
+              @if(count($comprador->direccion)==0)
+               <div class="card-body text-center">
+                <span >{{$comprador->nombre}} {{$comprador->apellido}} no posee direcciones disponibles. </span>
+                </div>
+              @endif
+              @if(count($comprador->direccion)!=0)
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th>direccion de envio</th>
+                      <th>Código postal</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                     @foreach ($comprador->direccion as $item)
+                         
+                     <tr>
+                          <td class="mailbox-star">{{$item->id}}</td>
+                         <td class="mailbox-star">{{$item->nombre}}</td>
+                         <td class="mailbox-star">{{$item->apellido}}</td>
+                         <td class="mailbox-star">{{$item->zona->parroquia->municipio->estado->nombre}}-{{$item->zona->parroquia->municipio->nombre}}-{{$item->zona->parroquia->nombre}}-{{$item->zona->nombre}}</td>
+                         <td class="mailbox-star">{{$item->zona->codigoPostal}}</td>
+                         
+                         
+                         <td class="mailbox-star">
+                             <div class="btn-group">
+                             
 
-                <span>{{$comprador->nombre}} {{$comprador->nombre}} todavía no posee nunguna direcciòn. </span>
+                             <a href="{{route('direccion.edit',$item->id)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
 
+                                 
+                                 
+                                 <form action="{{route('direccion.destroy',$item)}}" method="POST">
+                                     @method('DELETE')
+                                     @csrf
+                                     <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar esta dircción?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
+                                   </form>
+                                 
+                                 
+                               
+                             </div>
+                         </td>
+                     </tr>
+                     @endforeach
+                          
                       
                   
-                </div>
+                   
+                  </tbody>
+                </table>
+                </div> 
+
+                @endif
+               
                
                
 

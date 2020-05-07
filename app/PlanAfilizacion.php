@@ -16,4 +16,9 @@ class PlanAfilizacion extends Model
         'cantidadPublicacion'
         
     ];
+
+    public function planAfiliacion()
+    {
+        return $this->hasMany('App\Tienda','planAfilizacion_id');
+    }
 }

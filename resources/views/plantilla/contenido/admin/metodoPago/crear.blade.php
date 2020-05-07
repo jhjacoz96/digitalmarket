@@ -41,22 +41,61 @@
                   
 
                   <div class="form-group col-md-6">
-                    <label for="exampleInputEmail1">Nombre</label>
+                    <label for="exampleInputEmail1">Nombre*</label>
                     <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="">
                     {!!$errors->first('nombre','<small>:message</small><br>')!!}
                   </div>
 
+                  <div class="form-group col-md-6 ">
+                    <label for="">Tipo de metodo de pago*</label>
+                    <select name="tipoMetodo" class="form-control" id="">
+                        <option value="">Seleccione una opción</option>
+                        <option value="Transferencias en moneda nacional">Transferencias en moneda nacional</option>
+                        <option value="Transferencias en moneda Internacional">Transferencias en moneda Internacional</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-6 ">
+                    <label for="">Moneda*</label>
+                    <select name="moneda" class="form-control" id="">
+                        <option value="">Seleccione una opción</option>
+                        <option value="Bolivares">Bolivares</option>
+                        <option value="Dolar">Dolar</option>
+                    </select>
+                  </div>
+
                   <div class="form-group col-md-6">
-                    <label for="">Descipción</label>
-                    <input  class="form-control" placeholder="60" name="descripcion"  type="text">
+                    <label for="">Asociar una cuenta bancaria a este metodo de pago</label>
+                    <select name="bancoMetodoPago" class="form-control" id="">
+                        <option value="">Seleccione una cuenta</option>
+                        @foreach ($banco as $item)
+                    <option value="{{$item->id}}">{{$item->nombreBanco}}-{{$item->detalleCuenta}}</option>
+                        @endforeach
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="">Telefono</label>
+                    <input  class="form-control" placeholder="" name="telefono"  type="text">
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="">Correo electrónico</label>
+                    <input  class="form-control" placeholder="" name="correo"  type="text">
                   </div>
 
                   
 
 
+                  <div class="form-group col-md-6">
+                    <label for="">Descipción</label>
+                    <input  class="form-control" placeholder="" name="descripcion"  type="text">
+                  </div>
+
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
+                    <a class="btn btn-secondary" href="{{route('metodoPago.index')}}">Atras</a>
                   <button type="submit"  class="btn btn-primary float-right">Agregar metodo de pago</button>
                 </div>
 

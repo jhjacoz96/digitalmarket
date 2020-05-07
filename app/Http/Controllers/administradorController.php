@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\User;
+use App\Tienda;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
@@ -54,9 +55,17 @@ class administradorController extends Controller
     public function show($id)
     {
         $user=User::findOrFail($id);
-        if($user->rol_id="3"){ 
+        
+        if($user->rol_id=='3'){ 
             return \view('plantilla.contenido.perfil.perfilEmpleado',compact('user'));
         }
+        
+        if($user->rol_id=='2'){ 
+            $tienda=Tienda::findOrFail($user->tienda->id);
+        
+            return \view('plantilla.contenido.perfil.perfilTienda',compact('tienda'),compact('user'));
+        }
+
 
     }
 
@@ -68,9 +77,15 @@ class administradorController extends Controller
      */
     public function edit($id)
     {
+        
         $user=User::findOrFail($id);
-        if($user->rol_id="3"){ 
+        if($user->rol_id=='3'){ 
             return \view('plantilla.contenido.perfil.actualizarPerfil',compact('user'));
+        }
+        if($user->rol_id=='2'){
+            $tienda=$user->tienda;
+            
+            return \view('plantilla.contenido.perfil.actualizarPerfilTienda',compact('tienda'));
         }
     }
 
@@ -83,8 +98,12 @@ class administradorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user=User::findOrFail($id);
-        if($user->rol_id="3"){ 
+       
+        if(\Auth::user()->rol_id==3){
+
+
+            $user=User::findOrFail($id);
+        
 
             $v=Validator::make($request->all(),[
         
@@ -99,11 +118,50 @@ class administradorController extends Controller
             $user->email=$request->correo;
             $user->save();
 
-            flash('La contraseña contraseña ha sido cambiada con exito!')->succes()->important();
+            flash('Perfil actualizado con exito ha sido cambiada con exito!')->succes()->important();
 
 
             return \redirect()->route('administrador.show',$user);
+      
+
         }
+
+        if(\Auth::user()->rol_id=='2'){
+
+   
+        
+            $v=Validator::make($request->all(),[
+        
+                'correo'=>'email|required|unique:tiendas,correo,'.$id
+                
+            ]);
+    
+            if ($v->fails()) {
+                return \redirect()->back()->withInput()->withErrors($v->errors());
+            }
+         
+
+            $user=User::findOrFail(\Auth::user()->id);
+            $user->email=$request->correo;
+            $user->nombre=$request->nombre;
+            $user->apellido=$request->apellido;
+            $user->save();
+
+            $tienda=Tienda::findOrFail($id);
+            $tienda->nombreTienda=$request->nombreTienda;
+            $tienda->nombre=$request->nombre;
+            $tienda->apellido=$request->apellido;
+            $tienda->correo=$request->correo;
+            $tienda->telefono=$request->telefono;
+            $tienda->save();
+
+            flash('Perfil modificado  con exito!')->success()->important();
+
+
+            return \redirect()->route('administrador.show',$user);
+
+        }
+        
     }
 
     public function showPassword($id){
@@ -115,12 +173,23 @@ class administradorController extends Controller
 
     public function updatePassword(request $request ,$id){
         
+        $v=Validator::make($request->all(),[
         
+            'password'=>'required|string|min:8|confirmed'
+            
+        ]);
+
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+
+
         $user=User::findOrFail($id);
         if(Hash::check($request->vieja,$user->password)){
   
             $user->password =  Hash::make($request->password);
             $user->save();
+            flash('la contraseña ha sido actualizada con exito!')->success()->important();
             return redirect()->route('administrador.show',$user);   
          }
          else{

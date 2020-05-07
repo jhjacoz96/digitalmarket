@@ -11,6 +11,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    use Notifiable;
+
     protected $fillable =[
         'nombre','apellidos','email','password','rol_id'
     ];
@@ -32,5 +34,10 @@ class User extends Authenticatable
    public function comprador()
    {
        return $this->hasOne('App\Comprador');
+   }
+
+   public function tienda()
+   {
+       return $this->hasOne('App\Tienda','user_id');
    }
 }

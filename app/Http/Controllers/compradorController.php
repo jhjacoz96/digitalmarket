@@ -187,7 +187,7 @@ class compradorController extends Controller
   
             $user->password =  Hash::make($request->password);
             $user->save();
-            
+            flash('La contraseña ha sido actualizada con exito!')->succsess(); 
             return redirect()->route('Comprador.edit',$comprador);   
          }
          else{

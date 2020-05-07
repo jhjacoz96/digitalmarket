@@ -8,8 +8,11 @@ use App\Categoria;
 use App\SubCategoria;
 use App\Combinacion;
 use App\Atributo;
+use App\Tienda;
 use App\GrupoAtributo;
 use App\Imagen;
+
+
 use Illuminate\Support\Facades\File;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Validator;
@@ -26,12 +29,27 @@ class productoController extends Controller
 
     public function index(Request $request)
     {
+
+       
+        
+        if(\Auth::user()->rol_id==3){
+            
+            $nombre=$request->get('nombre');
+              
+              $producto=Producto::with('imagen','subCategoria')->where('nombre','like',"%$nombre%")->paginate(2);
+              
+              return view('plantilla.contenido.admin.producto.consultar',compact('producto'));
+
+        }else{
+
+            $nombre=$request->get('nombre');
+              
+              $producto=Producto::with('imagen','subCategoria')->where('nombre','like',"%$nombre%")->where('tienda_id',\Auth::user()->tienda->id)->paginate(2);
+              
+              return view('plantilla.contenido.tienda.producto.consultar',compact('producto'));
+
+        }
     
-      $nombre=$request->get('nombre');
-        
-        $producto=Producto::with('imagen','subCategoria')->where('nombre','like',"%$nombre%")->paginate(2);
-        
-        return view('plantilla.contenido.admin.producto.consultar',compact('producto'));
     }
 
     
@@ -45,8 +63,11 @@ class productoController extends Controller
     public function create()
     {
         $categoria=Categoria::orderBy('nombre')->get();
-        
+        if(\Auth::user()->rol_id==3){
         return \view('plantilla.contenido.admin.producto.crear',compact('categoria'));
+        }else{
+            return \view('plantilla.contenido.tienda.producto.crear',compact('categoria'));
+        }
     }
 
     /**
@@ -103,6 +124,13 @@ class productoController extends Controller
         $producto->especificaciones=$request->especificaciones;
         $producto->datosInteres=$request->datosInteres;
         $producto->status=$request->status;
+        
+        if(\Auth::user()->rol_id=='2'){
+            $producto->tienda_id=\Auth::user()->tienda->id;
+        }else{
+            $tienda=Tienda::where('codigo',$request->codigo)->first();
+            $producto->tienda_id=$tienda->id;
+        }
 
         //$Producto->tipoProducto=$request->tipoProd;
 
@@ -336,4 +364,16 @@ class productoController extends Controller
 
         return  redirect()->route('producto.index');
     }
+
+    public function obtenerTienda($codigo){
+        
+        if(Tienda::where('codigo',$codigo)->first()){
+            $tienda=Tienda::where('codigo',$codigo)->first();
+            return $tienda;
+        }else{
+            return 'No hay registros de esta tienda';
+                }
+      
+    }
+
 }

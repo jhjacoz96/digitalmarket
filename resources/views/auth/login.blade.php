@@ -58,7 +58,14 @@
       </form>
 
       <p class="mb-1">
-        <a href="forgot-password.html">Olvidé mi contraseña</a>
+        
+
+        @if (Route::has('password.request'))
+            <a class="btn btn-link" href="{{ route('password.request') }}">
+                {{ __('¿Ha olvidado su contraseña?') }}
+            </a>
+        @endif
+
       </p>
       <p class="mb-0">
       Si aún no se ha registrado, puede hacerlo como <a href="register.html" class="text-center">tienda</a> o como <a href="{{route('register')}}" class="text-center">comprador</a>

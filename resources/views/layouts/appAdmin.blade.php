@@ -127,6 +127,12 @@
             </a>
           @endif
 
+          @if (Auth::user()->rol_id=="2")
+        <a href="{{route('administrador.show',Auth::user()->id)}}" class="dropdown-item">
+              Perfil
+            </a>
+          @endif
+
           <div class="dropdown-divider"></div>
 
             <a class="dropdown-item" href="{{ route('logout') }}"
@@ -150,6 +156,12 @@
   @if(Auth::user()->rol_id=="3")
   @include('plantilla.sider.siderAdministrador')
   @endif
+
+  @if(Auth::user()->rol_id=="2")
+  @include('plantilla.sider.siderTienda')
+  @endif
+
+
 
   @yield('contenido','default')
 

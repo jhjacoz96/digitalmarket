@@ -40,7 +40,7 @@
 @section('contenido')
 
 <div id="producto">
-<form action="{{route('producto.store')}}" method="post" enctype="multipart/form-data">
+<form action="{{route('tienda.producto.store')}}" method="post" enctype="multipart/form-data">
     @csrf
 
 <div class="content-wrapper">
@@ -186,7 +186,7 @@
 
                         </div>
                         
-                        <label>Cantidad</label>
+                        <label>Cantidad de productos</label>
                         <input class="form-control"  type="number" id="cantidad"  name="cantidad" value="0" >
                       </div>
                       <!-- /.form-group -->
@@ -222,14 +222,14 @@
                     <div class="card-header">
                       <h3 class="card-title">
                         <i class="fas fa-bullhorn"></i>
-                        Imporfacion importante
+                       ¿Como funciona las combinacines?
                       </h3>
                     </div>
           
-                    <h5></h5>
+                  
           
-                    <p>  Para agregar combinaciones, primero debe crear grupos de atributos y atributos adecuados en <a href="{{route('grupoAtributo.index')}}">Grupos de atributos</a> .
-                      Cuando termine, puede ingresar los atributos deseados (como "tamaño" o "color") y sus respectivos valores ("10kg", "rojo", etc.) en el campo a continuación; o simplemente selecciónelos de la columna derecha. Luego haga clic en "Generar": ¡creará automáticamente todas las combinaciones para usted!</p>
+                    <p>
+                      Selecciones  los grupos de atributos  (columna derecha) deseados (como "tamaño" o "color") y sus respectivos atributos ("10kg", "rojo", etc.). Luego haga click en "Generar": ¡creará automáticamente todas las combinaciones para usted!</p>
                   </div>
 
                   <div class="row">
@@ -331,6 +331,9 @@
       
               <div class="card card-secondary">
                 <div class="card-header">
+
+                
+
                   <h3 class="card-title">Sección de Precio</h3>
       
                   
@@ -338,9 +341,12 @@
                 <!-- /.card-header -->
                 <div class="card-body">
 
+                  <p class="lead">Precio unitario</p>
+                  <hr>
+
                   <div class="row">
                     <div class="col-md-6">
-                      <label for="">Precio unitario del producto</label>
+                      <label for="">Precio </label>
                       <input 
                         v-model.numer="precioAnterior"
                         class="form-control" type="number" id="precioAnterior" name="precioAnterior" min="0" value="0" step=".01"> 
@@ -435,9 +441,8 @@
 
                   <div class="row">
                     <div class="col-md-12">
-                   <p class="lead">Precio específico</p>
+                      <p class="lead">Precios específicos</p>
                       <hr>
-                
                   </div>
                     <div class="col-md-3">
                       <div class="form-group">
@@ -613,16 +618,9 @@
                     <div class="col-md-6">
                       <div class="form-group">
       
-                        <label>Código de la tienda</label>
-                        <input  class="form-control" type="text" id="tienda" name="tienda" 
-                        @blur="obtenerTienda"
-                        @focus="divAparecerTienda=true"
-                        v-model="tienda" >
-                        <div v-if="divAparecerTienda " v-bind:class="divClaseTienda">
-                          @{{divMensajeTienda}}
-                      </div>
-                      <br v-if="divAparecer">
-                        {!!$errors->first('tienda','<small>:message</small><br>')!!}
+                        <label>Estado</label>
+                        <input  class="form-control" type="text" id="estado" name="estado" value="Nuevo">
+      
                        
                       </div>
                       <!-- /.form-group -->
@@ -639,12 +637,7 @@
       
                           </div>
       
-                          <div class="form-group">
-                          <div class="custom-control custom-switch">
-                            <input type="checkbox"  class="custom-control-input" id="sliderPrincipal" name="sliderPrincipal">
-                            <label class="custom-control-label" for="sliderPrincipal">Aparece en el Slider principal</label>
-                          </div>
-                        </div>
+                        
       
                         </div>
       
@@ -685,7 +678,7 @@
          
                 <!-- /.card-body -->
                 <div class="card-footer">
-                <a class="btn btn-secondary float-left"  href="{{route('producto.index')}}">Volver</a>
+                <a class="btn btn-secondary float-left"  href="{{route('tienda.producto.index')}}">Volver</a>
                   <input  
                          :disabled="deshabilitarBoton==1"        
                         type="submit" value="Agregar producto" class="btn btn-primary float-right">

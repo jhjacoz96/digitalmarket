@@ -40,7 +40,7 @@ class metodoEnvioController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+    
      
         $v=Validator::make($request->all(),[
             'nombre'=>'required',

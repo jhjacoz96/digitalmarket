@@ -16,12 +16,12 @@ class CreateMetodoPagosTable extends Migration
         Schema::create('metodo_pagos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre');
-            $table->string('descripcion');
+            $table->string('descripcion')->nullable();
             $table->string('tipoPago');
             $table->string('moneda');
             $table->string('telefono')->nullable();
             $table->string('correo')->nullable();
-            $table->unsignedBigInteger('bancoMetodoPago_id');
+            $table->unsignedBigInteger('bancoMetodoPago_id')->nullable();
             $table->foreign('bancoMetodoPago_id')->references('id')->on('banco_metodo_Pagos');
             $table->timestamps();
         });

@@ -52,8 +52,11 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'nombre' => ['required', 'string', 'max:255'],
-            'apellido' => ['required', 'string', 'max:255'],
+            'nombre' => [ 'string', 'max:255'],
+            'apellido' => [ 'string', 'max:255'],
+            'nombreTienda' => ['string', 'max:255'],
+            'nombreEncargado' => ['string', 'max:255'],
+            'apellidoEncargado' => ['string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -73,8 +76,8 @@ class RegisterController extends Controller
             if($data['rol_id']==1){
 
                 $user=new User();
-            /* $user->nombre= $data['nombre'];
-                $user->apellido = $data['apellido'];*/
+                 $user->nombre= $data['nombre'];
+                $user->apellido = $data['apellido'];
                 $user->email = $data['email'];
                 $user->password = Hash::make($data['password']);
                 $user->rol_id = $data['rol_id'];
@@ -93,20 +96,22 @@ class RegisterController extends Controller
 
             if($data['rol_id']==2){
                 $user=new User();
-            /* $user->nombre= $data['nombre'];
-                $user->apellido = $data['apellido'];*/
+                $user->nombre= $data['nombreEncargado'];
+                $user->apellido = $data['apellidoEncargado'];
                 $user->email = $data['email'];
                 $user->password = Hash::make($data['password']);
                 $user->rol_id = $data['rol_id'];
                 $user->save();
 
                 $tienda=new Tienda();
-                $tienda->nombre=$data['nombre'];
+                $tienda->nombreTienda=$data['nombreTienda'];
+                $tienda->nombre= $data['nombreEncargado'];
+                $tienda->apellido = $data['apellidoEncargado'];
                 $tienda->correo=$data['email'];
 
                 $numero=count(Tienda::All()) + 1;
-                $nombre=strtoupper($data['nombre']);
-                
+                $nombre=strtoupper($data['nombreTienda']);
+
 
                 $tienda->codigo=$nombre[0].$nombre[1]. 00 .$numero;
                 $tienda->user_id=$user->id;

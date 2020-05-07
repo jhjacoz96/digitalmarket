@@ -36,7 +36,8 @@ Route::get('/', function () {
     $rol->save();
     
     $user=new User();
-  
+    $user->nombre = 'jhon';
+    $user->apellido = 'contreras';
     $user->email = 'jhjacoz96@gmail.com';
     $user->password = Hash::make('12345678');
     $user->rol_id =3;
@@ -75,6 +76,7 @@ Route::resource('SubCategoria','subCategoriaController');
 Route::get('traerCategoria/{categoria}',
 'subCategoriaController@traer')->name('traerCategoria.traer');
 
+route::get('obtenerTienda/{tienda}','productoController@obtenerTienda');
 Route::get('obtenerCategoria/{categoria_id}','productoController@getSubCategoria');
 Route::get('producto/categoria','productoController@Categoria')->name('producto.categoria');
 Route::resource('producto','productoController');
@@ -155,3 +157,11 @@ route::resource('metodoPago','metodoPagoController');
 route::resource('bancoMetodoPago','bancoMetodoPagoController');
 
 // fin de metodo de pago//
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+route::prefix('tienda')->name('tienda.')->group(function(){
+    route::resource('producto','productoController');
+});

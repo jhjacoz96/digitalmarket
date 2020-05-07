@@ -16147,6 +16147,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var producto = new Vue({
   el: '#producto',
   data: (_data = {
+    tiendas: [],
+    tienda: '',
     nombre: '',
     slug: '',
     tipoProducto: '',
@@ -16177,7 +16179,7 @@ var producto = new Vue({
     atributos: [],
     listaCombinacion: [],
     listaCombinacion2: []
-  }, _defineProperty(_data, "tipoProducto", ''), _defineProperty(_data, "disableCantidad", false), _defineProperty(_data, "editarActivo", false), _data),
+  }, _defineProperty(_data, "tipoProducto", ''), _defineProperty(_data, "disableCantidad", false), _defineProperty(_data, "editarActivo", false), _defineProperty(_data, "divMensajeTienda", ''), _defineProperty(_data, "divClaseTienda", ''), _defineProperty(_data, "divAparecerTienda", false), _data),
   created: function created() {
     var _this = this;
 
@@ -16535,7 +16537,7 @@ var producto = new Vue({
         //this.listaCombinacion=r
 
         this.select = [];
-        console.log(this.listaCombinacion);
+        this.value = JSON.stringify(this.listaCombinacion);
       }
     },
     editarCombinacion: function editarCombinacion(items) {
@@ -16570,6 +16572,34 @@ var producto = new Vue({
       })["catch"](function (e) {
         console.log(e);
       });
+    },
+    obtenerTienda: function obtenerTienda() {
+      var _this7 = this;
+
+      if (this.tienda != '') {
+        axios.get('/obtenerTienda/' + this.tienda).then(function (res) {
+          console.log(res.data);
+
+          if (res.data == 'No hay registros de esta tienda') {
+            _this7.divMensajeTienda = 'No hay registros de esta tienda';
+            _this7.divClaseTienda = 'badge badge-danger';
+            _this7.aparecerTienda == true;
+            _this7.deshabilitarBoton = 1;
+          } else {
+            _this7.divMensajeTienda = res.data.nombreTienda;
+            _this7.divClaseTienda = 'badge badge-info';
+            _this7.aparecerTienda == true;
+            _this7.deshabilitarBoton = 0;
+          }
+        })["catch"](function (e) {
+          console.log(e.response);
+        });
+      } else {
+        this.divMensajeTienda = 'Debe indicar un código valido';
+        this.divClaseTienda = 'badge badge-danger';
+        this.aparecerTienda = true;
+        this.deshabilitarBoton = 1;
+      }
     }
   },
   mounted: function mounted() {

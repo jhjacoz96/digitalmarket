@@ -1,6 +1,8 @@
 const producto = new Vue({
     el: '#producto',
     data: {
+        tiendas:[],
+        tienda:'',
         nombre: '',
         slug: '',
         tipoProducto:'',
@@ -41,7 +43,13 @@ const producto = new Vue({
         disableCantidad:false,
 
         //diarCombinacion
-        editarActivo:false
+        editarActivo:false,
+
+
+        //TIENDa
+        divMensajeTienda: '',
+        divClaseTienda: '',
+        divAparecerTienda: false
 
     },
     created() {
@@ -458,7 +466,9 @@ const producto = new Vue({
                 //this.listaCombinacion = JSON.stringify(r)
                 //this.listaCombinacion=r
                 this.select=[]
-                console.log(this.listaCombinacion)
+
+                this.value = JSON.stringify(this.listaCombinacion)
+               
 
             }
         },
@@ -489,6 +499,35 @@ const producto = new Vue({
             }).catch(e=>{
                 console.log(e)
             })
+        },
+
+        obtenerTienda(){
+            if(this.tienda!=''){
+                axios.get('/obtenerTienda/'+this.tienda).then(res=>{
+                    console.log(res.data)
+                    
+                    if(res.data=='No hay registros de esta tienda'){
+                        
+                        this.divMensajeTienda='No hay registros de esta tienda'
+                        this.divClaseTienda='badge badge-danger'
+                        this.aparecerTienda==true
+                        this.deshabilitarBoton=1
+                    }else{
+                        this.divMensajeTienda=res.data.nombreTienda
+                        this.divClaseTienda='badge badge-info'
+                        this.aparecerTienda==true
+                        this.deshabilitarBoton=0
+                    }
+                    
+                }).catch(e=>{
+                    console.log(e.response)
+                })
+            }else{
+                this.divMensajeTienda='Debe indicar un código valido'
+                this.divClaseTienda='badge badge-danger'
+                this.aparecerTienda=true
+                this.deshabilitarBoton=1
+            }
         }
 
     },
@@ -511,10 +550,7 @@ const producto = new Vue({
             this.cargarSubCategorias()
             
             this.selectedSubCategoria=data.datos.selectedSubCategoria
-            
-            
-            
-           
+
             if(data.datos.tipoCliente=='combinacion'){
                 document.getElementById('customRadio2').checked=true
                 

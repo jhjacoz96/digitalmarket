@@ -6,15 +6,19 @@
 @section('estilos')
 <link rel="stylesheet" type="text/css" href="{{asset('asset/styles/main_styles.css') }}">
 <link rel="stylesheet" type="text/css" href="{{asset('asset/styles/responsive.css') }}">
+<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+
 @endsection
 
 @section('seccion')
+
 <div class="super_container_inner">
     <div class="super_overlay"></div>
 
     <!-- Home -->
-
+ 
     <div class="home">
+   
         <!-- Home Slider -->
         <div class="home_slider_container">
             <div class="owl-carousel owl-theme home_slider">

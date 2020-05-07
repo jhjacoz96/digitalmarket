@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Laracasts\Flash\Flash;
+use Illuminate\Support\Facades\Validator;
+use App\BancoMetodoPago;
+use App\MetodoPago;
 
 class metodoPagoController extends Controller
 {
@@ -11,9 +15,12 @@ class metodoPagoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $nombre=$request->get('nombre');
+    
+        $pago=metodoPago::where('nombre','like',"%$nombre%")->paginate(2);
+        return view('plantilla.contenido.admin.metodoPago.consultar',compact('pago'));
     }
 
     /**
@@ -22,8 +29,9 @@ class metodoPagoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('plantilla.contenido.admin.metodoPago.crear');
+    {     
+        $banco=BancoMetodoPago::All();
+        return view('plantilla.contenido.admin.metodoPago.crear',compact('banco'));
     }
 
     /**
@@ -34,7 +42,17 @@ class metodoPagoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $metodo=new MetodoPago();
+        $metodo->nombre=$request->nombre;
+        $metodo->descripcion=$request->descripcion;
+        $metodo->tipoPago=$request->tipoMetodo;
+        $metodo->moneda=$request->moneda;
+        $metodo->telefono=$request->telefono;
+        $metodo->correo=$request->correo;
+        $metodo->bancoMetodoPago_id=$request->bancoMetodoPago;
+        $metodo->save();
+        \flash('Metodo de pago agregado con exito')->important()->success();
+        return \redirect()->route('metodoPago.create');
     }
 
     /**
@@ -56,7 +74,9 @@ class metodoPagoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cuenta=BancoMetodoPago::All();
+        $banco=MetodoPago::findOrFail($id);
+        return view('plantilla.contenido.admin.metodoPago.modificar',compact('cuenta'),compact('banco'));
     }
 
     /**
@@ -68,7 +88,17 @@ class metodoPagoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $bancos=MetodoPago::findOrFail($id);
+        $bancos->nombre=$request->nombre;
+        $bancos->descripcion=$request->descripcion;
+        $bancos->tipoPago=$request->tipoMetodo;
+        $bancos->moneda=$request->moneda;
+        $bancos->telefono=$request->telefono;
+        $bancos->correo=$request->correo;
+        $bancos->bancoMetodoPago_id=$request->bancoMetodoPago;
+        $bancos->save();
+        \flash('Metodo de pago modificado con exito')->important()->success();
+        return \redirect()->route('metodoPago.index');
     }
 
     /**

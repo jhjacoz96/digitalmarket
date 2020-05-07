@@ -1,26 +1,45 @@
 @extends('layouts.appAdmin')
 
 @section('estilos')
+    
 <!--<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">-->
-<!-- Select2 -->
 <link rel="stylesheet" href="{{asset('adminlte/plugins/select2/css/select2.min.css')}}">
 <link rel="stylesheet" href="{{asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+
+<link rel="stylesheet" href="{{asset('adminlte/plugins/ekko-lightbox/ekko-lightbox.css')}}">
 
 @endsection
 
 @section('scripts')
+    
 <!--<script src="https://unpkg.com/vue-multiselect@2.1.0"></script>-->
+
 <script src="/adminlte/ckeditor/ckeditor.js"></script>
 
 <!-- select2---->
 <script src="{{asset('adminlte/plugins/select2/js/select2.full.min.js')}}"></script>
 
+<script src="{{asset('adminlte/plugins/ekko-lightbox/ekko-lightbox.min.js')}}"></script>
 
 <script>
 
-  window.data={
-    editar:'no'
-  }
+    window.data={
+  
+      editar:'si',
+      datos:{
+        "nombre":"{{$producto->nombre}}",
+        "precioAnterior":"{{$producto->precioAnterior}}",
+        "precioActual":"{{$producto->precioActual}}",
+        "porcentajeDescuento":"{{$producto->porcentajeDescuento}}",
+        "selectedCategoria":"{{$producto->subCategoria->categoria->id}}",
+        "selectedSubCategoria":"{{$producto->subCategoria->id}}",
+        "tipoCliente":"{{$producto->tipoCliente}}",
+        "slug":"{{$producto->slug}}",
+        "id":"{{$producto->id}}"
+      }
+          
+  
+    }
 
   
   $(function () {
@@ -31,7 +50,18 @@
       $('.select2bs4').select2({
         theme: 'bootstrap4'
       })
-    })
+    
+
+ //Uso de lightbox
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+      event.preventDefault();
+      $(this).ekkoLightbox({
+        alwaysShowClose: true
+      });
+    });
+
+})
+
   
   </script>
 
@@ -40,8 +70,9 @@
 @section('contenido')
 
 <div id="producto">
-<form action="{{route('producto.store')}}" method="post" enctype="multipart/form-data">
-    @csrf
+<form action="{{route('tienda.producto.update',$producto)}}" method="post" enctype="multipart/form-data">
+  @method('PUT')
+  @csrf
 
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -61,7 +92,7 @@
           <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
           <li class="breadcrumb-item"><a href="{{route('Plan.index')}}">Consultar</a></li>
-            <li class="breadcrumb-item active">Agregar</li>
+            <li class="breadcrumb-item active">Modificar producto</li>
           </ol>
 
       </div>
@@ -69,9 +100,6 @@
   </section>
     <!-- Main content -->
     <section class="content">
-
-      
-
       <div class="container-fluid">
         <div class="row">
           <!-- left column -->
@@ -80,26 +108,71 @@
 
           <div class="col-md-12">
 
+            <div class="row">
 
+              <div class="col-md-6">
+                <div class="form-group">
+  
+  
+                  <div class="info-box">
+                    <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+      
+                    <div class="info-box-content">
+                      <span class="info-box-text">Ventas</span>
+                      <span class="info-box-number">{{$producto->ventas}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                  </div>
+  
+                 
+                </div>
+                <!-- /.form-group -->
+    
+              </div>
+              
+              <div class="col-md-6">
+                <div class="form-group">
+  
+  
+                  <div class="info-box">
+                    <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+      
+                    <div class="info-box-content">
+                      <span class="info-box-text">Visitas</span>
+                      <span class="info-box-number">{{$producto->visitas}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                  </div>
+  
+                 
+                </div>
+                <!-- /.form-group -->
+    
+              </div>
+            </div>
+      
+      
               <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Datos del producto</h3>
       
                 
                 </div>
-                <!-- /.card-header -->
+                <!-- /.card-ºheader -->
                 <div class="card-body">
+
                   <div class="row">
-                    
+
                     <div class="callout callout-info">
                       <h5>Tipos de producto</h5>
     
-                      <p>Puede elegir entre dos tipos de productos:<p> <p></a><strong>Común</strong>, solo podrá indicar una  cantidad de produtos de forma general.</p>
-                      <p><strong>Variantes de atributos</strong>, Las combinaciones son las diferentes variaciones de un producto, con atributos como su tamaño, peso o color que toman diferentes valores. ¿Su producto requiere combinaciones?.</p>
+                      <p>Puede elegir entre dos tipos de productos:<p> <strong>Común</strong>, solo podrá indicar una  cantidad de produtos de forma general.</p>
+                      <p><strong>Variantes de atributos</strong>, Tendra la posibilidad de realizar combinaciones entre los atributos de los distintos grupos de atributos, y asi poder asignar un stock distinto a cada combinación generada.</p>
                     </div>
 
                     <div class="col-md-12">
-                      
+
+
                       <div class="form-group">
                         <label for="">Seleccione un tipo de producto</label>
                         <div class="custom-control custom-radio">
@@ -112,95 +185,82 @@
                         </div>
                       </div>
                     </div>
-                    
 
-                    <div class="col-md-6">
-
-
-                      <div class="form-group">
-      
-                        <label>Nombre</label>
-                        <input v-model="nombre" class="form-control" type="text"  name="nombre"
-                        @blur="getProducto"
-                        @focus="divAparecer=true"
-                        >
-                        {!!$errors->first('nombre','<small>:message</small><br>')!!}
-                        <label>Slug</label>
-                        <input class="form-control" type="text" id="slug" name="slug" 
-                        readonly
-                        v-model="generarSlug" 
-                        >
-                        <div v-if="divAparecer " v-bind:class="divClaseSlug">
-                            @{{divMensajeSlug}}
-                        </div>
-                        <br v-if="divAparecer">
-                        {!!$errors->first('slug','<small>:message</small><br>')!!}
-                      </div>
-                      <!-- /.form-group -->
-                      
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        
-                        <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
                           
-                          <div class="col-md-6">
-                          
-                          <label>Categoria</label>
-                          
-                          <select  v-model="selectedCategoria"  data-old="{{old('categoria_id')}}" @change="cargarSubCategorias" name="categoria_id" id="categoria_id" class="form-control" style="width: 100%;">
-  
-                              <option value=""  >Seleccione una categoria</option>
-                              
-                              @foreach($categoria as $categorias)
-                              
-                              @if ($loop->first)
-                                  <option value="{{ $categorias->id }}">{{ $categorias->nombre }}</option>
-                              @else
-                                  <option value="{{ $categorias->id }}">{{ $categorias->nombre }}</option>
-                                                             
-                              @endif
-                              @endforeach
-          
-          
-                            </select>
-                           
-                            
-
-                        </div>
-                            <div class="col-md-6">
-                             
-                             
-                          <label>Sub categoria</label>
-                          
-                            <select v-model="selectedSubCategoria" name="subCategoria_id" id="subCategoria_id" data-old="{{old('subCategoria_id')}}" class="form-control select2" style="width: 100%;">
-  
-                              <option value="" selected="selected" >Seleccione una categoria</option>
-                              
-                              <option v-for="(subCategoria,index) in obtenerSubCategorias" v-bind:value="index">@{{subCategoria}}</option>
-          
-                            </select>
-                         
+                          <label>Nombre</label>
+                          <input v-model="nombre" class="form-control" type="text" id="nombre" name="nombre"
+                          @blur="getProducto"
+                          @focus="divAparecer=true"
+                          >
+                          {!!$errors->first('nombre','<small>:message</small><br>')!!}
+                          <label>Slug</label>
+                          <input class="form-control" type="text" id="slug" name="slug" 
+                          readonly
+                          v-model="generarSlug"
+                          >
+                          <div v-if="divAparecer " v-bind:class="divClaseSlug">
+                              @{{divMensajeSlug}}
                           </div>
-
+                          <br v-if="divAparecer">
+                          {!!$errors->first('slug','<small>:message</small><br>')!!}
                         </div>
+                        <!-- /.form-group -->
                         
-                        <label>Cantidad</label>
-                        <input class="form-control"  type="number" id="cantidad"  name="cantidad" value="0" >
                       </div>
-                      <!-- /.form-group -->
-                      
-                      
-
+                      <!-- /.col -->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          
+                          <div class="row">
+                            
+                            <div class="col-md-6">
+                            
+                            <label>Categoria</label>
+                            @{{selectedCategoria}}
+                            <select v-model="selectedCategoria"  data-old="{{old('categoria_id')}}" @change="cargarSubCategorias" id="categoria_id" name="categoria_id"  class="form-control" style="width: 100%;">
+    
+                              <option value="" selected="selected">Seleccione un a categoria</option>
+                                
+                              <option :value="categoria.id" v-for="(categoria,index) in categorias">@{{categoria.nombre}}</option>
+                            
+                            </select>
+                             
+                             
+                              
+                          </div>
+                              <div class="col-md-6">
+                               
+                               
+                            <label>Sub categoria</label>
+                            
+                              <select v-model="selectedSubCategoria" name="subCategoria_id" id="subCategoria_id" data-old="{{old('subCategoria_id')}}" class="form-control select2" style="width: 100%;">
+                                
+                                <option value="" selected="selected" >Seleccione una categoria</option>
+                                
+                                <option v-for="(subCategoria,index)    in obtenerSubCategorias" 
+                                
+                              :value="subCategoria.id" >@{{subCategoria.nombre}}</option>
+                              </select>
+                           
+                            </div>
+                           
+                          </div>
+                          
+                          <label>Cantidad de productos</label>
+                      <input class="form-control" type="number" id="cantidad" name="cantidad" :disabled="disableCantidad==true" value="{{$producto->cantidad}}" >
+                        </div>
+                        <!-- /.form-group -->
+            
+                      </div>
                     </div>
-                    
                     <!-- /.col -->
                   </div>
                   <!-- /.row -->
       
-                 
-                </div>
+      
+                
                 <!-- /.card-body -->
                 <div class="card-footer">
                  
@@ -209,7 +269,6 @@
       
               <!-- /.card -->
 
-              
               <div class="card card-secondary" v-if="tipoProducto=='combinacion'">
                                 
                 <div class="card-header">
@@ -222,14 +281,14 @@
                     <div class="card-header">
                       <h3 class="card-title">
                         <i class="fas fa-bullhorn"></i>
-                        Imporfacion importante
+                        ¿Como funciona las combinacines?
                       </h3>
                     </div>
           
                     <h5></h5>
           
-                    <p>  Para agregar combinaciones, primero debe crear grupos de atributos y atributos adecuados en <a href="{{route('grupoAtributo.index')}}">Grupos de atributos</a> .
-                      Cuando termine, puede ingresar los atributos deseados (como "tamaño" o "color") y sus respectivos valores ("10kg", "rojo", etc.) en el campo a continuación; o simplemente selecciónelos de la columna derecha. Luego haga clic en "Generar": ¡creará automáticamente todas las combinaciones para usted!</p>
+                    <p>
+                      Selecciones  los grupos de atributos  (columna derecha) deseados (como "tamaño" o "color") y sus respectivos atributos ("10kg", "rojo", etc.). Luego haga click en "Generar": ¡creará automáticamente todas las combinaciones para usted!</p>
                   </div>
 
                   <div class="row">
@@ -237,6 +296,7 @@
                     <div class="col-md-4">
                      
                           <div class="form-group" v-for="(item,index) in grupos">
+                            
                             <label for="">@{{item.nombre}}</label>
                             <!--<select v-model="select"   class="form-control"  multiple   >
                             <option   :value="items" v-for="(items,index) in item.atributo">@{{items.nombre}}</option>
@@ -244,13 +304,19 @@
                             <vue-multiselect v-model="select" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="nombre" track-by="id"      
                             :options="item.atributo"
                             :multiple="true" :taggable="true" @tag="addTag"></vue-multiselect>
+                            
                           </div>
+
+
                          
+                       
                     </div>
                     <div class="col-md-8">
   
                         <div class="form-group">
                             
+                         
+
                             <button type="button" class="btn btn-secondary float-right" v-on:click="generarLista()">
                                 combinar
                             </button>
@@ -263,7 +329,7 @@
                         
                         <input type="hidden" v-model="value" name="value">
                         
-    
+                            
                         <div class="card-body table-responsive p-0" v-if="aparecer">
                             <table class="table table-hover"  >
                                 <thead>
@@ -316,7 +382,7 @@
                 </div>
                 
                 <div class="card-footer">
-                        
+                
                         <button v-on:click.prevent="convertir()" class="btn btn-primary" type="button" >
                             formato
                         </button>
@@ -327,20 +393,114 @@
 
 
 
+                  <div class="card card-secondary" v-if="tipoProducto=='combinacion'">
+                                
+                    <div class="card-header">
+                        <h3 class="card-title">Mis combinaciones</h3>
+                    </div>
+                    <div class="card-body">
 
+                  
+
+                      <div class="row">
+
+      
+                        
+                        <div class="col-md-6 col-sm-6" v-if="editarActivo">
+                         
+                            <div class="form-group">
+                              <input class="form-control" type="text" v-model='combinacion.cantidad'>
+                            </div>
+                            <button class="btn btn-secondary" @click.prevent="editarActivo=false"  >
+                              Cancelar
+                            </button>
+                            <button type="button" @click.prevent="actualizarCombinacion(combinacion)" class="btn btn-primary float-right">Modificar combinación</button>
+                          
+                        </div>
+                        
+                        <div class="col-md-6">
+                      
+                          <div class="card-body table-responsive p-0" >
+                           <table class="table table-hover"  >
+                               <thead>
+                                   <tr>
+                                       <th scope="col">#</th>
+                                       <th scope="col">Variante</th>
+                                       <th scope="col">Cantidad</th>
+                                     
+   
+   
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <tr v-for="( items, index) in listaCombinacion2"  :key="index"  >
+   
+                                       <td scope="row">@{{index+1}}</td>
+   
+                                       <td>
+                                           <div v-for="(item, index) in items.atributo" :key="index">
+                                              @{{item.nombre}}
+                                           </div>
+                                       </td>
+   
+                                       <td>
+                                           <input v-model="items.cantidad" class="col-md-4" type="text">
+                                       </td>
+   
+                                       
+   
+                                       <td>
+                                           <a href="" @click.prevent="eliminarCombinacionDB(items,index)">
+                                               <i class="fas fa-trash-alt" style="color:red;"></i>
+                                           </a>
+                                       </td>
+                                       
+                                       <td>
+                                           <a href="" @click.prevent="editarCombinacion(items,index)">
+                                               <i class="fas fa-edit" 
+                                               ></i>
+                                           </a>
+                                       </td>
+   
+                                   </tr>
+   
+                                   
+   
+                               </tbody>
+                            </table>
+                          </div>   
+    
+                        </div>
+                      </div>
+                 
+                
+                    </div>
+                    
+                    <div class="card-footer">
+           
+                    </div>
+           
+                  </div>
+
+
+            
+      
       
               <div class="card card-secondary">
                 <div class="card-header">
-                  <h3 class="card-title">Sección de Precio</h3>
+                  <h3 class="card-title">Sección de Precios</h3>
       
                   
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
+                  
+                  <p class="lead">Precio unitario</p>
+                  <hr>
 
                   <div class="row">
                     <div class="col-md-6">
-                      <label for="">Precio unitario del producto</label>
+                      <label for="">Precio </label>
                       <input 
                         v-model.numer="precioAnterior"
                         class="form-control" type="number" id="precioAnterior" name="precioAnterior" min="0" value="0" step=".01"> 
@@ -435,9 +595,8 @@
 
                   <div class="row">
                     <div class="col-md-12">
-                   <p class="lead">Precio específico</p>
+                      <p class="lead">Precios específicos</p>
                       <hr>
-                
                   </div>
                     <div class="col-md-3">
                       <div class="form-group">
@@ -468,7 +627,7 @@
                     </div>
 
                   </div>
-      
+            
       
                 </div>
                 <!-- /.card-body -->
@@ -496,7 +655,9 @@
                       <div class="form-group">
                         <label>Descripción corta:</label>
       
-                        <textarea  class="form-control ckeditor" name="descripcionCorta" id="descripcionCorta" rows="3"></textarea>
+                        <textarea  class="form-control ckeditor" name="descripcionCorta" id="descripcionCorta" rows="3">
+                            {!!$producto->descripcionCorta!!}
+                        </textarea>
                       
                       </div>
                       <!-- /.form group -->
@@ -504,7 +665,9 @@
                      <div class="form-group">
                         <label>Descripción larga:</label>
       
-                        <textarea class="form-control ckeditor" name="descripcionLarga" id="descripcionLarga" rows="5"></textarea>
+                        <textarea class="form-control ckeditor" name="descripcionLarga" id="descripcionLarga" rows="5">
+                            {!!$producto->descripcionLarga!!}
+                        </textarea>
                       
                       </div>                
       
@@ -530,7 +693,9 @@
                       <div class="form-group">
                         <label>Especificaciones:</label>
       
-                        <textarea class="form-control ckeditor" name="especificaciones" id="especificaciones" rows="3"></textarea>
+                        <textarea class="form-control ckeditor" name="especificaciones" id="especificaciones" rows="3">
+                            {!!$producto->especificaciones!!}
+                        </textarea>
                       
                       </div>
                       <!-- /.form group -->
@@ -538,7 +703,9 @@
                      <div class="form-group">
                         <label>Datos de interes:</label>
       
-                        <textarea class="form-control ckeditor" name="datosInteres" id="datosInteres" rows="5"></textarea>
+                        <textarea class="form-control ckeditor" name="datosInteres" id="datosInteres" rows="5">
+                            {!!$producto->datosInteres!!}
+                        </textarea>
                       
                       </div>                
       
@@ -575,11 +742,11 @@
                      accept="image/*" >
                      
                      <div class="description">
-                       Imágenes aquí  
+                       Un número ilimitado de archivos pueden ser argado en este campo.
                        <br>
-                       Tamaño recomendado 800 x 800px 
+                       Limite de 2048MB por imagen.
                        <br>
-                       Formatos permitidos: jpeg,png,jpg,gif,svg.
+                       Tipos permitidos: jpeg,png,jpg,gif,svg.
                        <br>
                      
                       </div>
@@ -596,12 +763,42 @@
                 </div>
               </div>
               <!-- /.card -->
-
-
+      
               
 
-      
-      
+              <div class="card card-secondary">
+                <div class="card-header">
+                  <div class="card-title">
+                    Galería de imagenes
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+
+                    @foreach ($producto->imagen as $imagen)
+
+                  <div class="col-sm-2" id="idimagen-{{$imagen->id}}">
+                      <a href=" {{$imagen->url}}" data-toggle="lightbox" data-title="id:{{$imagen->id}}" data-gallery="gallery">
+                          <img  src="{{$imagen->url}}" class="img-fluid mb-2"/>
+                        </a>
+                        <br>
+                        <a href="{{$imagen->url}}"
+                          v-on:click.prevent="eliminarImagen({{$imagen}})"
+                          >
+                          <i class="fas fa-trash-alt" style="color:red;  "></i>{{$imagen->id}}
+                        </a>
+                      </div>
+                      
+                    @endforeach
+
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
             <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Administración</h3>
@@ -613,16 +810,9 @@
                     <div class="col-md-6">
                       <div class="form-group">
       
-                        <label>Código de la tienda</label>
-                        <input  class="form-control" type="text" id="tienda" name="tienda" 
-                        @blur="obtenerTienda"
-                        @focus="divAparecerTienda=true"
-                        v-model="tienda" >
-                        <div v-if="divAparecerTienda " v-bind:class="divClaseTienda">
-                          @{{divMensajeTienda}}
-                      </div>
-                      <br v-if="divAparecer">
-                        {!!$errors->first('tienda','<small>:message</small><br>')!!}
+                        <label>Estado</label>
+                        <input  class="form-control" type="text" id="estado" name="estado" value="Nuevo">
+      
                        
                       </div>
                       <!-- /.form-group -->
@@ -633,18 +823,19 @@
                           <!-- checkbox -->
                           <div class="form-group clearfix">
                             <div class="custom-control custom-checkbox">
-                              <input type="checkbox" class="custom-control-input" id="status" name="status">
+                              <input type="checkbox" class="custom-control-input" id="status" name="status"
+                              
+                              @if($producto->status='si')
+                                checked
+                              @endif
+
+                              >
                               <label class="custom-control-label" for="status">Activo</label>
                            </div>
       
                           </div>
       
-                          <div class="form-group">
-                          <div class="custom-control custom-switch">
-                            <input type="checkbox"  class="custom-control-input" id="sliderPrincipal" name="sliderPrincipal">
-                            <label class="custom-control-label" for="sliderPrincipal">Aparece en el Slider principal</label>
-                          </div>
-                        </div>
+                          
       
                         </div>
       
@@ -660,7 +851,6 @@
                     <div class="col-md-12">
                       <div class="form-group">
       
-                         
                          
                        
                       </div>
@@ -685,10 +875,10 @@
          
                 <!-- /.card-body -->
                 <div class="card-footer">
-                <a class="btn btn-secondary float-left"  href="{{route('producto.index')}}">Volver</a>
-                  <input  
+                <a class="btn btn-secondary float-left" href="{{route('tienda.justify-content-lg-startproducto.index')}}">volver</a>
+                         <input  
                          :disabled="deshabilitarBoton==1"        
-                        type="submit" value="Agregar producto" class="btn btn-primary float-right">
+                        type="submit" value="Actualizar productos " class="btn btn-primary float-right">
                 </div>
               </div>
               <!-- /.card -->

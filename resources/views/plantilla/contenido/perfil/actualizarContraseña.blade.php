@@ -60,7 +60,7 @@
                   <div class="form-group">
                     <label for="exampleInputPassword1">Nueva contraseña</label>
                     <input type="password" name="password" class="form-control" required id="exampleInputPassword1" placeholder="Ingrese la nueva contraseña" autocomplete="new-password">
-                    
+                    {!!$errors->first('password','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group">

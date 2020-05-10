@@ -39,4 +39,8 @@ class Producto extends Model
     public function combinacion(){
         return $this->hasMany('App\Combinacion','producto_id');
     }
+
+    public function tienda(){
+        return $this->belongsTo('App\Tienda','tienda_id');
+    }
 }

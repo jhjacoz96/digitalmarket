@@ -3,6 +3,9 @@ use App\User;
 use App\Imagen;
 use App\Categoria;
 use App\Rol;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
+
 
 //Rutas para imagenes:
 //1)
@@ -21,6 +24,8 @@ Route::get('/resultados', function () {
 });
 
 Route::get('/', function () {
+    //Mail::to("jhjacoz96@gmail.com")->send(new TestMail("Jhon"));
+    //return "envioado";
     return view('tienda.index');
 
    /* $rol=new Rol();
@@ -157,6 +162,14 @@ route::resource('metodoPago','metodoPagoController');
 route::resource('bancoMetodoPago','bancoMetodoPagoController');
 
 // fin de metodo de pago//
+
+//tienda//
+Route::get('contraseña/{tienda}','tiendaController@showPassword')->name('tienda.password');
+
+Route::post('tiendaContraseña/{tienda}','tiendaController@updatePassword')->name('tienda.updatePassword');
+
+route::resource('tienda','tiendaController');
+//fin de tienda//
 
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////

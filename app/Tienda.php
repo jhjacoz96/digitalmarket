@@ -28,4 +28,8 @@ class Tienda extends Model
     {
         return $this->belongsTo('App\PlanAfilizacion','planAfilizacion_id');
     }
+
+    public function producto(){
+        return $this->hasMany('App\Producto','tienda_id');
+    }
 }

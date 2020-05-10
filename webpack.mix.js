@@ -33,7 +33,7 @@ mix.js('resources/js/app.js', 'public/js')
       'public/asset/plugins/progressbar/progressbar.min.js',
       'public/asset/plugins/parallax-js-master/parallax.min.js',
       'public/asset/js/custom.js',
-  ], 'public/js/all.js');
+  ], 'public/js/all.js');  
 
   
   mix.js('resources/js/appAdmin.js', 'public/js')

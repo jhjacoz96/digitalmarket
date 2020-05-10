@@ -178,8 +178,8 @@
   
                               <option value="" selected="selected" >Seleccione una categoria</option>
                               
-                              <option v-for="(subCategoria,index) in obtenerSubCategorias" v-bind:value="index">@{{subCategoria}}</option>
-          
+                              <option v-for="(subCategoria,index) in obtenerSubCategorias" v-bind:value="subCategoria.id">@{{subCategoria.nombre}}</option>
+
                             </select>
                          
                           </div>

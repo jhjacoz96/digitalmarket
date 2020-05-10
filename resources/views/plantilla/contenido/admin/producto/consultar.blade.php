@@ -78,8 +78,8 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Imagen</th>
                         <th>Nombre</th>
+                        <th>Imagen</th>
                         <th>Cantidad disponible</th>
                         <th>Sub categoria</th>
                         <th>Categoria</th>

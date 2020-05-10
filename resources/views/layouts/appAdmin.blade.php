@@ -30,7 +30,7 @@
 
   </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed ">
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
@@ -40,10 +40,11 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
+     
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="http://localhost/digitalmarket/public/adminlte/index3.html" class="nav-link">Home</a>
+      <a href="{{route('home')}}" class="nav-link">Home</a>
       </li>
-      
+  
     </ul>
 
 
@@ -52,7 +53,7 @@
     <div id="searchAutoComplete" style="position: relative">
     <form class="form-inline ml-3">
         <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Buscar producto" name="nombre" id="nombree" href="{{route('producto.index')}}" v-model="palabraBuscar" v-on:keyup="autoComplete" 
+        <input class="form-control form-control-navbar" type="search" placeholder="Buscar producto" name="nombre"  href="{{route('producto.index')}}" v-model="palabraBuscar" v-on:keyup="autoComplete" 
           v-on:keyup.enter="submitForm" 
           aria-label="Search">
           <div class="input-group-append">
@@ -165,21 +166,23 @@
 
   @yield('contenido','default')
 
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.0.2-pre
-    </div>
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-    reserved.
-  </footer>
-
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
   </aside>
   <!-- /.control-sidebar -->
-</div>
+
 <!-- ./wrapper -->
+
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 3.0.2-pre
+    </div>
+  </footer>
+
+</div>
 
 <script src="{{asset('adminlte/plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap 4 -->

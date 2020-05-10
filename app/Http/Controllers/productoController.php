@@ -128,7 +128,8 @@ class productoController extends Controller
         if(\Auth::user()->rol_id=='2'){
             $producto->tienda_id=\Auth::user()->tienda->id;
         }else{
-            $tienda=Tienda::where('codigo',$request->codigo)->first();
+            $tienda=Tienda::where('codigo',$request->tienda)->first();
+
             $producto->tienda_id=$tienda->id;
         }
 
@@ -164,7 +165,7 @@ class productoController extends Controller
 
         $producto->imagen()->createMany($urlImagenes);
 
-        
+            
         $d=json_decode(($request['value']),true);
         if($d!=null){
             for ($i=0; $i < count($d) ; $i++) { 

@@ -56,7 +56,7 @@ class compradorController extends Controller
             'apellido'=>'min:2|required',
             'correo'=>'email|required|unique:compradors,correo',
             'password_confirmation'=>'required|min:8',
-            'password'=>'required|min:8|confirmed',
+            'password'=>'required|min:8|confirmed'
         ]);
 
         if ($v->fails()) {

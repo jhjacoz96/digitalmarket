@@ -115,7 +115,7 @@
   
   
                   <div class="info-box">
-                    <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+                    <span class="info-box-icon bg-info"><i class="fas fa-shopping-basket"></i></span>
       
                     <div class="info-box-content">
                       <span class="info-box-text">Ventas</span>
@@ -135,7 +135,7 @@
   
   
                   <div class="info-box">
-                    <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+                    <span class="info-box-icon bg-info"><i class="fas fa-eye"></i></span>
       
                     <div class="info-box-content">
                       <span class="info-box-text">Visitas</span>
@@ -243,9 +243,9 @@
                                 
                               :value="subCategoria.id" >@{{subCategoria.nombre}}</option>
                               </select>
-                           
+                              
                             </div>
-                           
+                          
                           </div>
                           
                           <label>Cantidad</label>
@@ -760,8 +760,11 @@
                     <div class="col-md-6">
                       <div class="form-group">
       
-                        <label>Estado</label>
-                        <input  class="form-control" type="text" id="estado" name="estado" value="Nuevo">
+                        <label>Tienda a la que pertenece este producto</label>
+                        <div class="form-group col-md-6">
+
+                        <a href="{{route('tienda.show',$producto->tienda->id)}}" class="btn btn-info btn-sm"><span class="fas fa-eye mr-1"></span>{{$producto->tienda->nombreTienda}} ({{$producto->tienda->codigo}})</a>
+                            </div>
       
                        
                       </div>

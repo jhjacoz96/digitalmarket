@@ -23,10 +23,19 @@ Route::get('/resultados', function () {
     return $imagen; 
 });
 
-Route::get('/', function () {
+route::get('/','indexController@index');
+
+//route::get('/','indexController@index'); 
+
+/*Route::get('/', function () {
+    return view('plantilla.tiendaContenido.index');
+    //return view('tienda.index');
+
+    
+
     //Mail::to("jhjacoz96@gmail.com")->send(new TestMail("Jhon"));
     //return "envioado";
-    return view('tienda.index');
+    
 
    /* $rol=new Rol();
     $rol->name='comprador';
@@ -49,7 +58,7 @@ Route::get('/', function () {
     $user->save();*/
 
 
-});
+//});
 
 
 Auth::routes();
@@ -171,10 +180,52 @@ Route::post('tiendaContraseña/{tienda}','tiendaController@updatePassword')->nam
 route::resource('tienda','tiendaController');
 //fin de tienda//
 
+//Cupones de descuento/////
+route::resource('cupon','cuponController');  
+//fin cupones de descuento/////
+
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-route::prefix('tienda')->name('tienda.')->group(function(){
+route::prefix('tienda')->name('tienda.')->middleware('auth')->group(function(){
     route::resource('producto','productoController');
 });
+
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+//FILTRAR CATEGORIAS
+
+route::get('categorias/{slug}','productoController@productoCategoria')->name('categorias.productos');
+route::get('mainCategorias/{slug}','productoController@mainProductoCategoria')->name('main.categorias.productos');
+
+//FIN DE FILTRAR CATEGORIAS
+
+//DETALLES DE PRODUCTOS
+
+route::get('detalleProducto/{slug}','productoController@detalleProducto')->name('producto.detalle');
+route::get('obtenerGrupo/{slug}','atributoController@grupoCombinacion');
+route::get('obtenerCombinacion/{slug}','atributoController@combinacion');
+//FIN DETALLES DE PRODUCTOS
+
+//carrito de compra/////
+
+route::match(['get','post'],'/agregarCarrito','productoController@agregarCarrito')->name('agregarCarrito');
+route::match(['get','post'],'/carrito','productoController@carrito')->name('carrito');
+
+route::get('/carrito/eliminarProducto/{id}','productoController@eliminarProductoCarrito')->name('carrito.eliminarProducto');
+
+route::get('/carrito/actualizarCantidad/{id}/{cantidad}','productoController@actualizarProductoCarrito');
+
+route::post('carrito/aplicarCupon','cuponController@aplicarDescuento')->name('carrito.aplicarCupon');
+//fin carrito de compra/////
+
+
+
+
+
+
+

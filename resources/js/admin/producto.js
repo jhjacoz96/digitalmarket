@@ -294,8 +294,8 @@ const producto = new Vue({
             }).then((result) => {
                 if (result.value) {
 
-
                     this.listaCombinacion.splice(index, 1)
+                    this.value = JSON.stringify(this.listaCombinacion)
                     
 
                     Swal.fire(

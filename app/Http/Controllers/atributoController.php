@@ -6,15 +6,14 @@ use Illuminate\Http\Request;
 use App\GrupoAtributo;
 use App\Atributo;
 use App\Combinacion;
+use App\Producto;
+
 
 class atributoController extends Controller
 {
 
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
 
     /**
      * Display a listing of the resource.
@@ -55,6 +54,51 @@ class atributoController extends Controller
 
     }
        
+    public function grupoCombinacion($slug){
+        
+        $producto=Producto::where('status','si')->where('slug',$slug)->first();
+
+
+        $combinacion=Combinacion::where('producto_id',$producto->id)->with('atributo')->get();
+        
+        $grupo=$producto->combinacion[0]->atributo;
+        $grupos=[];
+        for ($i=0; $i < count($grupo) ; $i++) { 
+           $f= $grupo[$i]->grupoAtributo;
+            $atributo=[];
+    
+           for ($j=0; $j <count($combinacion) ; $j++) { 
+                $item=$combinacion[$j]['atributo'];
+    
+                for ($k=0; $k < count($item) ; $k++) { 
+    
+                    if($item[$k]['grupoAtributo_id']==$f['id']){
+                       $f=\Arr::add($f,'atributo',$item[$k]);
+                    }
+    
+                }
+    
+           }
+    
+           \array_push($grupos,$f);
+        }
+
+        return $grupos;
+
+
+    }
+
+    public function combinacion(){
+
+        $producto=Producto::where('status','si')->where('slug',$slug)->first();
+
+
+        $combinacion=Combinacion::where('producto_id',$producto->id)->with('atributo')->get(); 
+
+        return $combinacion;
+
+    }
+
     
 
     /**

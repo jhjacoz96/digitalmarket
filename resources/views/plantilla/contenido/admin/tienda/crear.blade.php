@@ -81,7 +81,7 @@
                   </div>
 
 
-                  <p class="lead">Datos de la sesin</p> 
+                  <p class="lead">Datos de la sesión</p> 
                 <hr>
 
                   <div class="form-group col-md-6">
@@ -93,14 +93,14 @@
 
 
                   <div class="form-group col-md-6">
-                    <label for="exampleInputPassword1">Contraseña</label>
-                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Ingrese su contraseña">
+                    <label >Contraseña</label>
+                    <input type="password" name="password" class="form-control" placeholder="Ingrese su contraseña">
                     {!!$errors->first('password','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group col-md-6">
-                    <label for="exampleInputPassword1">Confirme su contraseña</label>
-                    <input type="password" name="password_confirmation" class="form-control" required id="exampleInputPassword1" placeholder="Ingrese de nuevo su contraseña" autocomplete="new-password">
+                    <label >Confirme su contraseña</label>
+                    <input type="password" name="password_confirmation" class="form-control" required  placeholder="Ingrese de nuevo su contraseña" autocomplete="new-password">
                     {!!$errors->first('password_confirmation','<small>:message</small><br>')!!}
                   </div>
                   

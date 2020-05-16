@@ -64,7 +64,7 @@
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Descripción</label>
                     
-                    <textarea required="true" name="descripcion" id="descripcion" class="form-control" rows="3" placeholder="Ingrese una descripcón corta"></textarea>
+                    <textarea  name="descripcion" id="descripcion" class="form-control" rows="3" placeholder="Ingrese una descripcón corta"></textarea>
                     {!!$errors->first('descripcion','<small>:message</small><br>')!!}
                   </div>
 

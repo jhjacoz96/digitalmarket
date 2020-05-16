@@ -26,8 +26,7 @@
 
   <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
 
-  <script src="{{ asset('js/appAdmin.js') }}" defer></script>
-
+  
 </head>
 
 <body class="hold-transition register-page">
@@ -52,276 +51,26 @@
     
 
      <div class="tab-content">
-       <div class="tab-pane active" id="comprador">
-         
-        <form action="{{route('register')}}" method="post">
-          @csrf
-
-          <p class="lead">Información personal</p>
-        <hr>
-
-        
-         <div class="input-group mb-3">
-           <input id="nombre"  name="nombre" 
-           type="text" value="{{ old('nombre') }}" class="form-control @error('nombre') is-invalid @enderror" placeholder="Nombre"
-           >
-           <div class="input-group-append">
-             <div class="input-group-text">
-               <span class="fas fa-user"></span>
-             </div>
-           </div>
-         </div>
-         
-         @error('nombre')
-        <span class="invalid-feedback" role="alert">
-         <strong>{{ $message }}</strong>
-       </span>
-       @enderror
-
-         <div class="input-group mb-3">
-           <input id="apellido" v-model="apellido"  name="apellido" 
-           type="text" value="{{ old('apellido') }}" class="form-control @error('apellido') is-invalid @enderror" placeholder="Apellido"
-           >
-           <div class="input-group-append">
-             <div class="input-group-text">
-               <span class="fas fa-user"></span>
-             </div>
-           </div>
-         </div>
-         
-         @error('apellido')
-        <span class="invalid-feedback" role="alert">
-         <strong>{{ $message }}</strong>
-       </span>
-       @enderror
-
-
-       <p class="lead">Información de inicio de sesión</p>
-        <hr>
-   
-         <div class="input-group mb-3">
-             <input id="email" type="email" v-model="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Correo Electronico">
-           <div class="input-group-append">
-             <div class="input-group-text">
-               <span class="fas fa-envelope"></span>
-             </div>
-           </div>
-         </div>
-         
-         @error('email')
-        <span class="invalid-feedback" role="alert">
-         <strong>{{ $message }}</strong>
-       </span>
-       @enderror
-   
-         <div class="input-group mb-3">
-              <input id="password" v-model="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required  placeholder="password">
-           <div class="input-group-append">
-             <div class="input-group-text">
-               <span class="fas fa-lock"></span>
-             </div>
-           </div>
-         </div>
-         
-         @error('password')
-        <span class="invalid-feedback" role="alert">
-         <strong>{{ $message }}</strong>
-       </span>
-       @enderror
-   
-         <div class="input-group mb-3">
-              <input id="password-confirm" v-model="password_confirmation" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder=" Confirmacion Password">
-           <div class="input-group-append">
-             <div class="input-group-text">
-               <span class="fas fa-lock"></span>
-             </div>
-           </div>
-         </div>
-         
-         @error('password_confirmation')
-        <span class="invalid-feedback" role="alert">
-         <strong>{{ $message }}</strong>
-       </span>
-       @enderror
-
-       <input type="hidden" v-model="rol_id" name="rol_id">
-
-
-      <div class="row">
-        <div class="col-8">
-          <div class="icheck-primary">
-            <input type="checkbox" id="agreeTerms" name="terms" value="agree">
-            <label for="agreeTerms">
-             I agree to the <a href="#">terms</a>
-            </label>
-          </div>
+      
+       <div class="tab-pane active"  id="comprador">
+      
+        <div v-if="rol_id==1">
+          @include('auth.tipoRegister.comprador')
         </div>
-        <!-- /.col -->
-        <div class="col-md-4">
-          <button type="submit" class="btn btn-primary btn-block">Registar</button>
-        </div>
-        <!-- /.col -->
-      </div>
-  
-      <a href="{{route('login')}}" class="text-center">Ya estoy registrado</a>
-
-    </form>
-
-
-      </div>
-
-      <div class="tab-pane" id="tienda">
-        <form action="{{route('register')}}" method="post">
-          @csrf
 
        
-        <p class="lead">Información de la tienda</p>
-        <hr>
-
-        <div class="input-group mb-3">
-          <input   name="nombreTienda" 
-          type="text" value="{{ old('nombreTienda') }}" class="form-control @error('nombreTienda') is-invalid @enderror" placeholder="Nombre de la tienda"
-          >
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
-          </div>
-        </div>
-        
-        @error('nombreTienda')
-       <span class="invalid-feedback" role="alert">
-        <strong>{{ $message }}</strong>
-      </span>
-      @enderror
 
 
-        <div class="input-group mb-3">
-          <input id="nombreEncargado"  name="nombreEncargado" 
-          type="text" value="{{ old('nombreEncargado') }}" class="form-control @error('nombreEncargado') is-invalid @enderror" placeholder="Nombre del encargado"
-          >
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
-          </div>
-        </div>
-        
-        @error('nombreEncargado')
-       <span class="invalid-feedback" role="alert">
-        <strong>{{ $message }}</strong>
-      </span>
-      @enderror
-
-
-      <div class="input-group mb-3">
-        <input id="apellidoEncargado"  name="apellidoEncargado" 
-        type="text" value="{{ old('apellidoEncargado') }}" class="form-control @error('apellidoEncargado') is-invalid @enderror" placeholder="Apellido del encargado"
-        >
-        <div class="input-group-append">
-          <div class="input-group-text">
-            <span class="fas fa-user"></span>
-          </div>
-        </div>
       </div>
-      
-      @error('apellidoEncargado')
-     <span class="invalid-feedback" role="alert">
-      <strong>{{ $message }}</strong>
-    </span>
-    @enderror
 
-
-        <div class="input-group mb-3">
-          <input id="telefono"  name="telefono" 
-          type="text" value="{{ old('telefono') }}" class="form-control @error('telefono') is-invalid @enderror" placeholder="Telefono de contacto"
-          >
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
-          </div>
-        </div>
-        
-        @error('telefono')
-       <span class="invalid-feedback" role="alert">
-        <strong>{{ $message }}</strong>
-      </span>
-      @enderror
+      <div class="tab-pane"  id="tienda">
 
       
-      <p class="lead">Información de inicio de sesión</p>
-        <hr>
+          <div v-if="rol_id==2">
 
-
-  
-        <div class="input-group mb-3">
-            <input id="email" type="email" v-model="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"   placeholder="Correo Electronico">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
+            @include('auth.tipoRegister.tienda')
           </div>
-        </div>
-        
-        @error('email')
-       <span class="invalid-feedback" role="alert">
-        <strong>{{ $message }}</strong>
-      </span>
-      @enderror
-  
-        <div class="input-group mb-3">
-             <input id="password" type="password" v-model="password" class="form-control @error('password') is-invalid @enderror" name="password" required  placeholder="password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        
-        @error('password')
-       <span class="invalid-feedback" role="alert">
-        <strong>{{ $message }}</strong>
-      </span>
-      @enderror
-  
-        <div class="input-group mb-3">
-             <input id="password-confirm" v-model="password_confirmation" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder=" Confirmacion Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        
-        @error('password_confirmation')
-       <span class="invalid-feedback" role="alert">
-        <strong>{{ $message }}</strong>
-      </span>
-      @enderror
-
-      <input type="hidden" v-model="rol_id" name="rol_id">
-
-
-      <div class="row">
-        <div class="col-md-8">
-          <div class="icheck-primary">
-            <input type="checkbox"  value="agree">
-            <label for="agreeTerms">
-             I agree to the <a href="#">terms</a>
-            </label>
-          </div>
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4">
-          <button type="submit" class="btn btn-primary btn-block">Register</button>
-        </div>
-        <!-- /.col -->
-      </div>
-  
-      <a href="{{route('login')}}" class="text-center">Ya estoy registrado</a>
-
-    </form>
+    
 
       </div>
       
@@ -345,6 +94,8 @@
 <script src="{{asset('adminlte/dist/js/adminlte.min.js')}}"></script>
 
 <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+
+<script src="{{ asset('js/appAdmin.js') }}" defer></script>
 
 
 </body>

@@ -233,7 +233,9 @@
                   </div>
 
                   <div class="row">
-
+                    @{{value}}
+                    <br>
+                    @{{listaCombinacion}}
                     <div class="col-md-4">
                      
                           <div class="form-group" v-for="(item,index) in grupos">

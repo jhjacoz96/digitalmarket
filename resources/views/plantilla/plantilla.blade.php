@@ -16,9 +16,7 @@
 
 <link rel="stylesheet" type="text/css" href="{{asset('asset/plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}">
 
-
 @yield('estilos')
-
 
 
 </head>

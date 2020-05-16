@@ -101,8 +101,10 @@ class tiendaController extends Controller
         
         $tienda->save();
 
-       
-        return $user;
+        \flash('Tienda agregada con exito')->success()->important();
+
+        return \redirect()->route('tienda.index');
+        
     }
 
     /**

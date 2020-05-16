@@ -6,8 +6,15 @@ const login= new Vue({
         apellido:'',
         email:'',
         password:'',
-        password:'',
-        password_confirmation:''
+        password_confirmation:'',
+        tipoRegister:'comprador',
+        tipo:''
+    },
+    methods: {
+        cambiarRegister(){
+            console.log('click')
+        }
+      
     }
 
 })

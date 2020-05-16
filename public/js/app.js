@@ -50604,6 +50604,81 @@ var categoria = new Vue({
 
 /***/ }),
 
+/***/ "./resources/js/admin/cupon.js":
+/*!*************************************!*\
+  !*** ./resources/js/admin/cupon.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var cupon = new Vue({
+  el: '#cupon',
+  data: {
+    codigo: '',
+    tipoCupon: '',
+    tipoCantidad: '',
+    cantidad: ''
+  },
+  computed: {
+    generarCantidad: function generarCantidad() {
+      if (this.tipoCupon == 'Porcentaje') {
+        if (this.cantidad > 100) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'No se pude poner un valor mayor a 100!'
+          });
+          this.cantidad = 100;
+        }
+
+        if (this.cantidad < 0) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'No se pude poner un valor menor a 0!'
+          });
+          this.cantidad = 0;
+        }
+      }
+
+      return '';
+    }
+  },
+  methods: {
+    generarCodigo: function generarCodigo() {
+      this.codigo = '';
+      this.codigo = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      return this.codigo;
+    },
+    obtenerTipoCupon: function obtenerTipoCupon() {
+      if (this.tipoCupon == 'Porcentaje') {
+        this.tipoCantidad = 'Porcentaje';
+        this.cantidad = 0;
+      } else {
+        this.tipoCantidad = 'Monto fijo';
+        this.cantidad = 0;
+      }
+
+      console.log(this.tipoCupon);
+    }
+  },
+  mounted: function mounted() {
+    if (data.editar == 'si') {
+      this.cantidad = data.datos.cantidad;
+      this.tipoCupon = data.datos.tipoCupon;
+      console.log(this.tipoCupon);
+
+      if (this.tipoCupon == 'Porcentaje') {
+        this.tipoCantidad = 'Porcentaje';
+      } else {
+        this.tipoCantidad = 'Monto fijo';
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/direccion.js":
 /*!*****************************************!*\
   !*** ./resources/js/admin/direccion.js ***!
@@ -51315,6 +51390,7 @@ var producto = new Vue({
         if (result.value) {
           _this4.listaCombinacion.splice(index, 1);
 
+          _this4.value = JSON.stringify(_this4.listaCombinacion);
           Swal.fire('Eliminado!', 'Su combinación  se ha elimiando', 'success');
         }
       });
@@ -51741,19 +51817,23 @@ __webpack_require__(/*! ./comun */ "./resources/js/comun.js");
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-var _data;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 var login = new Vue({
   el: '#login',
-  data: (_data = {
+  data: {
     rol_id: 1,
     nombre: '',
     apellido: '',
     email: '',
-    password: ''
-  }, _defineProperty(_data, "password", ''), _defineProperty(_data, "password_confirmation", ''), _data)
+    password: '',
+    password_confirmation: '',
+    tipoRegister: 'comprador',
+    tipo: ''
+  },
+  methods: {
+    cambiarRegister: function cambiarRegister() {
+      console.log('click');
+    }
+  }
 });
 
 /***/ }),
@@ -51887,6 +51967,90 @@ if (document.getElementById('metodoEnvio')) {
 if (document.getElementById('metodoPago')) {
   __webpack_require__(/*! ./admin/metodoPago */ "./resources/js/admin/metodoPago.js");
 }
+
+if (document.getElementById('cupon')) {
+  __webpack_require__(/*! ./admin/cupon */ "./resources/js/admin/cupon.js");
+} //tienda
+
+
+if (document.getElementById('detalleProducto')) {
+  __webpack_require__(/*! ./shop/detalleProducto */ "./resources/js/shop/detalleProducto.js");
+}
+
+/***/ }),
+
+/***/ "./resources/js/shop/detalleProducto.js":
+/*!**********************************************!*\
+  !*** ./resources/js/shop/detalleProducto.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var detalleProducto = new Vue({
+  el: '#detalleProducto',
+  data: {
+    tipoProducto: '',
+    grupos: [],
+    disponibilidad: 0,
+    cantidad: 1,
+    combinacion: [],
+    grupoCombinacion: [],
+    disabledBoton: false,
+    mensaje: '',
+    mostrarMensaje: false,
+    slug: '',
+    imagen: '',
+    select: []
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/combinacion/create').then(function (res) {
+      _this.grupos = res.data;
+      console.log(_this.grupos);
+    })["catch"](function (e) {
+      console.log(e.response);
+    });
+    axios.get('/obtenerGrupo/' + data.datos.slug).then(function (res) {
+      _this.grupoCombinacion = res.data;
+      console.log(_this.grupoCombinacion);
+    })["catch"](function (e) {
+      console.log(e.response);
+    });
+    /* axios.get('obtenerCombinacion/'+this.slug).then(res=>{
+         this.combinacion=res.data
+        // console.log(this.combinacion)
+     }).catch(e=>{
+         console.log(e.response)
+     })*/
+  },
+  computed: {},
+  methods: {
+    cambiarImagen: function cambiarImagen() {
+      this.imagen = detalleProducto.$refs.altImagen.src;
+      detalleProducto.$refs.mainImagen.src = this.imagen;
+      console.log(this.imagen);
+      this.imagen = '';
+    },
+    validarCantidad: function validarCantidad() {
+      if (this.cantidad > this.disponibilidad) {
+        this.mensaje = 'Esta cantidad no esta disponible';
+        this.mostrarMensaje = true;
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.slug = data.datos.slug;
+    this.disponibilidad = data.datos.cantidad;
+    this.tipoProducto = data.datos.tipoProducto;
+
+    if (this.tipoProducto == 'comun') {
+      if (this.disponibilidad == 0) {
+        this.disabledBoton = true;
+      }
+    }
+  }
+});
 
 /***/ }),
 

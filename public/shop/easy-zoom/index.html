@@ -1,0 +1,76 @@
+
+	<link rel="stylesheet" href="css/easyzoom.css" />
+
+
+
+	
+			<h3>
+				With thumbnail images
+			</h3>
+
+			<div class="easyzoom easyzoom--overlay easyzoom--with-thumbnails">
+				<a href="images/3_zoom_1.jpg">
+					<img src="images/3_standard_1.jpg" alt="" width="640" height="360" />
+				</a>
+			</div>
+
+			<ul class="thumbnails">
+				<li>
+					<a href="images/3_zoom_1.jpg" data-standard="images/3_standard_1.jpg">
+						<img src="images/3_thumbnail_1.jpg" alt="" />
+					</a>
+				</li>
+				<li>
+					<a href="images/3_zoom_2.jpg" data-standard="images/3_standard_2.jpg">
+						<img src="images/3_thumbnail_2.jpg" alt="" />
+					</a>
+				</li>
+				<li>
+					<a href="images/3_zoom_3.jpg" data-standard="images/3_standard_3.jpg">
+						<img src="images/3_thumbnail_3.jpg" alt="" />
+					</a>
+				</li>
+				<li>
+					<a href="images/3_zoom_4.jpg" data-standard="images/3_standard_4.jpg">
+						<img src="images/3_thumbnail_4.jpg" alt="" />
+					</a>
+				</li>
+			</ul>
+
+		
+
+			
+
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="js/easyzoom.js"></script>
+	<script>
+		// Instantiate EasyZoom instances
+		var $easyzoom = $('.easyzoom').easyZoom();
+
+		// Setup thumbnails example
+		var api1 = $easyzoom.filter('.easyzoom--with-thumbnails').data('easyZoom');
+
+		$('.thumbnails').on('click', 'a', function(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+
+			// Use EasyZoom's `swap` method
+			api1.swap($this.data('standard'), $this.attr('href'));
+		});
+
+		// Setup toggles example
+		var api2 = $easyzoom.filter('.easyzoom--with-toggle').data('easyZoom');
+
+		$('.toggle').on('click', function() {
+			var $this = $(this);
+
+			if ($this.data("active") === true) {
+				$this.text("Switch on").data("active", false);
+				api2.teardown();
+			} else {
+				$this.text("Switch off").data("active", true);
+				api2._init();
+			}
+		});
+	</script>

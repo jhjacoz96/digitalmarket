@@ -107,6 +107,12 @@
                   <p>Direcciones</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{route('cupon.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cupón de descuento</p>
+                </a>
+              </li>
             </ul>
           </li>
 

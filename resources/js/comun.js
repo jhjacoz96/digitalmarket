@@ -62,9 +62,20 @@ if(document.getElementById('metodoEnvio')){
     require('./admin/metodoEnvio'); 
 
 }
-
 if(document.getElementById('metodoPago')){
     require('./admin/metodoPago'); 
+
+}
+if(document.getElementById('cupon')){
+    require('./admin/cupon'); 
+
+}
+
+
+//tienda
+
+if(document.getElementById('detalleProducto')){
+    require('./shop/detalleProducto'); 
 
 }
 

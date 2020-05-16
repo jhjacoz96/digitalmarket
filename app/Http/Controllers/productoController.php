@@ -21,16 +21,16 @@ use Illuminate\Support\Facades\Validator;
 class productoController extends Controller
 {
 
-    public function __construct()
+   /* public function __construct()
     {
         $this->middleware('auth');
-    }
+    }*/
     
 
     public function index(Request $request)
     {
 
-       
+     
         
         if(\Auth::user()->rol_id==3){
             
@@ -79,7 +79,7 @@ class productoController extends Controller
     public function store(Request $request)
     {
        
-       
+      
         $v=Validator::make($request->all(),[
             'nombre'=>'min:2|required|unique:productos,nombre',
             'slug'=>'min:2|required|unique:productos,slug',
@@ -375,6 +375,162 @@ class productoController extends Controller
             return 'No hay registros de esta tienda';
                 }
       
+    }
+
+
+   //CONROLADOR DE LA TIENDA
+
+//filtar productos por categoria
+
+    public function productoCategoria($slug){
+        
+        
+        if(subCategoria::where('slug',$slug)->count()==0){
+            abort(404);
+        }else{
+
+            $categoria=Categoria::where('estatus','A')->get();
+        
+        $subCategoria=subCategoria::where('slug',$slug)->with('producto')->first();
+        
+        
+        
+            return view('plantilla.tiendaContenido.filtroCategoria.subCategoria',compact('subCategoria'),compact('categoria'));
+        }
+
+    }
+
+    public function mainProductoCategoria($slug){
+        
+        if(Categoria::where('estatus','A')->where('slug',$slug)->count()==0){
+            abort(404);
+        }else{
+            $categoria=Categoria::where('estatus','A')->get();
+    
+        $mainCategoria=Categoria::where('estatus','A')->where('slug',$slug)->with('subCategoria')->first();
+        
+        
+    
+            return view('plantilla.tiendaContenido.filtroCategoria.categoria',compact('mainCategoria'),compact('categoria'),compact('subCategoria'));
+        }
+    }
+    //fin de filtros por categoria
+
+    //DETALLES DE PRODUCTO
+
+    public function detalleProducto($slug){
+        $categoria=Categoria::where('estatus','A')->get();
+
+        $producto=Producto::where('status','si')->where('slug',$slug)->first();
+
+        $relacionProducto=Producto::where('slug','!=',$slug)->where('subCategoria_id',$producto->subCategoria_id)->get();
+        
+    
+
+        /*$combinacion=Combinacion::where('producto_id',$producto->id)->with('atributo')->get();
+    
+        $grupo=$producto->combinacion[0]->atributo;
+        
+        $grupos=[];
+        for ($i=0; $i < count($grupo) ; $i++) { 
+        $f= $grupo[$i]->grupoAtributo;
+            $atributo=[];
+
+        for ($j=0; $j <count($combinacion) ; $j++) { 
+                $item=$combinacion[$j]['atributo'];
+
+                for ($k=0; $k < count($item) ; $k++) { 
+
+                    if($item[$k]['grupoAtributo_id']==$f['id']){
+                    $f=\Arr::add($f,'atributo',$item[$k]);
+                    }
+
+                }
+
+        }
+
+        \array_push($grupos,$f);
+        }
+
+        $atributo=Atributo::where('id',3)->with('combinacion')->first();
+        */
+        
+        
+
+        return view('plantilla.tiendaContenido.producto.detalle',compact('producto','categoria','relacionProducto'));
+    }
+
+    //FIN DE DETALLES DE PRODUCTOS
+
+    public function agregarCarrito(Request $request){
+
+        \Session::forget('montoCupon');
+        \Session::forget('codigoCupon');
+
+        $producto=Producto::where('id',$request->producto_id)->first();
+        
+        if(empty($request['comprador_id'])){
+            $request['comprador_id']='';
+        }
+        
+        $session_id=\Session::get('session_id');
+        
+        if(empty($session_id)){
+
+            $session_id=\Str::random(40);
+            \Session::put('session_id',$session_id);
+
+        }
+
+        $cantidadProducto=\DB::table('carritos')->where(['producto_id'=>$request['producto_id'],'session_id'=>$session_id])->count();
+       
+        if( $cantidadProducto>0){
+
+            \DB::table('carritos')->where(['producto_id'=>$request['producto_id'],'session_id'=>$session_id])->increment('cantidad',$request['cantidad']);
+        }else{
+            \DB::table('carritos')->insert(['producto_id'=>$request['producto_id'],'precio'=>$request['precio'],'cantidad'=>$request['cantidad'],'comprador_id'=>1,'session_id'=>$session_id]);
+        }
+        
+        return redirect()->route('carrito');
+
+
+    } 
+
+    public function carrito(){
+
+       $session_id=\Session::get('session_id');
+       $userCarrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get();
+       
+        return view('plantilla.tiendaContenido.producto.carrito',compact('userCarrito'));
+    }
+
+    public function eliminarProductoCarrito($id){
+        \Session::forget('montoCupon');
+        \Session::forget('codigoCupon');
+
+        \DB::table('carritos')->where('id',$id)->delete();
+
+        return redirect()->route('carrito');
+    }
+
+    public function actualizarProductoCarrito($id=null,$cantidad=null){
+
+        \Session::forget('montoCupon');
+        \Session::forget('codigoCupon');
+
+        $obtenerCarrito=\DB::table('carritos')->where('id',$id)->first();
+        $obtenerProducto=Producto::where('id',$obtenerCarrito->producto_id)->first();
+        $actualizarCantidad=$obtenerCarrito->cantidad+$cantidad;
+        
+        if($obtenerProducto->cantidad>=$actualizarCantidad){
+
+            \DB::table('carritos')->where('id',$id)->increment('cantidad',$cantidad);
+            return redirect()->route('carrito');
+
+        }else{
+            
+            return 'Esta cantidad exede la existente';
+        }
     }
 
 }

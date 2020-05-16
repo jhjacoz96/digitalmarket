@@ -110,6 +110,7 @@ class direccionController extends Controller
         $direccion->save();
 
         \flash('Direccion agregada con exito')->important()->success();
+        
         return redirect()->route('direccion.index');
     }
 

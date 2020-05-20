@@ -51142,6 +51142,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var producto = new Vue({
   el: '#producto',
   data: (_data = {
+    rol: '',
     tiendas: [],
     tienda: '',
     nombre: '',
@@ -51184,11 +51185,14 @@ var producto = new Vue({
     })["catch"](function (e) {
       console.log(e.respose);
     });
-    axios.get('/combinacion/create').then(function (res) {
-      _this.grupos = res.data;
-    })["catch"](function (e) {
-      console.log(e.respose);
-    });
+
+    if (data.datos.tienda_id) {
+      axios.get("/buscarGrupos/".concat(data.datos.tienda_id)).then(function (res) {
+        _this.grupos = res.data;
+      })["catch"](function (e) {
+        console.log(e.respose);
+      });
+    }
 
     if (data.editar == 'si') {
       if (data.datos.tipoCliente == 'combinacion') {
@@ -51348,7 +51352,7 @@ var producto = new Vue({
         });
       } else {
         this.divClaseSlug = 'badge badge-danger';
-        this.divMensajeSlug = "Debe ingresar una categoria";
+        this.divMensajeSlug = "Debe ingresar un nombre de producto";
         this.deshabilitarBoton = 1;
         this.divAparecer = true;
       }
@@ -51390,7 +51394,6 @@ var producto = new Vue({
         if (result.value) {
           _this4.listaCombinacion.splice(index, 1);
 
-          _this4.value = JSON.stringify(_this4.listaCombinacion);
           Swal.fire('Eliminado!', 'Su combinación  se ha elimiando', 'success');
         }
       });
@@ -51523,6 +51526,7 @@ var producto = new Vue({
         //this.atributos.push(this.select)
         //this.select=[]
 
+        console.log(this.atributos);
         var r = [],
             elem = this.combinacion,
             arg = this.atributos,
@@ -51533,7 +51537,6 @@ var producto = new Vue({
         //this.listaCombinacion=r
 
         this.select = [];
-        this.value = JSON.stringify(this.listaCombinacion);
       }
     },
     editarCombinacion: function editarCombinacion(items) {
@@ -51549,22 +51552,30 @@ var producto = new Vue({
         cantidad: combinacion.cantidad
       };
       axios.put("/combinacion/".concat(combinacion.id), param).then(function (res) {
-        console.log(res);
+        console.log(res.data);
 
-        var index = _this6.listaCombinacion2.findIndex(function (combinacionBuscar) {
-          return combinacionBuscar.id === res.data.id;
-        });
+        if (res.data == 9569) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'Exede el stock maximo que le ofrece el plan de afiliación al que esta afiliado!'
+          });
+        } else {
+          var index = _this6.listaCombinacion2.findIndex(function (combinacionBuscar) {
+            return combinacionBuscar.id === res.data.id;
+          });
 
-        _this6.listaCombinacion2[index].cantidad = res.data.cantidad;
-        _this6.combinacion = {
-          cantidad: ''
-        };
-        axios.get("/combinacion/".concat(data.datos.id, "/edit")).then(function (res) {
-          _this6.listaCombinacion2 = res.data;
-          console.log(_this6.listaCombinacion2);
-        })["catch"](function (e) {
-          console.log(e.respose);
-        });
+          _this6.listaCombinacion2[index].cantidad = res.data.cantidad;
+          _this6.combinacion = {
+            cantidad: ''
+          };
+          axios.get("/combinacion/".concat(data.datos.id, "/edit")).then(function (res) {
+            _this6.listaCombinacion2 = res.data;
+            console.log(_this6.listaCombinacion2);
+          })["catch"](function (e) {
+            console.log(e.respose);
+          });
+        }
       })["catch"](function (e) {
         console.log(e);
       });
@@ -51574,18 +51585,28 @@ var producto = new Vue({
 
       if (this.tienda != '') {
         axios.get('/obtenerTienda/' + this.tienda).then(function (res) {
-          console.log(res.data);
-
           if (res.data == 'No hay registros de esta tienda') {
             _this7.divMensajeTienda = 'No hay registros de esta tienda';
             _this7.divClaseTienda = 'badge badge-danger';
             _this7.aparecerTienda == true;
             _this7.deshabilitarBoton = 1;
+            _this7.grupos = [];
+            _this7.listaCombinacion = [];
+            _this7.value = [];
           } else {
             _this7.divMensajeTienda = res.data.nombreTienda;
             _this7.divClaseTienda = 'badge badge-info';
             _this7.aparecerTienda == true;
             _this7.deshabilitarBoton = 0;
+            _this7.tiendas = res.data;
+            _this7.grupos = [];
+            _this7.listaCombinacion = [];
+            _this7.value = [];
+            axios.get("/buscarGrupos/".concat(_this7.tiendas.id)).then(function (res) {
+              _this7.grupos = res.data;
+            })["catch"](function (e) {
+              console.log(e.respose);
+            });
           }
         })["catch"](function (e) {
           console.log(e.response);
@@ -51595,6 +51616,9 @@ var producto = new Vue({
         this.divClaseTienda = 'badge badge-danger';
         this.aparecerTienda = true;
         this.deshabilitarBoton = 1;
+        this.grupos = [];
+        this.listaCombinacion = [];
+        this.value = [];
       }
     }
   },
@@ -51989,54 +52013,121 @@ if (document.getElementById('detalleProducto')) {
 var detalleProducto = new Vue({
   el: '#detalleProducto',
   data: {
+    combinacion_id: '',
     tipoProducto: '',
     grupos: [],
     disponibilidad: 0,
     cantidad: 1,
+    atributo_id: '',
+    atributo_id2: '',
     combinacion: [],
     grupoCombinacion: [],
-    disabledBoton: false,
+    grupoCombinacion3: [],
+    grupoCombinacion2: [],
+    disabledBoton: true,
     mensaje: '',
     mostrarMensaje: false,
     slug: '',
     imagen: '',
-    select: []
+    select: [],
+    count: 0,
+    comun: 'dddd'
   },
   created: function created() {
     var _this = this;
 
-    axios.get('/combinacion/create').then(function (res) {
-      _this.grupos = res.data;
-      console.log(_this.grupos);
-    })["catch"](function (e) {
-      console.log(e.response);
-    });
+    /*axios.get('/combinacion/create').then(res=>{
+        this.grupos=res.data
+        console.log(this.grupos)
+    }).catch(e=>{
+        console.log(e.response)
+    })*/
     axios.get('/obtenerGrupo/' + data.datos.slug).then(function (res) {
       _this.grupoCombinacion = res.data;
-      console.log(_this.grupoCombinacion);
+      _this.count = _this.grupoCombinacion.length;
+      var f = _this.grupoCombinacion;
+
+      if (_this.count > 1) {
+        for (var i = 0; i < f.length; i++) {
+          if (i == 0) {
+            _this.grupoCombinacion2 = f[i];
+            console.log(_this.grupoCombinacion2);
+          }
+
+          if (i == 1) {
+            _this.grupoCombinacion3 = f[i];
+            console.log(_this.grupoCombinacion3);
+          }
+        }
+      }
     })["catch"](function (e) {
       console.log(e.response);
     });
-    /* axios.get('obtenerCombinacion/'+this.slug).then(res=>{
-         this.combinacion=res.data
-        // console.log(this.combinacion)
-     }).catch(e=>{
-         console.log(e.response)
-     })*/
+    axios.get("/obtenerCombinacion/".concat(data.datos.slug)).then(function (res) {
+      _this.combinacion = res.data; //console.log(this.combinacion)
+    })["catch"](function (e) {
+      console.log(e.response);
+    });
   },
-  computed: {},
+  computed: {
+    validarCantidad: function validarCantidad() {
+      if (this.cantidad > this.disponibilidad || this.cantidad == '') {
+        this.mensaje = 'Esta cantidad no esta disponible';
+        this.mostrarMensaje = true;
+        this.disabledBoton = true;
+      } else {
+        this.mensaje = '';
+        this.mostrarMensaje = false;
+        this.disabledBoton = false;
+      }
+
+      return '';
+    }
+  },
   methods: {
+    obtenerCombinacion2: function obtenerCombinacion2() {
+      var g = this.combinacion;
+      console.log(g);
+      var atributo1 = '';
+      var atributo = '';
+
+      for (var i = 0; i < g.length; i++) {
+        var d = g[i].atributo;
+
+        if (d[0].id == this.atributo_id && d[1].id === this.atributo_id2) {
+          this.combinacion_id = g[i].id;
+          return this.disponibilidad = g[i].cantidad;
+        }
+
+        if (d[0].id == this.atributo_id2 && d[1].id === this.atributo_id) {
+          this.combinacion_id = g[i].id;
+          return this.disponibilidad = g[i].cantidad;
+        }
+
+        this.combinacion_id = '';
+        this.disponibilidad = 0;
+      }
+    },
+    obtenerCombinacion: function obtenerCombinacion() {
+      console.log(this.atributo_id);
+      var g = this.combinacion;
+
+      for (var i = 0; i < g.length; i++) {
+        var d = g[i].atributo;
+
+        for (var j = 0; j < d.length; j++) {
+          if (this.atributo_id == d[j].id) {
+            console.log(d[j].nombre);
+            this.disponibilidad = g[i].cantidad;
+            this.combinacion_id = g[i].id;
+          }
+        }
+      }
+    },
     cambiarImagen: function cambiarImagen() {
       this.imagen = detalleProducto.$refs.altImagen.src;
       detalleProducto.$refs.mainImagen.src = this.imagen;
-      console.log(this.imagen);
       this.imagen = '';
-    },
-    validarCantidad: function validarCantidad() {
-      if (this.cantidad > this.disponibilidad) {
-        this.mensaje = 'Esta cantidad no esta disponible';
-        this.mostrarMensaje = true;
-      }
     }
   },
   mounted: function mounted() {

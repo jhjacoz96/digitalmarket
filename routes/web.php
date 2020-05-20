@@ -63,11 +63,25 @@ route::get('/','indexController@index');
 
 Auth::routes();
 
+route::match(['get','post'],'/registrar-usuario','userController@registrar');
+route::match(['get','post'],'/iniciar-sesion','userController@iniciarSesion');
+route::get('/salir','userController@cerrarSesion');
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 
+route::prefix('comprador')->middleware('frontLogin')->group(function(){
+    route::match(['get','post'],'cuenta','userController@cuenta');
+    route::get('direcciones/{id}','perfilController@direcciones');
+    route::resource('perfil','perfilController');
+    Route::post('actualizarContraseña/{user}','perfilController@cambiarContraseña');
+    route::resource('direccion','direccionController');
+    
+});
+
 Route::resource('Comprador', 'compradorController');
+
 
 //Route::get('Perfil/{usuario}','controladorAdministrador@show');
 
@@ -137,6 +151,7 @@ route::resource('filtroDireccion','filtroDireccionController');
 //------atributosProductos------------
 
 Route::post('combinacion/atributos','atributoController@guardarCombinacion')->name('guardarCombinacion');
+route::get('buscarGrupos/{id}','atributoController@buscarGrupo');
 route::resource('combinacion','atributoController');
 
 route::get('grupoAtributo/{id}/eliminadarAtributo','grupoAtributoController@eliminarAtributo')->name('grupoAtributo.atributo.delete');
@@ -184,14 +199,15 @@ route::resource('tienda','tiendaController');
 route::resource('cupon','cuponController');  
 //fin cupones de descuento/////
 
+route::resource('banner','bannerController'); 
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-route::prefix('tienda')->name('tienda.')->middleware('auth')->group(function(){
+route::prefix('tiendas')->name('tiendas.')->middleware('auth')->group(function(){
     route::resource('producto','productoController');
+    route::resource('grupoAtributo','grupoAtributoController');
 });
-
 
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -223,6 +239,17 @@ route::get('/carrito/actualizarCantidad/{id}/{cantidad}','productoController@act
 route::post('carrito/aplicarCupon','cuponController@aplicarDescuento')->name('carrito.aplicarCupon');
 //fin carrito de compra/////
 
+//checkout///
+
+    route::match(['get','post'],'/checkout','productoController@checkout');
+
+//fin checkout///
+
+//pedido//
+route::match(['get','post'],'/revisar-pedido','productoController@revisarPedido');
+
+
+//fin pedido//
 
 
 

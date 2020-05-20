@@ -46,11 +46,10 @@
                </div>
 
                 <div class="card-body box-profile">
-                  
-                    
+              
                     <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle"
-                             src="{{asset('adminlte/dist/img/user4-128x128.jpg')}}"
+                        <img style="border-radius: 50%;" class="profile-user-img img-fluid img-circle"
+                             src="{{$tienda->imagen->url}}"
                              alt="User profile picture">
                       </div>
       

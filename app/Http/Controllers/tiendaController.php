@@ -92,7 +92,7 @@ class tiendaController extends Controller
         $tienda->codigo=$nombre[0].$nombre[1]. 00 .$numero;
         $tienda->user_id=$user->id; 
 
-        if( $tienda->estatus){
+        if( $request->estatus){
             $tienda->estatus='A';
         }else{
             $tienda->estatus='I';
@@ -115,7 +115,8 @@ class tiendaController extends Controller
      */
     public function show($id)
     {
-        $tienda=Tienda::findOrFail($id);
+        $tienda=Tienda::with('producto')->findOrFail($id);
+        
         return view('plantilla.contenido.admin.tienda.detalle',compact('tienda'));
     }
 
@@ -190,7 +191,7 @@ class tiendaController extends Controller
         $tienda->codigo=$nombre[0].$nombre[1]. 00 .$numero;
         $tienda->user_id=$user->id; 
 
-        if( $tienda->estatus){
+        if( $request->estatus){
             $tienda->estatus='A';
         }else{
             $tienda->estatus='I';

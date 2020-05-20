@@ -3,6 +3,7 @@
 
 @php
     use App\Producto;
+    use App\Combinacion;
 @endphp
 
 <section id="cart_items">
@@ -36,7 +37,9 @@
                         
                     @php
                         $producto=Producto::where('id',$item->producto_id)->first();
-                        
+                        if($producto->tipoCliente=='combinacion'){
+                            $combinacion=Combinacion::where('id',$item->combinacion_id)->first();
+                        }
                     @endphp
 
                         <tr>
@@ -54,7 +57,16 @@
                             <td class="cart_description">
 
                             <h4><a href="">{{$producto->nombre}}</a></h4>
-                                <p>Web ID: 1089772</p>
+                                @if($producto->tipoCliente=='combinacion')
+                               
+                                <p>
+                                @foreach ($combinacion->atributo as $items)
+                                    
+                                {{$items->grupoAtributo->nombre}}: {{$items->nombre}} |
+
+                                @endforeach
+                            </p>
+                                @endif
                             </td>
                             <td class="cart_price">
                             <p>Bs{{$item->precio}}</p>
@@ -117,19 +129,23 @@
                         <li>Sub total del carrito<span>Bs<?php echo $montoTotal; ?></span></li>
 
                         <li>Descuento por cupón<span>Bs<?php echo \Session::get('montoCupon');?></span></li>
-
-                        <li>Monto total<span>Bs<?php echo $montoTotal- \Session::get('montoCupon'); ?></span></li>
+                        
+                        <li>Descuento adicional<span>Bs<?php echo \Session::get('$montoDescuentoTipoComrador');?></span></li>
+                        Bill To
+                        <li>Monto total<span>Bs<?php echo $montoTotal- \Session::get('montoCupon')-\Session::get('$montoDescuentoTipoComrador'); ?></span></li>
 
                        @else
 
                        <li>Sub total del carrito<span>Bs<?php echo $montoTotal; ?></span></li>
 
-                       <li>Monto total<span>Bs<?php echo $montoTotal; ?></span></li>
+                       <li>Descuento adicional<span>Bs<?php echo \Session::get('$montoDescuentoTipoComrador');?></span></li>
+
+                       <li>Monto total<span>Bs<?php echo $montoTotal-\Session::get('$montoDescuentoTipoComrador'); ?></span></li>
                         @endif
                         
                     </ul>
                         <a class="btn btn-default update" href="">Update</a>
-                        <a class="btn btn-default check_out" href="">Check Out</a>
+                <a class="btn btn-default check_out" href="{{url('/checkout')}}">Check Out</a>
                 </div>
             </div>
         </div>

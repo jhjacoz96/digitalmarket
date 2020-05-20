@@ -47,6 +47,10 @@ class direccionController extends Controller
      */
     public function create()
     {
+       
+        if(\Auth::User()->rol_id==1){
+            return view('plantilla.tiendaContenido.perfil.direccion.crear');
+        }
         return view('plantilla.contenido.admin.comprador.direccion.crear');
     }
 
@@ -82,7 +86,7 @@ class direccionController extends Controller
         $v=Validator::make($request->all(),[
             'nombre'=>'required',
             'apellido'=>'required',
-            'correo'=>'required|email',
+            
             'direccion'=>'required',
             'puntoReferencia'=>'required',
             'primerTelefono'=>'required|min:10',
@@ -90,28 +94,42 @@ class direccionController extends Controller
             'zona_id'=>'required'
 
         ]);
-            return 'fff';
+           
         if ($v->fails()) {
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
 
         $direccion=new Direccion();
         $direccion->nombre=$request->nombre;
-        $direccion->apellido=$request->Apellido;
+        $direccion->apellido=$request->apellido;
         $direccion->direccionExacta=$request->direccion;
         $direccion->puntoReferencia=$request->puntoReferencia;
         $direccion->primerTelefono=$request->primerTelefono;
         $direccion->segundoTelefono=$request->segundoTelefono;
         $direccion->observacion=$request->descripcion;
-        $d=$request->correo;
-        $comprador=Comprador::where('correo',$d)->first();
-        $direccion->comprador_id=$comprador->id;
-        $direccion->zona_id=$request->zona_id;
-        $direccion->save();
-
-        \flash('Direccion agregada con exito')->important()->success();
         
-        return redirect()->route('direccion.index');
+        $direccion->zona_id=$request->zona_id;
+        if(\Auth::user()->rol_id==3){
+            $d=$request->correo;
+            $comprador=Comprador::where('correo',$d)->first();
+            $direccion->comprador_id=$comprador->id;
+
+            $direccion->save();
+
+            \flash('Direccion agregada con exito')->important()->success();
+            
+            return redirect()->route('direccion.index');
+        }else{
+            $direccion->comprador_id=\Auth::user()->comprador->id;
+
+            $direccion->save();
+
+            \flash('Direccion agregada con exito')->important()->success();
+            
+            return redirect('/comprador/cuenta');
+        }
+        
+      
     }
 
     /**
@@ -134,8 +152,12 @@ class direccionController extends Controller
     public function edit($id)
     {
         $direccion=Direccion::findOrfail($id);
-        
-        return view('plantilla.contenido.admin.comprador.direccion.modificar',compact('direccion'));
+        if(\Auth::user()->rol_id==3){
+
+            return view('plantilla.contenido.admin.comprador.direccion.modificar',compact('direccion'));
+        }else{
+            return view('plantilla.tiendaContenido.perfil.direccion.modificar',compact('direccion'));
+        }
     }
 
     /**
@@ -147,20 +169,53 @@ class direccionController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $v=Validator::make($request->all(),[
+            'nombre'=>'required',
+            'apellido'=>'required',
+            
+            'direccion'=>'required',
+            'puntoReferencia'=>'required',
+            'primerTelefono'=>'required|min:10',
+            'segundoTelefono'=>'required|min:10',
+            'zona_id'=>'required'
+
+        ]);
+           
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+
+
         $direccion=Direccion::findOrFail($id);
         $direccion->nombre=$request->nombre;
-        $direccion->apellido=$request->Apellido;
+        $direccion->apellido=$request->apellido;
         $direccion->direccionExacta=$request->direccion;
-        $direccion->puntoReferencia=$request->puntoReferencia;
         $direccion->puntoReferencia=$request->puntoReferencia;
         $direccion->primerTelefono=$request->primerTelefono;
         $direccion->segundoTelefono=$request->segundoTelefono;
         $direccion->observacion=$request->descripcion;
+        
         $direccion->zona_id=$request->zona_id;
-        $direccion->save();
+        if(\Auth::user()->rol_id==3){
+            $d=$request->correo;
+            $comprador=Comprador::where('correo',$d)->first();
+            $direccion->comprador_id=$comprador->id;
 
-        \flash('Direccion modificada con exito')->important()->success();
-        return redirect()->route('direccion.index');
+            $direccion->save();
+
+            \flash('Direccion actualizada con exito')->important()->success();
+            
+            return redirect()->route('direccion.index');
+        }else{
+            $direccion->comprador_id=\Auth::user()->comprador->id;
+
+            $direccion->save();
+
+            \flash('Direccion actualizada con exito')->important()->success();
+            
+            return redirect('/comprador/cuenta');
+        }
 
     }
 
@@ -175,9 +230,12 @@ class direccionController extends Controller
         $direccion=Direccion::findOrFail($id);
         $direccion->delete();
         
-        
+        if(\Auth::user()->rol_id==3){
         \flash('Se ha eliminado esta dirección con exito')->important()->success();
         return redirect()->route('direccion.index');
-        
+        }else{
+            \flash('Se ha eliminado esta dirección con exito')->important()->success();
+        return redirect('/comprador/cuenta');
+        }
     }
 }

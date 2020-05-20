@@ -56,8 +56,8 @@
                         <th>Descripción</th>
                         <th>Exposición en los listados</th>
                         <th>Costo por venta</th>
-                        <th>Tiempo de publicación</th>
-                        <th>Cantidad de publicaciones</th>
+                        <th>stock maximo por producto</th>
+                        <th>Cantidad de publicaciones activas</th>
                         <th>Cantidad de tiendas afiliadas</th>
                         <th>Estado</th>
                         <th>Acción</th>
@@ -82,7 +82,7 @@
                              @if($item->tiempoPublicacion==null)
                              <span>Ilimitado</span>
                              @else
-                             {{$item->tiempoPublicacion}} dias
+                             {{$item->tiempoPublicacion}} unidades
                              @endif
                             </td>
                            <td class="mailbox-star">

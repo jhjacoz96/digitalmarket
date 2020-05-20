@@ -27,6 +27,9 @@
   
       editar:'si',
       datos:{
+  
+        "rol":"{{$rol}}",
+        "tienda_id":"{{$producto->tienda_id}}",
         "nombre":"{{$producto->nombre}}",
         "precioAnterior":"{{$producto->precioAnterior}}",
         "precioActual":"{{$producto->precioActual}}",
@@ -163,28 +166,39 @@
 
                   <div class="row">
 
-                    <div class="callout callout-info">
-                      <h5>Tipos de producto</h5>
-    
-                      <p>Puede elegir entre dos tipos de productos:<p> <strong>Común</strong>, solo podrá indicar una  cantidad de produtos de forma general.</p>
-                      <p><strong>Variantes de atributos</strong>, Tendra la posibilidad de realizar combinaciones entre los atributos de los distintos grupos de atributos, y asi poder asignar un stock distinto a cada combinación generada.</p>
-                    </div>
+                  
 
-                    <div class="col-md-12">
+                    <div class="col-md-6">
 
 
                       <div class="form-group">
-                        <label for="">Seleccione un tipo de producto</label>
+                        <label for="">Tipo de producto</label>
                         <div class="custom-control custom-radio">
-                          <input class="custom-control-input"  @click="tipoProd()" v-bind:value="tipoProducto" type="radio" id="customRadio1" name="tipoProd">
+                          <input disabled class="custom-control-input"  @click="tipoProd()" v-bind:value="tipoProducto" type="radio" id="customRadio1" name="tipoProd">
                           <label for="customRadio1" class="custom-control-label">Producto común</label>
                         </div>
                         <div class="custom-control custom-radio">
-                          <input class="custom-control-input" type="radio" id="customRadio2" v-bind:value="tipoProducto" name="tipoProd" @click="tipoProd()">
+                          <input disabled class="custom-control-input" type="radio" id="customRadio2" v-bind:value="tipoProducto" name="tipoProd" @click="tipoProd()">
                           <label for="customRadio2" class="custom-control-label">Producto con variación de atributos</label>
                         </div>
                       </div>
                     </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+      
+                        <label>Tienda a la que pertenece este producto</label>
+                        <div class="form-group col-md-6">
+
+                        <a href="{{route('tienda.show',$producto->tienda->id)}}" class="btn btn-info btn-sm"><span class="fas fa-eye mr-1"></span>{{$producto->tienda->nombreTienda}} ({{$producto->tienda->codigo}})</a>
+                            </div>
+      
+                       
+                      </div>
+                      <!-- /.form-group -->
+                      
+                    </div>
+
 
                       <div class="col-md-6">
                         <div class="form-group">
@@ -757,20 +771,7 @@
             <div class="card-body">
       
              <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-      
-                        <label>Tienda a la que pertenece este producto</label>
-                        <div class="form-group col-md-6">
-
-                        <a href="{{route('tienda.show',$producto->tienda->id)}}" class="btn btn-info btn-sm"><span class="fas fa-eye mr-1"></span>{{$producto->tienda->nombreTienda}} ({{$producto->tienda->codigo}})</a>
-                            </div>
-      
-                       
-                      </div>
-                      <!-- /.form-group -->
-                      
-                    </div>
+                    
                     <!-- /.col -->
                     <div class="col-sm-6">
                           <!-- checkbox -->

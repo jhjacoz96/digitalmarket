@@ -195,12 +195,12 @@ class cuponController extends Controller
             $montoCupon=$cupon->cantidad;
         }else{
             $montoCupon=$totalCantidad*($cupon->cantidad/100);
-
+            
         }
         
         \Session::put('montoCupon',$montoCupon);
         \Session::put('codigoCupon',$request->codigoCupon);
-
+        
         flash('!Cupón cangeado con exito¡')->success()->important();
         return redirect()->route('carrito');
     }

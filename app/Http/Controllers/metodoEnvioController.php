@@ -73,7 +73,7 @@ class metodoEnvioController extends Controller
        
         $envio->save();
 
-        \flash('Metodo de envio agregado con exito')->important()->success();
+        \flash('Metodo de envio agregado con exito')->important()->warning();
         return \redirect()->route('metodoEnvio.create');
     }
 

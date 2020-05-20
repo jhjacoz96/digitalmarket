@@ -19,7 +19,10 @@
 <script>
 
   window.data={
-    editar:'no'
+    editar:'no',
+    datos:{
+      "rol":"{{$rol}}"
+    }
   }
 
   
@@ -98,7 +101,7 @@
                       <p><strong>Variantes de atributos</strong>, Las combinaciones son las diferentes variaciones de un producto, con atributos como su tamaño, peso o color que toman diferentes valores. ¿Su producto requiere combinaciones?.</p>
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                       
                       <div class="form-group">
                         <label for="">Seleccione un tipo de producto</label>
@@ -111,6 +114,25 @@
                           <label for="customRadio2" class="custom-control-label">Producto con variación de atributos</label>
                         </div>
                       </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+      
+                        <label>Código de la tienda</label>
+                        <input  class="form-control" type="text" id="tienda" name="tienda" 
+                        @blur="obtenerTienda"
+                        @focus="divAparecerTienda=true"
+                        v-model="tienda" >
+                        <div v-if="divAparecerTienda " v-bind:class="divClaseTienda">
+                          @{{divMensajeTienda}}
+                      </div>
+                      <br v-if="divAparecer">
+                        {!!$errors->first('tienda','<small>:message</small><br>')!!}
+                       
+                      </div>
+                      <!-- /.form-group -->
+                      
                     </div>
                     
 
@@ -231,7 +253,7 @@
                     <p>  Para agregar combinaciones, primero debe crear grupos de atributos y atributos adecuados en <a href="{{route('grupoAtributo.index')}}">Grupos de atributos</a> .
                       Cuando termine, puede ingresar los atributos deseados (como "tamaño" o "color") y sus respectivos valores ("10kg", "rojo", etc.) en el campo a continuación; o simplemente selecciónelos de la columna derecha. Luego haga clic en "Generar": ¡creará automáticamente todas las combinaciones para usted!</p>
                   </div>
-
+               
                   <div class="row">
                     @{{value}}
                     <br>
@@ -612,24 +634,7 @@
             <div class="card-body">
       
              <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-      
-                        <label>Código de la tienda</label>
-                        <input  class="form-control" type="text" id="tienda" name="tienda" 
-                        @blur="obtenerTienda"
-                        @focus="divAparecerTienda=true"
-                        v-model="tienda" >
-                        <div v-if="divAparecerTienda " v-bind:class="divClaseTienda">
-                          @{{divMensajeTienda}}
-                      </div>
-                      <br v-if="divAparecer">
-                        {!!$errors->first('tienda','<small>:message</small><br>')!!}
-                       
-                      </div>
-                      <!-- /.form-group -->
-                      
-                    </div>
+                    
                     <!-- /.col -->
                     <div class="col-sm-6">
                           <!-- checkbox -->

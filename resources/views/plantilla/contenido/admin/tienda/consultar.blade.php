@@ -104,7 +104,7 @@
                   </table>
                   {{$tienda->appends($_GET)->links()}}
                   <div class="box-footer p-3 float-right">
-                  <a href="{{route('Comprador.create')}}"  class="btn  btn-info ">Registrar Comprador</a>
+                  <a href="{{route('tienda.create')}}"  class="btn  btn-info ">Registrar tienda</a>
             
                   </div>
                 </div>

@@ -7,6 +7,7 @@ use App\GrupoAtributo;
 use App\Atributo;
 use App\Combinacion;
 use App\Producto;
+use App\PlanAfilizacion;
 
 
 class atributoController extends Controller
@@ -53,6 +54,12 @@ class atributoController extends Controller
         return $ga;
 
     }
+
+    public function buscarGrupo($id){
+        
+        $ga=GrupoAtributo::where('tienda_id',$id)->with('atributo')->get();
+        return $ga;
+    }
        
     public function grupoCombinacion($slug){
         
@@ -88,7 +95,7 @@ class atributoController extends Controller
 
     }
 
-    public function combinacion(){
+    public function combinacion($slug){
 
         $producto=Producto::where('status','si')->where('slug',$slug)->first();
 
@@ -162,10 +169,39 @@ class atributoController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $combinacion=Combinacion::findOrfail($id);
-         $combinacion->cantidad=$request->cantidad;
-            $combinacion->save();
-        return $combinacion;
+         $combinacionEspecifica=Combinacion::findOrfail($id);
+         $producto= $combinacionEspecifica->producto;
+         $combinaciones=$producto->combinacion;
+
+         $cantidad=0;
+            
+         for ($i=0; $i <count($combinaciones) ; $i++) { 
+             if( $combinacionEspecifica->id===$combinaciones[$i]['id']){
+                
+                $cantidad=$cantidad+$request->cantidad;
+                
+             }else{ 
+
+                $cantidad=$cantidad+$combinaciones[$i]['cantidad'];
+
+             }
+            
+         }
+
+       
+        
+         $plan=PlanAfilizacion::where('id',$producto->tienda->planAfiliacion->id)->first();
+        
+        if($cantidad>$plan->tiempoPublicacion){
+            $mensaje=9569;
+            return $mensaje;
+        }else{
+            $combinacionEspecifica->cantidad=$request->cantidad;
+            $combinacionEspecifica->save();
+            return $combinacionEspecifica;
+        }
+
+
     }
 
     /**

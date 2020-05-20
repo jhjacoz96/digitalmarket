@@ -11,13 +11,16 @@
 
     <title>Home | E-Shopper</title>
     <link href="{{asset('shop/css/bootstrap.min.css')}}" rel="stylesheet">
+    
     <link href="{{asset('shop/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('shop/css/prettyPhoto.css')}}" rel="stylesheet">
     <link href="{{asset('shop/css/price-range.css')}}" rel="stylesheet">
     <link href="{{asset('shop/css/animate.css')}}" rel="stylesheet">
 	<link href="{{asset('shop/css/main.css')}}" rel="stylesheet">
 	<link href="{{asset('shop/css/responsive.css')}}" rel="stylesheet">
-	<link href="{{asset('shop/easy-zoom/css/easyzoom.css')}}" rel="stylesheet">
+    <link href="{{asset('shop/easy-zoom/css/easyzoom.css')}}" rel="stylesheet">
+   
+   <!-- <link rel="stylesheet" href="https://unpkg.com/vue-form-wizard/dist/vue-form-wizard.min.css"> -->
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
@@ -50,7 +53,7 @@
     <script src="{{asset('shop/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('shop/js/main.js')}}"></script>
     <script src="{{asset('shop/easy-zoom/js/easyzoom.js')}}"></script>
-
+   <!-- <script src="https://unpkg.com/vue-form-wizard/dist/vue-form-wizard.js"></script>-->
     <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 

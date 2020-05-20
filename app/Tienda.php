@@ -32,4 +32,9 @@ class Tienda extends Model
     public function producto(){
         return $this->hasMany('App\Producto','tienda_id');
     }
+
+    public function imagen(){
+        return $this->morphOne('App\Imagen','imageable');
+    }
+    
 }

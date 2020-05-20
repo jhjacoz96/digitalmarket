@@ -19,19 +19,16 @@
 <script>
 
   window.data={
-    editar:'no'
+    editar:'no',
+    datos:{
+      "tienda_id":"{{$tienda_id}}",
+      "rol":"{{$rol}}"
+    }
+
   }
 
   
-  $(function () {
-      //Initialize Select2 Elements
-      $('#categoriaa_id').select2()
   
-      //Initialize Select2 Elements
-      $('.select2bs4').select2({
-        theme: 'bootstrap4'
-      })
-    })
   
   </script>
 
@@ -40,7 +37,7 @@
 @section('contenido')
 
 <div id="producto">
-<form action="{{route('tienda.producto.store')}}" method="post" enctype="multipart/form-data">
+<form action="{{route('tiendas.producto.store')}}" method="post" enctype="multipart/form-data">
     @csrf
 
 <div class="content-wrapper">
@@ -113,6 +110,7 @@
                       </div>
                     </div>
                     
+                  
 
                     <div class="col-md-6">
 
@@ -178,7 +176,7 @@
   
                               <option value="" selected="selected" >Seleccione una categoria</option>
                               
-                              <option v-for="(subCategoria,index) in obtenerSubCategorias" v-bind:value="index">@{{subCategoria}}</option>
+                              <option v-for="(subCategoria,index) in obtenerSubCategorias" v-bind:value="subCategoria.id">@{{subCategoria.nombre}}</option>
           
                             </select>
                          
@@ -678,7 +676,7 @@
          
                 <!-- /.card-body -->
                 <div class="card-footer">
-                <a class="btn btn-secondary float-left"  href="{{route('tienda.producto.index')}}">Volver</a>
+                <a class="btn btn-secondary float-left"  href="{{route('tiendas.producto.index')}}">Volver</a>
                   <input  
                          :disabled="deshabilitarBoton==1"        
                         type="submit" value="Agregar producto" class="btn btn-primary float-right">

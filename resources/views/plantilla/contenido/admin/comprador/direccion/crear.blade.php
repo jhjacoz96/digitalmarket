@@ -74,7 +74,7 @@
 
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Apellido</label>
-                    <input type="text" required="true" name="Apellido" v-model="apellido" class="form-control" id="apellido" placeholder="Contreras">
+                    <input type="text" required="true" name="apellido" v-model="apellido" class="form-control" id="apellido" placeholder="Contreras">
                     {!!$errors->first('apellido','<small>:message</small><br>')!!}
                   </div>
 

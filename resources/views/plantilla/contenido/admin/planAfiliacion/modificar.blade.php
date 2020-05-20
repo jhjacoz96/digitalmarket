@@ -12,13 +12,13 @@
 
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-          <li class="breadcrumb-item"><a href="{{route('Plan.index')}}">Consultar</a></li>
+            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{route('Plan.index')}}">Consultar</a></li>
             <li class="breadcrumb-item active">Actualizar</li>
           </ol>
 
       </div>
-    </div><!-- /.container-fluid -->
+    </div>
   </section>
     <!-- Main content -->
     <section class="content">
@@ -80,7 +80,7 @@
                     </div>
   
                     <div class="form-group col-md-6">
-                      <label for="">Duración de la publicación (Cantidad de dias)</label>
+                      <label for="">Maximo de stock por publicacion</label>
                       <input  class="form-control" 
                       @if($plan->tiempoPublicacion=='Ilimitado')
                       value=""
@@ -108,7 +108,7 @@
   
   
                     <div class="form-group col-md-6">
-                      <label for="">Cantidad de publicaciones (En el mes)</label>
+                      <label for="">Cantidad de publicaciones activas</label>
                       <input  class="form-control" type="text" 
                       @if($plan->cantidadPublicacion=='Ilimitado')
                       value=""

@@ -16,7 +16,8 @@ class CreateGrupoAtributosTable extends Migration
         Schema::create('grupo_atributos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre');
-            
+            $table->unsignedBigInteger('tienda_id')->nullable();
+            $table->foreign('tienda_id')->references('id')->on('tiendas');
             $table->timestamps();
         });
     }

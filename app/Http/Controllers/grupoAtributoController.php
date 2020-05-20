@@ -17,10 +17,21 @@ class grupoAtributoController extends Controller
      */
     public function index(Request $request)
     {
-        $nombre=$request->get('nombre');
-        
-        $grupoAtributo=GrupoAtributo::where('nombre','like',"%$nombre%")->paginate(5);
-        return view('plantilla.contenido.admin.grupoAtributo.consultar',compact('grupoAtributo'));
+        if(\Auth::user()->rol_id==3){
+
+            $nombre=$request->get('nombre');
+            
+            $grupoAtributo=GrupoAtributo::where('nombre','like',"%$nombre%")->paginate(5);
+            return view('plantilla.contenido.admin.grupoAtributo.consultar',compact('grupoAtributo'));
+
+        }else{
+
+            $nombre=$request->get('nombre');
+            
+            $grupoAtributo=GrupoAtributo::where('nombre','like',"%$nombre%")->where('tienda_id',\Auth::user()->tienda->id)->paginate(5);
+            return view('plantilla.contenido.tienda.grupoAtributo.consultar',compact('grupoAtributo'));
+
+        }
 
         
     }
@@ -32,7 +43,14 @@ class grupoAtributoController extends Controller
      */
     public function create()
     {
-        return \view('plantilla.contenido.admin.grupoAtributo.crear');
+        if(\Auth::user()->rol_id==3){
+
+            return \view('plantilla.contenido.admin.grupoAtributo.crear');
+        }else{
+        
+            return \view('plantilla.contenido.tienda.grupoAtributo.crear');
+        }
+
     }
 
     /**
@@ -57,7 +75,11 @@ class grupoAtributoController extends Controller
         
        $grupoAtributo=new GrupoAtributo();
         $grupoAtributo->nombre=$request->grupo;
-        $grupoAtributo->save();
+        if(\Auth::user()->rol_id==2){
+            $tienda=\Auth::user()->tienda;
+            $grupoAtributo->tienda_id=$tienda->id;
+
+            $grupoAtributo->save();
         
         
         if(count($request->atributo)>0){
@@ -72,10 +94,38 @@ class grupoAtributoController extends Controller
     
         }
 
+        
+        \flash('Grupo agregado con exito')->important()->success();
 
+        return \redirect()->route('tiendas.grupoAtributo.index');
+
+
+        }else{
+
+            $grupoAtributo->tienda_id=$request->tienda_id;
+            $grupoAtributo->save();
+        
+        
+        if(count($request->atributo)>0){
+            for ($i=0; $i < count($request->atributo) ; $i++) { 
+                
+                $atributo=new Atributo();
+                $atributo->nombre=$request->atributo[$i];
+                $atributo->grupoAtributo_id=$grupoAtributo->id;
+                $atributo->save();
+            }
+
+    
+        }
+
+        
         \flash('Grupo agregado con exito')->important()->success();
 
         return \redirect()->route('grupoAtributo.index');
+
+
+        }
+        
 
     }    
 
@@ -98,8 +148,13 @@ class grupoAtributoController extends Controller
      */
     public function edit($id)
     {
+
         $grupoAtributo=GrupoAtributo::with('atributo')->findOrFail($id);
-        return view('plantilla.contenido.admin.grupoAtributo.modificar',compact('grupoAtributo'));
+        if(\Auth::user()->rol_id==2){
+            return view('plantilla.contenido.tienda.grupoAtributo.modificar',compact('grupoAtributo'));
+        }else{
+            return view('plantilla.contenido.admin.grupoAtributo.modificar',compact('grupoAtributo'));
+        }
     }
 
     /**
@@ -124,26 +179,56 @@ class grupoAtributoController extends Controller
         }
         
        $grupoAtributo=GrupoAtributo::findOrFail($id);
-        $grupoAtributo->nombre=$request->grupo;
-        $grupoAtributo->save();
-        
-        
-        if(count($request->atributo)>0){
-            for ($i=0; $i < count($request->atributo) ; $i++) { 
-                
-                $atributo=new Atributo();
-                $atributo->nombre=$request->atributo[$i];
-                $atributo->grupoAtributo_id=$grupoAtributo->id;
-                $atributo->save();
-            }
+       if(\Auth::user()->rol_id==2){
+        $tienda=\Auth::user()->tienda;
+        $grupoAtributo->tienda_id=$tienda->id;
 
+        $grupoAtributo->save();
     
+    
+    if(count($request->atributo)>0){
+        for ($i=0; $i < count($request->atributo) ; $i++) { 
+            
+            $atributo=new Atributo();
+            $atributo->nombre=$request->atributo[$i];
+            $atributo->grupoAtributo_id=$grupoAtributo->id;
+            $atributo->save();
         }
 
 
-        \flash('Grupo modificado con exito')->important()->success();
+    }
 
-        return \redirect()->route('grupoAtributo.index');
+    
+    \flash('Grupo modificado  con exito')->important()->success();
+
+    return \redirect()->route('tiendas.grupoAtributo.index');
+
+
+    }else{
+
+        $grupoAtributo->tienda_id=$request->tienda_id;
+        $grupoAtributo->save();
+    
+    
+        if(count($request->atributo)>0){
+        for ($i=0; $i < count($request->atributo) ; $i++) { 
+            
+            $atributo=new Atributo();
+            $atributo->nombre=$request->atributo[$i];
+            $atributo->grupoAtributo_id=$grupoAtributo->id;
+            $atributo->save();
+        }
+
+
+    }
+
+    
+    \flash('Grupo codificado con exito')->important()->success();
+
+    return \redirect()->route('grupoAtributo.index');
+
+
+    }
 
     }
 
@@ -159,9 +244,14 @@ class grupoAtributoController extends Controller
         $grupo=$atributo->grupoAtributo->id;
         $atributo->delete();
 
-        \flash('atributo eliminado con exito')->important()->success();
 
-        return \redirect()->route('grupoAtributo.edit',$grupo);
+        \flash('atributo eliminado con exito')->important()->success();
+        if(\Auth::user()->rol_id==2){
+            return \redirect()->route('tiendas.grupoAtributo.edit',$grupo);
+        }else{
+            return \redirect()->route('grupoAtributo.edit',$grupo);
+        }
+        
 
     }
 
@@ -170,9 +260,19 @@ class grupoAtributoController extends Controller
         $grupoAtributo=GrupoAtributo::findOrFail($id);
         $grupoAtributo->delete();
         
-        \flash('Grupo eliminado con exito')->important()->success();
+        if(\Auth::user()->rol_id==2){
 
-        return \redirect()->route('grupoAtributo.index');
+            \flash('Grupo eliminado con exito')->important()->success();
+            
+            return \redirect()->route('tiendas.grupoAtributo.index');
+
+        }else{
+
+            \flash('Grupo eliminado con exito')->important()->success();
+            
+            return \redirect()->route('grupoAtributo.index');
+        }
+
 
     }
 }

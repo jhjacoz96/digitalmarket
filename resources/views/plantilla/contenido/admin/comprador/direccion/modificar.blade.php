@@ -55,19 +55,15 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-            <form role="form" action="{{route('direccion.update',$direccion)}}" method="post" id="quickForm">
+            <form role="form" action="{{url('/comprador/direccion'.$direccion)}}" method="post" id="quickForm">
                 @method('PUT')
                 @csrf
                 
                 <div class="card-body">
-                    <div class="form-group col-md-6">
-
-                    <a href="{{route('Comprador.show',$direccion->comprador)}}" class="btn btn-info btn-sm"><span class="fas fa-eye mr-1"></span>{{$direccion->comprador->nombre}} {{$direccion->comprador->apellido}} ({{$direccion->comprador->correo}})</a>
-                      </div>
-                      
+                  
     
-                      <div class="form-group col-md-6">
-                        <label for="exampleInputEmail1">Nombre</label>
+                      <div >
+                       
                       <input type="text" required="true" name="nombre" class="form-control"  placeholder="Jhon" value="{{$direccion->nombre}}">
                         {!!$errors->first('nombre','<small>:message</small><br>')!!}
                       </div>

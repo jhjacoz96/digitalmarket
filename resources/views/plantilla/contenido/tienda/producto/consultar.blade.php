@@ -122,11 +122,11 @@
                                <div class="btn-group">
                                
 
-                               <a href="{{route('tienda.producto.edit',$item->slug)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
+                               <a href="{{route('tiendas.producto.edit',$item->slug)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
 
                                    
                                    
-                                   <form action="{{route('tienda.producto.destroy',$item)}}" method="POST">
+                                   <form action="{{route('tiendas.producto.destroy',$item)}}" method="POST">
                                        @method('DELETE')
                                        @csrf
                                        <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este producto?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
@@ -147,7 +147,7 @@
                   {{$producto->appends($_GET)->links()}}
 
                   <div class="box-footer p-3 float-right">
-                  <a href=" {{route('tienda.producto.create')}} "  class="btn  btn-info ">Agregar producto</a>
+                  <a href=" {{route('tiendas.producto.create')}} "  class="btn  btn-info ">Agregar producto</a>
             
                   </div>
                 </div>

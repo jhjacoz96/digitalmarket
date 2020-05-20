@@ -64,11 +64,17 @@
                 <div class="col-sm-8">
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
-                            <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+                            
                             <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                             <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
                             <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-                            <li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+                            @if(empty(\Auth::check()))
+                        <li><a href="{{url('/registrar-usuario')}}"><i class="fa fa-user"></i> Registrarse</a></li>
+                        <li><a href="{{url('/iniciar-sesion')}}"><i class="fa fa-lock"></i> Login</a></li>
+                            @else
+                        <li><a href="{{url('/comprador/cuenta')}}"><i class="fa fa-user"></i>{{\Auth::user()->nombre}} {{\Auth::user()->apellido}}</a></li>
+                        <li><a href="{{url('/salir')}}"><i class="fa fa-sign-out"></i>Salir</a></li>
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -91,7 +97,7 @@
                     <div class="mainmenu pull-left">
                         <ul class="nav navbar-nav collapse navbar-collapse">
                             <li><a href="index.html" class="active">Home</a></li>
-                            <li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
+                            <li class="dropdown"><a href="#">Categorias<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
                                     @foreach($mainCategorias as $item)
                                     

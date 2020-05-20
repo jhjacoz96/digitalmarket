@@ -15,6 +15,7 @@ class CreateCuentaTiendasTable extends Migration
     {
         Schema::create('cuenta_tiendas', function (Blueprint $table) {
             $table->bigIncrements('id');
+            
             $table->timestamps();
         });
     }

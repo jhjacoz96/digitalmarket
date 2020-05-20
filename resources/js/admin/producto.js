@@ -1,6 +1,7 @@
 const producto = new Vue({
     el: '#producto',
     data: {
+        rol:'',
         tiendas:[],
         tienda:'',
         nombre: '',
@@ -14,7 +15,7 @@ const producto = new Vue({
         selectedSubCategoria: '',
         obtenerSubCategorias: [],
         categorias: [],
-
+    
         //Variables de precio
         precioAnterior: 0,
         precioActual: 0,
@@ -61,12 +62,16 @@ const producto = new Vue({
             console.log(e.respose)
         })
         
-        axios.get('/combinacion/create').then(res => {
-            this.grupos = res.data
+        if(data.datos.tienda_id){
             
-        }).catch(e => {
-            console.log(e.respose)
-        })
+            axios.get(`/buscarGrupos/${data.datos.tienda_id}`).then(res => {
+
+                this.grupos = res.data
+
+            }).catch(e => {
+                console.log(e.respose)
+            })
+        }
         
         if(data.editar=='si'){
 
@@ -253,7 +258,7 @@ const producto = new Vue({
                 })
             } else {
                 this.divClaseSlug = 'badge badge-danger'
-                this.divMensajeSlug = "Debe ingresar una categoria"
+                this.divMensajeSlug = "Debe ingresar un nombre de producto"
                 this.deshabilitarBoton = 1
                 this.divAparecer = true
             }
@@ -295,7 +300,7 @@ const producto = new Vue({
                 if (result.value) {
 
                     this.listaCombinacion.splice(index, 1)
-                    this.value = JSON.stringify(this.listaCombinacion)
+                   
                     
 
                     Swal.fire(
@@ -436,6 +441,7 @@ const producto = new Vue({
 
                 //this.atributos.push(this.select)
                 //this.select=[]
+                console.log(this.atributos)
                 var r = [], elem = this.combinacion, arg = this.atributos, max = arg.length - 1,o=this.listaCombinacion
 
                 function helper(arr, i) {
@@ -467,7 +473,7 @@ const producto = new Vue({
                 //this.listaCombinacion=r
                 this.select=[]
 
-                this.value = JSON.stringify(this.listaCombinacion)
+                
                
 
             }
@@ -482,18 +488,28 @@ const producto = new Vue({
         actualizarCombinacion(combinacion){
              const param={cantidad:combinacion.cantidad}
             axios.put(`/combinacion/${combinacion.id}`,param).then(res=>{
-                console.log(res)
-                    
-                const index=this.listaCombinacion2.findIndex(combinacionBuscar=>combinacionBuscar.id===res.data.id )
-                this.listaCombinacion2[index].cantidad = res.data.cantidad
-                this.combinacion={cantidad:''}
+                console.log(res.data)
+                if(res.data==9569) {
 
-                axios.get(`/combinacion/${data.datos.id}/edit`).then(res=>{
-                    this.listaCombinacion2=res.data
-                    console.log(this.listaCombinacion2)
-                }).catch(e=>{
-                    console.log(e.respose)
-                })
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: 'Exede el stock maximo que le ofrece el plan de afiliación al que esta afiliado!'
+                    })
+
+                }else{
+
+                    const index=this.listaCombinacion2.findIndex(combinacionBuscar=>combinacionBuscar.id===res.data.id )
+                    this.listaCombinacion2[index].cantidad = res.data.cantidad
+                    this.combinacion={cantidad:''}
+    
+                    axios.get(`/combinacion/${data.datos.id}/edit`).then(res=>{
+                        this.listaCombinacion2=res.data
+                        console.log(this.listaCombinacion2)
+                    }).catch(e=>{
+                        console.log(e.respose)
+                    })
+                } 
 
 
             }).catch(e=>{
@@ -504,7 +520,7 @@ const producto = new Vue({
         obtenerTienda(){
             if(this.tienda!=''){
                 axios.get('/obtenerTienda/'+this.tienda).then(res=>{
-                    console.log(res.data)
+                   
                     
                     if(res.data=='No hay registros de esta tienda'){
                         
@@ -512,28 +528,56 @@ const producto = new Vue({
                         this.divClaseTienda='badge badge-danger'
                         this.aparecerTienda==true
                         this.deshabilitarBoton=1
+                        this.grupos=[]
+                        this.listaCombinacion=[]
+                        this.value=[]
                     }else{
                         this.divMensajeTienda=res.data.nombreTienda
                         this.divClaseTienda='badge badge-info'
                         this.aparecerTienda==true
                         this.deshabilitarBoton=0
+                        this.tiendas=res.data
+
+                       
+                        
+                       this.grupos=[]
+                        this.listaCombinacion=[]
+                        this.value=[]
+                        axios.get(`/buscarGrupos/${this.tiendas.id}`).then(res => {
+
+                            this.grupos = res.data
+                            
+                        }).catch(e => {
+                            console.log(e.respose)
+                        })
+
+
                     }
                     
                 }).catch(e=>{
                     console.log(e.response)
                 })
+
+                
+
             }else{
                 this.divMensajeTienda='Debe indicar un código valido'
                 this.divClaseTienda='badge badge-danger'
                 this.aparecerTienda=true
                 this.deshabilitarBoton=1
+
+               this.grupos=[]
+                        this.listaCombinacion=[]
+                        this.value=[]
             }
+
+
         }
 
     },
     mounted() {
 
-
+        
 
         if (data.editar == 'si') {
 
@@ -576,7 +620,7 @@ const producto = new Vue({
 
 
         if (data.editar == 'no') {
-
+            
             document.getElementById('subCategoria_id').disabled = true
 
             //this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');

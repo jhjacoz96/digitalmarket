@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\User;
 use App\Tienda;
+use App\Imagen;
+use App\PlanAfilizacion;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
@@ -61,8 +63,8 @@ class administradorController extends Controller
         }
         
         if($user->rol_id=='2'){ 
-            $tienda=Tienda::findOrFail($user->tienda->id);
-        
+            $tienda=Tienda::with('imagen')->findOrFail($user->tienda->id);
+            
             return \view('plantilla.contenido.perfil.perfilTienda',compact('tienda'),compact('user'));
         }
 
@@ -84,8 +86,8 @@ class administradorController extends Controller
         }
         if($user->rol_id=='2'){
             $tienda=$user->tienda;
-            
-            return \view('plantilla.contenido.perfil.actualizarPerfilTienda',compact('tienda'));
+            $planAfiliacion=PlanAfilizacion::where('estatus','A')->get();
+            return \view('plantilla.contenido.perfil.actualizarPerfilTienda',compact('tienda','planAfiliacion'));
         }
     }
 
@@ -127,9 +129,8 @@ class administradorController extends Controller
         }
 
         if(\Auth::user()->rol_id=='2'){
-
-   
-        
+           
+     
             $v=Validator::make($request->all(),[
         
                 'correo'=>'email|required|unique:tiendas,correo,'.$id
@@ -153,7 +154,20 @@ class administradorController extends Controller
             $tienda->apellido=$request->apellido;
             $tienda->correo=$request->correo;
             $tienda->telefono=$request->telefono;
+            $tienda->planAfilizacion_id=$request->planAfiliacion;
+            if($request->imagen){
+                $imagen=$request->file('imagen');
+               
+                $nombre=time().'_'.$imagen->getClientOriginalName();
+                $ruta=public_path().'/imagenes/tienda';
+                $imagen->move($ruta , $nombre);
+    
+                $urlImagen['url']='/imagenes/tienda/'.$nombre;
+            }
+
             $tienda->save();
+
+            $tienda->imagen()->create($urlImagen);
 
             flash('Perfil modificado  con exito!')->success()->important();
 

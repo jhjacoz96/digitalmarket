@@ -24,6 +24,9 @@
   </section>
     <!-- Main content -->
     <section class="content">
+      <div class="p-2">
+        @include('flash::message')
+     </div>
       <div class="container-fluid">
         <div class="row">
           <!-- left column -->
@@ -39,10 +42,8 @@
                 @method("PUT")
                 @csrf
                 
-                <div class="p-2">
-                  @include('flash::message')
-               </div>
-               
+
+
                 <div class="card-body">
                   @if(\Auth::user()->rol_id=='3')
                     <div class="form-group">

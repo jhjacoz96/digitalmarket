@@ -25,6 +25,9 @@
 <div id="detalleProducto">
 <section>
     <div class="container">
+        <div class="p-2">
+            @include('flash::message')
+        </div>
         <div class="row">
             <div class="col-sm-3">
                 @include('layouts.frondTienda.sider')
@@ -83,24 +86,43 @@
                            {{ csrf_field() }} 
 
                         <input type="hidden" name="producto_id" value="{{$producto->id}}">
-                       <input type="hidden" name="combinacion_id" >
+                      
                        <input type="hidden" name="precio" value="{{$producto->precioActual}}">
                        <input type="hidden" name="cantidad" v-model="cantidad">
             
 
                         <div class="product-information">
-                          
-                            
+                         
+                         
                         <h2>{{$producto->nombre}}</h2>
                             <p>Sku: {{$producto->sku}}</p>
-                            
+                        
                             @if($producto->tipoCliente=='combinacion')
-                            <p v-for="(grupo,index) in grupoCombinacion">
-                                <select   id="">
-                                    <option selected value="">@{{grupo.nombre}}</option>
-                                    <option v-for="(atributo,index) in grupo.atributo" :value="atributo">@{{atributo.nombre}}</option>
+                            <input type="hidden" name="combinacion_id" v-model="combinacion_id">
+                            <div v-if="count==1">
+                                <p v-for="(grupo,index) in grupoCombinacion">
+                                    <select @change="obtenerCombinacion" v-model="atributo_id"  id="selected">
+                                        <option selected value="">@{{grupo.nombre}}</option>
+                                        <option v-for="(atributo,index) in grupo.atributo" :value="atributo.id">@{{atributo.nombre}}</option>
+                                    </select>
+                                </p>  
+                            </div>
+                            <div v-if="count==2">
+                            <p >
+                                <select @change="obtenerCombinacion2" v-model="atributo_id"  id="selected">
+                                    <option selected value="">@{{grupoCombinacion2.nombre}}</option>
+                                    <option v-for="(atributo,index) in grupoCombinacion2.atributo" :value="atributo.id">@{{atributo.nombre}}</option>
+                                </select>
+                            </p>
+
+                            <p>
+                                    
+                                <select @change="obtenerCombinacion2" v-model="atributo_id2"  id="selected2">
+                                    <option selected value="">@{{grupoCombinacion3.nombre}}</option>
+                                    <option v-for="(atributo,index) in grupoCombinacion3.atributo" :value="atributo.id">@{{atributo.nombre}}</option>
                                 </select>
                             </p>  
+                        </div>
                             @endif
                           
                             
@@ -110,8 +132,8 @@
                                 <span>Bs {{$producto->precioActual}}</span>
                                 <label>Cantidad:</label>
                                 <input type="text" v-model="cantidad"   />
-                            
-                                <button type="submit" class="btn btn-fefault cart" :disabled="disabledBoton">
+                                @{{validarCantidad}}
+                                <button type="submit"  class="btn btn-fefault cart" :disabled="disabledBoton">
                                     <i class="fa fa-shopping-cart"></i>
                                     Add to cart
                                 </button>

@@ -57,7 +57,7 @@
                   </div>
 
                   <div class="form-group col-md-6">
-                    <label for="">Duración de la publicación (Cantidad de dias)</label>
+                    <label for="">stock maximo por producto</label>
                     <input  class="form-control" placeholder="60" name="tiempoPublicacion"  type="text">
                   </div>
 
@@ -77,7 +77,7 @@
 
 
                   <div class="form-group col-md-6">
-                    <label for="">Cantidad de publicaciones (En el mes)</label>
+                    <label for="">Cantidad de publicaciones activas</label>
                     <input  class="form-control" type="text" name="cantidadPublicacion" placeholder="2">
                   </div>
 

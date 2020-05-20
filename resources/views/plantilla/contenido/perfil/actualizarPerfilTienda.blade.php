@@ -35,7 +35,7 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-            <form role="form" action="{{route('administrador.update',$tienda)}}" method="post" id="quickForm">
+            <form role="form" enctype="multipart/form-data" action="{{route('administrador.update',$tienda)}}" method="post" id="quickForm">
                 @method("PUT")
                 @csrf
                 
@@ -44,6 +44,18 @@
                </div>
                
                 <div class="card-body">
+
+                  <div class="form-group">
+                      
+                    <label for="imagen">Subir logo de la tienda</label> 
+                    
+                    <input type="file" class="form-control-file" id="imagen" name="imagen"  
+                    accept="image" >
+                    
+                 
+                     {!!$errors->first('imagen','<small>:message</small><br>')!!}
+                  </div>
+
                
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nombre de la tienda</label>
@@ -72,6 +84,20 @@
                       <label for="exampleInputEmail1">Correo electrónico</label>
                       <input type="text"  name="correo" class="form-control" value="{{$tienda->correo}}"id="correo" placeholder="Ingrese un correo electrónico" >
                       {!!$errors->first('correo','<small>:message</small><br>')!!}
+                    </div>
+
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Plan afiliación</label>
+                      <select name="planAfiliacion" class="form-control" name="planAfiliacion" id="">
+                        @foreach ($planAfiliacion as $item)     
+                      <option
+                      @if($item->id==$tienda->planAfiliacion->id)
+                      selected
+                      @endif
+                      value="{{$item->id}}">{{$item->nombre}}</option>
+                        @endforeach
+                      </select>
+                      {!!$errors->first('planAfiliacion','<small>:message</small><br>')!!}
                     </div>
                     
 

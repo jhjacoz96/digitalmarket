@@ -1,4 +1,7 @@
+
 const login= new Vue({
+
+    
     el:'#login',
     data:{
         rol_id:1,

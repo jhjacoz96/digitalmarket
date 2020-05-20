@@ -27,6 +27,8 @@
   
       editar:'si',
       datos:{
+        "tienda_id":"{{$tienda_id}}",
+         "rol":"{{$rol}}",
         "nombre":"{{$producto->nombre}}",
         "precioAnterior":"{{$producto->precioAnterior}}",
         "precioActual":"{{$producto->precioActual}}",
@@ -70,7 +72,7 @@
 @section('contenido')
 
 <div id="producto">
-<form action="{{route('tienda.producto.update',$producto)}}" method="post" enctype="multipart/form-data">
+<form action="{{route('tiendas.producto.update',$producto)}}" method="post" enctype="multipart/form-data">
   @method('PUT')
   @csrf
 
@@ -163,24 +165,17 @@
 
                   <div class="row">
 
-                    <div class="callout callout-info">
-                      <h5>Tipos de producto</h5>
-    
-                      <p>Puede elegir entre dos tipos de productos:<p> <strong>Común</strong>, solo podrá indicar una  cantidad de produtos de forma general.</p>
-                      <p><strong>Variantes de atributos</strong>, Tendra la posibilidad de realizar combinaciones entre los atributos de los distintos grupos de atributos, y asi poder asignar un stock distinto a cada combinación generada.</p>
-                    </div>
-
                     <div class="col-md-12">
 
 
                       <div class="form-group">
-                        <label for="">Seleccione un tipo de producto</label>
+                        <label for="">Tipo de producto</label>
                         <div class="custom-control custom-radio">
-                          <input class="custom-control-input"  @click="tipoProd()" v-bind:value="tipoProducto" type="radio" id="customRadio1" name="tipoProd">
+                          <input disabled class="custom-control-input"  @click="tipoProd()" v-bind:value="tipoProducto" type="radio" id="customRadio1" name="tipoProd">
                           <label for="customRadio1" class="custom-control-label">Producto común</label>
                         </div>
                         <div class="custom-control custom-radio">
-                          <input class="custom-control-input" type="radio" id="customRadio2" v-bind:value="tipoProducto" name="tipoProd" @click="tipoProd()">
+                          <input disabled class="custom-control-input" type="radio" id="customRadio2" v-bind:value="tipoProducto" name="tipoProd" @click="tipoProd()">
                           <label for="customRadio2" class="custom-control-label">Producto con variación de atributos</label>
                         </div>
                       </div>
@@ -218,7 +213,7 @@
                             <div class="col-md-6">
                             
                             <label>Categoria</label>
-                            @{{selectedCategoria}}
+                         
                             <select v-model="selectedCategoria"  data-old="{{old('categoria_id')}}" @change="cargarSubCategorias" id="categoria_id" name="categoria_id"  class="form-control" style="width: 100%;">
     
                               <option value="" selected="selected">Seleccione un a categoria</option>
@@ -825,7 +820,7 @@
                             <div class="custom-control custom-checkbox">
                               <input type="checkbox" class="custom-control-input" id="status" name="status"
                               
-                              @if($producto->status='si')
+                              @if($producto->status=='si')
                                 checked
                               @endif
 
@@ -875,7 +870,7 @@
          
                 <!-- /.card-body -->
                 <div class="card-footer">
-                <a class="btn btn-secondary float-left" href="{{route('tienda.justify-content-lg-startproducto.index')}}">volver</a>
+                <a class="btn btn-secondary float-left" href="{{route('tiendas.producto.index')}}">volver</a>
                          <input  
                          :disabled="deshabilitarBoton==1"        
                         type="submit" value="Actualizar productos " class="btn btn-primary float-right">

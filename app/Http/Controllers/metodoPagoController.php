@@ -18,8 +18,9 @@ class metodoPagoController extends Controller
     public function index(Request $request)
     {
         $nombre=$request->get('nombre');
-    
+        
         $pago=metodoPago::where('nombre','like',"%$nombre%")->paginate(2);
+        
         return view('plantilla.contenido.admin.metodoPago.consultar',compact('pago'));
     }
 
@@ -42,6 +43,7 @@ class metodoPagoController extends Controller
      */
     public function store(Request $request)
     {
+       
         $metodo=new MetodoPago();
         $metodo->nombre=$request->nombre;
         $metodo->descripcion=$request->descripcion;
@@ -52,7 +54,7 @@ class metodoPagoController extends Controller
         $metodo->bancoMetodoPago_id=$request->bancoMetodoPago;
         $metodo->save();
         \flash('Metodo de pago agregado con exito')->important()->success();
-        return \redirect()->route('metodoPago.create');
+        return \redirect()->route('metodoPago.index');
     }
 
     /**
@@ -109,6 +111,10 @@ class metodoPagoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $bancos=MetodoPago::findOrFail($id);
+        
+        $bancos->delete();
+        \flash('Metodo de pago eliminado con exito')->important()->success();
+        return \redirect()->route('metodoPago.index');
     }
 }

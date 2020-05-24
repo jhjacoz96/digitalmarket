@@ -17,7 +17,7 @@ class PlanAfilizacion extends Model
         
     ];
 
-    public function planAfiliacion()
+    public function tienda()
     {
         return $this->hasMany('App\Tienda','planAfilizacion_id');
     }

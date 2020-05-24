@@ -156,6 +156,7 @@ class metodoEnvioController extends Controller
     {
         $envio=MedioEnvio::findOrfail($id);
         $envio->delete();
-        return $envio;
+        \flash('Metodo de envio eliminado con exito')->important()->success();
+        return \redirect()->route('metodoEnvio.index');
     }
 }

@@ -89,6 +89,7 @@
                       @endif
                       {{$plan->tiempoPublicacion}}
                        placeholder="60" name="tiempoPublicacion"  type="text">
+                       <small>(Si deja este campo vacio, el stock será ilimitado)</small>
                     </div>
   
                     <div class="form-group col-md-6">
@@ -115,8 +116,8 @@
                       @else
                       value="{{$plan->cantidadPublicacion}}"
                       @endif
-                      
                       name="cantidadPublicacion" placeholder="2">
+                      <small>(Si deja este campo vacio, la canidad será ilimitada)</small>
                     </div>
   
                     <div class="form-group">

@@ -83,6 +83,8 @@ class direccionController extends Controller
     public function store(Request $request)
     {
 
+        
+
         $v=Validator::make($request->all(),[
             'nombre'=>'required',
             'apellido'=>'required',
@@ -95,9 +97,12 @@ class direccionController extends Controller
 
         ]);
            
+
         if ($v->fails()) {
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
+
+        
 
         $direccion=new Direccion();
         $direccion->nombre=$request->nombre;
@@ -120,10 +125,16 @@ class direccionController extends Controller
             
             return redirect()->route('direccion.index');
         }else{
+
             $direccion->comprador_id=\Auth::user()->comprador->id;
 
             $direccion->save();
 
+            if($request->checkout=='si'){
+                \flash('Direccion agregada con exito')->important()->success();
+            
+                return redirect('/checkout');
+            }
             \flash('Direccion agregada con exito')->important()->success();
             
             return redirect('/comprador/cuenta');

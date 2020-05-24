@@ -59,8 +59,9 @@
                   <div class="form-group col-md-6">
                     <label for="">stock maximo por producto</label>
                     <input  class="form-control" placeholder="60" name="tiempoPublicacion"  type="text">
+                    <small>(Si deja este campo vacio, el stock será ilimitado)</small>
                   </div>
-
+               
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Descripción</label>
                     
@@ -79,6 +80,7 @@
                   <div class="form-group col-md-6">
                     <label for="">Cantidad de publicaciones activas</label>
                     <input  class="form-control" type="text" name="cantidadPublicacion" placeholder="2">
+                    <small>(Si deja este campo vacio, la canidad será ilimitada)</small>
                   </div>
 
                   <div class="form-group">

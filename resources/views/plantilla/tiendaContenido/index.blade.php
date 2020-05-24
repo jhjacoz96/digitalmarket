@@ -89,13 +89,7 @@
                         </div>
                     </div><!--/brands_products-->
                     
-                    <div class="price-range"><!--price-range-->
-                        <h2>Price Range</h2>
-                        <div class="well text-center">
-                             <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" ><br />
-                             <b class="pull-left">$ 0</b> <b class="pull-right">$ 600</b>
-                        </div>
-                    </div><!--/price-range-->
+              
                     
                     <div class="shipping text-center"><!--shipping-->
                         <img src="{{asset('shop/images/home/shipping.jpg')}}" alt="" />
@@ -149,10 +143,6 @@
                     <div class="col-sm-12">
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tshirt" data-toggle="tab">T-Shirt</a></li>
-                            <li><a href="#blazers" data-toggle="tab">Blazers</a></li>
-                            <li><a href="#sunglass" data-toggle="tab">Sunglass</a></li>
-                            <li><a href="#kids" data-toggle="tab">Kids</a></li>
-                            <li><a href="#poloshirt" data-toggle="tab">Polo shirt</a></li>
                         </ul>
                     </div>
                     <div class="tab-content">
@@ -432,9 +422,9 @@
                         </div>
                     </div>
                 </div><!--/category-tab-->
-                
+                 
                 <div class="recommended_items"><!--recommended_items-->
-                    <h2 class="title text-center">recommended items</h2>
+                    <h2 class="title text-center">Tiendas premiun</h2>
                     
                     <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">

@@ -240,13 +240,16 @@ route::post('carrito/aplicarCupon','cuponController@aplicarDescuento')->name('ca
 //fin carrito de compra/////
 
 //checkout///
+    route::get('/obtenerMetodoEnvio','productoController@obtenerMetodoEnvio');
+    route::get('/obtenerDireccion','productoController@obtenerDireccion');
 
-    route::match(['get','post'],'/checkout','productoController@checkout');
-
+    route::get('/checkout/{montoTotal}','productoController@checkout');
+    route::get('/obtenerMetodoPagoInternacional','productoController@obtenerMetodoPagoInternacional');
+    route::get('/obtenerMetodoPagoNacional','productoController@obtenerMetodoPagoNacional');
 //fin checkout///
 
 //pedido//
-route::match(['get','post'],'/revisar-pedido','productoController@revisarPedido');
+route::match(['get','post'],'/realizar-pedido','productoController@realizarPedido');
 
 
 //fin pedido//

@@ -132,20 +132,23 @@
                         
                         <li>Descuento adicional<span>Bs<?php echo \Session::get('$montoDescuentoTipoComrador');?></span></li>
                         Bill To
-                        <li>Monto total<span>Bs<?php echo $montoTotal- \Session::get('montoCupon')-\Session::get('$montoDescuentoTipoComrador'); ?></span></li>
+                        <li>Monto total<span>Bs<?php echo $subMonto=$montoTotal- \Session::get('montoCupon')-\Session::get('$montoDescuentoTipoComrador'); ?></span></li>
 
                        @else
+                        @if(\Auth::user()->comprador->tipoComprador->envioGratis===1)
+                        <li>Medio de envio<span> Envio gratis</span></li>
+                        @endif
 
                        <li>Sub total del carrito<span>Bs<?php echo $montoTotal; ?></span></li>
 
                        <li>Descuento adicional<span>Bs<?php echo \Session::get('$montoDescuentoTipoComrador');?></span></li>
 
-                       <li>Monto total<span>Bs<?php echo $montoTotal-\Session::get('$montoDescuentoTipoComrador'); ?></span></li>
+                       <li>Monto total<span>Bs<?php echo $subMonto=$montoTotal-\Session::get('$montoDescuentoTipoComrador')-\Session::get('montoCupon'); ?></span></li>
                         @endif
                         
                     </ul>
                         <a class="btn btn-default update" href="">Update</a>
-                <a class="btn btn-default check_out" href="{{url('/checkout')}}">Check Out</a>
+                <a class="btn btn-default check_out" href="{{url('/checkout/'.$subMonto)}}">Check Out</a>
                 </div>
             </div>
         </div>

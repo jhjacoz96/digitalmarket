@@ -10,7 +10,7 @@ const direccion= new Vue({
         divClaseSlug:'',
         divAparecer:false,
         deshabilitarBoton:1,
-
+        hola:'dddd',
         estados:[],
         estado_id:'',
         municipios:[],
@@ -20,6 +20,14 @@ const direccion= new Vue({
         zonas:[],
         zona_id:'',
         codigoPostal:''
+
+
+        
+       
+
+
+
+
     },
    created() {
        axios.get('/getEstado').then(res=>{
@@ -174,6 +182,10 @@ const direccion= new Vue({
             }
             
         }
+
+
+
+
     },
     mounted() {
 

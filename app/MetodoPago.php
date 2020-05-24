@@ -17,6 +17,6 @@ class MetodoPago extends Model
     ];
 
     public function bancoMetodoPago(){
-        return $this->belongsTo('App\BancoMetodoPago');
+        return $this->belongsTo('App\BancoMetodoPago','bancoMetodoPago_id');
     }
 }

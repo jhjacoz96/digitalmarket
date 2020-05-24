@@ -48,10 +48,25 @@
                   
 
                   <div class="form-group col-md-6">
+                    <label for="exampleInputEmail1"></label>
+                    
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="exampleInputEmail1">Alcance del envío</label>
+                    <select name="alcance" id="">
+                      <option value="nacional">Nacionales</option>
+                      <option value="iribarren">Dentro del municipio iribarren</option>
+                      <option value="ambasFormas">Ambas formas</option>
+                    </select>
+                    {!!$errors->first('alcance','<small>:message</small><br>')!!}
+
+                  </div>
+
+                  <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Nombre</label>
                     <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="Mrw">
                     {!!$errors->first('nombre','<small>:message</small><br>')!!}
-
                   </div>
 
 

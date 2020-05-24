@@ -23,7 +23,7 @@
                             <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                             <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
                             <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                        </ul>
+                       </ul>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="logo pull-left">
-                        <a href="index.html"><img src="{{asset('shop/images/home/logo.png')}}" alt="" /></a>
+                    <a href="{{url('/')}}"><img src="{{asset('shop/images/home/logo.png')}}" alt="" /></a>
                     </div>
                     <div class="btn-group pull-right">
                         <div class="btn-group">
@@ -67,7 +67,7 @@
                             
                             <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                             <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-                            <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+                            <li><a href="{{url('/carrito')}}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
                             @if(empty(\Auth::check()))
                         <li><a href="{{url('/registrar-usuario')}}"><i class="fa fa-user"></i> Registrarse</a></li>
                         <li><a href="{{url('/iniciar-sesion')}}"><i class="fa fa-lock"></i> Login</a></li>
@@ -96,31 +96,26 @@
                     </div>
                     <div class="mainmenu pull-left">
                         <ul class="nav navbar-nav collapse navbar-collapse">
-                            <li><a href="index.html" class="active">Home</a></li>
-                            <li class="dropdown"><a href="#">Categorias<i class="fa fa-angle-down"></i></a>
+                            <li><a href="{{url('/')}}" class="active">Inicio</a></li>
+                            @foreach($mainCategorias as $item)
+                            <li class="dropdown"><a href="{{route('main.categorias.productos',$item->slug)}}">{{$item->nombre}}<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
-                                    @foreach($mainCategorias as $item)
                                     
-                                <li><a href="{{route('main.categorias.productos',$item->slug)}}">{{$item->nombre}}</a></li>
+                            @foreach($item->subCategoria as $sub)    
+                                <li><a href="{{route('categorias.productos',$sub->slug)}}">{{$sub->nombre}}</a></li>
                                         
-                                    @endforeach
+                            @endforeach       
                                     
                                 </ul>
                             </li> 
-                            <li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
-                                <ul role="menu" class="sub-menu">
-                                    <li><a href="blog.html">Blog List</a></li>
-                                    <li><a href="blog-single.html">Blog Single</a></li>
-                                </ul>
-                            </li> 
-                            <li><a href="404.html">404</a></li>
-                            <li><a href="contact-us.html">Contact</a></li>
+                            @endforeach
+                            
                         </ul>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="search_box pull-right">
-                        <input type="text" placeholder="Search"/>
+                        <input type="text" placeholder="Buscar producto"/>
                     </div>
                 </div>
             </div>

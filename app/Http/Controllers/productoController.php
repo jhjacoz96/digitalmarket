@@ -14,6 +14,10 @@ use App\GrupoAtributo;
 use App\Imagen;
 use App\Carrito;
 use App\TipoComprador;
+use App\MetodoPago;
+use App\BancoMetodoPago;
+use App\MedioEnvio;
+
 
 
 use Illuminate\Support\Facades\File;
@@ -129,6 +133,7 @@ class productoController extends Controller
         
         
         if(\Auth::user()->rol_id==3){
+
             $tienda=Tienda::where('codigo',$request->tienda)->first();
             $planAfiliacion=$tienda->planAfiliacion;
     
@@ -159,26 +164,35 @@ class productoController extends Controller
                     if(\Auth::user()->rol_id==3){
                         $tienda=Tienda::where('codigo',$request->tienda)->first();
                         $planAfiliacion=$tienda->planAfiliacion;
-                    
-                        if($cantidad>$planAfiliacion->tiempoPublicacion){
-                            
-                            $producto=Producto::All();
-                            \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
-                            return redirect()->route('tiendas.producto.index',compact('producto'));
-                            
+                       
+                        if($planAfiliacion->tiempoPublicacion!=''){
+
+                            if($cantidad>$planAfiliacion->tiempoPublicacion){
+                                
+                                $producto=Producto::All();
+                                \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
+                                return redirect()->route('tiendas.producto.index',compact('producto'));
+                                
+                            }
                         }
+
                     }else{
+
                         $tienda=\Auth::user()->tienda;
                         $planAfiliacion=$tienda->planAfiliacion;
                         $f=$planAfiliacion->tiempoPublicacion;
-                        if($cantidad>$planAfiliacion->tiempoPublicacion){
-                            
-                            \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
-                            
-                                $producto=Producto::where('tienda_id',$tienda->id)->get();
-                                return redirect()->route('tiendas.producto.index',compact('producto'));
-                            
-                       
+
+                        if($planAfiliacion->tiempoPublicacion!=''){
+
+                            if($cantidad>$planAfiliacion->tiempoPublicacion){
+                                
+                                \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
+                                
+                                    $producto=Producto::where('tienda_id',$tienda->id)->get();
+                                    return redirect()->route('tiendas.producto.index',compact('producto'));
+                                
+                           
+                            }
                         }
                     }
                     
@@ -189,23 +203,29 @@ class productoController extends Controller
                 $tienda=Tienda::where('codigo',$request->tienda)->first();
                 $planAfiliacion=$tienda->planAfiliacion;
             
-                if($request->cantidad>$planAfiliacion->tiempoPublicacion){
-                    
-                    $producto=Producto::All();
-                    \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
-                    return redirect()->route('tiendas.producto.index',compact('producto'));
+                if($planAfiliacion->tiempoPublicacion!=''){
+                    if($request->cantidad>$planAfiliacion->tiempoPublicacion){
+                        
+                        $producto=Producto::All();
+                        \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
+                        return redirect()->route('tiendas.producto.index',compact('producto'));
+                    }
                 }
+
             }else{
                 $tienda=\Auth::user()->tienda;
                 $planAfiliacion=$tienda->planAfiliacion;
                 $f=$planAfiliacion->tiempoPublicacion;
-                if($request->cantidad>$planAfiliacion->tiempoPublicacion){
-                    
-                    \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
-                    
-                        $producto=Producto::where('tienda_id',$tienda->id)->get();
-                        return redirect()->route('tiendas.producto.index',compact('producto'));
 
+                if($planAfiliacion->tiempoPublicacion!=''){
+                    if($request->cantidad>$planAfiliacion->tiempoPublicacion){
+                        
+                        \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
+                        
+                            $producto=Producto::where('tienda_id',$tienda->id)->get();
+                            return redirect()->route('tiendas.producto.index',compact('producto'));
+    
+                    }
                 }
             }
         }
@@ -446,26 +466,35 @@ class productoController extends Controller
 
         
             if(\Auth::user()->rol_id==3){
-                $tienda=Tienda::where('codigo',$request->tienda)->first();
+           
+                $tienda=Tienda::where('codigo',$request->tienda)->with('planAfiliacion')->first();
+                
                 $planAfiliacion=$tienda->planAfiliacion;
             
-                if($request->cantidad>$planAfiliacion->tiempoPublicacion){
-                    
-                    $producto=Producto::All();
-                    \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
-                    return redirect()->route('tiendas.producto.index',compact('producto'));
+                if($planAfiliacion->tiempoPublicacion!=''){
+
+                    if($request->cantidad>$planAfiliacion->tiempoPublicacion){
+                        
+                        $producto=Producto::All();
+                        \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
+                        return redirect()->route('tiendas.producto.index',compact('producto'));
+                    }
                 }
+
             }else{
                 $tienda=\Auth::user()->tienda;
                 $planAfiliacion=$tienda->planAfiliacion;
                 $f=$planAfiliacion->tiempoPublicacion;
-                if($request->cantidad>$planAfiliacion->tiempoPublicacion){
-                    
-                    \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
-                    
-                        $producto=Producto::where('tienda_id',$tienda->id)->get();
-                        return redirect()->route('tiendas.producto.index',compact('producto'));
 
+                if($planAfiliacion->tiempoPublicacion!=''){
+                    if($request->cantidad>$planAfiliacion->tiempoPublicacion){
+                        
+                        \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
+                        
+                            $producto=Producto::where('tienda_id',$tienda->id)->get();
+                            return redirect()->route('tiendas.producto.index',compact('producto'));
+
+                    }
                 }
             }
         
@@ -703,14 +732,18 @@ class productoController extends Controller
     //FIN DE DETALLES DE PRODUCTOS
 
     public function agregarCarrito(Request $request){
-
+        
         \Session::forget('montoCupon');
         \Session::forget('codigoCupon');
         
         $producto=Producto::where('id',$request->producto_id)->first();
-       
-        if(empty($request['comprador_id'])){
-            $request['comprador_id']='';
+        
+        if(\Auth::check()){
+            $comprador_id=\Auth::user()->comprador->id;
+        }
+        if(empty($comprador_id)){
+    
+            $comprador_id='';
         }
         
         $session_id=\Session::get('session_id');
@@ -727,7 +760,7 @@ class productoController extends Controller
         if($producto->tipoCliente=='comun'){
         
         $cantidadProducto=\DB::table('carritos')->where(['producto_id'=>$request['producto_id'],'session_id'=>$session_id])->count();
-       
+            
             if( $cantidadProducto>0){
 
                 $carrito=Carrito::where(['producto_id'=>$request['producto_id'],'session_id'=>$session_id])->first();
@@ -775,7 +808,7 @@ class productoController extends Controller
                 }
             }else{
                 
-                \DB::table('carritos')->insert(['producto_id'=>$request['producto_id'],'precio'=>$request['precio'],'cantidad'=>$request['cantidad'],'comprador_id'=>1,'session_id'=>$session_id,'combinacion_id'=>$request['combinacion_id']]);
+                \DB::table('carritos')->insert(['producto_id'=>$request['producto_id'],'precio'=>$request['precio'],'cantidad'=>$request['cantidad'],'comprador_id'=>$comprador_id,'session_id'=>$session_id,'combinacion_id'=>$request['combinacion_id']]);
             
                 
             }
@@ -791,8 +824,16 @@ class productoController extends Controller
 
     public function carrito(){
 
-       $session_id=\Session::get('session_id');
-       $userCarrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get();
+        
+     
+        if(\Auth::check()){
+            $comprador_id=\Auth::user()->comprador->id;
+            $userCarrito=\DB::table('carritos')->where(['comprador_id'=>$comprador_id])->get();
+        }else{
+            $session_id=\Session::get('session_id');
+            $userCarrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get();
+        }
+
 
 
        $descuentoTipoComprador=\Auth::user()->comprador->tipoComprador->porcentajeDescuento;
@@ -803,6 +844,9 @@ class productoController extends Controller
         $montoDescuentoTipoComrador=$totalCantidad*($descuentoTipoComprador/100);
 
         \Session::put('$montoDescuentoTipoComrador',$montoDescuentoTipoComrador);
+
+
+
 
         return view('plantilla.tiendaContenido.producto.carrito',compact('userCarrito'));
     }
@@ -857,15 +901,48 @@ class productoController extends Controller
 
     }
 
+    public function obtenerMetodoPagoNacional(){
+        $metodoPago=MetodoPago::with('bancoMetodoPago')->where('tipoPago','nacional')->get();
+        
+        return $metodoPago;
+    }
+    public function obtenerMetodoPagoInternacional(){
+        $metodoPago=MetodoPago::with('bancoMetodoPago')->where('tipoPago','internacional')->get();
+        return $metodoPago;
+    }
 
-
-    public function checkout(){
+    public function checkout($montoTotal){
+  
         $direcciones=Direccion::where('comprador_id',\Auth::user()->comprador->id)->get();
         
-        return view('plantilla.tiendaContenido.checkout',compact('direcciones'));
+        $session_id=\Session::get('session_id');
+        $userCarrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get(); 
+
+        $metodoPago=MetodoPago::All();
+
+        $totalBs=$montoTotal;
+
+        $envioFree=\Auth::user()->comprador->tipoComprador->envioGratis;
+
+        return view('plantilla.tiendaContenido.checkout',compact('direcciones','userCarrito','metodoPago','totalBs','envioFree'));
+
     }
     
-    public function revisarPedido(){
+    public function obtenerMetodoEnvio(){
+        
+        $metodoEnvio=MedioEnvio::where('status','A')->get();
+        return $metodoEnvio;
+    }
 
+    public function obtenerDireccion(){
+        $comprador=\Auth::user()->comprador;
+        $direccion=Direccion::where('comprador_id',$comprador->id)->get();
+        return $direccion;
+    }
+    
+    public function realizarPedido(Request $request){
+        if($request->isMethod('post')){
+            return $request;
+        }
     }
 }

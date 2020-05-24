@@ -15776,6 +15776,7 @@ var direccion = new Vue({
     divClaseSlug: '',
     divAparecer: false,
     deshabilitarBoton: 1,
+    hola: 'dddd',
     estados: [],
     estado_id: '',
     municipios: [],
@@ -17020,8 +17021,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
-Vue.component('vue-multiselect', window.VueMultiselect["default"]);
+Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]); //Vue.component('vue-multiselect', window.VueMultiselect.default)
 
 if (document.getElementById('app')) {
   var app = new Vue({
@@ -17081,6 +17081,249 @@ if (document.getElementById('cupon')) {
 if (document.getElementById('detalleProducto')) {
   __webpack_require__(/*! ./shop/detalleProducto */ "./resources/js/shop/detalleProducto.js");
 }
+
+if (document.getElementById('checkout')) {
+  __webpack_require__(/*! ./shop/checkout */ "./resources/js/shop/checkout.js");
+}
+
+/***/ }),
+
+/***/ "./resources/js/shop/checkout.js":
+/*!***************************************!*\
+  !*** ./resources/js/shop/checkout.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var checkout = new Vue({
+  el: '#checkout',
+  data: {
+    estados: [],
+    estado_id: '',
+    municipios: [],
+    municipio_id: '',
+    parroquias: [],
+    parroquia_id: '',
+    zonas: [],
+    zona_id: '',
+    codigoPostal: '',
+    abrir1: false,
+    abrir2: false,
+    abrir3: false,
+    agregarDireccion: false,
+    mostrarDirecciones: true,
+    d: 0,
+    montoPagar: 0,
+    aparecerDetalleMetodo: false,
+    metodoPagoNacional: [],
+    metodoPagoInternacional: [],
+    seletedMetodoPago: [],
+    arrayNacional: [],
+    arrayInternacional: [],
+    dolarToday: 200000,
+    totalBs: 0,
+    totalDolar: 0,
+    totallBs: 0,
+    totallDolar: 0,
+    cantidadBs: 0,
+    cantidadDolar: 0,
+    metodoEnvio: [],
+    selectEnvio: '',
+    direcciones: [],
+    direccionEnvio: '',
+    direccionFactura: ''
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/getEstado').then(function (res) {
+      _this.estados = res.data;
+    })["catch"](function (e) {
+      console.log(e.reponse);
+    });
+    axios.get('/obtenerMetodoPagoNacional').then(function (res) {
+      _this.metodoPagoNacional = res.data;
+      var a = _this.metodoPagoNacional;
+      var o = _this.arrayNacional;
+      var d = {
+        id: '',
+        nombre: '',
+        tipoPago: 'nacional',
+        cantidad: 0
+      };
+
+      for (var i = 0; i < a.length; i++) {
+        var _d = {
+          id: a[i].id,
+          nombre: a[i].nombre,
+          tipoPago: 'nacional',
+          cantidad: 0
+        };
+        o.push(_d);
+      }
+    })["catch"](function (e) {
+      console.log(e.response);
+    });
+    axios.get('/obtenerMetodoPagoInternacional').then(function (res) {
+      _this.metodoPagoInternacional = res.data;
+      var a = _this.metodoPagoInternacional;
+      var o = _this.arrayInternacional;
+      var d = {
+        id: '',
+        nombre: '',
+        tipoPago: 'internacional',
+        cantidad: 0,
+        cantidadDolar: 0
+      };
+
+      for (var i = 0; i < a.length; i++) {
+        var _d2 = {
+          id: a[i].id,
+          nombre: a[i].nombre,
+          tipoPago: 'internacional',
+          cantidad: 0,
+          cantidadDolar: 0
+        };
+        o.push(_d2);
+      }
+    })["catch"](function (e) {
+      console.log(e.response);
+    });
+    axios.get('/obtenerMetodoEnvio').then(function (res) {
+      _this.metodoEnvio = res.data;
+      console.log(_this.metodoEnvio);
+    })["catch"](function (e) {
+      console.log(e.response);
+    });
+    axios.get('/obtenerDireccion').then(function (res) {
+      _this.direcciones = res.data;
+      console.log(_this.direcciones);
+    })["catch"](function (e) {
+      console.log(e.response);
+    });
+    /*axios.get('https://s3.amazonaws.com/dolartoday/data.json').then(res=>{
+        console.log(res.data)
+    }).catch(e=>{
+        console.log(e.response)
+    })*/
+  },
+  methods: {
+    calcularRestante: function calcularRestante() {
+      var total = this.seletedMetodoPago;
+      this.cantidadBs = 0;
+      this.cantidadDolar = 0;
+
+      for (var i = 0; i < total.length; i++) {
+        if (total[i].tipoPago == 'nacional') {
+          this.cantidadBs = parseFloat(this.cantidadBs) + parseFloat(total[i].cantidad);
+        }
+
+        if (total[i].tipoPago == 'internacional') {
+          this.cantidadDolar = parseFloat(this.cantidadDolar) + parseFloat(total[i].cantidadDolar);
+        }
+      }
+
+      console.log(this.totallBs);
+      this.totalBs = this.totallBs - this.cantidadBs - this.cantidadDolar * this.dolarToday;
+      this.totalDolar = this.totalBs / this.dolarToday;
+      this.cantidadBs = 0;
+      this.cantidadDolar = 0;
+    },
+    getMunicipio: function getMunicipio() {
+      var _this2 = this;
+
+      this.municipio_id = '';
+      document.getElementById('municipio_id').disabled = true;
+      this.parroquia_id = '';
+      document.getElementById('parroquia_id').disabled = true;
+      this.zona_id = '';
+      this.codigoPostal = '';
+      document.getElementById('zona_id').disabled = true;
+
+      if (this.estado_id != '') {
+        axios.get('/getMunicipio/' + this.estado_id).then(function (res) {
+          _this2.municipios = res.data;
+          document.getElementById('municipio_id').disabled = false;
+          console.log(_this2.municipios);
+        })["catch"](function (e) {
+          console.log(e.response);
+        });
+      }
+    },
+    getParroquia: function getParroquia() {
+      var _this3 = this;
+
+      this.parroquia_id = '';
+      document.getElementById('parroquia_id').disabled = true;
+      this.zona_id = '';
+      this.codigoPostal = '';
+      document.getElementById('zona_id').disabled = true;
+
+      if (this.municipio_id != '' && this.estado_id != '') {
+        axios.get('/getParroquia/' + this.municipio_id).then(function (res) {
+          _this3.parroquias = res.data;
+          document.getElementById('parroquia_id').disabled = false;
+          console.log(_this3.parroquias);
+        })["catch"](function (e) {
+          console.log(e.response);
+        });
+      }
+    },
+    getZona: function getZona() {
+      var _this4 = this;
+
+      this.zona_id = '';
+      this.codigoPostal = '';
+      document.getElementById('zona_id').disabled = true;
+
+      if (this.municipio_id != '' && this.estado_id != '' && this.parroquia_id != '') {
+        axios.get('/getZona/' + this.parroquia_id).then(function (res) {
+          _this4.zonas = res.data;
+          document.getElementById('zona_id').disabled = false;
+          console.log(_this4.zonas);
+        })["catch"](function (e) {
+          console.log(e.response);
+        });
+      }
+    },
+    getCodigo: function getCodigo() {
+      if (this.zona_id != '') {
+        for (var i = 0; i < this.zonas.length; i++) {
+          if (this.zonas[i].id == this.zona_id) {
+            return this.codigoPostal = this.zonas[i].codigoPostal;
+          }
+        }
+      } else {
+        this.codigoPostal = '';
+      }
+    },
+    aparecerDireccion: function aparecerDireccion() {
+      this.abrir1 = !this.abrir1;
+      this.abrir2 = false;
+      this.abrir3 = false;
+    },
+    aparacerMetodoEnvio: function aparacerMetodoEnvio() {
+      this.abrir2 = !this.abrir2;
+      this.abrir1 = false;
+      this.abrir3 = false;
+    },
+    aparacerMetodoPago: function aparacerMetodoPago() {
+      this.abrir3 = !this.abrir3;
+      this.abrir1 = false;
+      this.abrir2 = false;
+    }
+  },
+  mounted: function mounted() {
+    this.abrir1 = true;
+    this.totalBs = data.datos.totalBs;
+    this.totalDolar = this.totalBs / this.dolarToday;
+    this.totallBs = data.datos.totalBs;
+    this.totallDolar = this.totalBs / this.dolarToday;
+    document.getElementById('municipio_id').disabled = true;
+    document.getElementById('parroquia_id').disabled = true;
+    document.getElementById('zona_id').disabled = true;
+  }
+});
 
 /***/ }),
 

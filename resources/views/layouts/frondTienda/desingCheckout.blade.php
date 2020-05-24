@@ -8,12 +8,12 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    
+    <!--<link href="{{asset('css/app.css')}}" rel="stylesheet">-->
     
     <title>Home | E-Shopper</title>
-<link href="{{asset('shop/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="{{asset('css/app.css')}}" rel="stylesheet">
     
-
+<link href="{{asset('shop/css/bootstrap.min.css')}}" rel="stylesheet">
 
     <link href="{{asset('shop/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('shop/css/prettyPhoto.css')}}" rel="stylesheet">
@@ -44,13 +44,10 @@
 </head><!--/head-->
 
 <body>
-    @include('layouts.frondTienda.header') 
-	
+
 	@yield('contenido')
 	
-	@include('layouts.frondTienda.footer')
 
-    
     <script src="{{asset('shop/js/jquery.js')}}"></script>
 	<script src="{{asset('shop/js/bootstrap.min.js')}}"></script>
 	<script src="{{asset('shop/js/jquery.scrollUp.min.js')}}"></script>

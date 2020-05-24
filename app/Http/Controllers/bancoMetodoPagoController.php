@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Validator;
 use App\BancoMetodoPago;
+use App\MetodoPago;
 
 class bancoMetodoPagoController extends Controller
 {
@@ -128,8 +129,16 @@ class bancoMetodoPagoController extends Controller
     public function destroy($id)
     {
         $banco=BancoMetodoPago::findOrFail($id);
-        $banco->delete();
-        \flash('Banco eliminado con exito')->important()->success();
+
+        $metodoPago=MetodoPago::where('bancoMetodoPago_id',$banco->id)->first();
+        if($metodoPago==null){
+
+            $banco->delete();
+            \flash('Banco eliminado con exito')->important()->success();
+                return  \redirect()->route('bancoMetodoPago.index');
+        }else{
+            \flash('No puede eliminiar este banco ya que esta sociado a un metodo de')->important()->warning();
             return  \redirect()->route('bancoMetodoPago.index');
+        }
     }
 }

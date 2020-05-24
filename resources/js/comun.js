@@ -2,7 +2,7 @@ window.Vue = require('vue');
 
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('vue-multiselect', window.VueMultiselect.default)
+//Vue.component('vue-multiselect', window.VueMultiselect.default)
 
 
 if(document.getElementById('app')){
@@ -76,6 +76,11 @@ if(document.getElementById('cupon')){
 
 if(document.getElementById('detalleProducto')){
     require('./shop/detalleProducto'); 
+
+}
+
+if(document.getElementById('checkout')){
+    require('./shop/checkout'); 
 
 }
 

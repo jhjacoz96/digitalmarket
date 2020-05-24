@@ -193,7 +193,7 @@
                         <a href="{{route('tienda.show',$producto->tienda->id)}}" class="btn btn-info btn-sm"><span class="fas fa-eye mr-1"></span>{{$producto->tienda->nombreTienda}} ({{$producto->tienda->codigo}})</a>
                             </div>
       
-                       
+                          <input type="hidden" name="tienda" value="{{$producto->tienda->codigo}}">
                       </div>
                       <!-- /.form-group -->
                       

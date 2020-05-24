@@ -76,7 +76,7 @@
                            <td class="mailbox-star">
                             
                             @if($item->bancoMetodoPago)
-                              {{$item->bancoMetodoPago}}
+                              {{$item->bancoMetodoPago->nombreBanco}}{{$item->bancoMetodoPago->nombreBanco}}
                             @else
                             <span>Sin registro</span>
                             @endif
@@ -96,8 +96,6 @@
                                        @csrf
                                        <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este metodo de pago?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
                                      </form>
-                                   
-                                   
                                  
                                </div>
                            </td>

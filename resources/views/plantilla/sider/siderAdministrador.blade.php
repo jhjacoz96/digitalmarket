@@ -23,8 +23,48 @@
                with font-awesome or any other icon font library -->
          
 
+               <li class="nav-header">Pedidos</li>
+               <li  class="nav-item has-treeview ">
+                <a href="#" class="nav-link ">
+                
+                  <i class="fas fa-box-open"></i>
+                  <p>
+                    Pedidos
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                  <a href="{{route('pedido.consultar','esperaTransferencia')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Espera por pago</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{route('pedido.consultar','pagoAceptado')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Pago aceptado</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{route('pedido.consultar','enviadoComprador')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Enviado al comprador</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{route('pedido.consultar','cancelado')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Cancelado</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
 
 
+
+
+               <li class="nav-header">Tienda</li>
           <li  class="nav-item has-treeview ">
             <a href="#" class="nav-link ">
             

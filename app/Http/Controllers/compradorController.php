@@ -50,7 +50,7 @@ class compradorController extends Controller
      */
     public function store(Request $request)
     {
-     
+        
         $v=Validator::make($request->all(),[
             'nombre'=>'min:2|required',
             'apellido'=>'min:2|required',
@@ -64,8 +64,8 @@ class compradorController extends Controller
         }
         
             $user=new User();
-            /*$user->nombre=$request->nombre;
-            $user->apellido=$request->apellido;*/
+            $user->nombre=$request->nombre;
+            $user->apellido=$request->apellido;
             $user->email=$request->correo;
             $user->password =  Hash::make( $request->password);
             $user->rol_id=1;            

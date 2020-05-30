@@ -25,6 +25,16 @@
                with font-awesome or any other icon font library -->
                
                <li class="nav-item">
+                <a href="{{route('tiendas.pedido.consultar')}}" class="nav-link">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                       Pedidos
+                    </p>
+                  </a>
+                </li>
+
+
+               <li class="nav-item">
                <a href="{{route('tiendas.producto.index')}}" class="nav-link">
                    <i class="nav-icon fas fa-users"></i>
                    <p>
@@ -41,6 +51,8 @@
                    </p>
                  </a>
                </li>
+
+               
 
          
         </ul>

@@ -15,7 +15,9 @@ class CreateMetodoPagoPedidoTable extends Migration
     {
         Schema::create('metodo_pago_pedido', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->decimal('cantidad')->nullable();
+            $table->decimal('cantidad',12,2)->default(0);
+            $table->string('status');
+            $table->string('referencia')->nullable();
             $table->unsignedBigInteger('metodoPago_id');
             $table->foreign('metodoPago_id')->references('id')->on('metodo_pagos');
             $table->unsignedBigInteger('pedido_id');

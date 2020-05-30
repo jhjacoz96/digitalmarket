@@ -43,4 +43,9 @@ class Producto extends Model
     public function tienda(){
         return $this->belongsTo('App\Tienda','tienda_id');
     }
+
+    public function pedido(){
+      return  $this->belongsToMany('App\Pedido','pedido_producto','producto_id','pedido_id')->withPivot('precioProducto','combinacion_id','cantidadProducto');
+    }
+
 }

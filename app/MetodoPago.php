@@ -19,4 +19,9 @@ class MetodoPago extends Model
     public function bancoMetodoPago(){
         return $this->belongsTo('App\BancoMetodoPago','bancoMetodoPago_id');
     }
+
+    public function pedido(){
+       return $this->belongsToMany('App\Pedido','metodo_pago_pedido','metodoPago_id','pedido_id')->withPivot('cantidad','status','id','referencia');
+    }
+
 }

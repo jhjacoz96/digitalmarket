@@ -15,7 +15,6 @@ const checkout= new Vue({
         abrir3:false,
         agregarDireccion:false,
         mostrarDirecciones:true,
-        d:0,
         montoPagar:0,
         aparecerDetalleMetodo:false,
 
@@ -37,6 +36,11 @@ const checkout= new Vue({
         direcciones:[],
         direccionEnvio:'',
         direccionFactura:'',
+        envioFree:'',
+        precioFijoBs:'',
+        precioFijoDolar:'',
+        metodoPagos:[],
+        metodoEnvios:''
 
     },
     created() {
@@ -49,6 +53,7 @@ const checkout= new Vue({
         })
 
         axios.get('/obtenerMetodoPagoNacional').then(res=>{
+            console.log(res.data)
             this.metodoPagoNacional=res.data
            
             
@@ -64,7 +69,7 @@ const checkout= new Vue({
                  
              }
             
-           
+        
         }).catch(e=>{
             console.log(e.response)
         })
@@ -78,13 +83,14 @@ const checkout= new Vue({
 
         axios.get('/obtenerMetodoPagoInternacional').then(res=>{
             this.metodoPagoInternacional=res.data
-           
+            console.log(res.data)
             const a=this.metodoPagoInternacional
+
             const o=this.arrayInternacional
            
-            const d={id:'',nombre:'',tipoPago:'internacional',cantidad:0,cantidadDolar:0}
+            const d={id:'',nombre:'',tipoPago:'internacional',cantidad:0}
              for (let i = 0; i < a.length; i++) {
-                const d={id:a[i].id,nombre:a[i].nombre,tipoPago:'internacional',cantidad:0,cantidadDolar:0}
+                const d={id:a[i].id,nombre:a[i].nombre,tipoPago:'internacional',cantidad:0}
                     
                     o.push(d)
                     
@@ -99,7 +105,7 @@ const checkout= new Vue({
         axios.get('/obtenerMetodoEnvio').then(res=>{
             this.metodoEnvio=res.data
            
-          console.log(this.metodoEnvio)
+         
 
 
         }).catch(e=>{
@@ -109,7 +115,7 @@ const checkout= new Vue({
         axios.get('/obtenerDireccion').then(res=>{
             this.direcciones=res.data
            
-          console.log(this.direcciones)
+          
 
 
         }).catch(e=>{
@@ -126,11 +132,28 @@ const checkout= new Vue({
         })*/
 
     },
-   
+    computed: {
+        seleccionEnvio:function(){
+
+            if(this.envioFree==0){
+                const f=this.selectEnvio
+                if(f!=''){
+                    this.totalBs=parseFloat(this.totallBs) + parseFloat(f.precioEnvio)
+                    this.totalDolar=this.totalBs/this.dolarToday
+                    this.precioFijoBs= this.totalBs
+                    this.precioFijoDolar= this.totalDolar
+                
+                }
+            }
+           return ''
+        }
+    },
     methods: {
 
+        
+
         calcularRestante(){
-           
+            
             const total=this.seletedMetodoPago
             this.cantidadBs=0
             this.cantidadDolar=0
@@ -144,15 +167,18 @@ const checkout= new Vue({
                 }
 
                 if(total[i].tipoPago=='internacional'){
-                    this.cantidadDolar=parseFloat(this.cantidadDolar)+parseFloat(total[i].cantidadDolar)
+                    this.cantidadDolar=parseFloat(this.cantidadDolar)+parseFloat(total[i].cantidad)
                 }
                 
             }
             console.log(this.totallBs)
-            this.totalBs=this.totallBs-this.cantidadBs-(this.cantidadDolar*this.dolarToday)
+            this.totalBs=this.precioFijoBs-this.cantidadBs-(this.cantidadDolar*this.dolarToday)
             this.totalDolar=this.totalBs/this.dolarToday
             this.cantidadBs=0
             this.cantidadDolar=0
+
+            this.metodoPagos=JSON.stringify(this.seletedMetodoPago)
+            this.metodoEnvios=JSON.stringify(this.selectEnvio)
 
         },
 
@@ -251,15 +277,20 @@ const checkout= new Vue({
        
     },
     mounted() {
-
-       
+        console.log(this.metodoPagoInternacional)
+        console.log(this.metodoPagoNacional)
+        console.log(this.arrayNacional)
+        
+        this.envioFree=data.datos.envioFree
+      
         this.totalBs=data.datos.totalBs
-       
         this.totalDolar=this.totalBs/this.dolarToday
+
         this.totallBs=data.datos.totalBs
-       
         this.totallDolar=this.totalBs/this.dolarToday
 
+        this.precioFijoBs=this.totalBs
+        this.precioFijoDolar=this.totalDolar
         
             
             document.getElementById('municipio_id').disabled = true

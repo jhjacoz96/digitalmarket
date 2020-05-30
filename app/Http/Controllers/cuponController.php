@@ -185,7 +185,16 @@ class cuponController extends Controller
             }    
             
             $session_id=\Session::get('session_id');
-            $carrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get();
+          
+
+            if(\Auth::check()){
+                $comprador_id=\Auth::user()->comprador->id;
+                $carrito=\DB::table('carritos')->where(['comprador_id'=>$comprador_id])->get();
+            }else{
+                $session_id=\Session::get('session_id');
+                $carrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get();
+            }
+
             $totalCantidad=0;
             foreach($carrito as $item){
                 $totalCantidad=$totalCantidad+($item->precio*$item->cantidad);

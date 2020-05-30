@@ -8,7 +8,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!--<link href="{{asset('css/app.css')}}" rel="stylesheet">-->
+   
     
     <title>Home | E-Shopper</title>
 <link href="{{asset('css/app.css')}}" rel="stylesheet">
@@ -43,10 +43,11 @@
 
 </head><!--/head-->
 
-<body>
 
+<body>
+    @include('layouts.frondTienda.headerMin')
 	@yield('contenido')
-	
+	@include('layouts.frondTienda.footer')
 
     <script src="{{asset('shop/js/jquery.js')}}"></script>
 	<script src="{{asset('shop/js/bootstrap.min.js')}}"></script>

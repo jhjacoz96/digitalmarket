@@ -17,6 +17,10 @@ use App\TipoComprador;
 use App\MetodoPago;
 use App\BancoMetodoPago;
 use App\MedioEnvio;
+use App\DireccionPedido;
+use App\DireccionFactura;
+use App\Pedido;
+use App\Comprador;
 
 
 
@@ -738,12 +742,11 @@ class productoController extends Controller
         
         $producto=Producto::where('id',$request->producto_id)->first();
         
-        if(\Auth::check()){
-            $comprador_id=\Auth::user()->comprador->id;
-        }
-        if(empty($comprador_id)){
-    
+        
+        if(empty(\Auth::user()->comprador->id)){
             $comprador_id='';
+        }else{
+            $comprador_id=\Auth::user()->comprador->id;
         }
         
         $session_id=\Session::get('session_id');
@@ -823,9 +826,7 @@ class productoController extends Controller
     } 
 
     public function carrito(){
-
         
-     
         if(\Auth::check()){
             $comprador_id=\Auth::user()->comprador->id;
             $userCarrito=\DB::table('carritos')->where(['comprador_id'=>$comprador_id])->get();
@@ -846,7 +847,7 @@ class productoController extends Controller
         \Session::put('$montoDescuentoTipoComrador',$montoDescuentoTipoComrador);
 
 
-
+        
 
         return view('plantilla.tiendaContenido.producto.carrito',compact('userCarrito'));
     }
@@ -912,17 +913,19 @@ class productoController extends Controller
     }
 
     public function checkout($montoTotal){
-  
+        
         $direcciones=Direccion::where('comprador_id',\Auth::user()->comprador->id)->get();
         
         $session_id=\Session::get('session_id');
-        $userCarrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get(); 
-
+        $userCarrito=\DB::table('carritos')->where(['comprador_id'=>\Auth::user()->comprador->id])->get(); 
+       
         $metodoPago=MetodoPago::All();
 
         $totalBs=$montoTotal;
 
         $envioFree=\Auth::user()->comprador->tipoComprador->envioGratis;
+
+        
 
         return view('plantilla.tiendaContenido.checkout',compact('direcciones','userCarrito','metodoPago','totalBs','envioFree'));
 
@@ -942,7 +945,91 @@ class productoController extends Controller
     
     public function realizarPedido(Request $request){
         if($request->isMethod('post')){
-            return $request;
+         
+            $metodoPago=json_decode($request['metodoPagos'],true);
+            $metodoEnvio=json_decode($request['metodoEnvio'],true);
+            $pedido=new Pedido();
+            $pedido->montoTotal=$request->precioFijoBs;
+            $pedido->codigoCupon=$request->codigoCupon;
+            //$pedido->codigo=;
+            $pedido->cantidadCupon=$request->cantidadCupon;
+            $pedido->status='espºeraTransferencia';
+            $pedido->metodoEnvio_id=$metodoEnvio['id'];
+
+
+            $direccionEnvio=new DireccionPedido;
+            
+            $direccionComprador=Direccion::where('id',$request->direccionEnvio)->first();
+            
+
+            $direccionEnvio->nombre= $direccionComprador->nombre;
+            $direccionEnvio->apellido= $direccionComprador->apellido;
+            $direccionEnvio->direccionExacta= $direccionComprador->direccionExacta;
+            $direccionEnvio->puntoReferencia= $direccionComprador->puntoReferencia;
+            $direccionEnvio->primerTelefono= $direccionComprador->primerTelefono;
+            $direccionEnvio->segundoTelefono= $direccionComprador->segundoTelefono;
+            $direccionEnvio->observacion= $direccionComprador->observacion;
+            $direccionEnvio->zona= $direccionComprador->zona->nombre;
+            $direccionEnvio->parroquia= $direccionComprador->zona->parroquia->nombre;
+            $direccionEnvio->municipio= $direccionComprador->zona->parroquia->municipio->nombre;
+            $direccionEnvio->estado= $direccionComprador->zona->parroquia->municipio->estado->nombre;
+            $direccionEnvio->save();
+
+            
+
+            $direccionFactura=new DireccionFactura;
+            
+            $direccionComprador=Direccion::where('id',$request->direccionFactura)->first();
+            
+
+            $direccionFactura->nombre= $direccionComprador->nombre;
+            $direccionFactura->apellido= $direccionComprador->apellido;
+            $direccionFactura->direccionExacta= $direccionComprador->direccionExacta;
+            $direccionFactura->puntoReferencia= $direccionComprador->puntoReferencia;
+            $direccionFactura->primerTelefono= $direccionComprador->primerTelefono;
+            $direccionFactura->segundoTelefono= $direccionComprador->segundoTelefono;
+            $direccionFactura->observacion= $direccionComprador->observacion;
+            $direccionFactura->zona= $direccionComprador->zona->nombre;
+            $direccionFactura->parroquia= $direccionComprador->zona->parroquia->nombre;
+            $direccionFactura->municipio= $direccionComprador->zona->parroquia->municipio->nombre;
+            $direccionFactura->estado= $direccionComprador->zona->parroquia->municipio->estado->nombre;
+            $direccionFactura->save();
+
+
+            $pedido->direccion_id= $direccionEnvio->id;
+            $pedido->factura_id= $direccionFactura->id;
+            $pedido->comprador_id=\Auth::user()->comprador->id;
+
+            $pedido->save();
+
+            for ($i=0; $i <count($metodoPago) ; $i++) {     
+                $pedido->metodoPago()->attach($metodoPago[$i]['id'],['cantidad'=>$metodoPago[$i]['cantidad'],
+                'status'=>'espera'
+                ]);
+            } 
+
+            $carritoProducto=\DB::table('carritos')->where(['comprador_id'=> $pedido->comprador_id])->get();
+            for ($i=0; $i <count($carritoProducto) ; $i++) {     
+                $pedido->producto()->attach($carritoProducto[$i]->producto_id,['combinacion_id'=>$carritoProducto[$i]->combinacion_id,'cantidadProducto'=>$carritoProducto[$i]->cantidad,
+                'status'=>'esperaPago',
+                'precioProducto'=>$carritoProducto[$i]->precio]);
+            }
+
+            \Session::put('pedido_id',$pedido->id);
+            \Session::put('montoTotal',$request->precioFijoBs);
+            // 
+            return redirect('/gracias');
+
         }
+
+        
     }
+
+    public function gracias(Request $request){
+        $comprador_id=\Auth::user()->comprador->id;
+        \DB::table('carritos')->where('comprador_id',$comprador_id)->delete(); 
+        return view('plantilla.tiendaContenido.gracias');
+
+    }
+
 }

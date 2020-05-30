@@ -88,8 +88,9 @@
                             </td>
                         </tr>
                         <?php $montoTotal=$montoTotal+($item->precio*$item->cantidad);?>
-                    @endforeach
 
+                    @endforeach
+                     
                 </tbody>
             </table>
         </div>

@@ -16,8 +16,10 @@ class CreatePedidoProductoTable extends Migration
         Schema::create('pedido_producto', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('cantidadProducto');
-            $table->integer('precioProducto');
-            $table->unsignedBigInteger('combinacion_id')->nullable();
+            $table->decimal('precioProducto',12,2)->default(0);
+            $table->string('status');
+            $table->string('codigoSeguimiento')->nullable();
+            $table->integer('combinacion_id')->nullable();
             $table->unsignedBigInteger('producto_id');
             $table->foreign('producto_id')->references('id')->on('productos');
             $table->unsignedBigInteger('pedido_id');

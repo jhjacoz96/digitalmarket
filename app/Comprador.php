@@ -25,4 +25,8 @@ class Comprador extends Model
     public function direccion(){
         return $this->hasMany('App\Direccion','comprador_id');
     }
+
+    public function pedido(){
+        return $this->hasMany('App\Pedido','comprador_id');
+    }
 }

@@ -50,8 +50,8 @@
                     <label for="">Tipo de metodo de pago*</label>
                     <select name="tipoMetodo" class="form-control" id="">
                         <option value="">Seleccione una opción</option>
-                        <option value="Transferencias en moneda nacional">Transferencias en moneda nacional</option>
-                        <option value="Transferencias en moneda Internacional">Transferencias en moneda Internacional</option>
+                        <option value="nacional">Transferencias en moneda nacional</option>
+                        <option value="internacional">Transferencias en moneda Internacional</option>
                     </select>
                   </div>
 

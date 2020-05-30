@@ -15,10 +15,11 @@ class CreatePedidosTable extends Migration
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('montoTotal');
+            $table->decimal('montoTotal',12,2)->default(0);
             $table->string('codigoCupon')->nullable();
             $table->integer('cantidadCupon')->nullable();
             $table->string('status');
+            $table->string('codigo')->nullable();
             $table->unsignedBigInteger('metodoEnvio_id')->nullable();
 
             $table->foreign('metodoEnvio_id')->references('id')->on('medio_envios');

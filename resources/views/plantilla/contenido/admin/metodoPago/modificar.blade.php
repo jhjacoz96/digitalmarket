@@ -56,9 +56,9 @@
                             @if ($banco->tipoPago=='Transferencias en moneda nacional')
                                 selected
                             @endif
-                            value="Transferencias en moneda nacional">Transferencias en moneda nacional</option>
+                            value="nacional">Transferencias en moneda nacional</option>
                             <option
-                            @if ($banco->tipoPago=='Transferencias en moneda Internacional')
+                            @if ($banco->tipoPago=='internacional')
                                 selected
                             @endif
                             value="Transferencias en moneda Internacional">Transferencias en moneda Internacional</option>

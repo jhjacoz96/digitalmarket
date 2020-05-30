@@ -13,4 +13,9 @@ class MedioEnvio extends Model
         'envioGratis',
         'status',
     ];
+
+    public function pedido(){
+     return  $this->hasMany('App\Pedido','metodoEnvio_id');
+    }
+
 }

@@ -22,6 +22,18 @@ mix.js('resources/js/app.js', 'public/js')
        'public/asset/styles/comun.css'
    ], 'public/css/all.css');
 
+
+  /* mix.styles([
+ 
+    'public/shop/css/prettyPhoto.css',
+    'public/shop/css/price-range.css',
+    'public/shop/css/animate.css',
+	'public/shop/css/main.css',
+	'public/shop/css/responsive.css'
+   ], 'public/css/all.css');*/
+
+  
+
   
 
    mix.scripts([
@@ -37,6 +49,14 @@ mix.js('resources/js/app.js', 'public/js')
       'public/asset/js/custom.js',
   ], 'public/js/all.js');
 
+  /* mix.scripts([
+    'public/shop/js/jquery.scrollUp.min.js',
+	'public/shop/js/price-range.js',
+    'public/shop/js/jquery.prettyPhoto.js',
+    'public/shop/js/main.js'
+  ], 'public/js/all.js');
+*/
  
+  
   
   mix.js('resources/js/appAdmin.js', 'public/js')

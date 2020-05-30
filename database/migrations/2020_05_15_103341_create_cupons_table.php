@@ -19,8 +19,7 @@ class CreateCuponsTable extends Migration
             $table->string('tipoCupon');
             $table->integer('cantidad');
             $table->date('fechaExpiracion'); 
-
-            $table->string('estatus');    
+            $table->string('estatus');
             $table->timestamps();
         });
     }

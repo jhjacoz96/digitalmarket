@@ -235,6 +235,7 @@
 				<div class="shopper-info" >
 					<div class="register-req  ">
 						<div class="alert" role="alert">
+							@{{seleccionEnvio}}
 							<div class="row">		
 								<div v-for="envio in metodoEnvio" class="col-sm-12">
 									<span class="col-sm-3">
@@ -243,7 +244,7 @@
 											:value="envio" v-model="selectEnvio">
 											
 											<label  for="envio">@{{envio.nombre}}</label>
-											 
+											
 										  </div>
 									</span>
 									
@@ -346,7 +347,7 @@
 									<tr class="shipping-cost">
 										<td>Costo de envío</td>
 										<td>
-											
+											Bs@{{selectEnvio.precioEnvio}}
 										</td>			
 									</tr>
 									@endif
@@ -364,16 +365,16 @@
 										<td>Descuento adicional</td>
 									<td>
 										@if(\Session::get('$montoDescuentoTipoComrador')>0)
-											Bs0
-											
-										@else
+										
 										Bs{{\Session::get('$montoDescuentoTipoComrador')}}
+										@else
+										Bs0
 										@endif
 									</td>			
 									</tr>
 									<tr>
 										<td>Monto Total</td>
-										<td><span>Bs{{$totalBs}}</span></td>
+									<td><span>Bs@{{precioFijoBs}}</span></td>
 									</tr>
 								</table>
 							</td>
@@ -391,9 +392,26 @@
 		
 				<form name="paymentForm" method="post" id="paymentForm" action="{{url('/realizar-pedido')}}">
 					@csrf
+					
+					<input type="hidden" name="precioFijoBs"  v-model="precioFijoBs">
 
-					<input type="hidden" name="montoTotal"  value="{{$totalBs}}">
-					<input type="hidden" name="seletedMetodoPago"  v-model="seletedMetodoPago">
+					<input type="hidden" name="direccionEnvio"  v-model="direccionEnvio">
+					<input type="hidden" name="direccionFactura"  v-model="direccionFactura">
+					<input type="hidden" name="metodoPagos"  v-model="metodoPagos">
+					<input type="hidden" name="metodoEnvio"  v-model="metodoEnvios">
+
+					@php
+						
+						if(!empty(\Session::get('codigoCupon'))){
+							$codigoCupon=\Session::get('codigoCupon');
+							$cantidadCupon=\Session::get('cantidadCupon');
+						}
+					@endphp
+					@if (!empty(\Session::get('codigoCupon')))
+						
+					<input type="hidden" name="codigoCupon"  value="{{$codigoCupon}}">
+					<input type="hidden" name="cantidadCupon"  value="{{$cantidadCupon}}">
+					@endif
 
 
 				<div class="row">		
@@ -550,11 +568,11 @@
 	
 
 														<div class="form-group col-sm-6">
-															<span><label class="mx-1" for="">Monto $</label><input class=" form-control float-right"  v-model.numer="pago.cantidadDolar" type="text"></span>
+															<span><label class="mx-1" for="">Monto $</label><input class=" form-control float-right"  v-model.numer="pago.cantidad" type="text"></span>
 														</div>
 													</div>
 												</div>
-	
+												
 	
 										</div>
 

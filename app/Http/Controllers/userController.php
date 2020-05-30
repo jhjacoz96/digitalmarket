@@ -7,6 +7,8 @@ use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Validator;
 use App\Comprador;
 use App\User;
+use App\Pedido;
+use App\MetodoPagoPedido;
 use Illuminate\Support\Facades\Hash;
 
 class userController extends Controller
@@ -78,6 +80,7 @@ class userController extends Controller
                     if(\Auth::user()->rol_id==1){
                         
                         \Session::put('frontSession',$request['email']);
+
                         return redirect('/');
                     }
                 }else{
@@ -92,6 +95,7 @@ class userController extends Controller
     public function cerrarSesion(){
         \Auth::logout();
         \Session::forget('fronrSession');
+        \Session::forget('session_id');
         return redirect('/');
     }
 
@@ -102,7 +106,38 @@ class userController extends Controller
         return view('plantilla.tiendacontenido.cuenta');
     }
 
+   public function compradorPedidos(){
+       $comprador=\Auth::user()->comprador;
+       $pedido=Pedido::where('comprador_id',$comprador->id)->with('producto')->get();
+    
+       return view('plantilla.tiendaContenido.perfil.pedidos',compact('pedido'));
+   }
+
+   public function pedidoDetalle($id){
+       $comprador=\Auth::user()->comprador;
+       $pedido=Pedido::with('producto')->with('metodoPago')->findOrFail($id);
+    
+       return view('plantilla.tiendaContenido.perfil.pedidoDetalle',compact('pedido'));
+   }
+
+   public function referenciaPago(Request $request,$idPago){
+
+    $v=Validator::make($request->all(),[
+        'referencia'=>'required|min:10'
+     
+    ]);
    
+    if ($v->fails()) {
+        return \redirect()->back()->withInput()->withErrors($v->errors());
+    }
+
+        $pago=MetodoPagoPedido::findOrFail($idPago);
+        $pago->referencia=$request->referencia;
+        $pago->status='Confirmación';
+        $pago->save();
+        flash('Su referencia a sido enviada. Una vez sus pagos sean validados se le notificará mediante un correo y su estado cambiará de estado')->success()->important();
+                return redirect('/comprador/pedidoDetalle/'.$pago->pedido_id);
+   }
 
 
 }

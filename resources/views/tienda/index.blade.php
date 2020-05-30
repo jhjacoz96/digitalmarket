@@ -21,6 +21,12 @@
    
         <!-- Home Slider -->
         <div class="home_slider_container">
+
+           <div class="card">
+            <div class="card-footer">
+                
+            </div>
+            <div class="card-body"></div>
             <div class="owl-carousel owl-theme home_slider">
                 
                 <!-- Slide -->

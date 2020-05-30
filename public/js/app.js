@@ -52031,7 +52031,6 @@ var checkout = new Vue({
     abrir3: false,
     agregarDireccion: false,
     mostrarDirecciones: true,
-    d: 0,
     montoPagar: 0,
     aparecerDetalleMetodo: false,
     metodoPagoNacional: [],
@@ -52050,7 +52049,12 @@ var checkout = new Vue({
     selectEnvio: '',
     direcciones: [],
     direccionEnvio: '',
-    direccionFactura: ''
+    direccionFactura: '',
+    envioFree: '',
+    precioFijoBs: '',
+    precioFijoDolar: '',
+    metodoPagos: [],
+    metodoEnvios: ''
   },
   created: function created() {
     var _this = this;
@@ -52061,6 +52065,7 @@ var checkout = new Vue({
       console.log(e.reponse);
     });
     axios.get('/obtenerMetodoPagoNacional').then(function (res) {
+      console.log(res.data);
       _this.metodoPagoNacional = res.data;
       var a = _this.metodoPagoNacional;
       var o = _this.arrayNacional;
@@ -52085,14 +52090,14 @@ var checkout = new Vue({
     });
     axios.get('/obtenerMetodoPagoInternacional').then(function (res) {
       _this.metodoPagoInternacional = res.data;
+      console.log(res.data);
       var a = _this.metodoPagoInternacional;
       var o = _this.arrayInternacional;
       var d = {
         id: '',
         nombre: '',
         tipoPago: 'internacional',
-        cantidad: 0,
-        cantidadDolar: 0
+        cantidad: 0
       };
 
       for (var i = 0; i < a.length; i++) {
@@ -52100,8 +52105,7 @@ var checkout = new Vue({
           id: a[i].id,
           nombre: a[i].nombre,
           tipoPago: 'internacional',
-          cantidad: 0,
-          cantidadDolar: 0
+          cantidad: 0
         };
         o.push(_d2);
       }
@@ -52110,13 +52114,11 @@ var checkout = new Vue({
     });
     axios.get('/obtenerMetodoEnvio').then(function (res) {
       _this.metodoEnvio = res.data;
-      console.log(_this.metodoEnvio);
     })["catch"](function (e) {
       console.log(e.response);
     });
     axios.get('/obtenerDireccion').then(function (res) {
       _this.direcciones = res.data;
-      console.log(_this.direcciones);
     })["catch"](function (e) {
       console.log(e.response);
     });
@@ -52125,6 +52127,22 @@ var checkout = new Vue({
     }).catch(e=>{
         console.log(e.response)
     })*/
+  },
+  computed: {
+    seleccionEnvio: function seleccionEnvio() {
+      if (this.envioFree == 0) {
+        var f = this.selectEnvio;
+
+        if (f != '') {
+          this.totalBs = parseFloat(this.totallBs) + parseFloat(f.precioEnvio);
+          this.totalDolar = this.totalBs / this.dolarToday;
+          this.precioFijoBs = this.totalBs;
+          this.precioFijoDolar = this.totalDolar;
+        }
+      }
+
+      return '';
+    }
   },
   methods: {
     calcularRestante: function calcularRestante() {
@@ -52138,15 +52156,17 @@ var checkout = new Vue({
         }
 
         if (total[i].tipoPago == 'internacional') {
-          this.cantidadDolar = parseFloat(this.cantidadDolar) + parseFloat(total[i].cantidadDolar);
+          this.cantidadDolar = parseFloat(this.cantidadDolar) + parseFloat(total[i].cantidad);
         }
       }
 
       console.log(this.totallBs);
-      this.totalBs = this.totallBs - this.cantidadBs - this.cantidadDolar * this.dolarToday;
+      this.totalBs = this.precioFijoBs - this.cantidadBs - this.cantidadDolar * this.dolarToday;
       this.totalDolar = this.totalBs / this.dolarToday;
       this.cantidadBs = 0;
       this.cantidadDolar = 0;
+      this.metodoPagos = JSON.stringify(this.seletedMetodoPago);
+      this.metodoEnvios = JSON.stringify(this.selectEnvio);
     },
     getMunicipio: function getMunicipio() {
       var _this2 = this;
@@ -52233,11 +52253,16 @@ var checkout = new Vue({
     }
   },
   mounted: function mounted() {
-    this.abrir1 = true;
+    console.log(this.metodoPagoInternacional);
+    console.log(this.metodoPagoNacional);
+    console.log(this.arrayNacional);
+    this.envioFree = data.datos.envioFree;
     this.totalBs = data.datos.totalBs;
     this.totalDolar = this.totalBs / this.dolarToday;
     this.totallBs = data.datos.totalBs;
     this.totallDolar = this.totalBs / this.dolarToday;
+    this.precioFijoBs = this.totalBs;
+    this.precioFijoDolar = this.totalDolar;
     document.getElementById('municipio_id').disabled = true;
     document.getElementById('parroquia_id').disabled = true;
     document.getElementById('zona_id').disabled = true;

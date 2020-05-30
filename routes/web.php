@@ -78,7 +78,17 @@ route::prefix('comprador')->middleware('frontLogin')->group(function(){
     Route::post('actualizarContraseña/{user}','perfilController@cambiarContraseña');
     route::resource('direccion','direccionController');
     
+    route::get('/pedidos','userController@compradorPedidos');
+    route::get('/pedidoDetalle/{id}','userController@pedidoDetalle');
+    route::put('/referenciaPago/{idPedido}','userController@referenciaPago');
 });
+
+//autocomplete
+route::get('/autoComplete','HomeController@autoComplete')->name('autocomplete');
+
+
+
+
 
 Route::resource('Comprador', 'compradorController');
 
@@ -111,8 +121,7 @@ Route::resource('producto','productoController');
 
 Route::delete('/eliminarImagen/{id}','productoController@eliminarImagen')->name('delete.imagen');
 
-//autocomplete
-route::get('/autoComplete','HomeController@autoComplete')->name('autocomplete');
+
 
 //------crear filtro direccion direcciones-------------
 
@@ -200,6 +209,15 @@ route::resource('cupon','cuponController');
 //fin cupones de descuento/////
 
 route::resource('banner','bannerController'); 
+
+
+route::get('pedido/{tipo}','pedidoController@pedidoAdmin')->name('pedido.consultar');
+route::get('pedido/detalle/{id}','pedidoController@detallePedidoAdmin')->name('pedido.detalle');
+route::get('/pedido/pago/{id}/{status}','pedidoController@cambiarStatusPago');
+route::put('/pedido/status/{id}','pedidoController@cambiarStatusPedido');
+
+
+
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -207,6 +225,8 @@ route::resource('banner','bannerController');
 route::prefix('tiendas')->name('tiendas.')->middleware('auth')->group(function(){
     route::resource('producto','productoController');
     route::resource('grupoAtributo','grupoAtributoController');
+    route::get('pedido/consultar','pedidoController@pedido')->name('pedido.consultar');
+    route::get('pedido/detalle/{id}','pedidoController@detallePedido')->name('pedido.detalle');
 });
 
 ////////////////////////////////////////////////////////
@@ -251,7 +271,7 @@ route::post('carrito/aplicarCupon','cuponController@aplicarDescuento')->name('ca
 //pedido//
 route::match(['get','post'],'/realizar-pedido','productoController@realizarPedido');
 
-
+route::get('/gracias','productoController@gracias');
 //fin pedido//
 
 

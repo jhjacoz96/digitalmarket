@@ -150,8 +150,8 @@
 
                         </p>
                             <p><b>Condition:</b> New</p>
-                            <p><b>Brand:</b> E-SHOPPER</p>
-                            <a href=""><img src="{{asset('shop/images/product-details/share.png')}}" class="share img-responsive"  alt="" /></a>
+                    <p><b>Tienda:</b> {{$producto->tienda->nombreTienda}}</p>
+                            
                         </div><!--/product-information-->
                     </form>
                     </div>

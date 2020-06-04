@@ -122,7 +122,7 @@ class direccionController extends Controller
             $direccion->save();
 
             \flash('Direccion agregada con exito')->important()->success();
-            
+        
             return redirect()->route('direccion.index');
         }else{
 
@@ -132,8 +132,8 @@ class direccionController extends Controller
 
             if($request->checkout=='si'){
                 \flash('Direccion agregada con exito')->important()->success();
-            
-                return redirect('/checkout');
+                
+                return redirect('/checkout/'.$request->monto);
             }
             \flash('Direccion agregada con exito')->important()->success();
             

@@ -262,8 +262,12 @@
                           
                           </div>
                           
-                          <label>Cantidad</label>
-                      <input class="form-control" type="number" id="cantidad" name="cantidad" :disabled="disableCantidad==true" value="{{$producto->cantidad}}" >
+                          <div class="form-group" v-if="tipoProducto!='combinacion'" >
+
+                            <label>Cantidad</label>
+                            <input class="form-control" type="number" id="cantidad" name="cantidad" :disabled="disableCantidad==true" value="{{$producto->cantidad}}" >
+                          </div>
+                      
                         </div>
                         <!-- /.form-group -->
             
@@ -283,6 +287,7 @@
       
               <!-- /.card -->
 
+              <!--
               <div class="card card-secondary" v-if="tipoProducto=='combinacion'">
                                 
                 <div class="card-header">
@@ -312,9 +317,7 @@
                           <div class="form-group" v-for="(item,index) in grupos">
                             
                             <label for="">@{{item.nombre}}</label>
-                            <!--<select v-model="select"   class="form-control"  multiple   >
-                            <option   :value="items" v-for="(items,index) in item.atributo">@{{items.nombre}}</option>
-                            </select>-->
+                            
                             <vue-multiselect v-model="select" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="nombre" track-by="id"      
                             :options="item.atributo"
                             :multiple="true" :taggable="true" @tag="addTag"></vue-multiselect>
@@ -403,8 +406,8 @@
                     
                 </div>
            
-            </div>
-
+              </div>-->
+            
 
 
                   <div class="card card-secondary" v-if="tipoProducto=='combinacion'">
@@ -499,14 +502,14 @@
 
             
       
-      
+                  <!--
               <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Sección de Precios</h3>
       
                   
                 </div>
-                <!-- /.card-header -->
+                
                 <div class="card-body">
                   <div class="row">
   
@@ -528,10 +531,10 @@
                       </div>
                        
                       </div>
-                      <!-- /.form-group -->
+                    
                       
                     </div>
-                    <!-- /.col -->
+                    
       
       
       
@@ -553,10 +556,10 @@
                           @{{generarDescuento}}
                       </span>
                       </div>
-                      <!-- /.form-group -->
+                    
           
                     </div>
-                    <!-- /.col -->
+                    
       
       
       
@@ -583,15 +586,165 @@
                           aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">@{{porcentajeDescuento}}%</div>
                       </div>
                       </div>
+                    
+                      
+                    </div>
+                   
+      
+      
+                  </div>
+                  
+      
+      
+                </div>
+                
+                <div class="card-footer">
+                  
+                </div>
+              </div>
+              -->
+              
+              <div class="card card-secondary">
+                <div class="card-header">
+                  <h3 class="card-title">Sección de Precio</h3>
+      
+                  
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label for="">Precio  del producto</label>
+                      <input 
+                        v-model.numer="precioAnterior"
+                        class="form-control" type="number" id="precioAnterior" name="precioAnterior" min="0" value="0" step=".01"> 
+                    </div>
+                  </div>
+
+                  <div class="row my-4">
+                   <div class="col-md-12">
+                    <p class="lead">Aplicar descuento</p>
+                    <hr>
+                  </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+      
+                        <label>Precio anterior</label>
+                        
+      
+      
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">$</span>
+                        </div>
+                        <input 
+                        v-model.numer="precioAnterior" readonly
+                        class="form-control" type="number"  min="0" value="0" step=".01">                 
+                      </div>
+                       
+                      </div>
                       <!-- /.form-group -->
                       
                     </div>
                     <!-- /.col -->
       
       
-                  </div>
-                  <!-- /.row -->
       
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Precio con descuento</label>
+                         <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">$</span>
+                        </div>
+                        <input
+                        v-model.numer="precioActual" readonly
+                        class="form-control" type="number" id="precioActual" name="precioActual" min="0" value="0" step=".01">                 
+                      </div>
+      
+                      <br>
+                      <span id="descuento">
+                          @{{generarDescuento}}
+                      </span>
+                      </div>
+                      <!-- /.form-group -->
+          
+                    </div>
+                    <!-- /.col -->
+      
+      
+      
+      
+                    <div class="col-md-6">
+                      <div class="form-group">
+      
+                        <label>Porcentaje de descuento</label>
+                         <div class="input-group">                  
+                        <input 
+                        v-model.numer="porcentajeDescuento"
+                        class="form-control" type="number" id="porcentajeDescuento" name="porcentajeDescuento" step="any" min="0" max="100" value="0" >    <div class="input-group-prepend">
+                          <span class="input-group-text">%</span>
+                        </div>
+      
+                      </div>
+      
+                      <br>
+                      <div class="progress">
+                          <div id="barraprogreso" class="progress-bar" role="progressbar" 
+
+                          v-bind:style="{width:porcentajeDescuento+'%'}"
+
+                          aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">@{{porcentajeDescuento}}%</div>
+                      </div>
+                      </div>
+                      <!-- /.form-group -->
+                      
+                    </div>
+
+                    
+                    </div>
+                  <!-- /.row -->
+
+                  
+                <!--
+                  <div class="row">
+                    <div class="col-md-12">
+                   <p class="lead">Precio específico</p>
+                      <hr>
+                
+                  </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="">Mínimo de unidades</label>
+                        <input type="text" value="1" class="form-control">  
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="">Precio</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                          </div>
+                          <input 
+                          class="form-control" type="number" min="0" value="0" step=".01">                 
+                        </div>  
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="">Tipos compradores</label>
+                        <select name="" class="form-control" id="">
+                          <option value="">Seleccione un tipo comprador</option>
+                        </select>
+                      </div>
+                    </div>
+
+                  </div>
+                -->
+
       
                 </div>
                 <!-- /.card-body -->
@@ -599,8 +752,6 @@
                   
                 </div>
               </div>
-      
-      
       
       
       
@@ -617,7 +768,7 @@
                     <div class="card-body">
                       <!-- Date dd/mm/yyyy -->
                       <div class="form-group">
-                        <label>Descripción corta:</label>
+                        <label>Descripción:</label>
       
                         <textarea  class="form-control ckeditor" name="descripcionCorta" id="descripcionCorta" rows="3">
                             {!!$producto->descripcionCorta!!}
@@ -625,7 +776,7 @@
                       
                       </div>
                       <!-- /.form group -->
-      
+                      <!--
                      <div class="form-group">
                         <label>Descripción larga:</label>
       
@@ -633,7 +784,7 @@
                             {!!$producto->descripcionLarga!!}
                         </textarea>
                       
-                      </div>                
+                    </div>    -->            
       
                     </div>
                     <!-- /.card-body -->
@@ -664,6 +815,7 @@
                       </div>
                       <!-- /.form group -->
       
+                      <!--
                      <div class="form-group">
                         <label>Datos de interes:</label>
       
@@ -671,7 +823,7 @@
                             {!!$producto->datosInteres!!}
                         </textarea>
                       
-                      </div>                
+                    </div>       -->         
       
                     </div>
                     <!-- /.card-body -->
@@ -789,12 +941,12 @@
       
                           </div>
       
-                          <div class="form-group">
+                        <!--<div class="form-group">
                           <div class="custom-control custom-switch">
                             <input type="checkbox"  class="custom-control-input" id="sliderPrincipal" name="sliderPrincipal">
                             <label class="custom-control-label" for="sliderPrincipal">Aparece en el Slider principal</label>
                           </div>
-                        </div>
+                        </div>-->
       
                         </div>
       

@@ -20,7 +20,7 @@ class pedidoController extends Controller
             $pedido=Pedido::whereHas('producto',function($q){
                 $q->where('tienda_id',\Auth::user()->tienda->id);
             })->with(['producto'=>function($q){
-                $q->where('tienda_id',\Auth::user()->tienda->id);}])->get();
+                $q->where('tienda_id',\Auth::user()->tienda->id);}])->where('status','pagoAceptado')->get();
     
             return view('plantilla.contenido.tienda.pedido.pedido',compact('pedido'));
 
@@ -32,7 +32,7 @@ class pedidoController extends Controller
         
         $pedido=Pedido::with(['producto'=>function($q){
             $q->where('tienda_id',\Auth::user()->tienda->id);}])->findOrFail($id);
-        return $pedido;
+       
 
         return view('plantilla.contenido.tienda.pedido.detalle',compact('pedido'));
 
@@ -91,6 +91,16 @@ class pedidoController extends Controller
 
 
     public function cambiarStatusPedido(Request $request,$id){
+
+    if($request->ruta=='tiendaPedido'){
+        $pedido=Pedido::with(['producto'=>function($q){
+        $q->where('tienda_id',\Auth::user()->tienda->id);}])->findOrFail($id);
+
+        foreach ($pedido->producto as $key => $value) {
+            
+        }
+
+    }
 
         $pedido=Pedido::findOrFail($id);
         $pedido->status=$request->estado;

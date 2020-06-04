@@ -14,7 +14,6 @@ class PlanAfilizacion extends Model
         'exposicion',
         'tiempoPublicacion',
         'cantidadPublicacion'
-        
     ];
 
     public function tienda()

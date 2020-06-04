@@ -10,6 +10,7 @@ use App\User;
 use App\Pedido;
 use App\MetodoPagoPedido;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Email;
 
 class userController extends Controller
 {
@@ -45,9 +46,22 @@ class userController extends Controller
                 $comprador->tipoComprador_id=1;
                 $comprador->save();
 
+                //enviar correo de bienvenida
+                $email=$request['email'];
+                $datoMensaje=['email'=>$request['email'],'nombre'=>$request['nombre']];
+                \Mail::send('correos.registro',$datoMensaje,function($mensaje) use ($email){
+                    $mensaje->to($email)->subject('Registro en DigitalMarcket');
+                });
+
                 if (\Auth::attempt(['email' => $request['email'], 'password' => $request['password']]))
                 {
-                    \Session::put('frontSession',$request['email']);
+                    \Session::put('frontSession',$request['comprador_id']);
+
+                    if(!empty(\Session::get('session_id'))){
+                        $session_id=\Session::get('session_id');
+                        \DB::table('carritos')->where('session_id',$session_id)->update(['comprador_id'=>$comprador->id]);
+                    }
+
                     return redirect('/');
                 }
                
@@ -79,7 +93,12 @@ class userController extends Controller
                     }
                     if(\Auth::user()->rol_id==1){
                         
-                        \Session::put('frontSession',$request['email']);
+                        \Session::put('frontSession',$request['comprador_id']);
+
+                            if(!empty(\Session::get('session_id'))){
+                                $session_id=\Session::get('session_id');
+                                \DB::table('carritos')->where('session_id',$session_id)->update(['comprador_id'=>$comprador->id]);
+                            }
 
                         return redirect('/');
                     }

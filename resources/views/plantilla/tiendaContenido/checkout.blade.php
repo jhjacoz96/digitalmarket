@@ -49,10 +49,10 @@
 				<div class="row">		
 					<div class="shopper-info" v-if="agregarDireccion==false">
 						<div class="row">
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<p>Dirección de entrega</p>
 						
-							<div class="col-sm-6" v-for="direccion in direcciones">
+							<div class="col-md-6" v-for="direccion in direcciones">
 							<div class="card bg-light mb-3"  style="max-width: 18rem;">
 								<div class="card-header">
 								<input type="radio" v-model="direccionEnvio" id="direccionEnvio" :value="direccion.id" name="direccionEnvio">
@@ -73,10 +73,10 @@
 						</div>
 					
 
-						<div class="col-sm-6">
+						<div class="col-md-6">
 							<p>Dirección para la factura</p>
 						
-							<div class="col-sm-6" v-for="direccion in direcciones">
+							<div class="col-md-6" v-for="direccion in direcciones">
 							<div class="card bg-light mb-3"  style="max-width: 18rem;">
 								<div class="card-header">
 								<input type="radio" v-model="direccionFactura" id="direccionFactura" :value="direccion.id" name="direccionFactura">
@@ -135,6 +135,7 @@
 									</div>
 
 									<div class="form-group">
+									<input type="hidden" name="monto" value="{{$totalBs}}">
 
 										<select id="estado_id" class="form-control" v-model='estado_id' @change="getMunicipio()" name="estado_id" >
 										  <option value="" selected >Seleccione un estado</option>

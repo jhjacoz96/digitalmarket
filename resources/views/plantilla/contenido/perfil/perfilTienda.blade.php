@@ -49,7 +49,12 @@
               
                     <div class="text-center">
                         <img style="border-radius: 50%;" class="profile-user-img img-fluid img-circle"
-                             src="{{$tienda->imagen->url}}"
+                              @if(!empty($tienda->imagen->url))
+                              src="{{$tienda->imagen->url}}"
+                              @else
+                              src="{{asset('/imagenes/tienda/tienda.png')}}"
+                              @endif
+
                              alt="User profile picture">
                       </div>
       

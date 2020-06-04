@@ -1,5 +1,12 @@
 @extends('layouts.appAdmin')
 @section('contenido')
+
+@php
+    use App\Combinacion;
+    use App\Atributo;
+    use App\GrupoAtributo;
+@endphp
+
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
  
@@ -124,13 +131,16 @@
                 <div class="card card-secondary ">
                     <div class="card-header">
                       <span class="fas fa-shipping-fast float-left"></span>
-                      <h3 class="card-title ml-1">Metedo de envio</h3>
+                      <h3 class="card-title ml-1">Envio de pedido</h3>
                       
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
                   
                       <div class="card-body">
+                        <div class="row">
+                        <a href="" data-toggle="modal" data-target="#modal-default">Ver reglas de envio</a>
+                        </div>
 
                         <div class="card-body table-responsive p-0">
                             <table class="table table-striped">
@@ -153,9 +163,15 @@
 
                                       </th>
                                      <th>
-                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
-                                            Actualizar
-                                        </button>
+                                     <form action="{{url('/pedido/status/'.$pedido->id)}}" method="post">
+                                      @method('PUT')
+                                      @csrf
+                                     <input value="{{$pedido->medioEnvio->id}}" type="hidden" name="envio">
+                                     <input value="tiendaPedido" type="hidden" name="ruta">
+                                         <button type="submit" class="btn btn-info btn-sm" >
+                                             Confirmar envio de pedido
+                                         </button>
+                                       </form>
                                      </th>
                                      
                                  </tr>
@@ -170,18 +186,10 @@
                                           </button>
                                         </div>
                                         <div class="modal-body">
-                                          <div class="form-group">
-                                              <label for="">Referencia</label>
-                                              <input name="referencia" type="text" class="form-control">
-                                              
+                                          <div class="callout callout-info">
+                                            <h5>Reglas de envio</h5>
+                                            <p>Este pedido Debe ser enviado a la bodega de DigitalMarket localizada en av. las industrias. Los productos debe estar embalados he identificados. Si el pedido no es entregado a tiempo su cuenta sera sancionada. Gracias por preferirnos como su medio de venta online.</p>
                                           </div>
-                                          <div class="form-group">
-                                              <p>Al actualizar el pedido, los productos de su tienda pertenecientes a este pedido se actualizaran como enviado al cliente</p> 
-                                          </div>
-                                        </div>
-                                        <div class="modal-footer justify-content-between">
-                                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                          <button type="button" class="btn btn-primary">Actualizar</button>
                                         </div>
                                       </div>
                                       <!-- /.modal-content -->
@@ -230,7 +238,7 @@
                                     <dd class="col-sm-4">{{$pedido->direccionPedido->observacion}}</dd>
                                     <dt class="col-sm-8">Dirección exacta</dt>
                                     <dd class="col-sm-4">{{$pedido->direccionPedido->direccionExacta}}</dd>
-          
+                                  
                               </dl>
 
 
@@ -274,6 +282,7 @@
                         <tr>
                           <th>ID</th>
                           <th>Producto</th>
+                          <th>Tipo de producto</th>
                           <th>Cantidad</th>
                           <th>Precio</th>
                           <th>Total</th>
@@ -284,7 +293,18 @@
                              
                          <tr>
                               <td class="mailbox-star">{{$item->id}}</td>
-                             <td class="mailbox-star">{{$item->nombre}}</td>
+                             <td class="mailbox-star">
+                               {{$item->nombre}}<br>
+                              @if($item->tipoCliente=='combinacion')
+                                <?php
+                                  $combinacion=Combinacion::find($item->pivot->combinacion_id);
+                                ?>
+                                @foreach ($combinacion->atributo as $com)
+                                <p class="text-info">{{$com->grupoAtributo->nombre}} : {{$com->nombre}}</p> <br>
+                                @endforeach
+                              @endif
+                              </td>
+                             <td class="mailbox-star">{{$item->tipoCliente}}</td>
                              <td class="mailbox-star">
                                  {{$item->pivot->cantidadProducto}}
                              </td>

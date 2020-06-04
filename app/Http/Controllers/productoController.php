@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use App\Producto;
 use App\Categoria;
 use App\SubCategoria;
@@ -951,9 +953,10 @@ class productoController extends Controller
             $pedido=new Pedido();
             $pedido->montoTotal=$request->precioFijoBs;
             $pedido->codigoCupon=$request->codigoCupon;
+
             //$pedido->codigo=;
             $pedido->cantidadCupon=$request->cantidadCupon;
-            $pedido->status='espºeraTransferencia';
+            $pedido->status='esperaTransferencia';
             $pedido->metodoEnvio_id=$metodoEnvio['id'];
 
 
@@ -1017,7 +1020,25 @@ class productoController extends Controller
 
             \Session::put('pedido_id',$pedido->id);
             \Session::put('montoTotal',$request->precioFijoBs);
-            // 
+            
+
+            $pedido=Pedido::with('producto')->with('metodoPago')->with('medioEnvio')->where('id',$pedido->id)->first();
+            $comprador=\Auth::user()->comprador;
+            $correo=\Auth::user()->email;
+            $datosMensaje=[
+                'correo'=>$correo,
+                'nombre'=>$comprador->nombre,
+                'pedido_id'=>$pedido->id,
+                'detalleProducto'=>$pedido,
+                'direccionFactura'=>$direccionFactura,
+                'direccionEnvio'=>$direccionEnvio,
+                'direccionFactura'=>$direccionFactura
+            ];
+ 
+            Mail::send('correos.pedido',$datosMensaje,function($mensaje) use($correo){
+                $mensaje->to($correo)->subject('Pedido realizado - DigitalMarket');
+            });
+
             return redirect('/gracias');
 
         }

@@ -74,7 +74,6 @@ class tipoCompradorController extends Controller
         }
 
 
-
         $tipo->save();
 
         flash('El tipo de comprador se ha agregado con exito')->important()->success();

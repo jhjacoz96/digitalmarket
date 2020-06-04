@@ -14,4 +14,6 @@ class Carrito extends Model
         'comprador_id',
         'session_id'
     ];
+
+    
 }

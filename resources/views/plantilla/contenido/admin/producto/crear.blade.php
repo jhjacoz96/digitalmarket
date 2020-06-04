@@ -208,8 +208,11 @@
 
                         </div>
                         
-                        <label>Cantidad</label>
-                        <input class="form-control"  type="number" id="cantidad"  name="cantidad" value="0" >
+                        <div class="form-group" v-if="tipoProducto!='combinacion'">
+                          <label>Cantidad</label>
+                          <input class="form-control"  type="number" id="cantidad"  name="cantidad" value="0" >
+                        </div>
+
                       </div>
                       <!-- /.form-group -->
                       
@@ -352,7 +355,7 @@
 
 
 
-      
+     
               <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Sección de Precio</h3>
@@ -364,7 +367,7 @@
 
                   <div class="row">
                     <div class="col-md-6">
-                      <label for="">Precio unitario del producto</label>
+                      <label for="">Precio  del producto</label>
                       <input 
                         v-model.numer="precioAnterior"
                         class="form-control" type="number" id="precioAnterior" name="precioAnterior" min="0" value="0" step=".01"> 
@@ -456,7 +459,7 @@
                   <!-- /.row -->
 
                   
-
+                <!--
                   <div class="row">
                     <div class="col-md-12">
                    <p class="lead">Precio específico</p>
@@ -492,7 +495,8 @@
                     </div>
 
                   </div>
-      
+                -->
+
       
                 </div>
                 <!-- /.card-body -->
@@ -503,7 +507,7 @@
       
       
       
-      
+              
       
       
       
@@ -518,21 +522,22 @@
                     <div class="card-body">
                       <!-- Date dd/mm/yyyy -->
                       <div class="form-group">
-                        <label>Descripción corta:</label>
+                        <label>Descripción:</label>
       
                         <textarea  class="form-control ckeditor" name="descripcionCorta" id="descripcionCorta" rows="3"></textarea>
                       
                       </div>
                       <!-- /.form group -->
-      
+                      <!--
                      <div class="form-group">
                         <label>Descripción larga:</label>
       
                         <textarea class="form-control ckeditor" name="descripcionLarga" id="descripcionLarga" rows="5"></textarea>
                       
-                      </div>                
-      
+                    </div>                
+                  -->
                     </div>
+
                     <!-- /.card-body -->
                   </div>
                   <!-- /.card -->
@@ -551,6 +556,7 @@
                     </div>
                     <div class="card-body">
                       <!-- Date dd/mm/yyyy -->
+
                       <div class="form-group">
                         <label>Especificaciones:</label>
       
@@ -559,13 +565,14 @@
                       </div>
                       <!-- /.form group -->
       
+                      <!--
                      <div class="form-group">
                         <label>Datos de interes:</label>
       
                         <textarea class="form-control ckeditor" name="datosInteres" id="datosInteres" rows="5"></textarea>
                       
-                      </div>                
-      
+                    </div>                
+                  -->
                     </div>
                     <!-- /.card-body -->
                   </div>
@@ -645,14 +652,14 @@
                            </div>
       
                           </div>
-      
+                          <!--
                           <div class="form-group">
                           <div class="custom-control custom-switch">
                             <input type="checkbox"  class="custom-control-input" id="sliderPrincipal" name="sliderPrincipal">
                             <label class="custom-control-label" for="sliderPrincipal">Aparece en el Slider principal</label>
                           </div>
                         </div>
-      
+                      -->
                         </div>
       
                       

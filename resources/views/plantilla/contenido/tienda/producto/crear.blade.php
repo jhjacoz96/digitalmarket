@@ -183,9 +183,11 @@
                           </div>
 
                         </div>
-                        
-                        <label>Cantidad de productos</label>
-                        <input class="form-control"  type="number" id="cantidad"  name="cantidad" value="0" >
+
+                        <div v-if="tipoProducto!='combinacion'" class="form-group">
+                          <label>Cantidad de productos</label>
+                          <input class="form-control"  type="number" id="cantidad"  name="cantidad" value="0" >
+                        </div>
                       </div>
                       <!-- /.form-group -->
                       
@@ -339,7 +341,7 @@
                 <!-- /.card-header -->
                 <div class="card-body">
 
-                  <p class="lead">Precio unitario</p>
+                  <p class="lead">Precio</p>
                   <hr>
 
                   <div class="row">
@@ -436,12 +438,12 @@
                   <!-- /.row -->
 
                   
-
+                    <!--
                   <div class="row">
                     <div class="col-md-12">
                       <p class="lead">Precios específicos</p>
                       <hr>
-                  </div>
+                    </div>
                     <div class="col-md-3">
                       <div class="form-group">
                         <label for="">Mínimo de unidades</label>
@@ -470,7 +472,7 @@
                       </div>
                     </div>
 
-                  </div>
+                  </div>->
       
       
                 </div>
@@ -497,19 +499,19 @@
                     <div class="card-body">
                       <!-- Date dd/mm/yyyy -->
                       <div class="form-group">
-                        <label>Descripción corta:</label>
+                        <label>Descripción:</label>
       
                         <textarea  class="form-control ckeditor" name="descripcionCorta" id="descripcionCorta" rows="3"></textarea>
                       
                       </div>
-                      <!-- /.form group -->
+                      <!-- 
       
-                     <div class="form-group">
+                      <div class="form-group">
                         <label>Descripción larga:</label>
       
                         <textarea class="form-control ckeditor" name="descripcionLarga" id="descripcionLarga" rows="5"></textarea>
                       
-                      </div>                
+                      </div>       /.form group -->         
       
                     </div>
                     <!-- /.card-body -->
@@ -536,14 +538,14 @@
                         <textarea class="form-control ckeditor" name="especificaciones" id="especificaciones" rows="3"></textarea>
                       
                       </div>
-                      <!-- /.form group -->
-      
-                     <div class="form-group">
+                      <!-- 
+                    <div class="form-group">
                         <label>Datos de interes:</label>
       
                         <textarea class="form-control ckeditor" name="datosInteres" id="datosInteres" rows="5"></textarea>
                       
-                      </div>                
+                    </div>         /.form group -->
+             
       
                     </div>
                     <!-- /.card-body -->
@@ -613,17 +615,17 @@
             <div class="card-body">
       
              <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
+                  <!--   <div class="col-md-6">
+                     <div class="form-group">
       
                         <label>Estado</label>
                         <input  class="form-control" type="text" id="estado" name="estado" value="Nuevo">
       
                        
-                      </div>
-                      <!-- /.form-group -->
-                      
                     </div>
+                      
+                      
+                    </div> /.form-group -->
                     <!-- /.col -->
                     <div class="col-sm-6">
                           <!-- checkbox -->

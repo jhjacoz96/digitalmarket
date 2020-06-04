@@ -22,6 +22,6 @@ class indexController extends Controller
 
         $categoria=Categoria::with('subCategoria')->get();
 
-        return view('plantilla.tiendaContenido.index',compact('producto'),compact('categoria','banner','tienda'));
+        return view('plantilla.tiendaContenido.index',compact('producto'),compact('categoria','banner'));
     }
 }

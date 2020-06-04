@@ -88,7 +88,9 @@
                       </td>
 
                            <td class="mailbox-star">
-                            
+                            @if($item->status='pagoAceptado')
+                              <span class="badge badge-success">Pago aceptado</span>
+                            @endif
                            </td>
                          
                            

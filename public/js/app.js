@@ -52359,6 +52359,7 @@ var detalleProducto = new Vue({
       console.log(g);
       var atributo1 = '';
       var atributo = '';
+      this.disponibilidad = 0;
 
       for (var i = 0; i < g.length; i++) {
         var d = g[i].atributo;
@@ -52380,17 +52381,23 @@ var detalleProducto = new Vue({
     obtenerCombinacion: function obtenerCombinacion() {
       console.log(this.atributo_id);
       var g = this.combinacion;
+      this.disponibilidad = 0;
 
-      for (var i = 0; i < g.length; i++) {
-        var d = g[i].atributo;
+      if (this.atributo_id != '') {
+        for (var i = 0; i < g.length; i++) {
+          var d = g[i].atributo;
 
-        for (var j = 0; j < d.length; j++) {
-          if (this.atributo_id == d[j].id) {
-            console.log(d[j].nombre);
-            this.disponibilidad = g[i].cantidad;
-            this.combinacion_id = g[i].id;
+          for (var j = 0; j < d.length; j++) {
+            if (this.atributo_id == d[j].id) {
+              console.log(d[j].nombre);
+              this.disponibilidad = g[i].cantidad;
+              this.combinacion_id = g[i].id;
+            }
           }
         }
+      } else {
+        this.combinacion_id = '';
+        this.disponibilidad = 0;
       }
     },
     cambiarImagen: function cambiarImagen() {
@@ -52401,13 +52408,17 @@ var detalleProducto = new Vue({
   },
   mounted: function mounted() {
     this.slug = data.datos.slug;
-    this.disponibilidad = data.datos.cantidad;
     this.tipoProducto = data.datos.tipoProducto;
 
     if (this.tipoProducto == 'comun') {
+      this.disponibilidad = data.datos.cantidad;
+
       if (this.disponibilidad == 0) {
         this.disabledBoton = true;
       }
+    } else {
+      this.disponibilidad = 0;
+      this.disabledBoton = true;
     }
   }
 });

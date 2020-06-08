@@ -15,6 +15,10 @@ class Cupon extends Model
         'tipoCupon'
     ];
 
+
+    public function tipoComprador(){
+        return  $this->belongsToMany('App\TipoComprador','cupon_tipo_comprador','cupon_id','tipoComprador_id')->withPivot('created_at','updated_at');
+      }
     
 
 }

@@ -61,6 +61,7 @@
                         <th>fecha de creación</th>
                         <th>Fecha de expiración</th>
                         <th>Cantidad</th>
+                        <th>Tipo comprador</th>
                         <th>Estado</th>
                         <th>Acción</th>
                       </tr>
@@ -80,6 +81,13 @@
                               Bs{{$item->cantidad}}
                               @endif
                             </td> 
+                            <td class="mailbox-star">
+                              <select name="" id="" class="form-control">
+                                  @foreach ($item->tipoComprador as $tipo)
+                              <option value="">{{$tipo->nombre}}</option>
+                                  @endforeach
+                              </select>
+                            </td>
                             <td class="mailbox-star">
                               @if($item->estatus=='A')
                               <span class="badge badge-success">Activo</span>

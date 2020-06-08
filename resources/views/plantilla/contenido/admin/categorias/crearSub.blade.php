@@ -90,7 +90,7 @@
                         </div>
                         <div class="card-footer">
 
-                          <a href="{{route('categoria.edit',$categoria->slug)}}" class="btn btn-secondary float-left">
+                          <a href="{{route('categoria.create')}}" class="btn btn-secondary float-left">
                             Atras
                           </a>
 

@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-          <h1>Cantidad de metodos de pagos:{{count($pago)}}</h1>
+          <h1>Cantidad de monedad:{{count($moneda)}}</h1>
           </div>
 
           <div class="col-sm-6">
@@ -33,14 +33,14 @@
                </div>
 
                 <div class="card-header">
-                  <h3 class="card-title">Consultar metodos de pagos</h3>
+                  <h3 class="card-title">Consultar monedad</h3>
   
                   <div class="card-tools">
 
                     <form >
                       <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="nombre" class="form-control float-right" placeholder="Buscar"
-                      value="{{request()->get('nombre')}}"
+                        <input type="text" name="codigo" class="form-control float-right" placeholder="Buscar"
+                      value="{{request()->get('codigo')}}"
                         >
     
                         <div class="input-group-append">
@@ -58,44 +58,44 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Tipo de metodo de pago</th>
-                        <th>moneda</th>
-                        <th>Banco asociado</th>
+                        <th>Código</th>
+                        <th>Cambio</th>
+                        <th>Estado</th>
                         <th>Acción</th>
                       </tr>
                     </thead>
                     <tbody>
-                       @foreach ($pago as $item)
+                       @foreach ($moneda as $item)
                            
                        <tr>
                        <td class="mailbox-star">{{$item->id}}</td>
-                           <td class="mailbox-star">{{$item->nombre}}</td>
-                           <td class="mailbox-star">{{$item->tipoPago}}</td>
-                           <td class="mailbox-star">{{$item->moneda}}</td>
-                           <td class="mailbox-star">
-                            
-                            @if($item->bancoMetodoPago)
-                              {{$item->bancoMetodoPago->nombreBanco}}{{$item->bancoMetodoPago->nombreBanco}}
+                        <td class="mailbox-star">{{$item->codigo}}</td>
+                        <td class="mailbox-star">Bs {{$item->cambio}}</td>
+                        <td class="mailbox-star">
+                            @if($item->status=='A')
+                            <span class="badge badge-success" >Activo</span>
                             @else
-                            <span>Sin registro</span>
+                            <span class="badge badge-danger" >Inactivo</span>
                             @endif
+                        </td>
+                
 
-                            </td>
-
+                    
                            <td class="mailbox-star">
                                <div class="btn-group">
                                
 
-                               <a href="{{route('metodoPago.edit',$item)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
+                               <a href="{{route('moneda.edit',$item)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
 
                                    
                                    
-                                   <form action="{{route('metodoPago.destroy',$item)}}" method="POST">
+                                   <form action="{{route('moneda.destroy',$item)}}" method="POST">
                                        @method('DELETE')
                                        @csrf
-                                       <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este metodo de pago?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
+                                       <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar esta moneda?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
                                      </form>
+                                   
+                                   
                                  
                                </div>
                            </td>
@@ -107,10 +107,10 @@
                      
                     </tbody>
                   </table>
-                  {{$pago->appends($_GET)->links()}}
+                 
 
                   <div class="box-footer p-3 float-right">
-                  <a href=" {{route('metodoPago.create')}} "  class="btn  btn-info ">Agregar método de pago</a>
+                  <a href=" {{route('metodoPago.create')}} "  class="btn  btn-info ">Agregar banco</a>
             
                   </div>
                 </div>

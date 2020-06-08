@@ -22,7 +22,7 @@ class Pedido extends Model
     }
 
     public function metodoPago(){
-      return  $this->belongsToMany('App\MetodoPago','metodo_pago_pedido','pedido_id','metodoPago_id')->withPivot('cantidad','status','id','referencia');
+      return  $this->belongsToMany('App\MetodoPago','metodo_pago_pedido','pedido_id','metodoPago_id')->withPivot('cantidad','status','id','referencia','created_at','updated_at');
     }
 
     public function medioEnvio(){

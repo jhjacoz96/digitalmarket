@@ -210,13 +210,15 @@ route::resource('cupon','cuponController');
 
 route::resource('banner','bannerController'); 
 
+route::resource('moneda','monedaController');
+
 
 route::get('pedido/{tipo}','pedidoController@pedidoAdmin')->name('pedido.consultar');
 route::get('pedido/detalle/{id}','pedidoController@detallePedidoAdmin')->name('pedido.detalle');
 route::get('/pedido/pago/{id}/{status}','pedidoController@cambiarStatusPago');
 route::put('/pedido/status/{id}','pedidoController@cambiarStatusPedido');
 
-
+route::get('/pedido-factura/{id}','pedidoController@verFactura');
 
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -276,6 +278,11 @@ route::get('/gracias','productoController@gracias');
 
 
 
+//buscar producto
+route::get('/buscar-producto','productoController@buscarProducto');
+//fin de buscar producto
 
-
+//Factura pdf
+ Route::name('factura')->get('/imprimir-factura/{id}', 'pedidoController@pdfFactura');
+//fin de factura
 

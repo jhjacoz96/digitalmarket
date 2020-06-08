@@ -55,7 +55,7 @@ class userController extends Controller
 
                 if (\Auth::attempt(['email' => $request['email'], 'password' => $request['password']]))
                 {
-                    \Session::put('frontSession',$request['comprador_id']);
+                    \Session::put('frontSession',$comprador->id);
 
                     if(!empty(\Session::get('session_id'))){
                         $session_id=\Session::get('session_id');
@@ -93,12 +93,12 @@ class userController extends Controller
                     }
                     if(\Auth::user()->rol_id==1){
                         
-                        \Session::put('frontSession',$request['comprador_id']);
+                        \Session::put('frontSession',\Auth::user()->comprador->id);
 
                             if(!empty(\Session::get('session_id'))){
                                 $session_id=\Session::get('session_id');
-                                \DB::table('carritos')->where('session_id',$session_id)->update(['comprador_id'=>$comprador->id]);
-                            }
+                                \DB::table('carritos')->where('session_id',$session_id)->update(['comprador_id'=>\Auth::user()->comprador->id]);
+                            }   
 
                         return redirect('/');
                     }
@@ -113,7 +113,7 @@ class userController extends Controller
     }
     public function cerrarSesion(){
         \Auth::logout();
-        \Session::forget('fronrSession');
+        \Session::forget('frontSession');
         \Session::forget('session_id');
         return redirect('/');
     }
@@ -154,7 +154,7 @@ class userController extends Controller
         $pago->referencia=$request->referencia;
         $pago->status='Confirmación';
         $pago->save();
-        flash('Su referencia a sido enviada. Una vez sus pagos sean validados se le notificará mediante un correo y su estado cambiará de estado')->success()->important();
+        flash('Su referencia a sido enviada. Una vez sus pagos sean validados se le notificará mediante un correo.')->success()->important();
                 return redirect('/comprador/pedidoDetalle/'.$pago->pedido_id);
    }
 

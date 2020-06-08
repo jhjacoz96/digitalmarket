@@ -1,5 +1,6 @@
 @extends('layouts.frondTienda.design')
 @section('script')
+
     <script>
         window.data={
             datos:{
@@ -45,7 +46,7 @@
                                
                                 src="{{$producto->imagen->random()->url}}" >
                             @endif
-                            <h3>ZOOM</h3>
+                           
                         </div>
                         <div id="similar-product" class="carousel slide" data-ride="carousel">
                             
@@ -130,17 +131,20 @@
                             <img src="{{asset('shop/images/product-details/rating.png')}}" alt="" />
                             <span>
                                 <span>Bs {{$producto->precioActual}}</span>
+                               
+                             
+                              
                                 <label>Cantidad:</label>
                                 <input type="text" v-model="cantidad"   />
                                 @{{validarCantidad}}
                                 <button type="submit"  class="btn btn-fefault cart" :disabled="disabledBoton">
                                     <i class="fa fa-shopping-cart"></i>
-                                    Add to cart
+                                    Agregar al carrito
                                 </button>
                             </span>
                             <p style="color: tomato;"  v-if="mostrarMensaje">@{{mensaje}}</p>
                                 <br v-if="mostrarMensaje">
-                        <p><b>Availability:</b>
+                        <p><b>Disponibilidad:</b>
                             @if($producto->tipoCliente=='comun')
                                 {{$producto->cantidad}}
                             @else
@@ -149,7 +153,7 @@
 
 
                         </p>
-                            <p><b>Condition:</b> New</p>
+                            
                     <p><b>Tienda:</b> {{$producto->tienda->nombreTienda}}</p>
                             
                         </div><!--/product-information-->
@@ -190,7 +194,7 @@
                 </div><!--/category-tab-->
                 
                 <div class="recommended_items"><!--recommended_items-->
-                    <h2 class="title text-center">recommended items</h2>
+                    <h2 class="title text-center">Articulos recomentados</h2>
                     
                     <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
@@ -211,7 +215,7 @@
                                                         <img style="width:140px;"  src="/imagenes/avatar.png" >
                                                     @else
                                                         <img 
-                                                    
+                                                        style="width:140px;"
                                                         src="{{$item->imagen->random()->url}}">
                                                     @endif
                                                  

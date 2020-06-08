@@ -79,12 +79,8 @@
                       </td>
                        <td class="mailbox-star">
                          
-                        @foreach ($item->producto as $items)
-                            <?php
-                              $total=$total+($items->pivot->cantidadProducto*$items->pivot->precioProducto);
-                            ?>
-                        @endforeach
-                        {{$total}}
+                      Bs {{$item->montoTotal}}
+
                       </td>
 
                       <td class="mailbox-star">
@@ -141,3 +137,6 @@
     </div>
     <!-- /.content-wrapper -->
 @endsection
+
+
+

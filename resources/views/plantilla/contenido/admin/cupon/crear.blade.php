@@ -72,6 +72,17 @@
                       {!!$errors->first('codigo','<small>:message</small><br>')!!}
   
                     </div>
+
+
+                    <div class="form-group col-md-6" >
+                      <label for="">Asignar a tipos de compradores</label>
+                      <select multiple name="tipo[]" id=""  class="form-control">
+                        @foreach($tipoComprador as $item)    
+                        <option value="{{$item->id}}">{{$item->nombre}}</option>
+                        @endforeach
+                      </select>
+                      {!!$errors->first('tipo','<small>:message</small><br>')!!}
+                    </div>
               
                     <div class="form-group col-md-6">
                       <label for="">Tipo de cupón</label>

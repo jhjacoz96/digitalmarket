@@ -19,7 +19,7 @@ class CreateCarritosTable extends Migration
             $table->integer('combinacion_id')->nullable();
             $table->decimal('precio',12,2)->default(0);
             $table->string('cantidad');
-            $table->integer('comprador_id');
+            $table->integer('comprador_id')->nullable();
             $table->string('session_id');
             $table->timestamps();
         });

@@ -335,10 +335,7 @@
 										<td>Cart Sub Total</td>
 										<td>Bs{{$montoTotal}}</</td>
 									</tr>
-									<tr>
-										<td>Exo Tax</td>
-										<td>$2</td>
-									</tr>
+									
 									@if(\Auth::user()->comprador->tipoComprador->envioGratis===1)
 									<tr class="shipping-cost">
 										<td>Costo de envío</td>
@@ -405,7 +402,7 @@
 						
 						if(!empty(\Session::get('codigoCupon'))){
 							$codigoCupon=\Session::get('codigoCupon');
-							$cantidadCupon=\Session::get('cantidadCupon');
+							$cantidadCupon=\Session::get('montoCupon');
 						}
 					@endphp
 					@if (!empty(\Session::get('codigoCupon')))

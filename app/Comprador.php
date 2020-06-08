@@ -29,4 +29,7 @@ class Comprador extends Model
     public function pedido(){
         return $this->hasMany('App\Pedido','comprador_id');
     }
+
+    
+
 }

@@ -75,17 +75,19 @@
                         <p>Envio gratis</p>
                     @endif
                 </tr>
+                @if(!empty($detalleProducto['codigoCupon']))
                 <tr>
                     <td colspan="5" align="right">Cupón de descuento</td>
                     <td >BS {{$detalleProducto['cantidadCupon']}}</td>
                 </tr>
+                @endif
                 <tr>
                     <td colspan="5" align="right">Descuento adicional</td>
                     <td >BS </td>
                 </tr>
                 <tr>
                     <td colspan="5" align="right">Monto total</td>
-                    <td >BS {{$detalleProducto['montoTotal']}}</td>
+                    <td >BS {{$detalleProducto['montoTotal']-$detalleProducto['cantidadCupon']+$detalleProducto['medioEnvio']->precioEnvio}}</td>
                 </tr>
             </table>
         </td></tr>

@@ -1,6 +1,8 @@
 @php
     use App\Http\Controllers\Controller;
     $mainCategorias=Controller::mainCategorias();
+    use App\Producto;
+    $carritoCount=Producto::carritoCount();
 @endphp
 
 <header id="header"><!--header-->
@@ -67,10 +69,10 @@
                             
                             <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                             <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-                            <li><a href="{{url('/carrito')}}"><i class="fa fa-shopping-cart"></i> Carrito</a></li>
+                            <li><a href="{{url('/carrito')}}"><i class="fa fa-shopping-cart"></i>Carrito({{$carritoCount}})</a></li>
                             @if(empty(\Auth::check()))
                         <li><a href="{{url('/registrar-usuario')}}"><i class="fa fa-user"></i> Registrarse</a></li>
-                        <li><a href="{{url('/iniciar-sesion')}}"><i class="fa fa-lock"></i>Iniciar seción</a></li>
+                        <li><a href="{{url('/iniciar-sesion')}}"><i xclass="fa fa-lock"></i>Iniciar seción</a></li>
                             @else
                         <li><a href="{{url('/comprador/cuenta')}}"><i class="fa fa-user"></i>{{\Auth::user()->nombre}} {{\Auth::user()->apellido}}</a></li>
                         <li><a href="{{url('/salir')}}"><i class="fa fa-sign-out"></i>Salir</a></li>
@@ -115,7 +117,12 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="search_box pull-right">
-                        <input type="text" placeholder="Buscar producto"/>
+                        <form action="{{url('/buscar-producto')}}" method="post">
+                            @method('GET')
+                            @csrf
+                            <input type="text" name="nombre" placeholder="Buscar producto"/>
+                            <button  type="submit" style="border:0px; height:33px; margin-left:-3px;">Buscar</button>
+                        </form>
                     </div>
                 </div>
             </div>

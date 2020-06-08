@@ -93,6 +93,7 @@ const detalleProducto= new Vue({
             console.log(g)
             const atributo1=''
             const atributo=''
+            this.disponibilidad=0
             for (let i = 0; i < g.length; i++) {
                 const d =g[i].atributo
                 
@@ -117,17 +118,24 @@ const detalleProducto= new Vue({
             console.log(this.atributo_id)
             
             const g=this.combinacion
-            for (let i = 0; i < g.length; i++) {
-                const d =g[i].atributo
-                for (let j = 0; j < d.length; j++) {
-                    if(this.atributo_id==d[j].id) {
-                        console.log(d[j].nombre)
-                        this.disponibilidad=g[i].cantidad
-                        this.combinacion_id=g[i].id
-                        
-                    } 
+            this.disponibilidad=0
+            if(this.atributo_id!=''){
 
+                for (let i = 0; i < g.length; i++) {
+                    const d =g[i].atributo
+                    for (let j = 0; j < d.length; j++) {
+                        if(this.atributo_id==d[j].id) {
+                            console.log(d[j].nombre)
+                            this.disponibilidad=g[i].cantidad
+                            this.combinacion_id=g[i].id
+                            
+                        } 
+    
+                    }
                 }
+            }else{
+                this.combinacion_id=''
+                this.disponibilidad=0
             }
         },
        cambiarImagen(){
@@ -143,13 +151,17 @@ const detalleProducto= new Vue({
     },
     mounted() {
         this.slug=data.datos.slug
-        this.disponibilidad=data.datos.cantidad
+        
         this.tipoProducto=data.datos.tipoProducto
 
         if(this.tipoProducto=='comun'){
+            this.disponibilidad=data.datos.cantidad
             if(this.disponibilidad==0){
                 this.disabledBoton=true
             }
+        }else{
+            this.disponibilidad=0
+            this.disabledBoton=true
         }
 
     }

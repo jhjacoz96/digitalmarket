@@ -18,7 +18,7 @@
                 <li><a href="#">Home</a></li>
             <li><a href="{{url('/pedidos')}}">Pedido</a></li>
             <li class="active">{{$pedido->id}}</li>
-
+            pedido->status!='esperaTransferencia'
             </ol>
         </div> 
     </div>
@@ -92,9 +92,15 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($item->pivot->referencia=='')
-                                          <button type="submit" class="btn btn-default">Actualizar</button>
+
+                                            @if($item->pivot->status=='espera')
+                                            <button type="submit" class="btn btn-default">Actualizar</button>
                                             @endif
+
+                                            @if($item->pivot->status=='Denegado')
+                                            <button type="submit" class="btn btn-default">Actualizar</button>
+                                            @endif
+
                                         </td>
                                     </tr>
                                 </form>
@@ -117,9 +123,15 @@
                             <dd class="col-sm-8">{{$pedido->created_at}}</dd>
                                 <dt class="col-sm-4">Estado</dt>
                                 <dd class="col-sm-8">
-                                    <div class="badge" style="background-color: slateblue;">
-                                        En espera por transferencia
-                                    </div>
+                                    
+                                    @if($pedido->status=='esperaTransferencia')
+                                    <span class="badge" style="background-color: blue;">Espera por transferencia</span>
+                                    @endif
+
+                                    @if($pedido->status=='pagoAcepado')
+                                    <span class="badge" style="background-color: green;">Pago aceptado</span>
+                                    @endif
+                                    
                                 </dd>
                                 
                             </dl>
@@ -241,7 +253,11 @@
                                             <tr class="shipping-cost">
                                                 <td>Costo de envío</td>
                                                 <td>
+                                                    @if(\Auth::user()->comprador->tipoComprador->envioGratis==0)
                                                     Bs{{$pedido->medioEnvio->precioEnvio}}
+                                                    @else
+                                                    Envio gratis
+                                                    @endif
                                                 </td>			
                                             </tr>
                                             @endif
@@ -249,8 +265,8 @@
                                             <tr class="shipping-cost">
                                                 <td>Cupón</td>
                                             <td>
-                                                @if(!empty($pedido->montoCupon))
-                                                    Bs{{$pedido->montoCupon}}
+                                                @if(!empty($pedido->codigoCupon))
+                                                    Bs{{$pedido->cantidadCupon}}
                                                 @else
                                                     Bs0
                                                 @endif

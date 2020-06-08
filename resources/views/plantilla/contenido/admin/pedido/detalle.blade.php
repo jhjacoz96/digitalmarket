@@ -54,18 +54,10 @@
                 <span class="info-box-icon bg-success"><i class="far fa-money-bill-alt"></i></span>
   
                 <div class="info-box-content">
-                  <span class="info-box-text">Total</span>
+                  <span class="info-box-text">Monto total</span>
                   <span class="info-box-number">
-                    <?php
-                      $total=0
-                    ?>
-                    @foreach ($pedido->producto as $item)
-                      @php
-                        $total=$total+($item->pivot->cantidadProducto*$item->pivot->precioProducto)
-                      @endphp
-                    @endforeach
-
-                    Bs {{$total}}
+                   
+                   Bs {{$pedido->montoTotal}}
                     
                   </span>
                 </div>
@@ -151,6 +143,13 @@
                 <!-- form start -->
 
                 <div class="card-body">
+                  @if($pedido->status!='esperaTransferencia')
+                    <div class="row">
+                      <div class="form-group">
+                        <p> <a href="{{url('/pedido-factura/'.$pedido->id)}}" class="btn btn-info">Generar factura <i class="fas fa-file-invoice"></i></a></p>
+                      </div>
+                    </div>
+                  @endif
                   <div class="row">
                     <div class="form-group">
 
@@ -265,10 +264,12 @@
                         @endif
                       </td>
                       <td>
-                        <div class="btn-group">
-                        <a href="{{url('/pedido/pago/'.$item->pivot->id.'/'.'aceptado')}}" class="btn btn-default btn-sm">  <span class="fas fa-check" aria-hidden ="true" ></span></a>
-                          <a href="{{url('/pedido/pago/'.$item->pivot->id.'/'.'denegado')}}" class="btn btn-default btn-sm">  <span class="fas fa-ban" aria-hidden ="true" ></span></a>
-                        </div>
+                        @if($item->pivot->status!='Aceptado')
+                          <div class="btn-group">
+                          <a href="{{url('/pedido/pago/'.$item->pivot->id.'/'.'aceptado')}}" class="btn btn-default btn-sm">  <span class="fas fa-check" aria-hidden ="true" ></span></a>
+                            <a href="{{url('/pedido/pago/'.$item->pivot->id.'/'.'denegado')}}" class="btn btn-default btn-sm">  <span class="fas fa-ban" aria-hidden ="true" ></span></a>
+                          </div>
+                        @endif
                       </td>
                   
                     </tr>

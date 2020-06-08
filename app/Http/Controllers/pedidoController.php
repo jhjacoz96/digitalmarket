@@ -6,11 +6,14 @@ use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use App\Pedido;
 use App\MetodoPago;
 use App\MetodoPagoPedido;
 use App\Tienda;
 use App\Producto;
+
 
 class pedidoController extends Controller
 {
@@ -56,6 +59,12 @@ class pedidoController extends Controller
 
     public function cambiarStatusPago($id,$status){
         $pago=MetodoPagoPedido::findOrFail($id);
+       
+        if(empty($pago->referencia)){
+            flash('Código de pago inválido')->warning()->important();
+            
+            return \redirect()->route('pedido.detalle',$pago->pedido_id);
+        }
         if($status=='aceptado'){
             $pago->status='Aceptado';
             $pago->save();
@@ -74,15 +83,48 @@ class pedidoController extends Controller
         
                 $pedido->status='pagoAceptado';
                 $pedido->save();
-            }  
+            } 
+
+            $metodoPago=MetodoPago::findOrFail($pago->metodoPago_id);
+
+            $comprador=$pedido->comprador;
+            $correo=$pedido->comprador->correo;
+            $datosMensaje=[
+                'metodoPago'=>$metodoPago,
+                'comprador'=>$comprador,
+                'pedido'=>$pedido,
+                'estado'=>$status
+            ];
             
-            flash('La referencia de este metodo de pago ha aceptada')->success()->important();
+            Mail::send('correos.estadoPago',$datosMensaje,function($mensaje) use($correo){
+                $mensaje->to($correo)->subject('Estado de pago - DigitalMarket');
+            });
+
+            
+            flash('El código de pago se ha  aceptada con exito')->success()->important();
             
             return \redirect()->route('pedido.detalle',$pago->pedido_id);
         }else{
+
+            $pedido=Pedido::with('metodoPago')->findOrFail($pago->pedido_id);
+            $metodoPago=MetodoPago::findOrFail($pago->metodoPago_id);
+
+            $comprador=$pedido->comprador;
+            $correo=$pedido->comprador->correo;
+            $datosMensaje=[
+                'metodoPago'=>$metodoPago,
+                'comprador'=>$comprador,
+                'pedido'=>$pedido,
+                'estado'=>$status
+            ];
+            
+            Mail::send('correos.estadoPago',$datosMensaje,function($mensaje) use($correo){
+                $mensaje->to($correo)->subject('Estado de pago - DigitalMarket');
+            });
+
             $pago->status='Denegado';
             $pago->save();
-            flash('La referencia del metodo de pago ha sido rechazada')->success()->important();
+            flash('El código de pago se ha rechazado')->success()->important();
 
             return \redirect()->route('pedido.detalle',$pago->pedido_id);
         }
@@ -103,12 +145,28 @@ class pedidoController extends Controller
     }
 
         $pedido=Pedido::findOrFail($id);
+        
         $pedido->status=$request->estado;
+
+
+
         $pedido->save();
         flash('El estado del pedido ha sido modificado con exito')->success()->important();
         return redirect('/pedido/detalle/'.$pedido->id);
     }
+
+    public function verFactura($id){
+        $pedido=Pedido::with('producto')->with('metodoPago')->where('id',$id)->first();
+        $comprador=$pedido->comprador;
+        return view('plantilla.contenido.admin.pedido.factura',compact('pedido','comprador'));
+    }
     
+    public function pdfFactura($id){
+        $pedido=Pedido::with('producto')->with('metodoPago')->where('id',$id)->first();
+        $comprador=$pedido->comprador;
+        $pdf = \PDF::loadView('pdf.factura',compact('pedido','comprador'));
+        return $pdf->stream('Fatura.pdf');
+   }
 
 
    

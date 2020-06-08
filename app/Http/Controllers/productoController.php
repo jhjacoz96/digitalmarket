@@ -739,13 +739,15 @@ class productoController extends Controller
 
     public function agregarCarrito(Request $request){
         
+        
+
         \Session::forget('montoCupon');
         \Session::forget('codigoCupon');
         
         $producto=Producto::where('id',$request->producto_id)->first();
         
         
-        if(empty(\Auth::user()->comprador->id)){
+        if(empty(\Auth::check())){
             $comprador_id='';
         }else{
             $comprador_id=\Auth::user()->comprador->id;
@@ -916,6 +918,10 @@ class productoController extends Controller
 
     public function checkout($montoTotal){
         
+        if(empty(\Auth::check())){
+            return redirect('/iniciar-sesion');
+        }
+
         $direcciones=Direccion::where('comprador_id',\Auth::user()->comprador->id)->get();
         
         $session_id=\Session::get('session_id');
@@ -1019,10 +1025,14 @@ class productoController extends Controller
             }
 
             \Session::put('pedido_id',$pedido->id);
-            \Session::put('montoTotal',$request->precioFijoBs);
-            
+            \Session::put('montoTotal',$request->precioFijoBs);  
 
-            $pedido=Pedido::with('producto')->with('metodoPago')->with('medioEnvio')->where('id',$pedido->id)->first();
+            $pedido=Pedido::with('producto')->with(['metodoPago'=>function($q){
+                $q->with('bancoMetodoPago');}])->with('medioEnvio')->where('id',$pedido->id)->first();
+              
+                
+
+
             $comprador=\Auth::user()->comprador;
             $correo=\Auth::user()->email;
             $datosMensaje=[
@@ -1039,6 +1049,9 @@ class productoController extends Controller
                 $mensaje->to($correo)->subject('Pedido realizado - DigitalMarket');
             });
 
+            \Session::forget('montoCupon');
+            \Session::forget('codigoCupon');
+
             return redirect('/gracias');
 
         }
@@ -1047,10 +1060,18 @@ class productoController extends Controller
     }
 
     public function gracias(Request $request){
+
         $comprador_id=\Auth::user()->comprador->id;
         \DB::table('carritos')->where('comprador_id',$comprador_id)->delete(); 
         return view('plantilla.tiendaContenido.gracias');
 
     }
+
+    public function buscarProducto(Request $request){
+        $producto=Producto::where('nombre','like','%'.$request->nombre.'%')->orwhere('sku',$request->nombre)->where('status','si')->with('imagen')->paginate(12);
+        $productoBuscado=$request->nombre;
+        
+        return view('plantilla.tiendaContenido.producto.listado',compact('producto','productoBuscado'));
+    }   
 
 }

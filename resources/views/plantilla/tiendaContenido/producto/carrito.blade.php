@@ -100,8 +100,8 @@
 <section id="do_action">
     <div class="container">
         <div class="heading">
-            <h3>What would you like to do next?</h3>
-            <p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
+            <h3>¿Posees un cupón de descuento?</h3>
+            <p>Aquí podrás indicar el código del cupón.</p>
         </div>
         <div class="row">
             <div class="col-sm-6">
@@ -132,10 +132,17 @@
                         <li>Descuento por cupón<span>Bs<?php echo \Session::get('montoCupon');?></span></li>
                         
                         <li>Descuento adicional<span>Bs<?php echo \Session::get('$montoDescuentoTipoComrador');?></span></li>
-                        Bill To
+                       
+                        <?php
+                       $moneda=Producto::obtenerMoneda($montoTotal- \Session::get('montoCupon')-\Session::get('$montoDescuentoTipoComrador'));
+                    ?>
+
                         <li>Monto total<span>Bs<?php echo $subMonto=$montoTotal- \Session::get('montoCupon')-\Session::get('$montoDescuentoTipoComrador'); ?></span></li>
 
                        @else
+
+                       
+
                         @if(\Auth::user()->comprador->tipoComprador->envioGratis===1)
                         <li>Medio de envio<span> Envio gratis</span></li>
                         @endif
@@ -143,13 +150,19 @@
                        <li>Sub total del carrito<span>Bs<?php echo $montoTotal; ?></span></li>
 
                        <li>Descuento adicional<span>Bs<?php echo \Session::get('$montoDescuentoTipoComrador');?></span></li>
+                       
+                       <?php
+                       $moneda=Producto::obtenerMoneda($montoTotal-\Session::get('$montoDescuentoTipoComrador')-\Session::get('montoCupon'));
+                    ?>
 
-                       <li>Monto total<span>Bs<?php echo $subMonto=$montoTotal-\Session::get('$montoDescuentoTipoComrador')-\Session::get('montoCupon'); ?></span></li>
+                    <li>Monto total<span class="btn btn-secondary"  data-toggle="tooltip" data-html="true" title="${{$moneda}}" >Bs<?php echo $subMonto=$montoTotal-\Session::get('$montoDescuentoTipoComrador')-\Session::get('montoCupon'); ?></span></li>
                         @endif
                         
+                        
                     </ul>
-                        <a class="btn btn-default update" href="">Update</a>
+                   
                 <a class="btn btn-default check_out" href="{{url('/checkout/'.$subMonto)}}">Check Out</a>
+                
                 </div>
             </div>
         </div>

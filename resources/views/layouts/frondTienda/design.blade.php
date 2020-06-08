@@ -45,7 +45,7 @@
 
     
     <script src="{{asset('shop/js/jquery.js')}}"></script>
-
+    <script src="{{asset('shop/js/bootstrap.min.js')}}"></script>
 	<script src="{{asset('shop/js/jquery.scrollUp.min.js')}}"></script>
 	<script src="{{asset('shop/js/price-range.js')}}"></script>
     <script src="{{asset('shop/js/jquery.prettyPhoto.js')}}"></script>
@@ -53,6 +53,12 @@
     <script src="{{asset('shop/easy-zoom/js/easyzoom.js')}}"></script>
   
     <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script>
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    })
+    </script>
     @yield('script')
     <script src="{{ asset('js/app.js') }}" defer></script>
     

@@ -79,7 +79,14 @@
                         {!!$errors->first('codigo','<small>:message</small><br>')!!}
     
                       </div>
-
+                      <div class="form-group col-md-6">
+                        <label for="">Tipos de compradores asignados</label>
+                        <select name="" multiple id="" class="form-control" disabled="disabled">
+                          @foreach ($cupon->tipoComprador as $item)    
+                        <option value="">{{$item->nombre}}</option>
+                          @endforeach
+                        </select>
+                      </div>
 
 
                       <div class="form-group col-md-6">

@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use \App\Cupon;
+use \App\TipoComprador;
+use \App\Comprador;
+use \App\Pedido;
 
 class cuponController extends Controller
 {
@@ -19,7 +24,8 @@ class cuponController extends Controller
         $codigo=$request->get('codigoCupon');
               
        
-        $cupon=Cupon::where('codigoCupon','like',"%$codigo%")->get();
+        $cupon=Cupon::where('codigoCupon','like',"%$codigo%")->with('tipoComprador')->get();
+       
         return view('plantilla.contenido.admin.cupon.consultar',compact('cupon'));
     }
 
@@ -30,7 +36,8 @@ class cuponController extends Controller
      */
     public function create()
     {
-        return view('plantilla.contenido.admin.cupon.crear');
+        $tipoComprador=TipoComprador::where('estatus',1)->get();
+        return view('plantilla.contenido.admin.cupon.crear',compact('tipoComprador'));
     }
 
     /**
@@ -41,11 +48,13 @@ class cuponController extends Controller
      */
     public function store(Request $request)
     {
+        
         $v=Validator::make($request->all(),[
             'codigo'=>'required|unique:cupons,codigoCupon',
             'cantidad'=>'required',
             'tipoCupon'=>'required',
-            'fechaExpiracion'=>'required'
+            'fechaExpiracion'=>'required',
+            'tipo'=>'required'
             
         ]);
 
@@ -53,7 +62,7 @@ class cuponController extends Controller
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
     
-
+        
         $cupon=new Cupon();
         $cupon->codigoCupon=$request['codigo'];
         $cupon->cantidad=$request['cantidad'];
@@ -67,10 +76,31 @@ class cuponController extends Controller
           
         $cupon->save();
 
-       
+        $tipo=$request->tipo;
+        for($i=0; $i <count($tipo) ; $i++){
+
+            $comprador=Comprador::where('tipoComprador_id',$tipo)->get();
+            for ($j=0; $j < count($comprador) ; $j++) { 
+                
+                $correo=$comprador[$j]['correo'];
+                $datosMensaje=[
+                    'correo'=>$comprador[$j]['correo'],
+                    'nombre'=>$comprador[$j]['nombre'],
+                    'cupon'=>$cupon
+                ];
+     
+                Mail::send('correos.cuponDescuento',$datosMensaje,function($mensaje) use($correo){
+                    $mensaje->to($correo)->subject('Cupón de escuento - DigitalMarket');
+                });
+            }
+
+            $cupon->tipoComprador()->attach($tipo[$i]);
+        }
+
+
 
         flash('Cupón agregado con exito')->success()->important();
-        return $cupon;
+       
          return redirect()->route('cupon.index');
 
     }
@@ -94,7 +124,7 @@ class cuponController extends Controller
      */
     public function edit($id)
     {
-        $cupon=Cupon::findOrFail($id);
+        $cupon=Cupon::with('tipoComprador')->findOrFail($id);
         return view('plantilla.contenido.admin.cupon.modificar',compact('cupon'));
     }
 
@@ -170,47 +200,104 @@ class cuponController extends Controller
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
 
-        $cupon=Cupon::where('codigoCupon',$request->codigoCupon)->first();
+        $cupon=Cupon::where('codigoCupon',$request->codigoCupon)->with('tipoComprador')->first();
         
-            if($cupon->estatus=='I'){
-                \flash('El cupón no está disponible')->important()->warning();
-                return redirect()->route('carrito'); 
-            }
-
-            $fechaActual=date('Y-m-d');
-            $fechaExpiracion=$cupon->fechaExpiracion;
-            if($fechaExpiracion< $fechaActual){
-                \flash('Este cupón ya ha expirado')->important()->warning();
-                return redirect()->route('carrito'); 
-            }    
-            
-            $session_id=\Session::get('session_id');
-          
-
-            if(\Auth::check()){
-                $comprador_id=\Auth::user()->comprador->id;
-                $carrito=\DB::table('carritos')->where(['comprador_id'=>$comprador_id])->get();
-            }else{
-                $session_id=\Session::get('session_id');
-                $carrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get();
-            }
-
-            $totalCantidad=0;
-            foreach($carrito as $item){
-                $totalCantidad=$totalCantidad+($item->precio*$item->cantidad);
-            }
-
-        if($cupon->tipoCupon=='MontoFijo'){
-            $montoCupon=$cupon->cantidad;
-        }else{
-            $montoCupon=$totalCantidad*($cupon->cantidad/100);
-            
+        if($cupon->estatus=='I'){
+            \flash('El cupón no está disponible')->important()->warning();
+            return redirect()->route('carrito'); 
         }
+
+        $fechaActual=date('Y-m-d');
+        $fechaExpiracion=$cupon->fechaExpiracion;
+        if($fechaExpiracion< $fechaActual){
+            \flash('Este cupón ya ha expirado')->important()->warning();
+            return redirect()->route('carrito'); 
+        }    
         
-        \Session::put('montoCupon',$montoCupon);
-        \Session::put('codigoCupon',$request->codigoCupon);
+        $session_id=\Session::get('session_id');
+
+        if(\Auth::check()){
+            $comprador_id=\Auth::user()->comprador->id;
+            $tipoComprador=\Auth::user()->comprador->tipoComprador;
+            $carrito=\DB::table('carritos')->where(['comprador_id'=>$comprador_id])->get();
+        }else{
+            $session_id=\Session::get('session_id');
+            $carrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get();
+        }
+
+
+        $totalCantidad=0;
+        foreach($carrito as $item){
+            $totalCantidad=$totalCantidad+($item->precio*$item->cantidad);
+        }
+
+     
+        $comprador=\Auth::user()->comprador;
+        $tc=$cupon->tipoComprador;
         
-        flash('!Cupón cangeado con exito¡')->success()->important();
+        
+    
+        for ($i=0; $i <count($tc) ; $i++) {
+
+            if($tc[$i]['id']==$comprador->tipoComprador->id){
+
+                if($cupon->tipoCupon=='Porcentaje'){
+
+                    $pedido=Pedido::where('comprador_id', $comprador->id)->where('codigoCupon',$cupon->codigoCupon)->count();
+    
+                    if($pedido<=0){
+                        
+                        $montoCupon=$totalCantidad*($cupon->cantidad/100);
+                        
+                        \Session::put('montoCupon',$montoCupon);
+                        \Session::put('codigoCupon',$request->codigoCupon);
+                        
+                        flash('!Cupón cangeado con exito¡')->success()->important();
+                        return redirect()->route('carrito');
+    
+                    }else{
+    
+                        flash('Usted ya ha cangeado este cupón')->warning()->important();
+                        return redirect()->route('carrito');
+                        
+                    }
+
+                }else{
+
+                    $montoCupon=$cupon->cantidad;
+                    $cantidadd=Pedido::where('comprador_id', $comprador->id)->where('codigoCupon',$cupon->codigoCupon)->count();
+
+                    if($cantidadd>0){
+                        flash('Usted ya ha usado este código.')->warning()->important();
+                        return redirect()->route('carrito');
+                    }
+
+                    if($totalCantidad>=$montoCupon){
+                        
+                        \Session::put('montoCupon',$montoCupon);
+                        \Session::put('codigoCupon',$request->codigoCupon);
+                        
+                        flash('!Cupón cangeado con exito¡')->success()->important();
+                        return redirect()->route('carrito');
+
+                    }else{
+
+                        flash('Este cupón no es acumulativo. Debe usarlo en un carrito donde el monto total sea mayor o igual a al monto del cupón.')->warning()->important();
+                        return redirect()->route('carrito');
+
+                    }
+
+                }
+
+            }
+        }
+
+        flash('Lo sentimos este cupón no esta disponible')->warning()->important();
         return redirect()->route('carrito');
+       
+            
+            
+        
+
     }
 }

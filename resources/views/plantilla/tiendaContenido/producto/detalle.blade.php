@@ -1,6 +1,8 @@
 @extends('layouts.frondTienda.design')
 @section('script')
-
+@php
+    use App\Producto;
+@endphp
     <script>
         window.data={
             datos:{
@@ -94,7 +96,8 @@
 
                         <div class="product-information">
                          
-                         
+                            <div align="left"><?php echo $miga; ?></div>
+                            <div>&nbsp;</div>
                         <h2>{{$producto->nombre}}</h2>
                             <p>Sku: {{$producto->sku}}</p>
                         
@@ -131,9 +134,11 @@
                             <img src="{{asset('shop/images/product-details/rating.png')}}" alt="" />
                             <span>
                                 <span>Bs {{$producto->precioActual}}</span>
-                               
+                                @php
+                                 $moneda=Producto::obtenerMoneda($producto->precioActual);   
+                                @endphp
                              
-                              
+                                <h2>$ {{$moneda}}</h2>
                                 <label>Cantidad:</label>
                                 <input type="text" v-model="cantidad"   />
                                 @{{validarCantidad}}
@@ -170,7 +175,7 @@
                         </ul>
                     </div>
                     <div class="tab-content">
-                        <div class="tab-pane fade active" id="descripcionLarga" >
+                        <div class="tab-pane active" id="descripcionLarga" >
                            <div class="col-sm-12">
                                <p>{!!$producto->descripcionLarga!!}</p>
                            </div>
@@ -221,7 +226,7 @@
                                                  
                                                         <h2>{{$item->precioActual}}</h2>
                                                         <p>{{$item->nombre}}</p>
-                                                        <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                                        <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Ver detalles</button>
                                                     </div>
                                                 </div>
                                             </div>

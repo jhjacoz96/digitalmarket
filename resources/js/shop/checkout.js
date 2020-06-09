@@ -40,10 +40,19 @@ const checkout= new Vue({
         precioFijoBs:'',
         precioFijoDolar:'',
         metodoPagos:[],
-        metodoEnvios:''
+        metodoEnvios:'',
+        dolar:''
 
     },
     created() {
+
+        axios.get('/moneda/'+data.datos.totalBs).then(res=>{
+
+            this.moneda=res.data
+
+        }).catch(e=>{
+             console.log(e.reponse)
+        })
 
         axios.get('/getEstado').then(res=>{
          this.estados=res.data
@@ -53,7 +62,7 @@ const checkout= new Vue({
         })
 
         axios.get('/obtenerMetodoPagoNacional').then(res=>{
-            console.log(res.data)
+            
             this.metodoPagoNacional=res.data
            
             
@@ -290,6 +299,7 @@ const checkout= new Vue({
         this.totallDolar=this.totalBs/this.dolarToday
 
         this.precioFijoBs=this.totalBs
+        this.dolar=
         this.precioFijoDolar=this.totalDolar
         
             

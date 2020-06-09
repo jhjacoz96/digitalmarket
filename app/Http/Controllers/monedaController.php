@@ -58,9 +58,15 @@ class monedaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($precio)
     {
-        //
+        $moneda=Divisa::where('status','A')->get();
+        foreach ($moneda as  $value) {
+            if($value->codigo=='USD'){
+                $usd=round($precio/$value->cambio,2);
+            }
+        }
+        return $usd;
     }
 
     /**

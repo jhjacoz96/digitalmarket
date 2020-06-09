@@ -27,6 +27,11 @@ class Producto extends Model
     ];
 
 
+
+    public function marca()
+    {
+        return $this->belongsTo('App\Marca','marca_id');
+    }
     public function subCategoria()
     {
         return $this->belongsTo('App\SubCategoria','subCategoria_id');
@@ -74,6 +79,8 @@ class Producto extends Model
         return $usd;
     }
 
- 
+    public function obtenerProductoStatus($id){
+        
+    }
 
 }

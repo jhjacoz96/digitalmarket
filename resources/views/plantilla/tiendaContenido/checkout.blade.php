@@ -372,6 +372,8 @@
 									</tr>
 									<tr>
 										<td>Monto Total</td>
+								
+										
 									<td><span>Bs@{{precioFijoBs}}</span></td>
 									</tr>
 								</table>

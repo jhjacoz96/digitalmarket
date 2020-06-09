@@ -19,6 +19,7 @@ class Tienda extends Model
             'planAfilizacion_id'
     ];
 
+    
     public function user()
     {
         return $this->hasOne('App\User','user_id');

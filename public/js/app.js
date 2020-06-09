@@ -52055,18 +52055,23 @@ var checkout = new Vue({
     precioFijoBs: '',
     precioFijoDolar: '',
     metodoPagos: [],
-    metodoEnvios: ''
+    metodoEnvios: '',
+    dolar: ''
   },
   created: function created() {
     var _this = this;
 
+    axios.get('/moneda/' + data.datos.totalBs).then(function (res) {
+      _this.moneda = res.data;
+    })["catch"](function (e) {
+      console.log(e.reponse);
+    });
     axios.get('/getEstado').then(function (res) {
       _this.estados = res.data;
     })["catch"](function (e) {
       console.log(e.reponse);
     });
     axios.get('/obtenerMetodoPagoNacional').then(function (res) {
-      console.log(res.data);
       _this.metodoPagoNacional = res.data;
       var a = _this.metodoPagoNacional;
       var o = _this.arrayNacional;
@@ -52263,7 +52268,7 @@ var checkout = new Vue({
     this.totallBs = data.datos.totalBs;
     this.totallDolar = this.totalBs / this.dolarToday;
     this.precioFijoBs = this.totalBs;
-    this.precioFijoDolar = this.totalDolar;
+    this.dolar = this.precioFijoDolar = this.totalDolar;
     document.getElementById('municipio_id').disabled = true;
     document.getElementById('parroquia_id').disabled = true;
     document.getElementById('zona_id').disabled = true;

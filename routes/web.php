@@ -212,6 +212,7 @@ route::resource('banner','bannerController');
 
 route::resource('moneda','monedaController');
 
+route::resource('marca','marcaConroller');
 
 route::get('pedido/{tipo}','pedidoController@pedidoAdmin')->name('pedido.consultar');
 route::get('pedido/detalle/{id}','pedidoController@detallePedidoAdmin')->name('pedido.detalle');

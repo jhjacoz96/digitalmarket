@@ -697,10 +697,10 @@ class productoController extends Controller
         $categoria=Categoria::where('estatus','A')->get();
 
         $producto=Producto::where('status','si')->where('slug',$slug)->first();
-       
+        
         $relacionProducto=Producto::where('slug','!=',$slug)->where('subCategoria_id',$producto->subCategoria_id)->get();
         
-    
+        $miga="<a style='color:#333;' href='/'>Home</a> / <a style='color:#333;'href='/mainCategorias/".$producto->subCategoria->categoria->slug."'>".$producto->subCategoria->categoria->nombre."</a> / <a style='color:#333;'href='/categorias/".$producto->subCategoria->slug."'>".$producto->subCategoria->nombre."</a>";
 
         /*$combinacion=Combinacion::where('producto_id',$producto->id)->with('atributo')->get();
     
@@ -732,14 +732,14 @@ class productoController extends Controller
         
         
 
-        return view('plantilla.tiendaContenido.producto.detalle',compact('producto','categoria','relacionProducto'));
+        return view('plantilla.tiendaContenido.producto.detalle',compact('producto','categoria','relacionProducto','miga'));
     }
 
     //FIN DE DETALLES DE PRODUCTOS
 
     public function agregarCarrito(Request $request){
         
-        
+
 
         \Session::forget('montoCupon');
         \Session::forget('codigoCupon');
@@ -927,6 +927,50 @@ class productoController extends Controller
         $session_id=\Session::get('session_id');
         $userCarrito=\DB::table('carritos')->where(['comprador_id'=>\Auth::user()->comprador->id])->get(); 
        
+        foreach($userCarrito as $carrito){
+            $producto=Producto::where('id',$carrito->producto_id)->first();
+
+            $carritoDelete=Carrito::where(['comprador_id'=>\Auth::user()->comprador->id,'producto_id'=>$carrito->producto_id])->first();
+
+            if($producto->tipoCliente=='comun'){
+
+               
+                if($carrito->cantidad>$producto->cantidad){
+                    $carritoDelete->delete();
+                    flash('El producto que desea comprar ya no posee la cantidad que usted require')->warning()->important();
+                return redirect()->route('carrito');
+                }
+            }else{
+
+               
+
+                $countCombinacion=Combinacion::where('id',$carrito->combinacion_id)->count();
+
+                if($countCombinacion<=0){
+                    $carritoDelete->delete();
+                    flash('Este producto ya no se encuentra disponible')->warning()->important();
+                    return redirect()->route('carrito');
+                }
+
+                $combinacion=Combinacion::where('id',$carrito->combinacion_id)->first();
+                if($carrito->cantidad>$combinacion->cantidad){
+                    $carritoDelete->delete();
+                    flash('El producto que desea comprar ya no posee la cantidad que usted require')->warning()->important();
+                return redirect()->route('carrito');
+                }
+
+            }
+
+            
+            if($producto->status=='no'){
+              
+               $carritoDelete->delete();
+               flash('El producto que desea comprar ya no se encuentra activo')->warning()->important();
+                return redirect()->route('carrito');
+            }
+
+        }
+
         $metodoPago=MetodoPago::All();
 
         $totalBs=$montoTotal;
@@ -1022,6 +1066,26 @@ class productoController extends Controller
                 $pedido->producto()->attach($carritoProducto[$i]->producto_id,['combinacion_id'=>$carritoProducto[$i]->combinacion_id,'cantidadProducto'=>$carritoProducto[$i]->cantidad,
                 'status'=>'esperaPago',
                 'precioProducto'=>$carritoProducto[$i]->precio]);
+
+                //disminuir stock del producto
+                $obtenerStockProducto=Producto::where('id',$carritoProducto[$i]->producto_id)->first();
+                if($obtenerStockProducto->tipoCliente=='comun'){
+
+                    $nuevoStock=$obtenerStockProducto->cantidad-$carritoProducto[$i]->cantidad;
+                    Producto::where('id',$carritoProducto[$i]->producto_id)->update(['cantidad'=>$nuevoStock]);
+                }else{
+                    $obtenerCombinacion=Combinacion::where('id',$carritoProducto[$i]->combinacion_id)->first();
+
+                    $nuevoStockCom=$obtenerCombinacion->cantidad-$carritoProducto[$i]->cantidad;
+
+                    $nuevoStock=$obtenerStockProducto->cantidad-$carritoProducto[$i]->cantidad;
+                    
+                    Producto::where('id',$carritoProducto[$i]->producto_id)->update(['cantidad'=>$nuevoStock]);
+
+                    Combinacion::where('id',$carritoProducto[$i]->combinacion_id)->update(['cantidad'=>$nuevoStockCom]);
+
+                }
+
             }
 
             \Session::put('pedido_id',$pedido->id);
@@ -1068,10 +1132,19 @@ class productoController extends Controller
     }
 
     public function buscarProducto(Request $request){
-        $producto=Producto::where('nombre','like','%'.$request->nombre.'%')->orwhere('sku',$request->nombre)->where('status','si')->with('imagen')->paginate(12);
-        $productoBuscado=$request->nombre;
+
+        /*$producto=Producto::where('nombre','like','%'.$request->nombre.'%')->orwhere('sku',$request->nombre)->where('status','si')->with('imagen')->paginate(12);
+        $productoBuscado=$request->nombre;*/
+        $busqueda=$request->nombre;
+        $producto=Producto::where(function($query) use($busqueda){
+            $query->where('nombre','like','%'.$busqueda.'%')
+            ->orWhere('descripcionLarga','like','%'.$busqueda.'%')
+            ->orWhere('especificaciones','like','%'.$busqueda.'%')
+            ->where('status','si')->get();
+        });
         
         return view('plantilla.tiendaContenido.producto.listado',compact('producto','productoBuscado'));
     }   
 
+    
 }

@@ -14,17 +14,17 @@
         <div class="breadcrumbs">
             <ol class="breadcrumb">
               <li><a href="#">Home</a></li>
-              <li class="active">Shopping Cart</li>
+              <li class="active">Carrito</li>
             </ol>
         </div>
         <div class="table-responsive cart_info">
             <table class="table table-condensed">
                 <thead>
                     <tr class="cart_menu">
-                        <td class="image">Item</td>
+                        <td class="image">Producto</td>
                         <td class="description"></td>
-                        <td class="price">Price</td>
-                        <td class="quantity">Quantity</td>
+                        <td class="price">Precio</td>
+                        <td class="quantity">Cantidad</td>
                         <td class="total">Total</td>
                         <td></td>
                     </tr>
@@ -134,7 +134,7 @@
                         <li>Descuento adicional<span>Bs<?php echo \Session::get('$montoDescuentoTipoComrador');?></span></li>
                        
                         <?php
-                       $moneda=Producto::obtenerMoneda($montoTotal- \Session::get('montoCupon')-\Session::get('$montoDescuentoTipoComrador'));
+                       $moneda=Producto::obtenerMoneda($montoTotal-\Session::get('montoCupon')-\Session::get('$montoDescuentoTipoComrador'));
                     ?>
 
                         <li>Monto total<span>Bs<?php echo $subMonto=$montoTotal- \Session::get('montoCupon')-\Session::get('$montoDescuentoTipoComrador'); ?></span></li>
@@ -152,7 +152,7 @@
                        <li>Descuento adicional<span>Bs<?php echo \Session::get('$montoDescuentoTipoComrador');?></span></li>
                        
                        <?php
-                       $moneda=Producto::obtenerMoneda($montoTotal-\Session::get('$montoDescuentoTipoComrador')-\Session::get('montoCupon'));
+                       $moneda=Producto::obtenerMoneda($montoTotal-\Session::get('$montoDescuentoTipoComrador'));
                     ?>
 
                     <li>Monto total<span class="btn btn-secondary"  data-toggle="tooltip" data-html="true" title="${{$moneda}}" >Bs<?php echo $subMonto=$montoTotal-\Session::get('$montoDescuentoTipoComrador')-\Session::get('montoCupon'); ?></span></li>

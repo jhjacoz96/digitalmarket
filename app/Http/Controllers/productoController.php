@@ -950,6 +950,7 @@ class productoController extends Controller
 
         \DB::table('carritos')->where('id',$id)->delete();
 
+        flash('Se ha eliminado el producto del carrito')->success()->important();
         return redirect()->route('carrito');
     }
 

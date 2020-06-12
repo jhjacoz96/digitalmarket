@@ -208,7 +208,7 @@
                           @if($pedido->status=='preparandoPedido')
                           selected
                           @endif
-                          value="enviadoComprador">Preparando pedido</option>
+                          value="preparandoPedido">Preparando pedido</option>
                           <option
                           @if($pedido->status=='cancelado')
                           selected
@@ -386,63 +386,6 @@
           </div>
 
 
-
-          <div class="card card-secondary ">
-            <div class="card-header">
-              <span class="fas fa-map-marked-alt float-left"></span>
-              <h3 class="card-title ml-1">Dirección de envío</h3>
-
-            </div>
-            <!-- /.card-header -->
-            <!-- form start -->
-
-            <div class="card-body">
-
-              <div class="row">
-
-                <div class="col-md-6">
-
-                  <dl class="row">
-                    <dt class="col-sm-8">Nombre</dt>
-                    <dd class="col-sm-4">{{$pedido->direccionPedido->nombre}}</dd>
-                    <dt class="col-sm-8">Apellido</dt>
-                    <dd class="col-sm-4">{{$pedido->direccionPedido->apellido}}</dd>
-                    <dt class="col-sm-8">Primer telefono</dt>
-                    <dd class="col-sm-4">{{$pedido->direccionPedido->primerTelefono}}</dd>
-                    <dt class="col-sm-8">Segundo telefono</dt>
-                    <dd class="col-sm-4">{{$pedido->direccionPedido->segundoTelefono}}</dd>
-                    <dt class="col-sm-8">Observación</dt>
-                    <dd class="col-sm-4">{{$pedido->direccionPedido->observacion}}</dd>
-                    <dt class="col-sm-8">Dirección exacta</dt>
-                    <dd class="col-sm-4">{{$pedido->direccionPedido->direccionExacta}}</dd>
-
-                  </dl>
-
-
-                </div>
-
-                <div class="col-md-6">
-                  <dl class="row">
-
-                    <dt class="col-sm-8">Estado</dt>
-                    <dd class="col-sm-4">{{$pedido->direccionPedido->estado}}</dd>
-                    <dt class="col-sm-8">Municipio</dt>
-                    <dd class="col-sm-4">{{$pedido->direccionPedido->municipio}}</dd>
-                    <dt class="col-sm-8">Parroquia</dt>
-                    <dd class="col-sm-4">{{$pedido->direccionPedido->parroquia}}</dd>
-                    <dt class="col-sm-8">Zona</dt>
-                    <dd class="col-sm-4">{{$pedido->direccionPedido->zona}}</dd>
-                    <dt class="col-sm-8">Punto de referencia</dt>
-                    <dd class="col-sm-4">{{$pedido->direccionPedido->puntoReferencia }}</dd>
-                  </dl>
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
-
           <div class="card card-secondary">
             <div class="card-header">
               <span class="fas fa-box-open float-left"></span>
@@ -507,6 +450,65 @@
 
           </div>
 
+
+
+          <div class="card card-secondary ">
+            <div class="card-header">
+              <span class="fas fa-map-marked-alt float-left"></span>
+              <h3 class="card-title ml-1">Dirección de envío</h3>
+
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+
+            <div class="card-body">
+
+              <div class="row">
+
+                <div class="col-md-6">
+
+                  <dl class="row">
+                    <dt class="col-sm-8">Nombre</dt>
+                    <dd class="col-sm-4">{{$pedido->direccionPedido->nombre}}</dd>
+                    <dt class="col-sm-8">Apellido</dt>
+                    <dd class="col-sm-4">{{$pedido->direccionPedido->apellido}}</dd>
+                    <dt class="col-sm-8">Primer telefono</dt>
+                    <dd class="col-sm-4">{{$pedido->direccionPedido->primerTelefono}}</dd>
+                    <dt class="col-sm-8">Segundo telefono</dt>
+                    <dd class="col-sm-4">{{$pedido->direccionPedido->segundoTelefono}}</dd>
+                    <dt class="col-sm-8">Observación</dt>
+                    <dd class="col-sm-4">{{$pedido->direccionPedido->observacion}}</dd>
+                    <dt class="col-sm-8">Dirección exacta</dt>
+                    <dd class="col-sm-4">{{$pedido->direccionPedido->direccionExacta}}</dd>
+
+                  </dl>
+
+
+                </div>
+
+                <div class="col-md-6">
+                  <dl class="row">
+
+                    <dt class="col-sm-8">Estado</dt>
+                    <dd class="col-sm-4">{{$pedido->direccionPedido->estado}}</dd>
+                    <dt class="col-sm-8">Municipio</dt>
+                    <dd class="col-sm-4">{{$pedido->direccionPedido->municipio}}</dd>
+                    <dt class="col-sm-8">Parroquia</dt>
+                    <dd class="col-sm-4">{{$pedido->direccionPedido->parroquia}}</dd>
+                    <dt class="col-sm-8">Zona</dt>
+                    <dd class="col-sm-4">{{$pedido->direccionPedido->zona}}</dd>
+                    <dt class="col-sm-8">Punto de referencia</dt>
+                    <dd class="col-sm-4">{{$pedido->direccionPedido->puntoReferencia }}</dd>
+                  </dl>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+
+          
 
 
 

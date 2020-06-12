@@ -14,6 +14,7 @@ use App\MetodoPagoPedido;
 use App\Tienda;
 use App\Producto;
 use App\ProductoPedido;
+use App\Notifications\pedidoNotification;
 
 
 class pedidoController extends Controller
@@ -21,12 +22,12 @@ class pedidoController extends Controller
     public function pedido(){
     
 
-            $pedido=Pedido::whereHas('producto',function($q){
-                $q->where('tienda_id',\Auth::user()->tienda->id);
-            })->with(['producto'=>function($q){
-                $q->where('tienda_id',\Auth::user()->tienda->id);}])->where('status','!=','esperaTransferencia')->get();
-    
-            return view('plantilla.contenido.tienda.pedido.pedido',compact('pedido'));
+        $pedido=Pedido::whereHas('producto',function($q){
+            $q->where('tienda_id',\Auth::user()->tienda->id);
+        })->with(['producto'=>function($q){
+            $q->where('tienda_id',\Auth::user()->tienda->id);}])->where('status','!=','esperaTransferencia')->get();
+
+        return view('plantilla.contenido.tienda.pedido.pedido',compact('pedido'));
 
 
     }
@@ -54,7 +55,6 @@ class pedidoController extends Controller
 
     public function detallePedidoAdmin($id){
         $pedido=Pedido::with('producto')->with('metodoPago')->findOrFail($id);
-
         return view('plantilla.contenido.admin.pedido.detalle',compact('pedido'));
     }
 
@@ -159,13 +159,40 @@ class pedidoController extends Controller
         return redirect()->back();
     }
 
+    
+    
         $pedido=Pedido::findOrFail($id);
         
+        if($request->referencia){
+            $pedio->codigoSeguimiento=$request->refrencia;
+        }
+
         $pedido->status=$request->estado;
-
-
-
         $pedido->save();
+
+
+        $correo=$pedido->comprador->correo;
+
+
+
+        
+        $datosMensaje=[
+            'correo'=>$correo,
+            'nombre'=>$pedido->comprador->nombre,
+            'pedido'=>$pedido
+        ];
+
+        /*Mail::send('correos.cambioEstado',$datosMensaje,function($mensaje) use($correo){
+            $mensaje->to($correo)->subject('Estado de pedido - DigitalMarket');
+        });*/
+
+        
+        if($pedido->status=='enviadoComprador'){
+            
+            $pedido->comprador->notify(new pedidoNotification($pedido));
+
+        }
+
         flash('El estado del pedido ha sido modificado con exito')->success()->important();
         return redirect('/pedido/detalle/'.$pedido->id);
     }

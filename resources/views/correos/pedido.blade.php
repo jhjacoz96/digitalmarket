@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="{{asset('/adminlte/plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
@@ -22,13 +22,13 @@
         <tr><td>&nbsp;</td></tr>
         <tr><td>Gracias por su compra con nosotros</td></tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>El pago de su pedido debe hacerlos atravez de los siguientes:metodos de pago:</td></tr>
+        <tr><td>El pago de su pedido debe hacerlos a través de los siguientes métodos de pago:</td></tr>
         <tr><td>&nbsp;</td></tr>
         <tr><td>
             <div class="row">
             @foreach ($detalleProducto['metodoPago'] as $pago)
 
-                <div class="col-sm-4">
+                <div class="col-sm-4 mt-2">
                     <address>
                         <strong>{{$pago->nombre}}</strong><br>
                         Tipo de pago: {{$pago->tipoPago}}<br>
@@ -39,6 +39,25 @@
                         @empty(!$pago->correo)    
                         Correo: {{$pago->correo}}<br>
                         @endempty
+
+                       @if(!empty($pago->bancoMetodoPago))
+                        Cuenta bancaria:<br>
+                        @empty(!$pago->bancoMetodoPago->nombreBanco)
+                            Nombre del banco: {{$pago->bancoMetodoPago->nombreBanco}}<br>
+                        @endempty
+                        @empty(!$pago->bancoMetodoPago->titular)      
+                            Titular de la cuenta: {{$pago->bancoMetodoPago->titular}}<br>
+                        @endempty
+                        @empty(!$pago->bancoMetodoPago->detalleCuenta)    
+                            Número de cuenta: {{$pago->bancoMetodoPago->detalleCuenta}}<br>
+                        @endempty
+                        @empty(!$pago->bancoMetodoPago->documentoIdentidad)    
+                            Documento de identidad: {{$pago->bancoMetodoPago->tipoDocumento}}{{$pago->bancoMetodoPago->documentoIdentidad}}<br>
+                        @endempty
+                        @empty(!$pago->bancoMetodoPago->tipoCuenta)  
+                            Tipo de cuenta: {{$pago->bancoMetodoPago->tipoCuenta}}<br>
+                        @endempty
+                       @endif
                         
                     </address>
                 </div>

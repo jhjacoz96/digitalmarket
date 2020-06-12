@@ -36,7 +36,7 @@
                     @foreach ($userCarrito as $item)
                         
                     @php
-                        $producto=Producto::where('id',$item->producto_id)->first();
+                        $producto=Producto::where('id',$item->producto_id)->with('combinacion')->first();
                         if($producto->tipoCliente=='combinacion'){
                             $combinacion=Combinacion::where('id',$item->combinacion_id)->first();
                         }
@@ -44,6 +44,7 @@
 
                         <tr>
                             <td class="cart_product">
+                               
                             <a href="">
                                 @if($producto->imagen->count()<=0)
                                 <img style="width: 100px;"  src="/imagenes/avatar.png" >
@@ -135,7 +136,7 @@
                        
                         <?php
                        $moneda=Producto::obtenerMoneda($montoTotal-\Session::get('montoCupon')-\Session::get('$montoDescuentoTipoComrador'));
-                    ?>
+                        ?>
 
                         <li>Monto total<span>Bs<?php echo $subMonto=$montoTotal- \Session::get('montoCupon')-\Session::get('$montoDescuentoTipoComrador'); ?></span></li>
 

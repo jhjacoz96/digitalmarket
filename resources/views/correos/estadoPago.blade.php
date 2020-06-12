@@ -21,8 +21,9 @@
 <p>Estamos a la espera de la confirmación del resto de sus pagos, para asi proceder a realizarle el envio de su pedido.</p>
 &nbsp;
 @else
-<p>Se le informa que todos los pagos de su pedido se han realizado con exito. Su pedido ahora se encuenta en estado "Pago aceptado". Cuando su pedido sea enviado se le notificará mediante un correo y el estado de su pedido cambiará a "Pedido envio".</p>
+<p>Se le informa que todos los pagos de su pedido se han realizado con exito. Su pedido ahora se encuenta en estado "Pago aceptado". Una vez los productos de su pedido se encuenten en nuestro almacen, el pedido pasará a preparación para el envio.</p>
+&nbsp;
+<p>Su factura ya se encuentra disponible en los detalles de su pedido.</p>
 @endif
-
 </body>
 </html>

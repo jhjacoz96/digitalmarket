@@ -59,6 +59,12 @@
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a href="{{route('pedido.consultar','recibido')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Recibido</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
                     <a href="{{route('pedido.consultar','cancelado')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Cancelado</p>

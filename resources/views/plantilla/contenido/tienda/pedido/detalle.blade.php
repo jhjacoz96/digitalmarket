@@ -232,14 +232,14 @@ use App\GrupoAtributo;
                     <tr>
                       <td class="mailbox-star">{{$item->id}}</td>
                       <td class="mailbox-star">
-                        {{$item->nombre}}<br>
+                      <span>{{$item->nombre}}</span>
                         @if($item->tipoCliente=='combinacion')
                         <?php
                                   $combinacion=Combinacion::find($item->pivot->combinacion_id);
                                 ?>
-                        @foreach ($combinacion->atributo as $com)
-                        <p class="text-info">{{$com->grupoAtributo->nombre}} : {{$com->nombre}}</p> <br>
-                        @endforeach
+                        <p class="text-info">@foreach ($combinacion->atributo as $com)
+                        {{$com->grupoAtributo->nombre}} : {{$com->nombre}}|
+                        @endforeach</p>
                         @endif
                       </td>
                       <td class="mailbox-star">{{$item->tipoCliente}}</td>

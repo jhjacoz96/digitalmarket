@@ -12,7 +12,7 @@
 			<div class="row">
 				<div class="col-sm-4 col-sm-offset-1">
 					<div class="login-form"><!--login form-->
-                        <h2>Mi perfil</h2>
+                        <h2>Actualizar contraseña</h2>
                         
                     <form id="registerForm" action="{{url('/comprador/actualizarContraseña/'.auth::user()->id)}}" method="post">
                        
@@ -45,8 +45,8 @@
                         <div class="row">
                           
                           <!-- /.col -->
-                          <div class="col-md-6">
-                            <button type="submit" >Cambiar contreseña</button>
+                          <div class="col-md-12">
+                            <button type="submit" >Actualizar contreseña</button>
                           </div>
                           
                        

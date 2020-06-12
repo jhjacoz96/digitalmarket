@@ -31,6 +31,7 @@
                         <th>Metodos de pagos</th>
                         <th>Monto total</th>
                         <th>Fecha de solicitud</th>
+                        <th>Estado</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
@@ -47,6 +48,31 @@
                         </td>
                         <td>{{$item->montoTotal}}</td>
                         <td>{{$item->created_at}}</td>
+                        <td>
+                            @if($item->status=='esperaTransferencia')
+                            <span class="label label-primary">Espera por transferencia</span>
+                          @endif
+                              
+                          @if($item->status=='pagoAceptado')
+                            <span class="label label-success">Pago aceptado</span>
+                          @endif
+    
+                          @if($item->status=='cancelado')
+                            <span class="label label-danger">Cancelado</span>
+                          @endif
+                          
+                          @if($item->status=='preparandoPedido')
+                            <span class="label label-warning">Preparando pedido para enviar</span>
+                          @endif
+    
+                          @if($item->status=='enviadoComprador')
+                            <span class="label" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span>
+                          @endif
+    
+                          @if($item->status=='recibido')
+                            <span class="label" style="background-color:darkorchid; color: floralwhite;">Recibido</span>
+                          @endif
+                        </td>
                         <td>
                             <a class="btn btn-default" href="{{url('/comprador/pedidoDetalle/'.       $item->id)}}">
                                 Ver detalle

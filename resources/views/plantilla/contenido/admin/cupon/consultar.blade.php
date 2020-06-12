@@ -97,7 +97,7 @@
                             </td> 
                   
                             <td class="mailbox-star">
-                                <div class="btn-group">
+                                <div class="button-group">
                                 
                                 <a href="{{route('cupon.edit',$item)}}" class="btn btn-default btn-sm mx-1">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
 

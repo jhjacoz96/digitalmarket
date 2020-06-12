@@ -84,16 +84,28 @@
                               $total=$total+($items->pivot->cantidadProducto*$items->pivot->precioProducto);
                             ?>
                         @endforeach
-                        {{$total}}
+                        Bs {{$total}}
                       </td>
 
                            <td class="mailbox-star">
-                            @if($item->status='pagoAceptado')
+                            @if($item->status=='pagoAceptado')
                               <span class="badge badge-success">Pago aceptado</span>
                             @endif
+                            @if($item->status=='preparandoPedido')
+                              <span class="badge badge-warning">Preparando pedido</span>
+                            @endif
+                            @if($item->status=='cancelado')
+                              <span class="badge badge-danger">Pedido cancelado</span>
+                            @endif
+                            @if($item->status=='enviadoComprador')
+                              <span class="badge" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span>
+                            @endif
+                            @if($item->status=='recibido')
+                              <span class="badge" style="background-color:darkorchid; color: floralwhite;">Recibido</span>
+                            @endif
                            </td>
-                         
-                           
+
+
                            <td class="mailbox-star">
                                <div class="btn-group">
                                

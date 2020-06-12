@@ -140,15 +140,21 @@
                              
                                 <h2>$ {{$moneda}}</h2>
                                 <label>Cantidad:</label>
-                                <input type="text" v-model="cantidad"   />
+                                <input type="text" v-model="cantidad"/>
                                 @{{validarCantidad}}
-                                <button type="submit"  class="btn btn-fefault cart" :disabled="disabledBoton">
+                                <p style="color: tomato;"  v-if="mostrarMensaje">@{{mensaje}}</p>
+                                <br v-if="mostrarMensaje">
+                                <button type="submit" name="carrito"  class="btn btn-fefault cart" :disabled="disabledBoton">
                                     <i class="fa fa-shopping-cart"></i>
                                     Agregar al carrito
                                 </button>
+
+                                <p><button type="submit" name="deseo" value="deseo" class="btn btn-fefault cart" :disabled="disabledBoton">
+                                    <i class="fa fa-briefcase"></i>
+                                    Agregar a lista de deseo
+                                </button></p>
                             </span>
-                            <p style="color: tomato;"  v-if="mostrarMensaje">@{{mensaje}}</p>
-                                <br v-if="mostrarMensaje">
+                            
                         <p><b>Disponibilidad:</b>
                             @if($producto->tipoCliente=='comun')
                                 {{$producto->cantidad}}

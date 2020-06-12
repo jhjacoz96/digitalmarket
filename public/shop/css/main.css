@@ -6,6 +6,48 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800,300,600,700);
 @import url(http://fonts.googleapis.com/css?family=Abel);
 
+
+.container .row .panel-warning .panel-heading h2{
+  font-size:72px;
+  text-align: center;
+}
+.container .row .panel-warning .panel-heading h4{
+  text-align: center;
+}
+.container .row .panel-warning .panel-heading {
+  background-color: #FFA500;
+
+  color:#fff;
+}
+.container .row .panel-info .panel-heading h2{
+  font-size:72px;
+  text-align: center;
+}
+.container .row .panel-info .panel-heading h4{
+  text-align: center;
+}
+.container .row .panel-info .panel-heading {
+  background-color: #3E7FC1;
+  
+  color:#fff;
+}
+.container .row .panel-success .panel-heading h2{
+  font-size:72px;
+  text-align: center;
+}
+.container .row .panel-success .panel-heading h4{
+  text-align: center;
+}
+.container .row .panel-success .panel-heading {
+  background-color: #069740;
+  
+  color:#fff;
+}
+
+
+
+
+
 body {
   font-family: 'Roboto', sans-serif;
   background:;

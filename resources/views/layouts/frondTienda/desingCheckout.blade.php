@@ -11,11 +11,12 @@
    
     
     <title>Home | E-Shopper</title>
-<link href="{{asset('css/app.css')}}" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     
-<link href="{{asset('shop/css/bootstrap.min.css')}}" rel="stylesheet">
+   
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-    <link href="{{asset('shop/css/font-awesome.min.css')}}" rel="stylesheet">
+
     <link href="{{asset('shop/css/prettyPhoto.css')}}" rel="stylesheet">
     <link href="{{asset('shop/css/price-range.css')}}" rel="stylesheet">
     <link href="{{asset('shop/css/animate.css')}}" rel="stylesheet">
@@ -49,8 +50,8 @@
 	@yield('contenido')
 	@include('layouts.frondTienda.footer')
 
-    <script src="{{asset('shop/js/jquery.js')}}"></script>
-	<script src="{{asset('shop/js/bootstrap.min.js')}}"></script>
+   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="{{asset('shop/js/jquery.scrollUp.min.js')}}"></script>
 	<script src="{{asset('shop/js/price-range.js')}}"></script>
     <script src="{{asset('shop/js/jquery.prettyPhoto.js')}}"></script>

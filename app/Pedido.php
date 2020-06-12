@@ -18,7 +18,7 @@ class Pedido extends Model
     ];
 
     public function producto(){
-      return  $this->belongsToMany('App\Producto','pedido_producto','pedido_id','producto_id')->withPivot('precioProducto','combinacion_id','cantidadProducto');
+      return  $this->belongsToMany('App\Producto','pedido_producto','pedido_id','producto_id')->withPivot('precioProducto','combinacion_id','cantidadProducto','status','id');
     }
 
     public function metodoPago(){

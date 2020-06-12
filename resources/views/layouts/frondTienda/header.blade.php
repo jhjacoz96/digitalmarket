@@ -67,7 +67,7 @@
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
                             
-                            <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
+                        <li><a href="{{url('/lista-deseo')}}"><i class="fa fa-star"></i>Lista de deseos</a></li>
                             <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
                             <li><a href="{{url('/carrito')}}"><i class="fa fa-shopping-cart"></i>Carrito({{$carritoCount}})</a></li>
                             @if(empty(\Auth::check()))
@@ -120,8 +120,8 @@
                         <form action="{{url('/buscar-producto')}}" method="post">
                             @method('GET')
                             @csrf
-                            <input type="text" name="nombre" placeholder="Buscar producto"/>
-                            <button  type="submit" style="border:0px; height:33px; margin-left:-3px;">Buscar</button>
+                            <input type="text" name="nombre"  placeholder="Buscar producto"/>
+                            <button  type="submit"  style="border:0px; height:33px; margin-left:-3px; background-color: orange ; color:ivory; ">Buscar</button>
                         </form>
                     </div>
                 </div>

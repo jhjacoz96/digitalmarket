@@ -164,14 +164,23 @@
                       @if($pedido->status=='pagoAceptado')
                         <span class="badge badge-success">Pago aceptado</span>
                       @endif
-                      
-                      @if($pedido->status=='enviadoComprador')
-                        <span class="badge badge-info ">enviado al comprador</span>
-                      @endif
 
                       @if($pedido->status=='cancelado')
                         <span class="badge badge-danger">Cancelado</span>
                       @endif
+                      
+                      @if($pedido->status=='preparandoPedido')
+                        <span class="badge badge-warning">Preparando pedido para enviar</span>
+                      @endif
+
+                      @if($pedido->status=='enviadoComprador')
+                        <span class="badge" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span>
+                      @endif
+
+                      @if($pedido->status=='recibido')
+                        <span class="badge" style="background-color:darkorchid; color: floralwhite;">Recibido</span>
+                      @endif
+
                     </div>
                   </div>
 
@@ -196,15 +205,25 @@
                           @endif
                           value="pagoAceptado">Pago aceptado</option>
                           <option
-                          @if($pedido->status=='esperaComprador')
+                          @if($pedido->status=='preparandoPedido')
                           selected
                           @endif
-                          value="enviadoComprador">Pedido envio</option>
+                          value="enviadoComprador">Preparando pedido</option>
                           <option
                           @if($pedido->status=='cancelado')
                           selected
                           @endif
                           value="cancelado">Pedido cancelado</option>
+                          <option
+                          @if($pedido->status=='enviadoComprador')
+                          selected
+                          @endif
+                          value="enviadoComprador">Enviado al comprador</option>
+                          <option
+                          @if($pedido->status=='recibido')
+                          selected
+                          @endif
+                          value="recibido">Recibido</option>
                         </select>
                       </div>
                     </div>
@@ -237,7 +256,7 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th>Metodo de pago</th>
+                      <th>Método de pago</th>
                       <th>Tipo de metodo de pago</th>
                       <th>Moneda</th>
                       <th>Referencia</th>
@@ -288,7 +307,7 @@
           <div class="card card-secondary ">
             <div class="card-header">
               <span class="fas fa-shipping-fast float-left"></span>
-              <h3 class="card-title ml-1">Metedo de envio</h3>
+              <h3 class="card-title ml-1">Métedo de envio</h3>
 
             </div>
             <!-- /.card-header -->
@@ -317,9 +336,11 @@
 
                       </th>
                       <th>
+                        @if($pedido->status=='preparandoPedido')
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
                           Actualizar
                         </button>
+                        @endif
                       </th>
 
                     </tr>
@@ -426,10 +447,9 @@
             <div class="card-header">
               <span class="fas fa-box-open float-left"></span>
 
-              <h3 class="card-title ml-1">Productos <span class="badge badge-info">{{count($pedido->producto)}}</span>
+              <h3 class="card-title ml-1">Productos<span class="badge badge-info">{{count($pedido->producto)}}</span>
               </h3>
             </div>
-
 
             <div class="row">
 
@@ -438,10 +458,12 @@
                   <thead>
                     <tr>
                       <th>ID</th>
+                      <th>Tienda</th>
                       <th>Producto</th>
                       <th>Cantidad</th>
                       <th>Precio</th>
                       <th>Total</th>
+                      <th>Estado</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -449,12 +471,28 @@
 
                     <tr>
                       <td class="mailbox-star">{{$item->id}}</td>
+                      <td class="mailbox-star">{{$item->tienda->nombreTienda}}</td>
                       <td class="mailbox-star">{{$item->nombre}}</td>
                       <td class="mailbox-star">
                         {{$item->pivot->cantidadProducto}}
                       </td>
                       <td class="mailbox-star">Bs {{$item->pivot->precioProducto}}</td>
                       <td class="mailbox-star">Bs {{$item->pivot->precioProducto*$item->pivot->cantidadProducto}}</td>
+                      <td class="mailbox-star">
+                        @if($item->pivot->status=='enviadoAlmacen')
+                          <span class="">Enviado al almacen</span>
+                        @endif
+                        @if($item->pivot->status=='listoEnviar')
+                          <span class="">Listo para enviar</span>
+                        @endif
+                     
+                      </td>
+
+                      @if($item->pivot->status=='pagoAceptado')
+                      <td class="mailbox-star">
+                      <a href="{{url('/estado-almacen/'.$item->pivot->id)}}" class="btn btn-default">Verificar</a>
+                      </td>
+                      @endif
 
                     </tr>
                     @endforeach

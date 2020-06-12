@@ -47,6 +47,12 @@
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a href="{{route('pedido.consultar','preparandoPedido')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Preparando pedido</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
                     <a href="{{route('pedido.consultar','enviadoComprador')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Enviado al comprador</p>

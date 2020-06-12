@@ -15,7 +15,7 @@
                         <h2>Mi perfil</h2>
                         
                     <form id="registerForm" action="{{url('/comprador/perfil/'.\auth::user()->id)}}" method="post">
-                        @method('PUT    ')
+                        @method('PUT')
                             @csrf
                         
                             <p class="lead">Información personal</p>
@@ -70,14 +70,15 @@
                         <div class="row">
                           
                           <!-- /.col -->
-                          <div class="col-sm-6">
-                            <button type="submit" >Actualizar perfil</button>
+                          <div class="col-sm-12 ">
+                            <button type="submit" class="btn btn-primary btn-sm pull-right" >Actualizar perfil</button>
+
+                            <a  href="{{url('/comprador/perfil/'.\Auth::user()->id.'/edit')}}" >Cambiar contraseña</a>
                           </div>
                           
-                          <div class="col-sm-6">
-                            <a href="{{url('/comprador/perfil/'.\Auth::user()->id.'/edit')}}" class="text-center">Cambiar contraseña</a>
-                          </div>
-                        </div>
+                          
+                      
+                 
                         
                         
                         

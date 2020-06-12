@@ -221,6 +221,10 @@ route::put('/pedido/status/{id}','pedidoController@cambiarStatusPedido');
 
 route::get('/pedido-factura/{id}','pedidoController@verFactura');
 
+//reportes graficos//
+route::get('/reportes/comprador-charts','reporteController@compradorCharts');
+//fin de reportes graficos//
+
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -253,6 +257,7 @@ route::get('obtenerCombinacion/{slug}','atributoController@combinacion');
 //carrito de compra/////
 
 route::match(['get','post'],'/agregarCarrito','productoController@agregarCarrito')->name('agregarCarrito');
+
 route::match(['get','post'],'/carrito','productoController@carrito')->name('carrito');
 
 route::get('/carrito/eliminarProducto/{id}','productoController@eliminarProductoCarrito')->name('carrito.eliminarProducto');
@@ -260,6 +265,9 @@ route::get('/carrito/eliminarProducto/{id}','productoController@eliminarProducto
 route::get('/carrito/actualizarCantidad/{id}/{cantidad}','productoController@actualizarProductoCarrito');
 
 route::post('carrito/aplicarCupon','cuponController@aplicarDescuento')->name('carrito.aplicarCupon');
+
+route::match(['get','post'],'/lista-deseo','productoController@listaDeseo');
+route::get('/lista-deseo/eliminar/{id}','productoController@eliminarlistaDeseo');
 //fin carrito de compra/////
 
 //checkout///
@@ -284,6 +292,11 @@ route::get('/buscar-producto','productoController@buscarProducto');
 //fin de buscar producto
 
 //Factura pdf
- Route::name('factura')->get('/imprimir-factura/{id}', 'pedidoController@pdfFactura');
+Route::name('factura')->get('/imprimir-factura/{id}', 'pedidoController@pdfFactura');
 //fin de factura
+
+//cambiar estado almacen
+route::get('/estado-almacen/{id}','pedidoController@cambiarEstadoAlmacen');
+//fin de buscar producto/
+
 

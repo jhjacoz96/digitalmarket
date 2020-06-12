@@ -17,6 +17,7 @@ class CreateMedioEnviosTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre');
             $table->string('tiempoEntrega');
+            $table->string('dentroIribarren')->nullable();
             $table->decimal('precioEnvio',12,2)->default(0);
             $table->string('envioGratis')->default('I');
             $table->string('status')->default('A');

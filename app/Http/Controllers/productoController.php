@@ -23,6 +23,7 @@ use App\DireccionPedido;
 use App\DireccionFactura;
 use App\Pedido;
 use App\Comprador;
+use App\Deseo;
 
 
 
@@ -738,13 +739,81 @@ class productoController extends Controller
     //FIN DE DETALLES DE PRODUCTOS
 
     public function agregarCarrito(Request $request){
+     
+        $producto=Producto::where('id',$request->producto_id)->first();
+     
+        if(!empty($request['deseo'])&&$request['deseo']=='deseo'){
+            if(empty(\Auth::check())){
+                flash('Para agregar un producto a su lista de deseos debe autenticarse')->important()->warning();
+                return \redirect()->back();
+            }
+
+            if($producto->tipoCliente=='combinacion'){
+                if($request->combinacion_id==''){
+                    flash('Debe seleccionar una combinación')->important()->warning();
+                    return \redirect()->back();
+                }
+        
+                $countDc=Deseo::where(['comprador_id'=>\Auth::user()->comprador->id,'producto_id'=>$request['producto_id'],'combinacion_id'=>$request['combinacion_id']])->count();
+
+                if($countDc>0){
+                    flash('Ya ha agregado este producto a la lista de deseos')->important()->waring();
+                    return \redirect()->back();
+                }else{
+
+                    $deseo=new Deseo();
+                    $deseo->producto_id=$request['producto_id'];
+                    $deseo->precio=$request['precio'];
+                    $deseo->cantidad=$request['cantidad'];
+                    $deseo->combinacion_id=$request['combinacion_id'];
+                    $deseo->comprador_id=\Auth::user()->comprador->id;
+                 
+                    $deseo->save();
+                }
+
+            }else{
+
+                
+                $countDc=Deseo::where(['comprador_id'=>\Auth::user()->comprador->id,'producto_id'=>$request['producto_id']])->count();
+
+                if($countDc>0){
+
+                    flash('Ya ha agregado este producto a la lista de deseos')->important()->waring();
+                    return \redirect()->back();
+
+                }else{
+
+                    $deseo=new Deseo();
+                    $deseo->producto_id=$request['producto_id'];
+                    $deseo->precio=$request['precio'];
+                    $deseo->cantidad=$request['cantidad'];
+                    $deseo->comprador_id=\Auth::user()->comprador->id;
+                 
+                    $deseo->save();
+                }
+
+
+            }
+
+
+            
+           
+            
+            flash('Producto agregado a la lista deseo')->important()->success();
+            return \redirect()->back();
+        }
+
+        
+        if(!empty($request['carritoBoton'])&& $request['carritoBoton']=="agregar a carrito" ){
+
+
+        }
+
         
 
 
         \Session::forget('montoCupon');
         \Session::forget('codigoCupon');
-        
-        $producto=Producto::where('id',$request->producto_id)->first();
         
         
         if(empty(\Auth::check())){
@@ -766,6 +835,14 @@ class productoController extends Controller
 
         if($producto->tipoCliente=='comun'){
         
+            //verificar si la cantidad estata disponible
+            if($request->cantidad>$producto->cantidad){
+                \flash('No esta disponible esta cantidad')->warning()->important();
+                return redirect()->back();
+            }
+
+
+
         $cantidadProducto=\DB::table('carritos')->where(['producto_id'=>$request['producto_id'],'session_id'=>$session_id])->count();
             
             if( $cantidadProducto>0){
@@ -792,6 +869,17 @@ class productoController extends Controller
             }
         }else{
 
+            if($request->combinacion_id==''){
+                flash('Debe seleccionar una combinación')->important()->warning();
+                return \redirect()->back();
+            }
+
+            $combinacion=Combinacion::where('id',$request['combinacion_id'])->first();
+            
+            if($request->cantidad>$combinacion->cantidad){
+                \flash('No esta disponible esta cantidad')->warning()->important();
+                return redirect()->back();
+            }
 
             $cantidadProducto=\DB::table('carritos')->where(['producto_id'=>$request['producto_id'],'session_id'=>$session_id,'combinacion_id'=>$request['combinacion_id']])->count();
             
@@ -800,7 +888,7 @@ class productoController extends Controller
                 
                 $carrito=Carrito::where(['producto_id'=>$request['producto_id'],'session_id'=>$session_id,'combinacion_id'=>$request['combinacion_id']])->first();
                 
-                $combinacion=Combinacion::where('id',$request['combinacion_id'])->first();
+               
                              
                 
                 if($request['cantidad']+$carrito->cantidad>$combinacion->cantidad){
@@ -922,6 +1010,8 @@ class productoController extends Controller
             return redirect('/iniciar-sesion');
         }
 
+
+
         $direcciones=Direccion::where('comprador_id',\Auth::user()->comprador->id)->get();
         
         $session_id=\Session::get('session_id');
@@ -996,6 +1086,7 @@ class productoController extends Controller
     }
     
     public function realizarPedido(Request $request){
+
         if($request->isMethod('post')){
          
             $metodoPago=json_decode($request['metodoPagos'],true);
@@ -1146,5 +1237,23 @@ class productoController extends Controller
         return view('plantilla.tiendaContenido.producto.listado',compact('producto','productoBuscado'));
     }   
 
+    public function listaDeseo(){
+
+        if(\Auth::check()){
+            $comprador_id=\Auth::user()->comprador->id;
+            $listaDeseo=Deseo::where(['comprador_id'=>$comprador_id])->get();   
+            return view('plantilla.tiendaContenido.producto.listaDeseo',compact('listaDeseo'));
+        }else{
+            flash('Debe autenticarse para poder ver la lista de deseos')->warning()->important();
+            return redirect()->back();
+        }
+    }
+
+    public function eliminarListaDeseo($id){
+        $deseo=Deseo::findOrFail($id);
+        $deseo->delete();
+        flash('Producto eliminado de la lista de deseo con exito')->success()->important();
+        return redirect()->back();
+    }
     
 }

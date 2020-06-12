@@ -91,9 +91,14 @@
                         @if($item->status=='pagoAceptado')
                           <span class="badge badge-success">Pago aceptado</span>
                         @endif
+
+                        @if($item->status=='preparandoPedido')
+                          <span class="badge badge-warning">Preparando pedido</span>
+                        @endif
                         
+
                         @if($item->status=='enviadoComprador')
-                          <span class="badge badge-info">enviado al comprador</span>
+                          <span class="badge" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span>
                         @endif
 
                         @if($item->status=='cancelado')

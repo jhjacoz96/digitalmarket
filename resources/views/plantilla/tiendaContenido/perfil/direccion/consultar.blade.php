@@ -5,47 +5,57 @@
 
     <section id="form" style="margin-top: 20px;"><!--form-->
         
-		<div class="container">
+		  <div class="container">
+
             <div class="p-2">
                 @include('flash::message')
-             </div>
+            </div>
+
             <div class="row">
               
                 @foreach (\Auth::user()->comprador->direccion as $item)
                 <div class="col-sm-4">
         
                         
-                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-       
-                     <div class="card-body " style="background-color: silver;">
-                        {{$item->nombre}} {{$item->apellido}}
-                        {{$item->zona->parroquia->municipio->estado->nombre}} | {{$item->zona->parroquia->municipio->nombre}} | {{$item->zona->parroquia->nombre}} | {{$item->zona->nombre}}
-                        {{$item->direccionExacta}}
-                        {{$item->puntoReferencia}}
-                        {{$item->primerTelefono}}
-                       {{$item->segundoTelefono}}
+                    <div class="panel panel-primary mb-3">
+                      <div class="panel-heading">
+                        <h4>{{$item->nombre}} {{$item->apellido}}</h4>
+                      </div>
+                      <div class="panel-body " >
+                        
+                        <p><strong>Estado:</strong> {{$item->zona->parroquia->municipio->estado->nombre}}</p>
+                        <p><strong>Municipio:</strong> {{$item->zona->parroquia->municipio->nombre}}</p>
+                        <p><strong>Parroquia:</strong> {{$item->zona->parroquia->nombre}}</p>
+                        <p><strong>Zona:</strong>{{$item->zona->nombre}}</p>
+                        <p><strong>Dirección exacta:</strong> {{$item->direccionExacta}}</p>
+                        <p><strong>Punto de referencia:</strong> {{$item->puntoReferencia}}</p>
+                        <p><strong>Primer telefono:</strong> {{$item->primerTelefono}}</p>
+                        <p><strong>Segundo telefono:</strong>{{$item->segundoTelefono}}</p>
                        
-                     <div>
+                      </div>
      
-                       <div class="card-footer">
-                          
-                        <form action="{{url('/comprador/direccion/'.$item->id)}}" method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar esta dircción?')">Eliminar</button>
+                       <div class="panel-footer">
+                    
+                          <a  href="{{url('/comprador/direccion/'.$item->id.'/edit')}}" class="btn btn-warning btn-sm pull-right"><span class="fa fa-edit" aria-hidden ="true" >Actualizar</span></a>
+
+                          <form action="{{url('/comprador/direccion/'.$item->id)}}" method="POST">
+                              @method('DELETE')
+                              @csrf
+                              <button class="btn btn-danger btn-sm inline-flex " onclick="return confirm('¿Esta seguro que desea eliminar esta dircción?')"><span class="fas fa-trash" aria-hidden ="true" >Eliminar</span></button>
                           </form>
-                       <a href="{{url('/comprador/direccion/'.$item->id.'/edit')}}">Modificar</span></a>
+
                         </div>  
+                     
                      </div>
-                     </div>
-                   </div>
+                   
                 </div>
                 @endforeach
-          
-
+  
             </div>
-        <a href="{{url('/comprador/direccion/create')}}">Agregar dirección</a>
-			</div>
+        <div class="row">
+          <a class="btn btn-primary" href="{{url('/comprador/direccion/create')}}">Agregar dirección</a>
+        </div>
+      </div>
 		</div>
 	</section><!--/form-->
 

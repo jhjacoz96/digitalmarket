@@ -50,7 +50,7 @@ class Producto extends Model
     }
 
     public function pedido(){
-      return  $this->belongsToMany('App\Pedido','pedido_producto','producto_id','pedido_id')->withPivot('precioProducto','combinacion_id','cantidadProducto');
+      return  $this->belongsToMany('App\Pedido','pedido_producto','producto_id','pedido_id')->withPivot('precioProducto','combinacion_id','cantidadProducto','status','id');
     }
 
     public static function carritoCount(){

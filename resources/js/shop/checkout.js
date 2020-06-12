@@ -10,7 +10,7 @@ const checkout= new Vue({
         zonas:[],
         zona_id:'',
         codigoPostal:'',
-        abrir1:false,
+        abrir1:true,
         abrir2:false,
         abrir3:false,
         agregarDireccion:false,
@@ -142,8 +142,14 @@ const checkout= new Vue({
 
     },
     computed: {
-        seleccionEnvio:function(){
+       
+    },
+    methods: {
 
+        seleccionEnvio:function(envio){
+            
+            this.selectEnvio=envio
+            console.log(this.selectEnvio)
             if(this.envioFree==0){
                 const f=this.selectEnvio
                 if(f!=''){
@@ -151,18 +157,14 @@ const checkout= new Vue({
                     this.totalDolar=this.totalBs/this.dolarToday
                     this.precioFijoBs= this.totalBs
                     this.precioFijoDolar= this.totalDolar
-                
+                    
                 }
             }
-           return ''
-        }
-    },
-    methods: {
-
-        
+          
+        },
 
         calcularRestante(){
-            
+           
             const total=this.seletedMetodoPago
             this.cantidadBs=0
             this.cantidadDolar=0
@@ -172,7 +174,7 @@ const checkout= new Vue({
                 if(total[i].tipoPago=='nacional'){
                    
                  this.cantidadBs= parseFloat(this.cantidadBs) + parseFloat(total[i].cantidad)
-                
+                    
                 }
 
                 if(total[i].tipoPago=='internacional'){
@@ -180,7 +182,7 @@ const checkout= new Vue({
                 }
                 
             }
-            console.log(this.totallBs)
+            
             this.totalBs=this.precioFijoBs-this.cantidadBs-(this.cantidadDolar*this.dolarToday)
             this.totalDolar=this.totalBs/this.dolarToday
             this.cantidadBs=0
@@ -299,14 +301,14 @@ const checkout= new Vue({
         this.totallDolar=this.totalBs/this.dolarToday
 
         this.precioFijoBs=this.totalBs
-        this.dolar=
+        //this.dolar
         this.precioFijoDolar=this.totalDolar
         
             
-            document.getElementById('municipio_id').disabled = true
+           /* document.getElementById('municipio_id').disabled = true
             document.getElementById('parroquia_id').disabled = true
-            document.getElementById('zona_id').disabled = true
-      
+            document.getElementById('zona_id').disabled = true*/
+         
           
     }
 });

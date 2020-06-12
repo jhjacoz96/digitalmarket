@@ -17108,7 +17108,7 @@ var checkout = new Vue({
     zonas: [],
     zona_id: '',
     codigoPostal: '',
-    abrir1: false,
+    abrir1: true,
     abrir2: false,
     abrir3: false,
     agregarDireccion: false,
@@ -17215,8 +17215,12 @@ var checkout = new Vue({
         console.log(e.response)
     })*/
   },
-  computed: {
-    seleccionEnvio: function seleccionEnvio() {
+  computed: {},
+  methods: {
+    seleccionEnvio: function seleccionEnvio(envio) {
+      this.selectEnvio = envio;
+      console.log(this.selectEnvio);
+
       if (this.envioFree == 0) {
         var f = this.selectEnvio;
 
@@ -17227,11 +17231,7 @@ var checkout = new Vue({
           this.precioFijoDolar = this.totalDolar;
         }
       }
-
-      return '';
-    }
-  },
-  methods: {
+    },
     calcularRestante: function calcularRestante() {
       var total = this.seletedMetodoPago;
       this.cantidadBs = 0;
@@ -17247,7 +17247,6 @@ var checkout = new Vue({
         }
       }
 
-      console.log(this.totallBs);
       this.totalBs = this.precioFijoBs - this.cantidadBs - this.cantidadDolar * this.dolarToday;
       this.totalDolar = this.totalBs / this.dolarToday;
       this.cantidadBs = 0;
@@ -17348,11 +17347,12 @@ var checkout = new Vue({
     this.totalDolar = this.totalBs / this.dolarToday;
     this.totallBs = data.datos.totalBs;
     this.totallDolar = this.totalBs / this.dolarToday;
-    this.precioFijoBs = this.totalBs;
-    this.dolar = this.precioFijoDolar = this.totalDolar;
-    document.getElementById('municipio_id').disabled = true;
-    document.getElementById('parroquia_id').disabled = true;
-    document.getElementById('zona_id').disabled = true;
+    this.precioFijoBs = this.totalBs; //this.dolar
+
+    this.precioFijoDolar = this.totalDolar;
+    /* document.getElementById('municipio_id').disabled = true
+     document.getElementById('parroquia_id').disabled = true
+     document.getElementById('zona_id').disabled = true*/
   }
 });
 

@@ -13,6 +13,7 @@ use App\MetodoPago;
 use App\MetodoPagoPedido;
 use App\Tienda;
 use App\Producto;
+use App\ProductoPedido;
 
 
 class pedidoController extends Controller
@@ -23,7 +24,7 @@ class pedidoController extends Controller
             $pedido=Pedido::whereHas('producto',function($q){
                 $q->where('tienda_id',\Auth::user()->tienda->id);
             })->with(['producto'=>function($q){
-                $q->where('tienda_id',\Auth::user()->tienda->id);}])->where('status','pagoAceptado')->get();
+                $q->where('tienda_id',\Auth::user()->tienda->id);}])->where('status','!=','esperaTransferencia')->get();
     
             return view('plantilla.contenido.tienda.pedido.pedido',compact('pedido'));
 
@@ -44,16 +45,16 @@ class pedidoController extends Controller
 
 
     public function pedidoAdmin($tipo){
-        
+      
         $pedido=Pedido::where('status',$tipo)->with('producto')->get();
- 
+        
         return view('plantilla.contenido.admin.pedido.consultar',compact('pedido'));
 
     }
 
     public function detallePedidoAdmin($id){
         $pedido=Pedido::with('producto')->with('metodoPago')->findOrFail($id);
-        
+
         return view('plantilla.contenido.admin.pedido.detalle',compact('pedido'));
     }
 
@@ -137,11 +138,25 @@ class pedidoController extends Controller
     if($request->ruta=='tiendaPedido'){
         $pedido=Pedido::with(['producto'=>function($q){
         $q->where('tienda_id',\Auth::user()->tienda->id);}])->findOrFail($id);
-
-        foreach ($pedido->producto as $key => $value) {
-            
+      
+        foreach ($pedido->producto as $value) {
+            $pedidoProducto=ProductoPedido::findOrFail($value->pivot->id);
+            $pedidoProducto->status='enviadoAlmacen';
+            $pedidoProducto->save();
         }
 
+        $estadoCantidad=ProductoPedido::where('pedido_id',$id)->where('status','esperaPago')->count();
+
+        /*if($estadoCantidad<=0){
+          
+            $pedido=Pedido::findOrFail($id);
+            $pedido->status='preparandoPedido';
+            $pedidoS->save();
+
+        }*/
+        
+        flash('Una vez el cliente haya calificado el pedido, se le trasferirá el monto obtenido por el pedido:  ' . $pedido->id .' ')->success()->important();
+        return redirect()->back();
     }
 
         $pedido=Pedido::findOrFail($id);
@@ -158,7 +173,7 @@ class pedidoController extends Controller
     public function verFactura($id){
         $pedido=Pedido::with('producto')->with('metodoPago')->where('id',$id)->first();
         $comprador=$pedido->comprador;
-        return view('plantilla.contenido.admin.pedido.factura',compact('pedido','comprador'));
+        return view('pdf.factura',compact('pedido','comprador'));
     }
     
     public function pdfFactura($id){
@@ -168,6 +183,24 @@ class pedidoController extends Controller
         return $pdf->stream('Fatura.pdf');
    }
 
+
+   public function cambiarEstadoAlmacen($id){
+        $productoPedido=ProductoPedido::findOrFail($id);
+        
+        $productoPedido->status='listoEnviar';
+        
+        $productoPedido->save();
+        $estadoCantidad=ProductoPedido::where('pedido_id', $productoPedido->pedido_id)->where('status','!=','listoEnviar')->count();
+        
+        if($estadoCantidad<=0){
+            $pedido=Pedido::find($productoPedido->pedido_id);
+            $pedido->status='preparandoPedido';
+            $pedido->save();
+        }
+
+        flash('Este producto ya se encuentra listo para el envio')->success()->important();
+        return redirect()->back();
+   }
 
    
 }

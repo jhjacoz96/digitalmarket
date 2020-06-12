@@ -216,4 +216,8 @@ class compradorController extends Controller
         flash('Comprador eliminado con exito')->success()->important();
         return redirect()->route('Comprador.index');
     }
+
+
+    
+
 }

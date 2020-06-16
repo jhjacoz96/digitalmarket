@@ -32,6 +32,7 @@ class Producto extends Model
     {
         return $this->belongsTo('App\Marca','marca_id');
     }
+    
     public function subCategoria()
     {
         return $this->belongsTo('App\SubCategoria','subCategoria_id');
@@ -53,6 +54,10 @@ class Producto extends Model
       return  $this->belongsToMany('App\Pedido','pedido_producto','producto_id','pedido_id')->withPivot('precioProducto','combinacion_id','cantidadProducto','status','id');
     }
 
+    public function calificacion(){
+        $this->hasMany('App\Calificacion','producto_id');
+    }
+
     public static function carritoCount(){
         if (\Auth::check()){ 
             $comprador=\Auth::user()->comprador;
@@ -69,6 +74,11 @@ class Producto extends Model
         return $categoriaCount;
     }
 
+    public static function marcaCount($id){
+        $marcaCount=Producto::where(['marca_id'=>$id])->count();
+        return  $marcaCount;
+    }
+
     public static function obtenerMoneda($precio){
         $moneda=Divisa::where('status','A')->get();
         foreach ($moneda as  $value) {
@@ -79,8 +89,6 @@ class Producto extends Model
         return $usd;
     }
 
-    public function obtenerProductoStatus($id){
-        
-    }
+   
 
 }

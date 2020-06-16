@@ -1,4 +1,45 @@
 @extends('layouts.frondTienda.design')
+@section('style')    
+<style>
+
+#form {
+  width: 250px;
+  margin: 0 auto;
+  height: 50px;
+}
+
+#form p {
+  text-align: center;
+}
+
+#form label {
+  font-size: 20px;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+label {
+  color: aliceblue;
+}
+
+.clasificacion {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}
+
+label:hover,
+label:hover ~ label {
+  color: orange;
+}
+
+input[type="radio"]:checked ~ label {
+  color: orange;
+}
+
+</style>
+@endsection
 @section('contenido')
 
 @php
@@ -126,7 +167,7 @@
 
                                 @if($pedido->status!='esperaTransferencia')
                                 <dt class="col-sm-4">Factura</dt>
-                                <dd class="col-sm-8"><p><a href="{{view('pdf.factura')}}" class="btn btn-info">Generar factura <i class="fas fa-file-invoice"></i></a></p></dd>
+                                <dd class="col-sm-8"><p><a href="{{url('/pedido-factura/'.$pedido->id)}}" class="btn btn-info"><i class="fa fa-file-invoice"></i> Generar factura</a></p></dd>
                                 @endif
 
                             <dt class="col-sm-4">Fecha de creación</dt>
@@ -143,11 +184,11 @@
                                 <span class="label label-success">Pago aceptado</span>
                                 @endif
 
-                                @if($pedido->status=='cancelado')
-                                <span class="label label-danger">Pedido cancelado</span>
+                                @if($pedido->status=='enviadoComprador')
+                                <span class="label" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span>
                                 @endif
 
-                                @if($pedido->status=='enviado')
+                                @if($pedido->status=='cancelado')
                                 <span class="label label-danger">Pedido cancelado</span>
                                 @endif
 
@@ -155,13 +196,26 @@
                                 <span class="label label-warning">Preparando pedido</span>
                                 @endif
                                 
+                                @if($pedido->status=='recibido')
+                                <span class="badge" style="background-color:darkorchid; color: floralwhite;">Recibido</span>
+                                @endif
+
                             </dd>
                                 
                             </dl>
                         </div>
                     </div>
                 </div>
-                <div>
+                
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="card-title">Calificar productos</h5>
+                    </div>
+                </div>
+
+
+
+
                  <div class="row">
                      <div class=" col-sm-5">
       
@@ -226,6 +280,7 @@
                                              <th>Cantidad</th>
                                              <th>Precio unitario</th>
                                              <th>Precio total</th>
+                                             <th>Acción</th>
                                          </tr>
                                      </thead>
                                      <tbody>
@@ -266,6 +321,78 @@
                                            </td>
                                             
                                            <?php $montoTotaal=$montoTotaal+($item->pivot->cantidadProducto*$item->pivot->precioProducto);?>
+
+
+
+
+                                           <td>
+
+
+                                            <div class="group-btn">
+                                                @if($pedido->status=='enviadoComprador' || $pedido->status=='recibido')
+                                                <button type="button"  class="btn btn-info " data-toggle="modal" data-target="#myModal">Calificar</button>
+                                                @endif
+                                                <!-- Modal -->
+                                                <div id="myModal" class="modal fade" role="dialog">
+                                                <div class="modal-dialog">
+                                            
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                <form action="{{url('/comprador/calificar')}}" method="POST">
+                                                    @csrf
+                                                        <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title"></h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            
+                                                        <input type="hidden" name="producto_id" value="{{$item->id}}">
+                                                        <input type="hidden" name="pedido_id" value="{{$pedido->id}}">
+                                                            <div class="form-group">
+                                                                <span>Nivel de calificacion<span>
+                                                                <input id="radio1" type="radio" name="estrellas" value="5"><!--
+                                                                --><label for="radio1"><i class="fa fa-star"></i></label><!--
+                                                                --><input id="radio2" type="radio" name="estrellas" value="4"><!--
+                                                                --><label for="radio2"><i class="fa fa-star"></i></label><!--
+                                                                --><input id="radio3" type="radio" name="estrellas" value="3"><!--
+                                                                --><label for="radio3"><i class="fa fa-star"></i></label><!--
+                                                                --><input id="radio4" type="radio" name="estrellas" value="2"><!--
+                                                                --><label for="radio4"><i class="fa fa-star"></i></label><!--
+                                                                --><input id="radio5" type="radio" name="estrellas" value="1"><!--
+                                                                --><label for="radio5"><i class="fa fa-star"></i></label>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <span >Titulo</span>
+                                                                <input type="text" name="titulo" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <span>Comentario</span>
+                                                                <textarea name="comentario" class="form-control">
+                                                                </textarea>
+                                                            </div>
+
+
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-info">Calificar</button>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                            
+                                                </div>
+                                                </div>
+
+                                            </div>
+
+                                           </td>
+
+
                                        </tr>
                                        @endforeach
                                         
@@ -323,6 +450,9 @@
                                                     <td>Monto Total</td>
                                                 <td><span>Bs {{$pedido->montoTotal}}</span></td>
                                                 </tr>
+                                                <tr>
+                                                    
+                                                </tr>
                                             </table>
                                         </td>
                                     </tr>
@@ -332,7 +462,7 @@
                         </div>
                       </div>
 
-
+                      
                     
 
                       <div class="panel panel-primary mb-4  " >

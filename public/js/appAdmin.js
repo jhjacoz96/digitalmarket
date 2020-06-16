@@ -16159,8 +16159,14 @@ var grupoAtributo = new Vue({
 var metodoEnvio = new Vue({
   el: '#metodoEnvio',
   data: {
-    precioEnvio: 0,
-    envioGratis: false
+    precio0kg30kg: 0,
+    precio31kg50kg: 0,
+    precio51kg100kg: 0,
+    precio101kg200kg: 0,
+    precio201kg: 0,
+    envioGratisMonto: false,
+    envioGratis: false,
+    montoMinimo: ''
   },
   computed: {},
   methods: {},
@@ -16170,9 +16176,17 @@ var metodoEnvio = new Vue({
         this.envioGratis = true;
       } else {
         this.envioGratis = false;
-      }
+        this.precio0kg30kg = data.datos.precio0kg30kg;
+        this.precio31kg50kg = data.datos.precio31kg50kg;
+        this.precio51kg100kg = data.datos.precio51kg100kg;
+        this.precio101kg200kg = data.datos.precio101kg200kg;
+        this.precio201kg = data.datos.precio201kg;
 
-      this.precioEnvio = data.datos.precioEnvio;
+        if (data.datos.envioGratisMonto != '') {
+          this.envioGratisMonto = true;
+          this.envioGratisMonto = data.datos.envioGratisMonto;
+        }
+      }
     }
   }
 });
@@ -16262,7 +16276,6 @@ var producto = new Vue({
 
     axios.get('/producto/categoria').then(function (res) {
       _this.categorias = res.data;
-      console.log(_this.categorias);
     })["catch"](function (e) {
       console.log(e.respose);
     });
@@ -16448,7 +16461,11 @@ var producto = new Vue({
         var url = '/obtenerCategoria/' + this.selectedCategoria;
         axios.get(url).then(function (res) {
           _this3.obtenerSubCategorias = res.data;
-          console.log(_this3.obtenerSubCategorias);
+
+          if (data.editar == 'si') {
+            _this3.selectedSubCategoria = data.datos.selectedSubCategoria;
+          }
+
           document.getElementById('subCategoria_id').disabled = false;
         });
       }
@@ -16480,8 +16497,6 @@ var producto = new Vue({
       });
     },
     eliminarCombinacionDB: function eliminarCombinacionDB(item, index) {
-      var _this5 = this;
-
       Swal.fire({
         title: '¿Esta seguro que desea eliminar esta combinación?',
         text: "¡Se eliminará de sus registros!",
@@ -16493,14 +16508,16 @@ var producto = new Vue({
         confirmButtonText: 'Si, eliminar!'
       }).then(function (result) {
         if (result.value) {
-          _this5.listaCombinacion2.splice(index, 1);
-
+          //this.listaCombinacion2.splice(index, 1)
           axios["delete"]("/combinacion/".concat(item.id)).then(function (res) {
-            console.log(res);
+            if (res.data == 'activo') {
+              Swal.fire('No puede eliminar una combinacion de un producto activo', 'Su combinación no se ha elimiando', 'warning');
+            } else {
+              Swal.fire('Eliminado!', 'Su combinación  se ha elimiando', 'success');
+            }
           })["catch"](function (e) {
             console.log(es.respose);
           });
-          Swal.fire('Eliminado!', 'Su combinación  se ha elimiando', 'success');
         }
       });
     },
@@ -16627,7 +16644,7 @@ var producto = new Vue({
       console.log(this.combinacion);
     },
     actualizarCombinacion: function actualizarCombinacion(combinacion) {
-      var _this6 = this;
+      var _this5 = this;
 
       var param = {
         cantidad: combinacion.cantidad
@@ -16642,17 +16659,17 @@ var producto = new Vue({
             text: 'Exede el stock maximo que le ofrece el plan de afiliación al que esta afiliado!'
           });
         } else {
-          var index = _this6.listaCombinacion2.findIndex(function (combinacionBuscar) {
+          var index = _this5.listaCombinacion2.findIndex(function (combinacionBuscar) {
             return combinacionBuscar.id === res.data.id;
           });
 
-          _this6.listaCombinacion2[index].cantidad = res.data.cantidad;
-          _this6.combinacion = {
+          _this5.listaCombinacion2[index].cantidad = res.data.cantidad;
+          _this5.combinacion = {
             cantidad: ''
           };
           axios.get("/combinacion/".concat(data.datos.id, "/edit")).then(function (res) {
-            _this6.listaCombinacion2 = res.data;
-            console.log(_this6.listaCombinacion2);
+            _this5.listaCombinacion2 = res.data;
+            console.log(_this5.listaCombinacion2);
           })["catch"](function (e) {
             console.log(e.respose);
           });
@@ -16662,29 +16679,29 @@ var producto = new Vue({
       });
     },
     obtenerTienda: function obtenerTienda() {
-      var _this7 = this;
+      var _this6 = this;
 
       if (this.tienda != '') {
         axios.get('/obtenerTienda/' + this.tienda).then(function (res) {
           if (res.data == 'No hay registros de esta tienda') {
-            _this7.divMensajeTienda = 'No hay registros de esta tienda';
-            _this7.divClaseTienda = 'badge badge-danger';
-            _this7.aparecerTienda == true;
-            _this7.deshabilitarBoton = 1;
-            _this7.grupos = [];
-            _this7.listaCombinacion = [];
-            _this7.value = [];
+            _this6.divMensajeTienda = 'No hay registros de esta tienda';
+            _this6.divClaseTienda = 'badge badge-danger';
+            _this6.aparecerTienda == true;
+            _this6.deshabilitarBoton = 1;
+            _this6.grupos = [];
+            _this6.listaCombinacion = [];
+            _this6.value = [];
           } else {
-            _this7.divMensajeTienda = res.data.nombreTienda;
-            _this7.divClaseTienda = 'badge badge-info';
-            _this7.aparecerTienda == true;
-            _this7.deshabilitarBoton = 0;
-            _this7.tiendas = res.data;
-            _this7.grupos = [];
-            _this7.listaCombinacion = [];
-            _this7.value = [];
-            axios.get("/buscarGrupos/".concat(_this7.tiendas.id)).then(function (res) {
-              _this7.grupos = res.data;
+            _this6.divMensajeTienda = res.data.nombreTienda;
+            _this6.divClaseTienda = 'badge badge-info';
+            _this6.aparecerTienda == true;
+            _this6.deshabilitarBoton = 0;
+            _this6.tiendas = res.data;
+            _this6.grupos = [];
+            _this6.listaCombinacion = [];
+            _this6.value = [];
+            axios.get("/buscarGrupos/".concat(_this6.tiendas.id)).then(function (res) {
+              _this6.grupos = res.data;
             })["catch"](function (e) {
               console.log(e.respose);
             });
@@ -16710,8 +16727,10 @@ var producto = new Vue({
       this.precioActual = data.datos.precioActual;
       this.porcentajeDescuento = data.datos.porcentajeDescuento;
       this.selectedCategoria = data.datos.selectedCategoria;
-      this.cargarSubCategorias();
-      this.selectedSubCategoria = data.datos.selectedSubCategoria;
+
+      if (this.selectedCategoria != '') {
+        this.cargarSubCategorias();
+      }
 
       if (data.datos.tipoCliente == 'combinacion') {
         document.getElementById('customRadio2').checked = true;
@@ -16721,10 +16740,6 @@ var producto = new Vue({
         this.tipoProducto = 'comun';
       } //this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
 
-
-      if (this.selectedCategoria != '') {
-        this.cargarSubCategorias();
-      }
 
       this.selectedSubCategoria = document.getElementById('subCategoria_id').getAttribute('data-old');
     }
@@ -17136,8 +17151,8 @@ var checkout = new Vue({
     precioFijoBs: '',
     precioFijoDolar: '',
     metodoPagos: [],
-    metodoEnvios: '',
-    dolar: ''
+    metodoEnvios: [],
+    totalPeso: 0
   },
   created: function created() {
     var _this = this;
@@ -17196,11 +17211,6 @@ var checkout = new Vue({
         };
         o.push(_d2);
       }
-    })["catch"](function (e) {
-      console.log(e.response);
-    });
-    axios.get('/obtenerMetodoEnvio').then(function (res) {
-      _this.metodoEnvio = res.data;
     })["catch"](function (e) {
       console.log(e.response);
     });
@@ -17336,12 +17346,93 @@ var checkout = new Vue({
       this.abrir3 = !this.abrir3;
       this.abrir1 = false;
       this.abrir2 = false;
+    },
+    medioEnvio: function medioEnvio(direccion) {
+      var _this5 = this;
+
+      this.direccionEnvio = direccion.id;
+      axios.get('/rangoEnvio/' + direccion.id).then(function (res) {
+        axios.get("/obtenerMetodoEnvio/".concat(res.data.nombre)).then(function (res) {
+          _this5.metodoEnvio = res.data;
+          var metodoEnvio = _this5.metodoEnvio;
+          console.log(_this5.metodoEnvio);
+
+          if (_this5.totalPeso > 0) {
+            if (_this5.totalPeso > 0 && _this5.totalPeso <= 30) {
+              metodoEnvio.forEach(function (medio) {
+                if (medio.envioGratisApartir != 0) {
+                  if (parseFloat(_this5.totalBs) >= parseFloat(medio.envioGratisApartir)) {
+                    medio.precioEnvio = 0;
+                  } else {
+                    medio.precioEnvio = medio['0kgA30kg'];
+                  }
+                } else {
+                  medio.precioEnvio = medio['0kgA30kg'];
+                }
+              });
+            } else if (_this5.totalPeso > 30 && _this5.totalPeso <= 50) {
+              metodoEnvio.forEach(function (medio) {
+                if (medio.envioGratisApartir != 0) {
+                  if (parseFloat(_this5.totalBs) >= parseFloat(medio.envioGratisApartir)) {
+                    medio.precioEnvio = 0;
+                  } else {
+                    medio.precioEnvio = medio['31kgA50kg'];
+                  }
+                } else {
+                  medio.precioEnvio = medio['31kgA50kg'];
+                }
+              });
+            } else if (_this5.totalPeso > 50 && _this5.totalPeso <= 100) {
+              metodoEnvio.forEach(function (medio) {
+                if (medio.envioGratisApartir != 0) {
+                  if (parseFloat(_this5.totalBs) >= parseFloat(medio.envioGratisApartir)) {
+                    medio.precioEnvio = 0;
+                  } else {
+                    medio.precioEnvio = medio['50kgA100kg'];
+                  }
+                } else {
+                  medio.precioEnvio = medio['50kgA100kg'];
+                }
+              });
+            } else if (_this5.totalPeso > 100 && _this5.totalPeso <= 200) {
+              metodoEnvio.forEach(function (medio) {
+                if (medio.envioGratisApartir != 0) {
+                  if (parseFloat(_this5.totalBs) >= parseFloat(medio.envioGratisApartir)) {
+                    medio.precioEnvio = 0;
+                  } else {
+                    medio.precioEnvio = medio['101kgA200kg'];
+                  }
+                } else {
+                  medio.precioEnvio = medio['101kgA200kg'];
+                }
+              });
+            } else if (_this5.totalPeso > 200) {
+              metodoEnvio.forEach(function (medio) {
+                if (medio.envioGratisApartir != 0) {
+                  if (parseFloat(_this5.totalBs) >= parseFloat(medio.envioGratisApartir)) {
+                    medio.precioEnvio = 0;
+                  } else {
+                    medio.precioEnvio = medio['mayorA201kg'];
+                  }
+                } else {
+                  medio.precioEnvio = medio['mayorA201kg'];
+                }
+              });
+            }
+          }
+        })["catch"](function (e) {
+          console.log(e.response);
+        });
+      })["catch"](function (e) {
+        console.log(e.response);
+      });
     }
   },
   mounted: function mounted() {
     console.log(this.metodoPagoInternacional);
     console.log(this.metodoPagoNacional);
     console.log(this.arrayNacional);
+    this.totalPeso = data.datos.totalPeso;
     this.envioFree = data.datos.envioFree;
     this.totalBs = data.datos.totalBs;
     this.totalDolar = this.totalBs / this.dolarToday;

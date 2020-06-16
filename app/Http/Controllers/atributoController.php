@@ -214,7 +214,18 @@ class atributoController extends Controller
     {
        
        $combinacion=Combinacion::findOrFail($id);
-       $combinacion->delete();
+        $producto=$combinacion->producto;
+        
+        if($producto->status=='si'){
+            $mensaje='activo';
+            return $mensaje;
+        }else{
+            $mensaje='inactivo';
+            $combinacion->delete();
+            return $mensaje;
+        }
+
+       
        
 
     }

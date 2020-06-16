@@ -5,6 +5,16 @@
     $carritoCount=Producto::carritoCount();
 @endphp
 
+@section('script')
+<script>
+    function markNotificationAsRead($parametro){
+	 
+     $.get(`/t/${$parametro}`)
+     
+     }
+</script>
+@endsection
+
 <header id="header"><!--header-->
     <div class="header_top"><!--header_top-->
         <div class="container">
@@ -68,14 +78,91 @@
                         <ul class="nav navbar-nav">
                             
                         <li><a href="{{url('/lista-deseo')}}"><i class="fa fa-star"></i>Lista de deseos</a></li>
-                            <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-                            <li><a href="{{url('/carrito')}}"><i class="fa fa-shopping-cart"></i>Carrito({{$carritoCount}})</a></li>
+                            
+                            <li><a href="{{url('/carrito')}}"><i class="fa fa-shopping-cart"></i>Carrito
+                                @if($carritoCount>0)
+                            <span class="label label-warning">{{$carritoCount}}</span>
+                                @endif
+                            </a></li>
                             @if(empty(\Auth::check()))
                         <li><a href="{{url('/registrar-usuario')}}"><i class="fa fa-user"></i> Registrarse</a></li>
-                        <li><a href="{{url('/iniciar-sesion')}}"><i xclass="fa fa-lock"></i>Iniciar seción</a></li>
+                        <li><a href="{{url('/iniciar-sesion')}}"><i xclass="fa fa-lock"></i>Iniciar sesión</a></li>
                             @else
-                        <li><a href="{{url('/comprador/cuenta')}}"><i class="fa fa-user"></i>{{\Auth::user()->nombre}} {{\Auth::user()->apellido}}</a></li>
-                        <li><a href="{{url('/salir')}}"><i class="fa fa-sign-out"></i>Salir</a></li>
+                          
+                            <li>
+                               
+                              <a href="#"class="dropdown-toggle"
+                              aria-expanded="false"  data-toggle="dropdown">
+                              <i class="fa fa-bell-o"></i>
+                              @if(count(\Auth::user()->comprador->unreadNotifications))
+                              
+                              <span class="label label-warning">{{count(\Auth::user()->comprador->unreadNotifications)}}</span>
+                            @endif
+                            </a>
+ 
+                              <ul class="dropdown-menu" role="menu">
+                                <span class="dropdown-header">{{count(\Auth::user()->comprador->unreadNotifications)}} notificationes</span>
+
+                                @foreach (\Auth::user()->comprador->unreadNotifications as $notificacion)
+                                      
+                                <div class="dropdown-divider"></div>
+
+                                @if($notificacion->data["estado"]=='enviadoComprador')
+                                    <li>
+                                    <a href="{{url('/comprador/pedidoDetalle/'.$notificacion->data["pedido"])}}" onclick=" markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
+                                            Pedido {{$notificacion->data["pedido"]}}:  enviado al comprado <span class="text-sm text-muted">{{$notificacion->created_at->diffForHumans()}}</span>
+                                        </a>
+                                    </li>
+                                @endif
+                             
+
+                                @if($notificacion->data["estado"]=='pagoAceptado')
+                                    <li>
+                                    <a href="{{url('/comprador/pedidoDetalle/'.$notificacion->data["pedido"])}}" onclick=" markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
+                                            Pedido {{$notificacion->data["pedido"]}}: pago aceptado <span class="text-sm text-muted">{{$notificacion->created_at->diffForHumans()}}</span>
+                                        </a>
+                                    </li>
+                                @endif
+                               
+
+                                @if($notificacion->data["estado"]=='preparandoPedido')
+                                    <li>
+                                    <a href="{{url('/comprador/pedidoDetalle/'.$notificacion->data["pedido"])}}" onclick=" markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
+                                            Pedido {{$notificacion->data["pedido"]}}: preparando pedido <span class="text-sm text-muted">{{$notificacion->created_at->diffForHumans()}}</span>
+                                        </a>
+                                    </li>
+                                @endif
+                                @endforeach
+
+                                <div class="dropdown-divider"></div>
+
+                                @foreach (\Auth::user()->comprador->unreadNotifications as $notificacion)
+
+                                @if($notificacion->data["estado"]=='metodoPagoDenegado')
+                                    <li>
+                                    <a href="{{url('/comprador/pedidoDetalle/'.$notificacion->data["pedido"])}}" onclick=" markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
+                                            Pedido {{$notificacion->data["pedido"]}}: pago denegado <span class="text-sm text-muted">{{$notificacion->created_at->diffForHumans()}}</span>
+                                        </a>
+                                    </li>
+                                @endif
+
+                                @if($notificacion->data["estado"]=='metodoPagoAceptado')
+                                    <li>
+                                    <a href="{{url('/comprador/pedidoDetalle/'.$notificacion->data["pedido"])}}" onclick=" markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
+                                            Pedido {{$notificacion->data["pedido"]}}: pago denegado <span class="text-sm text-muted">{{$notificacion->created_at->diffForHumans()}}</span>
+                                        </a>
+                                    </li>
+                                @endif
+
+                                @endForeach
+
+                                
+                                    
+                              </ul>
+                          </li>
+                        
+                            <li><a href="{{url('/comprador/cuenta')}}"><i class="fa fa-user"></i>{{\Auth::user()->nombre}} {{\Auth::user()->apellido}}</a></li>
+                            <li><a href="{{url('/salir')}}"><i class="fa fa-sign-out"></i>Salir</a></li>
                             @endif
                         </ul>
                     </div>
@@ -99,18 +186,18 @@
                     <div class="mainmenu pull-left">
                         <ul class="nav navbar-nav collapse navbar-collapse">
                             <li><a href="{{url('/')}}" class="active">Inicio</a></li>
-                            @foreach($mainCategorias as $item)
-                            <li class="dropdown"><a href="{{route('main.categorias.productos',$item->slug)}}">{{$item->nombre}}<i class="fa fa-angle-down"></i></a>
+                           
+                            <li class="dropdown"><a href="#">Categorias principales<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
                                     
-                            @foreach($item->subCategoria as $sub)    
-                                <li><a href="{{route('categorias.productos',$sub->slug)}}">{{$sub->nombre}}</a></li>
+                            @foreach($mainCategorias as $item)   
+                                <li><a href="{{route('main.categorias.productos',$item->slug)}}">{{$item->nombre}}</a></li>
                                         
                             @endforeach       
                                     
                                 </ul>
                             </li> 
-                            @endforeach
+                         
                             
                         </ul>
                     </div>

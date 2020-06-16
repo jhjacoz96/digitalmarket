@@ -114,21 +114,23 @@
               <li class="nav-item">
                 <a href="{{route('producto.index')}}" class="nav-link ">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Producto</p>
+                  <p>Productos</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{route('categoria.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Categoria</p>
+                  <p>Categorias</p>
                 </a>
               </li>
+           
               <li class="nav-item">
-                <a href="{{route('grupoAtributo.index')}}" class="nav-link">
+                <a href="{{route('marca.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Atributos</p>
+                  <p>Marcas</p>
                 </a>
               </li>
+            
             </ul>
           </li>
 
@@ -184,7 +186,7 @@
               <li class="nav-item">
                 <a href="{{route('metodoEnvio.index')}}" class="nav-link ">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Metodo envio</p>
+                  <p>Método envio</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -208,7 +210,7 @@
               <li class="nav-item">
                 <a href="{{route('metodoPago.index')}}" class="nav-link ">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Metodo pago</p>
+                  <p>Método pago</p>
                 </a>
               </li>
               <li class="nav-item">

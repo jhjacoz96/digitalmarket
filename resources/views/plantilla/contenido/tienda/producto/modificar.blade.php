@@ -117,7 +117,7 @@
   
   
                   <div class="info-box">
-                    <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+                    <span class="info-box-icon bg-info"><i class="  fas fa-shopping-basket"></i></span>
       
                     <div class="info-box-content">
                       <span class="info-box-text">Ventas</span>
@@ -137,7 +137,7 @@
   
   
                   <div class="info-box">
-                    <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+                    <span class="info-box-icon bg-info"><i class="fas fa-eye"></i></span>
       
                     <div class="info-box-content">
                       <span class="info-box-text">Visitas</span>
@@ -242,14 +242,34 @@
                             </div>
                            
                           </div>
-                          
-                          <label>Cantidad de productos</label>
-                      <input class="form-control" type="number" id="cantidad" name="cantidad" :disabled="disableCantidad==true" value="{{$producto->cantidad}}" >
-                        </div>
+                          <div v-if="tipoProducto!='combinacion'">
+
+                            <label>Cantidad de productos</label>
+                            <input class="form-control" type="number" id="cantidad" name="cantidad"  value="{{$producto->cantidad}}" >
+                          </div>
+                     
                         <!-- /.form-group -->
             
                       </div>
                     </div>
+
+                    <div class="col-md-6">
+
+                      <div class="form-group">
+                        <label for="">Marca</label>
+                        <select class="form-control" name="marca" >
+                          <option value="" selected>Seleccione una marca</option>
+                          @foreach ($marca as $item)   
+                            <option
+                            @if($item->id==$producto->marca_id)
+                              selected
+                            @endif
+                            value="{{$item->id}}" >{{$item->nombre}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+
                     <!-- /.col -->
                   </div>
                   <!-- /.row -->
@@ -262,8 +282,8 @@
               </div>
             </div>
       
-              <!-- /.card -->
-
+              <!-- 
+            
               <div class="card card-secondary" v-if="tipoProducto=='combinacion'">
                                 
                 <div class="card-header">
@@ -292,10 +312,7 @@
                      
                           <div class="form-group" v-for="(item,index) in grupos">
                             
-                            <label for="">@{{item.nombre}}</label>
-                            <!--<select v-model="select"   class="form-control"  multiple   >
-                            <option   :value="items" v-for="(items,index) in item.atributo">@{{items.nombre}}</option>
-                            </select>-->
+                            
                             <vue-multiselect v-model="select" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="nombre" track-by="id"      
                             :options="item.atributo"
                             :multiple="true" :taggable="true" @tag="addTag"></vue-multiselect>
@@ -384,8 +401,8 @@
                     
                 </div>
            
-            </div>
-
+              </div>
+            -->
 
 
                   <div class="card card-secondary" v-if="tipoProducto=='combinacion'">
@@ -587,7 +604,7 @@
                   <!-- /.row -->
 
                   
-
+                    <!--
                   <div class="row">
                     <div class="col-md-12">
                       <p class="lead">Precios específicos</p>
@@ -622,8 +639,8 @@
                     </div>
 
                   </div>
-            
-      
+                -->
+                  
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
@@ -655,7 +672,7 @@
                         </textarea>
                       
                       </div>
-                      <!-- /.form group -->
+                      <!--  
       
                      <div class="form-group">
                         <label>Descripción larga:</label>
@@ -665,7 +682,7 @@
                         </textarea>
                       
                       </div>                
-      
+                      -->
                     </div>
                     <!-- /.card-body -->
                   </div>
@@ -681,7 +698,7 @@
       
                   <div class="card card-secondary">
                     <div class="card-header">
-                      <h3 class="card-title">Especificaciones y otros datos</h3>
+                      <h3 class="card-title">Especificaciones</h3>
                     </div>
                     <div class="card-body">
                       <!-- Date dd/mm/yyyy -->
@@ -693,17 +710,17 @@
                         </textarea>
                       
                       </div>
-                      <!-- /.form group -->
-      
+                      <!--      
                      <div class="form-group">
                         <label>Datos de interes:</label>
       
                         <textarea class="form-control ckeditor" name="datosInteres" id="datosInteres" rows="5">
                             {!!$producto->datosInteres!!}
                         </textarea>
-                      
+                       
+
                       </div>                
-      
+                      -->
                     </div>
                     <!-- /.card-body -->
                   </div>
@@ -802,6 +819,7 @@
             <div class="card-body">
       
              <div class="row">
+               <!-- 
                     <div class="col-md-6">
                       <div class="form-group">
       
@@ -810,11 +828,11 @@
       
                        
                       </div>
-                      <!-- /.form-group -->
+                      
                       
                     </div>
-                    <!-- /.col -->
-                    <div class="col-sm-6">
+                     -->
+                        <div class="col-sm-6">
                           <!-- checkbox -->
                           <div class="form-group clearfix">
                             <div class="custom-control custom-checkbox">
@@ -830,8 +848,13 @@
       
                           </div>
       
-                          
-      
+                        </div>
+
+                        <div class="col-sm-6"> 
+                          <div class="form-group">
+                            <label for="">Peso exacto del producto</label>
+                          <input type="text" class="form-control" value="{{$producto->peso}}" name="peso">
+                          </div>
                         </div>
       
                       

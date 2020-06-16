@@ -73,17 +73,11 @@
                                     
                                 </div>
 
-                              <!-- Controls -->
-                            <!--  <a class="left item-control" href="#similar-product" data-slide="prev">
-                                <i class="fa fa-angle-left"></i>
-                              </a>
-                              <a class="right item-control" href="#similar-product" data-slide="next">
-                                <i class="fa fa-angle-right"></i>
-                              </a>-->
+                              
                         </div>
 
                     </div>
-                    <div class="col-sm-7">
+                    <div class="col-sm-7 ">
                     
                     <form action="{{route('agregarCarrito')}}" method="post">
                            {{ csrf_field() }} 
@@ -98,7 +92,12 @@
                          
                             <div align="left"><?php echo $miga; ?></div>
                             <div>&nbsp;</div>
-                        <h2>{{$producto->nombre}}</h2>
+                        <h2 style="color:#FE980F;">{{$producto->nombre}}</h2>
+                        <button type="submit" name="deseo" value="deseo" class="btn btn-fefault" :disabled="disabledBoton">
+                            <i class="fa fa-heart"></i>
+                            Agregar a lista de deseo
+                        </button>
+                        <div>&nbsp;</div>
                             <p>Sku: {{$producto->sku}}</p>
                         
                             @if($producto->tipoCliente=='combinacion')
@@ -111,7 +110,7 @@
                                     </select>
                                 </p>  
                             </div>
-                            <div v-if="count==2">
+                        <div v-if="count==2">
                             <p >
                                 <select @change="obtenerCombinacion2" v-model="atributo_id"  id="selected">
                                     <option selected value="">@{{grupoCombinacion2.nombre}}</option>
@@ -128,12 +127,12 @@
                             </p>  
                         </div>
                             @endif
-                          
-                            
-                            
-                            <img src="{{asset('shop/images/product-details/rating.png')}}" alt="" />
+                        
                             <span>
-                                <span>Bs {{$producto->precioActual}}</span>
+                                <span>Bs {{$producto->precioActual}}</span><br>
+                                @if($producto->porcentajeDescuento!=0)
+                                <h4>Bs {{$producto->precioAnterior}}</h4>
+                                @endif
                                 @php
                                  $moneda=Producto::obtenerMoneda($producto->precioActual);   
                                 @endphp
@@ -141,21 +140,18 @@
                                 <h2>$ {{$moneda}}</h2>
                                 <label>Cantidad:</label>
                                 <input type="text" v-model="cantidad"/>
-                                @{{validarCantidad}}
-                                <p style="color: tomato;"  v-if="mostrarMensaje">@{{mensaje}}</p>
-                                <br v-if="mostrarMensaje">
                                 <button type="submit" name="carrito"  class="btn btn-fefault cart" :disabled="disabledBoton">
                                     <i class="fa fa-shopping-cart"></i>
                                     Agregar al carrito
                                 </button>
+                                @{{validarCantidad}}
+                                <p class="label label-warning"  v-if="mostrarMensaje">@{{mensaje}}</p>
+                                <br v-if="mostrarMensaje">
 
-                                <p><button type="submit" name="deseo" value="deseo" class="btn btn-fefault cart" :disabled="disabledBoton">
-                                    <i class="fa fa-briefcase"></i>
-                                    Agregar a lista de deseo
-                                </button></p>
                             </span>
+                                    
                             
-                        <p><b>Disponibilidad:</b>
+                            <p><b>Disponibilidad:</b>
                             @if($producto->tipoCliente=='comun')
                                 {{$producto->cantidad}}
                             @else
@@ -165,8 +161,13 @@
 
                         </p>
                             
-                    <p><b>Tienda:</b> {{$producto->tienda->nombreTienda}}</p>
-                            
+                        <p><b>Tienda:</b> {{$producto->tienda->nombreTienda}}</p>
+                         @if(!empty($producto->marca->imagen))
+                         <p><b>Marca:</b>
+                         <img src="{{$producto->marca->imagen->url}}" style="width:150px; ">    
+                         </p>
+                         @endif  
+
                         </div><!--/product-information-->
                     </form>
                     </div>

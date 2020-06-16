@@ -9,18 +9,20 @@ use Illuminate\Notifications\Notification;
 use App\Pedido;
 use Carbon\Carbon;
 use App\Comprador;
+use App\Tienda;
 class pedidoNotification extends Notification
 {
-    use Queueable;
-
+    protected $comment;
+ 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Pedido $pedido)
+    public function __construct($comment,$ids)
     {
-        $this->pedido=$pedido;
+        $this->comment = $comment;
+         $this->ids = $ids; 
     }
 
     /**
@@ -43,8 +45,8 @@ class pedidoNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'pedido'=>$this->pedido->id,
-            'estado'=>$this->pedido->status,
+            'pedido'=>$this->ids,
+            'estado'=>$this->comment,
             'time'=>Carbon::now()->diffForHumans(),
         ];
     }

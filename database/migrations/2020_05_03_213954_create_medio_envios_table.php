@@ -20,6 +20,12 @@ class CreateMedioEnviosTable extends Migration
             $table->string('dentroIribarren')->nullable();
             $table->decimal('precioEnvio',12,2)->default(0);
             $table->string('envioGratis')->default('I');
+            $table->decimal('0kgA30kg',12,2)->nullable();
+            $table->decimal('31kgA50kg',12,2)->nullable();
+            $table->decimal('50kgA100kg',12,2)->nullable();
+            $table->decimal('101kgA200kg',12,2)->nullable();
+            $table->decimal('mayorA201kg',12,2)->nullable();
+            $table->decimal('envioGratisApartir',12,2)->default(0);
             $table->string('status')->default('A');
             $table->timestamps();
         });

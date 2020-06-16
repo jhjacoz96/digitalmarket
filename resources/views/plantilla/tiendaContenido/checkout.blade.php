@@ -5,8 +5,9 @@
     
         editar:'no',
 		datos:{
+			"envioFree":"{{$envioFree}}",
 			"totalBs":"{{$totalBs}}",
-			"envioFree":"{{$envioFree}}"
+			"totalPeso":"{{$totalPeso}}",
 		}
       }
 </script>
@@ -279,8 +280,10 @@
 
 											<div class="panel-heading">
 												<div class="form-group">
-													<input type="radio" v-model="direccionEnvio" 
-														class="pull-right" :value="direccion.id" name="direccionEnvio">
+													<input type="radio" 
+														class="pull-right" :value="direccion.id" 
+														@click="medioEnvio(direccion)" 
+														name="direccionEnvio">
 													<h5>@{{direccion.nombre}} @{{direccion.apellido}}</h5>
 
 												</div>
@@ -509,8 +512,8 @@
 														@{{envio.tiempoEntrega}}</strong></label>
 											</span>
 											<span class="col-sm-3">
-												<label v-if="envio.envioGratis=='A'">Gratis</label>
-												<label v-if="envio.envioGratis=='I'">@{{envio.precioEnvio}}</label>
+												<label v-if="envio.envioGratis=='A' || envio.precioEnvio==0">Gratis</label>
+												<label v-else=>@{{envio.precioEnvio}}</label>
 											</span>
 										</div>
 									</div>
@@ -593,7 +596,7 @@
 										<td colspan="2">
 											<table class="table table-condensed total-result">
 												<tr>
-													<td>Cart Sub Total</td>
+													<td>Total del carrito</td>
 													<td>Bs{{$montoTotal}}</</td> </tr> @if(\Auth::user()->
 														comprador->tipoComprador->envioGratis===1)
 												<tr class="shipping-cost">
@@ -603,33 +606,38 @@
 												@else
 												<tr class="shipping-cost">
 													<td>Costo de envío</td>
-													<td>
+													<td v-if="selectEnvio.precioEnvio==0">
+														Gratis
+													</td>
+													<td v-else>
 														Bs@{{selectEnvio.precioEnvio}}
 													</td>
 												</tr>
 												@endif
 
-												<tr class="shipping-cost">
-													<td>Cupón</td>
-													<td>
-														@if(!empty(\Session::get('montoCupon')))
-														Bs{{\Session::get('montoCupon')}}
-														@else
-														Bs0
-														@endif
-													</td>
-												<tr class="shipping-cost">
-													<td>Descuento adicional</td>
-													<td>
-														@if(\Session::get('$montoDescuentoTipoComrador')>0)
+												@if(!empty(\Session::get('montoCupon')))
+													<tr class="shipping-cost">
+														<td>Cupón</td>
+														<td>
+															
+															Bs{{\Session::get('montoCupon')}}
+														
+														</td>
+													</tr>
+												@endif
 
-														Bs{{\Session::get('$montoDescuentoTipoComrador')}}
-														@else
-														Bs0
-														@endif
-													</td>
-												</tr>
-												<tr>
+												@if(\Session::get('$montoDescuentoTipoComrador')>0)
+													<tr class="shipping-cost">
+														<td>Descuento adicional</td>
+														<td>
+														
+															Bs{{\Session::get('$montoDescuentoTipoComrador')}}
+
+														
+														</td>
+													</tr>
+													<tr>
+												@endif
 													<td>Monto Total</td>
 
 
@@ -707,15 +715,6 @@
 		
 								</div>
 		
-								<div class="row">
-		
-									<div class="form-group col-sm-6" >
-										<span>
-											Monto a pagar BS 
-										</span>
-									</div>
-		
-								</div>
 		
 								@{{seletedMetodoPago}}
 								<div class="row">

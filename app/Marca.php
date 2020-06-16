@@ -12,7 +12,11 @@ class Marca extends Model
 ];
 
 public function producto(){
-    $this->hasMany('App\Producto','marca_id');
+   return $this->hasMany('App\Producto','marca_id');
+}
+
+public function imagen(){
+    return $this->morphOne('App\Imagen','imageable');
 }
 
 }

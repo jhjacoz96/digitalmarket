@@ -111,7 +111,7 @@
                   {{$banner->appends($_GET)->links()}}
 
                   <div class="box-footer p-3 float-right">
-                  <a href=" {{route('metodoPago.create')}} "  class="btn  btn-info ">Agregar banco</a>
+                  <a href=" {{route('banner.create')}} "  class="btn  btn-info ">Agregar banner</a>
             
                   </div>
                 </div>

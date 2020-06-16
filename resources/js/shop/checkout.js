@@ -40,8 +40,8 @@ const checkout= new Vue({
         precioFijoBs:'',
         precioFijoDolar:'',
         metodoPagos:[],
-        metodoEnvios:'',
-        dolar:''
+        metodoEnvios:[],
+        totalPeso:0
 
     },
     created() {
@@ -83,13 +83,6 @@ const checkout= new Vue({
             console.log(e.response)
         })
 
-      
-
-
-
-
-
-
         axios.get('/obtenerMetodoPagoInternacional').then(res=>{
             this.metodoPagoInternacional=res.data
             console.log(res.data)
@@ -111,21 +104,9 @@ const checkout= new Vue({
             console.log(e.response)
         })
 
-        axios.get('/obtenerMetodoEnvio').then(res=>{
-            this.metodoEnvio=res.data
-           
-         
-
-
-        }).catch(e=>{
-            console.log(e.response)
-        })
-
         axios.get('/obtenerDireccion').then(res=>{
             this.direcciones=res.data
            
-          
-
 
         }).catch(e=>{
             console.log(e.response)
@@ -284,6 +265,134 @@ const checkout= new Vue({
              this.abrir1=false
              this.abrir2=false
 
+        },
+
+        medioEnvio(direccion){
+            this.direccionEnvio=direccion.id
+
+            axios.get('/rangoEnvio/'+direccion.id).then(res=>{
+
+                axios.get(`/obtenerMetodoEnvio/${res.data.nombre}`).then(res=>{
+
+                    this.metodoEnvio=res.data
+                    const metodoEnvio=this.metodoEnvio
+                    console.log(this.metodoEnvio)
+                
+                    if(this.totalPeso>0){
+                        if(this.totalPeso>0 && this.totalPeso<=30){
+
+                            metodoEnvio.forEach(medio => {
+                                if(medio.envioGratisApartir!=0){
+                                    if(parseFloat(this.totalBs)>=parseFloat(medio.envioGratisApartir)){
+                                        medio.precioEnvio=0
+                                    }else{
+
+                                        medio.precioEnvio=medio['0kgA30kg']
+
+                                    }
+                                }else{
+
+                                    medio.precioEnvio=medio['0kgA30kg']
+
+                                }
+                              
+                            });
+
+                        }else if(this.totalPeso>30 && this.totalPeso<=50){
+
+                            metodoEnvio.forEach(medio => {
+
+                                if(medio.envioGratisApartir!=0){
+                                    
+                                    if(parseFloat(this.totalBs)>=parseFloat(medio.envioGratisApartir)){
+                                        
+                                        medio.precioEnvio=0
+                                    }else{
+                                        
+                                        medio.precioEnvio=medio['31kgA50kg']
+
+                                    }
+                                }else{
+                                    
+                                    medio.precioEnvio=medio['31kgA50kg']
+
+                                }
+
+                            });
+
+                        }else if(this.totalPeso>50 && this.totalPeso<=100){
+
+                            metodoEnvio.forEach(medio => {
+
+                                if(medio.envioGratisApartir!=0){
+                                    if(parseFloat(this.totalBs)>=parseFloat(medio.envioGratisApartir)){
+                                        medio.precioEnvio=0
+                                    }else{
+
+                                        medio.precioEnvio=medio['50kgA100kg']
+
+                                    }
+                                }else{
+
+                                    medio.precioEnvio=medio['50kgA100kg']
+
+                                }
+
+                            });
+
+                        }else if(this.totalPeso>100 && this.totalPeso<=200){
+
+                            metodoEnvio.forEach(medio => {
+
+                                if(medio.envioGratisApartir!=0){
+                                    if(parseFloat(this.totalBs)>=parseFloat(medio.envioGratisApartir)){
+                                        medio.precioEnvio=0
+                                    }else{
+
+                                        medio.precioEnvio=medio['101kgA200kg']
+
+                                    }
+                                }else{
+
+                                    medio.precioEnvio=medio['101kgA200kg']
+                                }
+
+                            });
+
+                        }else if(this.totalPeso>200){
+
+                            metodoEnvio.forEach(medio => {
+
+                                if(medio.envioGratisApartir!=0){
+                                    if(parseFloat(this.totalBs)>=parseFloat(medio.envioGratisApartir)){
+                                        medio.precioEnvio=0
+                                    }else{
+
+                                        medio.precioEnvio=medio['mayorA201kg']
+
+                                    }
+                                }else{
+
+                                    medio.precioEnvio=medio['mayorA201kg']
+                                }
+
+                              
+                            });
+
+                        }
+                    }
+
+
+                }).catch(e=>{
+                    console.log(e.response)
+                })
+
+            }).catch(e=>{
+                console.log(e.response)
+            })
+           
+            
+            
         }
        
     },
@@ -291,7 +400,9 @@ const checkout= new Vue({
         console.log(this.metodoPagoInternacional)
         console.log(this.metodoPagoNacional)
         console.log(this.arrayNacional)
-        
+
+        this.totalPeso=data.datos.totalPeso
+
         this.envioFree=data.datos.envioFree
       
         this.totalBs=data.datos.totalBs

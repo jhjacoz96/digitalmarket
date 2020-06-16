@@ -192,7 +192,19 @@
                       <!-- /.form-group -->
                       
                       
+                    </div>
 
+                    <div class="col-md-6">
+
+                      <div class="form-group">
+                        <label for="">Marca</label>
+                        <select class="form-control" class="form-control" name="marca" >
+                          <option value="" selected>Seleccione una marca</option>
+                          @foreach ($marca as $item)   
+                            <option value="{{$item->id}}" >{{$item->nombre}}</option>
+                          @endforeach
+                        </select>
+                      </div>
                     </div>
                     
                     <!-- /.col -->
@@ -636,10 +648,15 @@
                            </div>
       
                           </div>
-      
-                        
-      
-                        </div>
+    
+                    </div>
+
+                    <div class="col-sm-6"> 
+                      <div class="form-group">
+                        <label for="">Peso exacto del producto</label>
+                      <input type="text" class="form-control" name="peso">
+                      </div>
+                    </div>
       
                       
       

@@ -1,11 +1,13 @@
 <?php
 
 namespace App;
-
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
 class Tienda extends Model
 {
+    use Notifiable;
+
     protected $fillable =[
             'nombre',
             'apellido',

@@ -70,7 +70,12 @@ class pedidoController extends Controller
             $pago->status='Aceptado';
             $pago->save();
 
+            
             $pedido=Pedido::with('metodoPago')->findOrFail($pago->pedido_id);
+
+            $comment = 'metodoPagoAceptado'; 
+            $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
+
             $count=count($pedido->metodoPago);
             $valor=[];
             foreach ($pedido->metodoPago as  $value) {
@@ -84,6 +89,30 @@ class pedidoController extends Controller
         
                 $pedido->status='pagoAceptado';
                 $pedido->save();
+
+            $tiendas=[];
+            foreach ($pedido->producto as $value) {
+
+                if(!in_array($value->tienda_id,$tiendas)){
+                    
+                    array_push($tiendas,$value->tienda_id);
+
+                }
+
+            }
+            
+            foreach($tiendas as $id){
+
+                $t=Tienda::find($id);
+            
+                $comment = 'nuevoPedido'; 
+                $t->notify(new pedidoNotification($comment,$pedido->id));
+
+            }
+
+                $comment = 'pagoAceptado'; 
+                $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
+
             } 
 
             $metodoPago=MetodoPago::findOrFail($pago->metodoPago_id);
@@ -125,6 +154,10 @@ class pedidoController extends Controller
 
             $pago->status='Denegado';
             $pago->save();
+
+            $comment = 'metodoPagoDenegado'; 
+            $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
+
             flash('El código de pago se ha rechazado')->success()->important();
 
             return \redirect()->route('pedido.detalle',$pago->pedido_id);
@@ -182,14 +215,43 @@ class pedidoController extends Controller
             'pedido'=>$pedido
         ];
 
-        /*Mail::send('correos.cambioEstado',$datosMensaje,function($mensaje) use($correo){
+        Mail::send('correos.cambioEstado',$datosMensaje,function($mensaje) use($correo){
             $mensaje->to($correo)->subject('Estado de pedido - DigitalMarket');
-        });*/
+        });
 
         
+        if($pedido->status=='preparandoPedido'){
+            
+            $comment = 'preparandoPedido'; 
+            $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
+
+        }
+
         if($pedido->status=='enviadoComprador'){
             
-            $pedido->comprador->notify(new pedidoNotification($pedido));
+            $comment = 'enviadoComprador'; 
+            $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
+
+        }
+
+        if($pedido->status=='pagoAceptado'){
+
+
+            $tiendas=[];
+            foreach ($pedido->producto as $value) {
+                if(!in_array($value->tienda_id,$tiendas)){  
+                    array_push($tiendas,$value->tienda_id);
+                }
+            }
+            
+            foreach($tiendas as $id){
+                $t=Tienda::find($id);
+                $comment = 'nuevoPedido'; 
+                $t->notify(new pedidoNotification($comment,$pedido->id));
+            }
+            
+            $comment = 'pagoAceptado'; 
+            $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
 
         }
 
@@ -223,6 +285,7 @@ class pedidoController extends Controller
             $pedido=Pedido::find($productoPedido->pedido_id);
             $pedido->status='preparandoPedido';
             $pedido->save();
+
         }
 
         flash('Este producto ya se encuentra listo para el envio')->success()->important();

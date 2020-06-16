@@ -15,7 +15,7 @@ class CreateProductosTable extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre')->unique();
+            $table->string('nombre');
             $table->string('slug')->unique();
             $table->string('sku')->nullable();
             $table->string('tipoCliente');
@@ -34,6 +34,7 @@ class CreateProductosTable extends Migration
             $table->unsignedBigInteger('ventas')->default(0);
             $table->string('status')->default('A');
             $table->char('sliderPrincipal',2);
+            $table->double('peso',8,2);
             
 
 

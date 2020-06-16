@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Comprador;
 use App\User;
 use App\Pedido;
+use App\Calificacion;
+use App\Producto;
 use App\MetodoPagoPedido;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Email;
@@ -115,6 +117,9 @@ class userController extends Controller
         \Auth::logout();
         \Session::forget('frontSession');
         \Session::forget('session_id');
+        if(!empty(\Session::get('$montoDescuentoTipoComrador'))){
+            \Session::forget('$montoDescuentoTipoComrador');
+        }
         return redirect('/');
     }
 
@@ -135,7 +140,7 @@ class userController extends Controller
    public function pedidoDetalle($id){
        $comprador=\Auth::user()->comprador;
        $pedido=Pedido::with('producto')->with('metodoPago')->findOrFail($id);
-    
+       
        return view('plantilla.tiendaContenido.perfil.pedidoDetalle',compact('pedido'));
    }
 
@@ -156,6 +161,43 @@ class userController extends Controller
         $pago->save();
         flash('Su referencia a sido enviada. Una vez sus pagos sean validados se le notificará mediante un correo.')->success()->important();
                 return redirect('/comprador/pedidoDetalle/'.$pago->pedido_id);
+   }
+
+   public function calificar(Request $request){
+        $v=Validator::make($request->all(),[
+            'estrellas'=>'required',
+            'producto_id'=>'required',
+            'titulo'=>'required',
+            'comentario'=>'required'
+        ]);
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+
+        $c=Calificacion::where(['producto_id'=>$request->producto_id,'comprador_id'=>\Auth::user()->comprador->id])->count();
+        
+        if($c>0){
+            flash('Ya ha calificado este producto.')->warning()->important();
+            return redirect()->back();
+        }
+
+        $calificacion=new Calificacion;
+
+        
+        $calificacion->titulo=$request->titulo;
+        $calificacion->comentario=$request->comentario;
+        $calificacion->calificacion=$request->estrellas;
+        $calificacion->producto_id=$request->producto_id;
+        $calificacion->comprador_id=\Auth::user()->comprador->id;
+        $calificacion->save();
+        $pedido=Pedido::findOrFail($request->pedido_id);
+        $producto=Producto::findOrFail($request->producto_id);
+        $pedido->status='culminado';
+        $pedido->save();   
+
+        flash('Se ha enviado la calificación del producto: ' . $producto->nombre . ' ,perteneciente al pedido ' . $pedido->id . '.' )->success()->important();
+        return redirect()->back();
+
    }
 
 

@@ -47,7 +47,6 @@
 
 
 
-
 body {
   font-family: 'Roboto', sans-serif;
   background:;
@@ -78,6 +77,10 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Roboto', sans-serif;
+}
+
+h4{
+  text-decoration: line-through;
 }
 
 .btn:hover, 
@@ -1204,7 +1207,7 @@ h2.title {
 .product-details {
   margin-bottom: 40px;
   overflow: hidden;
-  margin-top: 10px;
+
 }
 
 

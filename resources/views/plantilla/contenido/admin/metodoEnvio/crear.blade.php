@@ -6,6 +6,7 @@
       }
     </script>
 @endsection
+
 @section('contenido')
 <div id="metodoEnvio">
 <div class="content-wrapper">
@@ -45,19 +46,11 @@
                 @csrf
                 <div class="card-body">
 
-                  
-
                   <div class="form-group col-md-6">
-                    <label for="exampleInputEmail1"></label>
-                    
-                  </div>
-
-                  <div class="form-group col-md-6">
-                    <label for="exampleInputEmail1">Alcance del envío</label>
-                    <select name="alcance" id="">
-                      <option value="nacional">Nacionales</option>
-                      <option value="iribarren">Dentro del municipio iribarren</option>
-                      <option value="ambasFormas">Ambas formas</option>
+                    <label for="exampleInputEmail1">Rango del envío</label>
+                    <select name="rango " class="form-control" id="">
+                      <option value="nacional">Todo el territo nacional</option>
+                      <option value="municipal">Solo barquisimeto</option>
                     </select>
                     {!!$errors->first('alcance','<small>:message</small><br>')!!}
 
@@ -65,10 +58,9 @@
 
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Nombre</label>
-                    <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="Mrw">
+                    <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="">
                     {!!$errors->first('nombre','<small>:message</small><br>')!!}
                   </div>
-
 
                   <div class="form-group col-md-6">
                     <label for="">Tiempo de entrega</label>
@@ -77,23 +69,61 @@
                   </div>
 
                   <div class="form-group">
-                    <div class="custom-control custom-switch">
+                    <div class="custom-control custom-switch ">
                       <input type="checkbox"  
-                      
                       class="custom-control-input" id="envioGratis"   v-model="envioGratis"
                        name="envioGratis">
                       <label class="custom-control-label" for="envioGratis">Envio gratis</label>
                     </div>
                   </div>
 
+                  <div class="form-group" v-if="envioGratis==false">
+                    <div class="custom-control custom-switch ">
+                      <input type="checkbox" 
+                      class="custom-control-input" id="envioGratisMonto"   v-model="envioGratisMonto"
+                      name="envioGratisMonto">
+                      <label class="custom-control-label" for="envioGratisMonto">Envío gratis a partir de un monto</label>
+                    </div>
+                  </div>
 
+                  <div class="form-group col-md-6" v-if="envioGratisMonto==true">
+                    <label for="exampleInputEmail1">Monto mínimo a aplicar</label>
+                    <input type="text" required="true" name="montoMinimo" class="form-control" id="montoMinimo" placeholder=""> 
+                    {!!$errors->first('montoMinimo','<small>:message</small><br>')!!}
+                  </div>
                   
 
                   <div class="form-group col-md-6" v-if="envioGratis==false">
-                    <label for="">Precio de envio</label>
-                    <input  class="form-control"  v-model="precioEnvio" placeholder="" name="precioEnvio"  type="text">
-                    {!!$errors->first('precioEnvio','<small>:message</small><br>')!!}
+                    <label for="">Precio de envio de 0kg a 30kg</label>
+                    <input  class="form-control"  v-model="precio0kg30kg" placeholder="" name="precio0kg30kg"  type="text">
+                    {!!$errors->first('precio0kga30','<small>:message</small><br>')!!}
                   </div>
+
+                  <div class="form-group col-md-6" v-if="envioGratis==false">
+                    <label for="">Precio de envio de 31kg a 50kg</label>
+                    <input  class="form-control"  v-model="precio31kg50kg" placeholder="" name="precio31kg50kg"  type="text">
+                    {!!$errors->first('precio31kga50','<small>:message</small><br>')!!}
+                  </div>
+
+                  <div class="form-group col-md-6" v-if="envioGratis==false">
+                    <label for="">Precio de envio de 51kg a 100kg</label>
+                    <input  class="form-control"  v-model="precio51kg100g" placeholder="" name="precio51kg100kg"  type="text">
+                    {!!$errors->first('precio51kg100kg','<small>:message</small><br>')!!}
+                  </div>
+
+                  <div class="form-group col-md-6" v-if="envioGratis==false">
+                    <label for="">Precio de envio de 101kg a 200kg</label>
+                    <input  class="form-control"  v-model="precio101kg200kg" placeholder="" name="precio101kg200kg"  type="text">
+                    {!!$errors->first('precio101kga200','<small>:message</small><br>')!!}
+                  </div>
+
+                  <div class="form-group col-md-6" v-if="envioGratis==false">
+                    <label for="">Precio de envio con mas de 201kg</label>
+                    <input  class="form-control"  v-model="precio201kg" placeholder="" name="precio201kg"  type="text">
+                    {!!$errors->first('precio200kg','<small>:message</small><br>')!!}
+                  </div>
+
+              
 
                   <div class="form-group">
                     <div class="custom-control custom-switch">

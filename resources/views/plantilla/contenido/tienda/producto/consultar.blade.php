@@ -82,11 +82,11 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Imagen</th>
                         <th>Nombre</th>
-                        <th>Cantidad disponible</th>
+                        <th>Imagen</th>
                         <th>Sub categoria</th>
                         <th>Categoria</th>
+                        <th>Estado</th>
                         <th>Acción</th>
                       </tr>
                     </thead>
@@ -111,13 +111,19 @@
                             <img style="height:100px; width:100px; border-radius:10px;" src="{{$item->imagen->random()->url}}" >
                              @endif    
                           </td>
-                        
-                           <td class="mailbox-star">{{$item->cantidad}}</td>
 
                            <td class="mailbox-star">{{$item->subCategoria->nombre}}</td>
 
                            <td class="mailbox-star">{{$item->subCategoria->categoria->nombre}}</td>
                           
+                           <td class="mailbox-star">
+                            @if($item->status=='si')
+                            <span class="badge badge-success">Activo</span>
+                            @else
+                            <span class="badge badge-danger">Inactivo</span>
+                            @endif
+                          </td>
+
                            <td class="mailbox-star">
                                <div class="btn-group">
                                

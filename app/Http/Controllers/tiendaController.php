@@ -185,10 +185,6 @@ class tiendaController extends Controller
         $tienda->planAfilizacion_id=$request->planAfiliacion;  
         $tienda->correo=$request->correo;  
         
-        $numero=count(Tienda::All()) + 1;
-        $nombre=strtoupper($tienda->nombreTienda);
-
-        $tienda->codigo=$nombre[0].$nombre[1]. 00 .$numero;
         $tienda->user_id=$user->id; 
 
         if( $request->estatus){

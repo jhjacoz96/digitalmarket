@@ -57,7 +57,7 @@ const producto = new Vue({
 
         axios.get('/producto/categoria').then(res=>{
             this.categorias=res.data
-            console.log(this.categorias)
+           
         }).catch(e=>{
             console.log(e.respose)
         })
@@ -273,7 +273,11 @@ const producto = new Vue({
                 let url = '/obtenerCategoria/' + this.selectedCategoria
                 axios.get(url).then((res) => {
                     this.obtenerSubCategorias = res.data;
-                    console.log(this.obtenerSubCategorias)
+
+                    if(data.editar=='si'){
+                        this.selectedSubCategoria=data.datos.selectedSubCategoria
+                    }
+
                     document.getElementById('subCategoria_id').disabled = false
                 })
             }
@@ -325,18 +329,30 @@ const producto = new Vue({
             }).then((result) => {
                 if (result.value) {
 
-                    this.listaCombinacion2.splice(index, 1)
+                    //this.listaCombinacion2.splice(index, 1)
                     axios.delete(`/combinacion/${item.id}`).then((res)=>{
-                        console.log(res)
+                        if(res.data=='activo'){
+
+                            Swal.fire(
+                                'No puede eliminar una combinacion de un producto activo',
+                                'Su combinación no se ha elimiando',
+                                'warning'
+                            )
+
+                        }else{
+
+                            Swal.fire(
+                                'Eliminado!',
+                                'Su combinación  se ha elimiando',
+                                'success'
+                            )
+
+                        }
                     }).catch(e=>{
                         console.log(es.respose)
                     })
 
-                    Swal.fire(
-                        'Eliminado!',
-                        'Su combinación  se ha elimiando',
-                        'success'
-                    )
+                    
                 }
             })
 
@@ -590,11 +606,14 @@ const producto = new Vue({
             
             
             this.selectedCategoria=data.datos.selectedCategoria
-
-            this.cargarSubCategorias()
             
-            this.selectedSubCategoria=data.datos.selectedSubCategoria
+            
+          
+            if (this.selectedCategoria != '') {
+                this.cargarSubCategorias()
+            }
 
+          
             if(data.datos.tipoCliente=='combinacion'){
                 document.getElementById('customRadio2').checked=true
                 
@@ -608,9 +627,7 @@ const producto = new Vue({
             
 
            //this.selectedCategoria = document.getElementById('categoria_id').getAttribute('data-old');
-            if (this.selectedCategoria != '') {
-                this.cargarSubCategorias()
-            }
+            
         this.selectedSubCategoria = document.getElementById('subCategoria_id').getAttribute('data-old');
 
 

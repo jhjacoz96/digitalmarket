@@ -146,7 +146,7 @@
                   @if($pedido->status!='esperaTransferencia')
                     <div class="row">
                       <div class="form-group">
-                        <p> <a href="{{url('/pedido-factura/'.$pedido->id)}}" class="btn btn-info">Generar factura <i class="fas fa-file-invoice"></i></a></p>
+                        <p> <a href="{{url('/pedido-factura/'.$pedido->id)}}" class="btn btn-info"><i class="fas fa-file-invoice"></i> Generar factura</a></p>
                       </div>
                     </div>
                   @endif

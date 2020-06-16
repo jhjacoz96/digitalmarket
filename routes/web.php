@@ -28,7 +28,7 @@ route::get('/','indexController@index');
 //route::get('/','indexController@index'); 
 
 /*Route::get('/', function () {
-    return view('plantilla.tiendaContenido.index');
+    //return view('plantilla.tiendaContenido.index');
     //return view('tienda.index');
 
     
@@ -77,7 +77,7 @@ route::prefix('comprador')->middleware('frontLogin')->group(function(){
     route::resource('perfil','perfilController');
     Route::post('actualizarContraseña/{user}','perfilController@cambiarContraseña');
     route::resource('direccion','direccionController');
-    
+    Route::match(['get', 'post'], '/calificar','userController@calificar');
     route::get('/pedidos','userController@compradorPedidos');
     route::get('/pedidoDetalle/{id}','userController@pedidoDetalle');
     route::put('/referenciaPago/{idPedido}','userController@referenciaPago');
@@ -212,7 +212,7 @@ route::resource('banner','bannerController');
 
 route::resource('moneda','monedaController');
 
-route::resource('marca','marcaConroller');
+route::resource('marca','marcaController');
 
 route::get('pedido/{tipo}','pedidoController@pedidoAdmin')->name('pedido.consultar');
 route::get('pedido/detalle/{id}','pedidoController@detallePedidoAdmin')->name('pedido.detalle');
@@ -247,6 +247,12 @@ route::get('mainCategorias/{slug}','productoController@mainProductoCategoria')->
 
 //FIN DE FILTRAR CATEGORIAS
 
+//Prductos de la tienda
+
+route::get('/productos/tienda/{id}','indexController@tienda');
+
+//FIN DE productos de la tienda
+
 //DETALLES DE PRODUCTOS
 
 route::get('detalleProducto/{slug}','productoController@detalleProducto')->name('producto.detalle');
@@ -271,7 +277,7 @@ route::get('/lista-deseo/eliminar/{id}','productoController@eliminarlistaDeseo')
 //fin carrito de compra/////
 
 //checkout///
-    route::get('/obtenerMetodoEnvio','productoController@obtenerMetodoEnvio');
+    route::get('/obtenerMetodoEnvio/{municipio}','productoController@obtenerMetodoEnvio');
     route::get('/obtenerDireccion','productoController@obtenerDireccion');
 
     route::get('/checkout/{montoTotal}','productoController@checkout');
@@ -298,5 +304,40 @@ Route::name('factura')->get('/imprimir-factura/{id}', 'pedidoController@pdfFactu
 //cambiar estado almacen
 route::get('/estado-almacen/{id}','pedidoController@cambiarEstadoAlmacen');
 //fin de buscar producto/
+
+
+//filtrar medios de envios por rango
+route::get('/rangoEnvio/{id}','metodoEnvioController@rangoEnvio');
+//
+
+
+
+
+//eliminar notificaciones
+route::get('/t/{id}',function($id){
+   
+    if(\Auth::user()->rol_id==1){
+
+        foreach (\Auth::user()->comprador->unreadNotifications as $notificacion) {
+       
+    
+         if ($notificacion->id==$id) {
+         $notificacion->delete();
+         }    
+        }
+    }
+
+    if(\Auth::user()->rol_id==2){
+
+        foreach (\Auth::user()->tienda->unreadNotifications as $notificacion) {
+       
+    
+         if ($notificacion->id==$id) {
+         $notificacion->delete();
+         }    
+        }
+    }
+});
+
 
 

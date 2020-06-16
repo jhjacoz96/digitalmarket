@@ -265,14 +265,33 @@
                           <div class="form-group" v-if="tipoProducto!='combinacion'" >
 
                             <label>Cantidad</label>
-                            <input class="form-control" type="number" id="cantidad" name="cantidad" :disabled="disableCantidad==true" value="{{$producto->cantidad}}" >
+                            <input class="form-control" type="number" id="cantidad" name="cantidad"  value="{{$producto->cantidad}}">
                           </div>
                       
-                        </div>
+                       
                         <!-- /.form-group -->
             
                       </div>
                     </div>
+
+                    <div class="col-md-6">
+
+                      <div class="form-group">
+                        <label for="">Marca</label>
+                        <select class="form-control" name="marca" >
+                          <option value="" selected>Seleccione una marca</option>
+                          @foreach ($marca as $item)   
+                            <option
+                            @if($item->id==$producto->marca_id)
+                              selected
+                            @endif
+                            value="{{$item->id}}" >{{$item->nombre}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+
+
                     <!-- /.col -->
                   </div>
                   <!-- /.row -->
@@ -941,13 +960,13 @@
       
                           </div>
       
-                        <!--<div class="form-group">
-                          <div class="custom-control custom-switch">
-                            <input type="checkbox"  class="custom-control-input" id="sliderPrincipal" name="sliderPrincipal">
-                            <label class="custom-control-label" for="sliderPrincipal">Aparece en el Slider principal</label>
+                        </div>
+
+                        <div class="col-sm-6"> 
+                          <div class="form-group">
+                            <label for="">Peso exacto del producto</label>
+                          <input type="text" class="form-control" value="{{$producto->peso}}" name="peso">
                           </div>
-                        </div>-->
-      
                         </div>
       
                       

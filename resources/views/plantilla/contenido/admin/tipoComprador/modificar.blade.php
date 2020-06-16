@@ -53,7 +53,7 @@
 
                     <div class="form-group">
                         <label for="">Descuento</label>
-                        <input type="text" value="0" required="true" name="descuento" class="form-control" value="{{$tipo->porcentajeDescuento}}" placeholder="10">
+                        <input type="text"  required="true" name="descuento" class="form-control" value="{{$tipo->porcentajeDescuento}}" placeholder="10">
                         {!!$errors->first('descuento','<small>:message</small><br>')!!}
                     </div>
 
@@ -83,10 +83,7 @@
                                 checked
                                 @endif
                                 id="precio" name="precio">
-                                <label class="custom-control-label" for="precio">Mostrar precio de los productos</label>
-                            
-                            
-                                
+                                <label class="custom-control-label" for="precio">Mostrar precio de los productos</label>  
                             
                         </div>
                       </div>

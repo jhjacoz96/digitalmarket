@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-          <h1>Cantidad de metodos de envios:{{count($envio)}}</h1>
+          <h5>Cantidad de metodos de envios:{{count($envio)}}</h5>
           </div>
 
           <div class="col-sm-6">
@@ -35,32 +35,20 @@
                 <div class="card-header">
                   <h3 class="card-title">Consultar metodos de envios</h3>
   
-                  <div class="card-tools">
-
-                    <form >
-                      <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="nombre" class="form-control float-right" placeholder="Buscar"
-                      value="{{request()->get('nombre')}}"
-                        >
-    
-                        <div class="input-group-append">
-                          <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                        </div>
-                    </form>
-
-                    </div>
-                  </div>
+                  
                 </div>
+             
                 
                 <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                  <table class="table table-hover">
+                <div class="card-body ">
+                  <div  class="table-responsive">
+                  <table id="table_id" class="display">
                     <thead>
                       <tr>
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Tiempo de entrega</th>
-                        <th>Precio envio</th>
+                        <th>Rango</th>
                         <th>Envio gratis</th>
                         <th>Estado</th>
                         <th>Acción</th>
@@ -73,7 +61,13 @@
                        <td class="mailbox-star">{{$item->id}}</td>
                            <td class="mailbox-star">{{$item->nombre}}</td>
                            <td class="mailbox-star">{{$item->tiempoEntrega}}</td>
-                           <td class="mailbox-star">{{$item->precioEnvio}}</td>
+                           <td class="mailbox-star">
+                            @if($item->dentroIribarren!=null)
+                              Nacional
+                            @else
+                              Solo Iribarren
+                            @endif
+                          </td>
                            <td class="mailbox-star">
                             @if ($item->envioGratis=='A')
                             Si
@@ -118,7 +112,7 @@
                      
                     </tbody>
                   </table>
-                  {{$envio->appends($_GET)->links()}}
+                </div>
 
                   <div class="box-footer p-3 float-right">
                   <a href=" {{route('metodoEnvio.create')}} "  class="btn  btn-info ">Agregar metodo envio</a>

@@ -110,7 +110,7 @@
                  
 
                   <div class="box-footer p-3 float-right">
-                  <a href=" {{route('metodoPago.create')}} "  class="btn  btn-info ">Agregar banco</a>
+                  <a href=" {{route('moneda.create')}} "  class="btn  btn-info ">Agregar moneda</a>
             
                   </div>
                 </div>

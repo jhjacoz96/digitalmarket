@@ -19,6 +19,7 @@ class CreatePedidosTable extends Migration
             $table->string('codigoCupon')->nullable();
             $table->integer('cantidadCupon')->nullable();
             $table->integer('descuentoAdicional')->nullable();
+            $table->string('envioGratis');
             $table->string('referenciaEnvio')->nullable();
             $table->string('status');
             $table->string('codigo')->nullable();

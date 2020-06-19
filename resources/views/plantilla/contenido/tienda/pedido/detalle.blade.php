@@ -40,7 +40,7 @@ use App\GrupoAtributo;
 
           <div class="row">
 
-            <div class="col-md-6">
+            <div class="col-md-12">
 
               <div class="card card-secondary ">
                 <div class="card-header">
@@ -73,12 +73,12 @@ use App\GrupoAtributo;
 
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-12">
 
               <div class="card card-secondary ">
                 <div class="card-header">
                   <span class="far fa-money-bill-alt float-left"></span>
-                  <h3 class="card-title ml-1">Pago por venta</h3>
+                  <h3 class="card-title ml-1">Pago de pedido</h3>
 
                 </div>
                 <!-- /.card-header -->
@@ -87,30 +87,89 @@ use App\GrupoAtributo;
                 <div class="card-body">
                   <dl class="row">
                     <dt class="col-sm-8">Porcentaje por plan de afiliación</dt>
+
                     <dd class="col-sm-4">{{\Auth::user()->tienda->planAfiliacion->precio}}%</dd>
-                  
-                      <?php
-                          $total=0;
-                      ?>
-                      @foreach ($pedido->producto as $item)
-                      <?php
-                                    $total=$total+($item->pivot->cantidadProducto*$item->pivot->precioProducto);
-                      ?>
-                      @endforeach
-                  
-                   
-                    <dt class="col-sm-8">Monto a obener por este pedido</dt>
+
+                    <dt class="col-sm-8">Monto total</dt>
                     <dd class="col-sm-4">
-                      Bs {{$total-((\Auth::user()->tienda->planAfiliacion->precio/100)*$total)}}
+                      Bs {{$pedido->pagoTiendaPedido[0]->montoPagado+((\Auth::user()->tienda->planAfiliacion->precio/100)*$pedido->pagoTiendaPedido[0]->montoPagado)}}
+                    </dd>
+                   
+                    <dt class="col-sm-8">Monto obtenido por este pedido</dt>
+                    <dd class="col-sm-4">
+                      Bs {{$pedido->pagoTiendaPedido[0]->montoPagado}}
                     </dd>
 
                   </dl>
-                  <div class="col-md-6">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                 
+                  <div class="table-responsive p-0">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          
+                          <th>Fecha de pago</th>
+                          <th>Monto</th>
+                          <th>Estado</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+    
+    
+                        <tr>
+                         
+                          <td class="mailbox-star">
+                            @if($pedido->pagoTiendaPedido[0]->status=='espera')
+                              En espera
+                            @else
+                              {{$pedido->pagoTiendaPedido[0]->updated_at->format('d-m-Y')}}
+                            @endif
+                          </td>
+                          <td class="mailbox-star">
+                            @if($pedido->pagoTiendaPedido[0]->status=='espera')
+                              En espera
+                            @else
+                            Bs {{$pedido->pagoTiendaPedido[0]->montoPagado}}
+                            @endif
+                          </td>
+                          <td class="mailbox-star">
+                            @if($pedido->pagoTiendaPedido[0]->status=='espera')
+                              En espera
+                            @else
+                              Pagado
+                            @endif
+                          </td>
+                          
+                          
+    
+                        </tr>
+    
+                        <div class="modal fade" id="modal-default">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h4 class="modal-title">Envio de productos</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="callout callout-info">
+                                  <h5>Reglas de envio</h5>
+                                  <p>Este pedido Debe ser enviado a la bodega de DigitalMarket localizada en av. las
+                                    industrias. Los productos debe estar embalados he identificados. Una vez el pedido haya sido enviodo al cliente, se procederá a cancelarle el monto obtenido por este pedido.</p>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /.modal-content -->
+                          </div>
+                          <!-- /.modal-dialog -->
+                        </div>
+    
+    
+                      </tbody>
+                    </table>
                   </div>
+
 
                 </div>
               </div>
@@ -139,8 +198,7 @@ use App\GrupoAtributo;
                   <thead>
                     <tr>
                       <th>Medio de envío</th>
-                      <th>Fecha de envío</th>
-                      <th>Número de guía</th>
+                 
                     </tr>
                   </thead>
                   <tbody>
@@ -160,10 +218,11 @@ use App\GrupoAtributo;
                           @csrf
                           <input value="{{$pedido->medioEnvio->id}}" type="hidden" name="envio">
                           <input value="tiendaPedido" type="hidden" name="ruta">
-
-                          <button type="submit" class="btn btn-info btn-sm">
+                          @if($pedido->status=='pagoAceptado')
+                          <button type="submit" onclick="return confirm('¿Los productos han sido llevados a la bodega de DigitalMarket?')" class="btn btn-info btn-sm">
                             Confirmar envio de pedido
                           </button>
+                          @endif
                         </form>
                       </th>
 
@@ -173,7 +232,7 @@ use App\GrupoAtributo;
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h4 class="modal-title">Actualizar envio</h4>
+                            <h4 class="modal-title">Envio de productos</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
@@ -182,8 +241,7 @@ use App\GrupoAtributo;
                             <div class="callout callout-info">
                               <h5>Reglas de envio</h5>
                               <p>Este pedido Debe ser enviado a la bodega de DigitalMarket localizada en av. las
-                                industrias. Los productos debe estar embalados he identificados. Una vez el cliente haya
-                                calificado el pedido tu dinero será liberado a su cuenta bancario.</p>
+                                industrias. Los productos debe estar embalados he identificados. Una vez el pedido haya sido enviodo al cliente, se procederá a cancelarle el monto obtenido por este pedido.</p>
                             </div>
                           </div>
                         </div>
@@ -262,15 +320,16 @@ use App\GrupoAtributo;
 
           </div>
 
+          
 
+          <!--
           <div class="card card-secondary ">
             <div class="card-header">
               <span class="fas fa-map-marked-alt float-left"></span>
               <h3 class="card-title ml-1">Dirección de envío</h3>
 
             </div>
-            <!-- /.card-header -->
-            <!-- form start -->
+           
 
             <div class="card-body">
 
@@ -317,8 +376,7 @@ use App\GrupoAtributo;
 
             </div>
           </div>
-
-          <!-- /.card -->
+ -->
         </div>
         <!--/.col (left) -->
         <!-- right column -->

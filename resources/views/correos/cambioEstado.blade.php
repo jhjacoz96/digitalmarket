@@ -18,9 +18,11 @@
     @if($pedido->status=='enviadoComprador')
     <p>Código de pedido: {{$pedido->id}}</p>
     <p>Estado del pedido: Enviado al comprador</p>
+    <p>Referencia de envio: {{$pedido->refenciaEnvio}}</p>
     &nbsp;
         <p>Hola {{$nombre}}, queremos informate que tu pedido ya ha sido envido a la dirección que usted ha indicado. Esperamos que disfrute sus productos y gracias por preferirnos.</p>
     &nbsp;
+
         <p>Nota: No debe olvidar calificar los productos de su pedido. Si no se realiza esta, su pedido será culminado por nosotros.</p>
     @endif
 </body>

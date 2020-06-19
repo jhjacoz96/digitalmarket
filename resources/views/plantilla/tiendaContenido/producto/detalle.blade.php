@@ -178,7 +178,7 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#descripcionLarga" data-toggle="tab">Descripcion larga</a></li>
                             <li><a href="#especificacion" data-toggle="tab">Especificaciones</a></li>
-                            <li ><a href="#envio" data-toggle="tab">Opción de envios</a></li>
+                            <li ><a href="#calificacion" data-toggle="tab">Calificaciones</a></li>
                         </ul>
                     </div>
                     <div class="tab-content">
@@ -195,9 +195,19 @@
                             </div>
                         </div>
                         
-                        <div class="tab-pane fade" id="envio" >
+                        <div class="tab-pane fade" id="calificacion" >
                             <div class="col-sm-12">
-                                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Necessitatibus delectus sunt hic commodi culpa non ab optio? Autem, totam est sed, error iste reiciendis iusto commodi excepturi cupiditate laudantium laboriosam.</p>
+                               <div class="media">
+                                    <div class="media-left">
+                                      <a href="#">
+                                        <img class="media-object" src="..." alt="...">
+                                      </a>
+                                    </div>
+                                    <div class="media-body">
+                                      <h4 class="media-heading">Media heading</h4>
+                                      hola
+                                    </div>
+                                  </div>
                             </div>
                         </div>
                         

@@ -87,12 +87,15 @@
                 @endforeach
                 <tr>
                     <td colspan="5" align="right">Gastos de envio</td>
-                    @if($detalleProducto['medioEnvio']->envioGratis=='I')
-
-                    <td >{{$detalleProducto['medioEnvio']->precioEnvio}}</td>
+                    @php
+                     $pedido=Pedido::find($pedido_id);  
+                    @endphp
+                    @if($detalleProducto['medioEnvio']->envioGratis=='I' ||$pedido->comprador->tipoComprador->envioGratis==0 || )
+                    <p>Envio gratis</p>
                     @else
-                        <p>Envio gratis</p>
+                    <td >Bs {{$detalleProducto['medioEnvio']->precioEnvio}}</td>
                     @endif
+            
                 </tr>
                 @if(!empty($detalleProducto['codigoCupon']))
                 <tr>
@@ -101,6 +104,7 @@
                 </tr>
                 @endif
                 <tr>
+                    
                     <td colspan="5" align="right">Descuento adicional</td>
                     <td >BS </td>
                 </tr>

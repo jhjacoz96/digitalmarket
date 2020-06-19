@@ -29,7 +29,7 @@ use App\Marca;
                             <div class="single-products">
                                     <div class="productinfo text-center">
                                         @if($productos->imagen->count()<=0)
-                                             <img  src="/imagenes/avatar.png" >
+                                            <img  src="/imagenes/avatar.png" >
                                         @else
                                             <img src="{{$productos->imagen->random()->url}}" >
                                         @endif

@@ -321,7 +321,7 @@
                     <tr>
                       <th>Medio de envío</th>
                       <th>Fecha de envío</th>
-                      <th>Número de guía</th>
+                      <th>Referencia de envío</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -330,7 +330,14 @@
                     <tr>
                       <td class="mailbox-star">{{$pedido->medioEnvio->nombre}}</td>
                       <td class="mailbox-star">
-
+                        @if($pedido->status=='enviadoComprador')
+                        {{$pedido->updated_at->format('d-m-Y')}}
+                        @endif
+                      </td>
+                      <td class="mailbox-star">
+                        @if($pedido->status=='enviadoComprador')
+                        {{$pedido->referenciaEnvio}}
+                        @endif
                       </td>
                       <th>
 
@@ -346,6 +353,9 @@
                     </tr>
 
                     <div class="modal fade" id="modal-default">
+                    <form action="{{url('/pedido/status/'.$pedido->id)}}" method="post">
+                      @csrf
+                      @method('PUT')
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -356,23 +366,24 @@
                           </div>
                           <div class="modal-body">
                             <div class="form-group">
-                              <label for="">Referencia</label>
-                              <input name="referencia" type="text" class="form-control">
+                              <label for="">Referencia de envio</label>
+                              <input name="referencia" type="text"  class="form-control">
+                              <input name="estado" type="hidden" value="enviadoComprador" class="form-control">
 
                             </div>
                             <div class="form-group">
-                              <p>Al actualizar el pedido, los productos de su tienda pertenecientes a este pedido se
-                                actualizaran como enviado al cliente</p>
+                              <p>Esta acción cambiará el estado del pedido a <span class="badge" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span></p>
                             </div>
                           </div>
                           <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary">Actualizar</button>
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
                           </div>
                         </div>
                         <!-- /.modal-content -->
                       </div>
                       <!-- /.modal-dialog -->
+                    </form>
                     </div>
 
 

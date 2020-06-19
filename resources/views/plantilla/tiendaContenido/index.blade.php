@@ -72,7 +72,7 @@ use App\Producto;
                                         <h2>Bs {{$productos->precioActual}}</h2>
                                         
                                         @if($productos->porcentajeDescuento!=0)
-                                        <h4>Bs {{$productos->precioAnterior}}</h4>
+                                        <h4 style="text-decoration: line-through;">Bs {{$productos->precioAnterior}}</h4>
                                         @endif
                                         <p>{{$productos->nombre}}</p>
                                         <a href="{{url('/detalleProducto/'.$productos->slug)}}"
@@ -110,7 +110,7 @@ use App\Producto;
 
                                         <h2>Bs {{$productos->precioActual}}</h2>
                                         @if($productos->porcentajeDescuento!=0)
-                                        <h4>Bs {{$productos->precioAnterior}}</h4>
+                                        <h4 style="text-decoration: line-through;">Bs {{$productos->precioAnterior}}</h4>
                                         @endif
                                         <p>{{$productos->nombre}}</p>
                                         <a href="{{url('/detalleProducto/'.$productos->slug)}}"
@@ -153,7 +153,13 @@ use App\Producto;
                                         <div class="product-image-wrapper">
                                             <div class="single-products">
                                                 <div class="productinfo text-center">
-                                                    <a href="{{url('/productos/tienda/'.$item->id)}}"><img src="{{asset('/imagenes/tienda/tienda.png')}}" style="border-radius: 100px;" alt="" /></a>
+                                                    <a href="{{url('/productos/tienda/'.$item->id)}}">
+                                                        @if($item->imagen==null)
+                                                        <img src="{{asset('/imagenes/tienda/tienda.png')}}" style="border-radius: 100px;" alt="" />
+                                                        @else
+                                                        <img src="{{$item->imagen->url}}" style="border-radius: 100px; width: 150px;" alt="" />
+                                                        @endif
+                                                    </a>
                                                     
                                                 <h5 >{{$item->nombreTienda}}</h5>    
                                             

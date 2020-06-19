@@ -14,7 +14,7 @@
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
   
         <div class="info">
-          <a class="d-block">Tienda</a>
+        <a class="d-block">Tienda {{\Auth::user()->tienda->nombreTienda}}</a>
         </div>
       </div>
 
@@ -28,17 +28,16 @@
                 <a href="{{route('tiendas.pedido.consultar')}}" class="nav-link">
                     <i class="nav-icon fas fa-users"></i>
                     <p>
-                       Pedidos
+                       Pedidos solicitos
                     </p>
                   </a>
                 </li>
-
 
                <li class="nav-item">
                <a href="{{route('tiendas.producto.index')}}" class="nav-link">
                    <i class="nav-icon fas fa-users"></i>
                    <p>
-                     Consultar productos 
+                     Productos 
                    </p>
                  </a>
                </li>
@@ -47,7 +46,7 @@
                <a href="{{route('tiendas.grupoAtributo.index')}}" class="nav-link">
                    <i class="nav-icon fas fa-users"></i>
                    <p>
-                     Mis grupos de atributos
+                     Grupos de atributos
                    </p>
                  </a>
                </li>

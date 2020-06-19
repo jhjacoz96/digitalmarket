@@ -20,10 +20,17 @@
 
       @foreach (\Auth::user()->tienda->unreadNotifications as $notificacion)
         <div class="dropdown-divider"></div>
-        <a href="#" onclick="markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
+        @if($notificacion->data["estado"]=='pagoRealizado')
+    <a href="{{url('/tiendas/pedido/detalle/'.$notificacion['data']['pedido'])}}" onclick="markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
+          <i class="fas fa-shopping-bag mr-2"></i> Pago de pedido-{{$notificacion['data']['pedido']}}
+          <span class="float-right text-muted text-sm">{{$notificacion->created_at->diffForHumans()}}</span>
+        </a>
+        @else
+        <a href="{{url('/tiendas/pedido/detalle/'.$notificacion['data']['pedido'])}}" onclick="markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
             <i class="fas fa-shopping-bag mr-2"></i> Nuevo pedido-{{$notificacion['data']['pedido']}}
             <span class="float-right text-muted text-sm">{{$notificacion->created_at->diffForHumans()}}</span>
         </a>
+        @endif
       @endforeach
 
       

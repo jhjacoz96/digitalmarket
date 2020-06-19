@@ -982,16 +982,18 @@ class productoController extends Controller
 
         if(!empty(\Auth::check())){
 
-
-
             $descuentoTipoComprador=\Auth::user()->comprador->tipoComprador->porcentajeDescuento;
-             $totalCantidad=0;
-             foreach($userCarrito as $item){
-                 $totalCantidad=$totalCantidad+($item->precio*$item->cantidad);
-             }
-             $montoDescuentoTipoComrador=$totalCantidad*($descuentoTipoComprador/100);
-     
-             \Session::put('$montoDescuentoTipoComrador',$montoDescuentoTipoComrador);
+            if($descuentoTipoComprador>0){
+               
+                $totalCantidad=0;
+                foreach($userCarrito as $item){
+                    $totalCantidad=$totalCantidad+($item->precio*$item->cantidad);
+                }
+                $montoDescuentoTipoComrador=$totalCantidad*($descuentoTipoComprador/100);
+        
+                \Session::put('$montoDescuentoTipoComrador',$montoDescuentoTipoComrador);
+            }
+            
         }
 
 
@@ -1154,16 +1156,19 @@ class productoController extends Controller
             $pedido=new Pedido();
             $pedido->montoTotal=$request->precioFijoBs;
             $pedido->codigoCupon=$request->codigoCupon;
-            
+
             $pedido->cantidadCupon=$request->cantidadCupon;
             $pedido->status='esperaTransferencia';
             $pedido->metodoEnvio_id=$metodoEnvio['id'];
 
+            if(!empty(\Session::get('$montoDescuentoTipoComrador'))){
+                $pedido->descuentoAdicional=\Session::get('$montoDescuentoTipoComrador');
+            }
 
             $direccionEnvio=new DireccionPedido;
             
             $direccionComprador=Direccion::where('id',$request->direccionEnvio)->first();
-            
+
 
             $direccionEnvio->nombre= $direccionComprador->nombre;
             $direccionEnvio->apellido= $direccionComprador->apellido;
@@ -1202,7 +1207,7 @@ class productoController extends Controller
             $pedido->direccion_id= $direccionEnvio->id;
             $pedido->factura_id= $direccionFactura->id;
             $pedido->comprador_id=\Auth::user()->comprador->id;
-
+            
             $pedido->save();
 
             for ($i=0; $i <count($metodoPago) ; $i++) {     
@@ -1251,16 +1256,16 @@ class productoController extends Controller
                 
 
 
-            $comprador=\Auth::user()->comprador;
+            $comprador=Comprador::with('tipoComprador')->find(\Auth::user()->comprador->id);
             $correo=\Auth::user()->email;
             $datosMensaje=[
                 'correo'=>$correo,
+                'comprador'=>$comprador,
                 'nombre'=>$comprador->nombre,
                 'pedido_id'=>$pedido->id,
                 'detalleProducto'=>$pedido,
                 'direccionFactura'=>$direccionFactura,
-                'direccionEnvio'=>$direccionEnvio,
-                'direccionFactura'=>$direccionFactura
+                'direccionEnvio'=>$direccionEnvio
             ];
  
             

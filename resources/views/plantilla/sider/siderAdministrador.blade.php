@@ -23,6 +23,8 @@
                with font-awesome or any other icon font library -->
          
 
+
+
                <li class="nav-header">Pedidos</li>
                <li  class="nav-item has-treeview ">
                 <a href="#" class="nav-link ">
@@ -99,6 +101,12 @@
                   <p>Planes de afiliación</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{url('/pagos-tiendas')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pago de pedidos</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-header">Venta</li>
@@ -106,7 +114,7 @@
             <a href="#" class="nav-link ">
               <i class="fas fa-book-open"></i>
               <p>
-                Catalago
+                Catálago
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>

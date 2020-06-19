@@ -13,6 +13,7 @@ use App\MetodoPago;
 use App\MetodoPagoPedido;
 use App\Tienda;
 use App\Producto;
+use App\PagoTiendaPedido;
 use App\ProductoPedido;
 use App\Notifications\pedidoNotification;
 
@@ -36,8 +37,9 @@ class pedidoController extends Controller
     public function detallePedido($id){
         
         $pedido=Pedido::with(['producto'=>function($q){
-            $q->where('tienda_id',\Auth::user()->tienda->id);}])->findOrFail($id);
-       
+            $q->where('tienda_id',\Auth::user()->tienda->id);}])->with(['pagoTiendaPedido'=>function($e){
+                $e->where('tienda_id',\Auth::user()->tienda->id);
+            }])->findOrFail($id);
 
         return view('plantilla.contenido.tienda.pedido.detalle',compact('pedido'));
 
@@ -88,6 +90,7 @@ class pedidoController extends Controller
             if($count===$f){
         
                 $pedido->status='pagoAceptado';
+
                 $pedido->save();
 
             $tiendas=[];
@@ -108,10 +111,38 @@ class pedidoController extends Controller
                 $comment = 'nuevoPedido'; 
                 $t->notify(new pedidoNotification($comment,$pedido->id));
 
+               
+                $pagoTiendaPedido= new PagoTiendaPedido();
+    
+                $pedidoTienda=Pedido::with(['producto'=>function($q) use($t){
+                    $q->where('tienda_id',$t['id']);}])
+                ->find($pedido->id);
+             
+                $montoPedidotienda=0;
+                
+                foreach ($pedidoTienda->producto as $value) {
+                    $montoPedidotienda=$montoPedidotienda+($value->pivot->precioProducto*$value->pivot->cantidadProducto);
+                }
+ 
+
+                $pagoTiendaPedido->montoPagado=$montoPedidotienda-(($t->planAfiliacion->precio/100)*$montoPedidotienda);
+                
+                $pagoTiendaPedido->tienda_id=$t->id;
+                $pagoTiendaPedido->moneda='indefinida';
+                $pagoTiendaPedido->pedido_id=$pedido->id;
+                $pagoTiendaPedido->status='espera';
+                $pagoTiendaPedido->save();
+
+
+
+
+
             }
 
                 $comment = 'pagoAceptado'; 
                 $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
+
+
 
             } 
 
@@ -191,24 +222,20 @@ class pedidoController extends Controller
         flash('Una vez el cliente haya calificado el pedido, se le trasferirá el monto obtenido por el pedido:  ' . $pedido->id .' ')->success()->important();
         return redirect()->back();
     }
-
-    
-    
+      
         $pedido=Pedido::findOrFail($id);
         
         if($request->referencia){
-            $pedio->codigoSeguimiento=$request->refrencia;
+            $pedido->referenciaEnvio=$request->referencia;
+           
         }
-
+        
         $pedido->status=$request->estado;
         $pedido->save();
-
+       
 
         $correo=$pedido->comprador->correo;
 
-
-
-        
         $datosMensaje=[
             'correo'=>$correo,
             'nombre'=>$pedido->comprador->nombre,
@@ -228,7 +255,7 @@ class pedidoController extends Controller
         }
 
         if($pedido->status=='enviadoComprador'){
-            
+        
             $comment = 'enviadoComprador'; 
             $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
 
@@ -246,11 +273,35 @@ class pedidoController extends Controller
             
             foreach($tiendas as $id){
                 $t=Tienda::find($id);
+               
+                $pagoTiendaPedido= new PagoTiendaPedido();
+    
+                $pedidoTienda=Pedido::with(['producto'=>function($q) use($t){
+                    $q->where('tienda_id',$t['id']);}])
+                ->find($pedido->id);
+             
+                $montoPedidotienda=0;
+                
+                foreach ($pedidoTienda->producto as $value) {
+                    $montoPedidotienda=$montoPedidotienda+($value->pivot->precioProducto*$value->pivot->cantidadProducto);
+                }
+ 
+
+                $pagoTiendaPedido->montoPagado=$montoPedidotienda-(($t->planAfiliacion->precio/100)*$montoPedidotienda);
+                
+                $pagoTiendaPedido->tienda_id=$t->id;
+                $pagoTiendaPedido->moneda='indefinida';
+                $pagoTiendaPedido->pedido_id=$pedido->id;
+                $pagoTiendaPedido->status='espera';
+                $pagoTiendaPedido->save();
+               
+
+
                 $comment = 'nuevoPedido'; 
                 $t->notify(new pedidoNotification($comment,$pedido->id));
             }
             
-            $comment = 'pagoAceptado'; 
+           $comment = 'pagoAceptado'; 
             $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
 
         }

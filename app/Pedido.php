@@ -41,6 +41,8 @@ class Pedido extends Model
       return  $this->belongsTo('App\DireccionFactura','factura_id');
     }
 
-
+    public function pagoTiendaPedido(){
+      return $this->hasMany('App\PagoTiendaPedido','pedido_id');
+    }
 
 }

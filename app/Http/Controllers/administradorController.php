@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 use App\User;
 use App\Tienda;
-use App\Imagen;
 use App\PlanAfilizacion;
+use App\TiendaCuentaBancaria;
+use App\Imagen;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
@@ -63,8 +64,8 @@ class administradorController extends Controller
         }
         
         if($user->rol_id=='2'){ 
-            $tienda=Tienda::with('imagen')->findOrFail($user->tienda->id);
-            
+            $tienda=Tienda::with('imagen')->with('tiendaCuentaBancaria')->findOrFail($user->tienda->id);
+           
             return \view('plantilla.contenido.perfil.perfilTienda',compact('tienda'),compact('user'));
         }
 
@@ -87,7 +88,10 @@ class administradorController extends Controller
         if($user->rol_id=='2'){
             $tienda=$user->tienda;
             $planAfiliacion=PlanAfilizacion::where('estatus','A')->get();
-            return \view('plantilla.contenido.perfil.actualizarPerfilTienda',compact('tienda','planAfiliacion'));
+            $t=\Auth::user()->tienda->tiendaCuentaBancaria;
+            $tiendaCuentaBancaria=TiendaCuentaBancaria::findOrFail($t->id);
+          
+            return \view('plantilla.contenido.perfil.actualizarPerfilTienda',compact('tienda','planAfiliacion','tiendaCuentaBancaria'));
         }
     }
 
@@ -155,6 +159,8 @@ class administradorController extends Controller
             $tienda->correo=$request->correo;
             $tienda->telefono=$request->telefono;
             $tienda->planAfilizacion_id=$request->planAfiliacion;
+            $tienda->save();
+
             if($request->imagen){
                 $imagen=$request->file('imagen');
                
@@ -163,11 +169,26 @@ class administradorController extends Controller
                 $imagen->move($ruta , $nombre);
     
                 $urlImagen['url']='/imagenes/tienda/'.$nombre;
+                $tienda->imagen()->create($urlImagen);
             }
 
-            $tienda->save();
 
-            $tienda->imagen()->create($urlImagen);
+            $t=\Auth::user()->tienda->tiendaCuentaBancaria;
+          
+            $tiendCuentaBancaria=TiendaCuentaBancaria::findOrFail($t->id);
+            $tiendCuentaBancaria->medioPago=$request->nombreBanco;
+            $tiendCuentaBancaria->moneda='bolivar';
+            $tiendCuentaBancaria->cuenta=$request->detalleCuenta;
+            $tiendCuentaBancaria->tipoDocumento=$request->tipo;
+            $tiendCuentaBancaria->documentoIndentidad=$request->documentoIdentidad;
+            $tiendCuentaBancaria->titular=$request->titularCuenta;
+            $tiendCuentaBancaria->tipoCuenta=$request->tipoCuenta;
+            $tiendCuentaBancaria->telefono=$request->telefonoCuenta;
+            $tiendCuentaBancaria->correo=$request->correoCuenta;
+            $tiendCuentaBancaria->tienda_id=\Auth::user()->tienda->id;
+            $tiendCuentaBancaria->save();
+            
+
 
             flash('Perfil modificado  con exito!')->success()->important();
 

@@ -164,6 +164,7 @@ class userController extends Controller
    }
 
    public function calificar(Request $request){
+       
         $v=Validator::make($request->all(),[
             'estrellas'=>'required',
             'producto_id'=>'required',

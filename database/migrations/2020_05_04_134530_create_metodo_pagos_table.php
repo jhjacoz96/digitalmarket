@@ -22,7 +22,7 @@ class CreateMetodoPagosTable extends Migration
             $table->string('telefono')->nullable();
             $table->string('correo')->nullable();
             $table->unsignedBigInteger('bancoMetodoPago_id')->nullable();
-            $table->foreign('bancoMetodoPago_id')->references('id')->on('banco_metodo_Pagos');
+            $table->foreign('bancoMetodoPago_id')->references('id')->on('banco_metodo_pagos');
             $table->timestamps();
         });
     }

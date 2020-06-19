@@ -31,13 +31,10 @@ route::get('/','indexController@index');
     //return view('plantilla.tiendaContenido.index');
     //return view('tienda.index');
 
-    
+});*/
 
-    //Mail::to("jhjacoz96@gmail.com")->send(new TestMail("Jhon"));
-    //return "envioado";
-    
-
-   /* $rol=new Rol();
+route::get('/datos',function(){
+     $rol=new Rol();
     $rol->name='comprador';
     $rol->save();
 
@@ -55,11 +52,9 @@ route::get('/','indexController@index');
     $user->email = 'jhjacoz96@gmail.com';
     $user->password = Hash::make('12345678');
     $user->rol_id =3;
-    $user->save();*/
-
-
-//});
-
+    $user->save();
+    return redirect('/');
+});
 
 Auth::routes();
 
@@ -220,6 +215,10 @@ route::get('/pedido/pago/{id}/{status}','pedidoController@cambiarStatusPago');
 route::put('/pedido/status/{id}','pedidoController@cambiarStatusPedido');
 
 route::get('/pedido-factura/{id}','pedidoController@verFactura');
+
+route::get('/pago-tienda/{id}','tiendaController@tiendaPago');
+route::get('/pagar/{id}','tiendaController@pagar');
+route::get('/pagos-tiendas','tiendaController@montrarPagos');
 
 //reportes graficos//
 route::get('/reportes/comprador-charts','reporteController@compradorCharts');

@@ -39,5 +39,13 @@ class Tienda extends Model
     public function imagen(){
         return $this->morphOne('App\Imagen','imageable');
     }
+
+    public function tiendaCuentaBancaria(){
+        return $this->hasOne('App\TiendaCuentaBancaria','tienda_id');
+    }
     
+    public function pagoTiendaPedido(){
+        return $this->hasMany('App\PagoTiendaPedido','tienda_id');
+    }
+
 }

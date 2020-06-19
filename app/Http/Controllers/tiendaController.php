@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\Tienda;
 use App\User;
 use App\PlanAfilizacion;
+use App\PagoTiendaPedido;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\pedidoNotification;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 
 class tiendaController extends Controller
 {
@@ -263,5 +267,41 @@ class tiendaController extends Controller
             return \redirect()->route('tienda.index');
         }
 
+    }
+
+    public function montrarPagos(){
+        $tiendaPago=PagoTiendaPedido::All();
+        return view('plantilla.contenido.admin.pagos.consultar',compact('tiendaPago'));
+    }
+
+    public function tiendaPago($id){
+        $pagoTiendaPedido=PagoTiendaPedido::findOrFail($id);
+        $tienda=Tienda::with('tiendaCuentaBancaria')->findOrFail($pagoTiendaPedido->tienda->id);
+        
+        return view('plantilla.contenido.admin.pagos.pagar',compact('pagoTiendaPedido','tienda'));
+    }
+
+    public function pagar($id){
+        $pagoTiendaPedido=PagoTiendaPedido::findOrFail($id);
+        $pagoTiendaPedido->status='pagado';
+        $pagoTiendaPedido->save();
+
+        $correo=$pagoTiendaPedido->tienda->correo;
+        $datosMensaje=[
+            'correo'=>$correo,
+            'nombre'=>$pagoTiendaPedido->tienda->nombre,
+            'pedido'=>$pagoTiendaPedido->pedido->id,
+            'pagoTiendaPedido'=>$pagoTiendaPedido
+        ];
+
+        $comment = 'pagoRealizado'; 
+        $pagoTiendaPedido->tienda->notify(new pedidoNotification($comment, $pagoTiendaPedido->pedido->id));
+
+        Mail::send('correos.pagoTienda',$datosMensaje,function($mensaje) use($correo){
+            $mensaje->to($correo)->subject('Pago de pedido - DigitalMarket');
+        });
+
+        flash('El pedido ' . $pagoTiendaPedido->pedido->id . ' ha sido pagado a la tienda ' .  $pagoTiendaPedido->tienda->nombreTienda . ' por un monto de  Bs'. $pagoTiendaPedido->montoPagado . ' ')->important()->success();
+        return redirect('/pagos-tiendas');
     }
 }

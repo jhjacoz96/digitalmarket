@@ -1,7 +1,6 @@
 @extends('layouts.frondTienda.design')
 @section('style')    
 <style>
-
 #form {
   width: 250px;
   margin: 0 auto;
@@ -16,27 +15,30 @@
   font-size: 20px;
 }
 
-input[type="radio"] {
-  display: none;
+p.clasificacion {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
 }
 
-label {
+p.clasificacion input {
+  position: absolute;
+  top: -100px;
+}
+
+p.clasificacion label {
+  float: right;
   color: aliceblue;
 }
 
-.clasificacion {
-  direction: rtl;
-  unicode-bidi: bidi-override;
-}
-
-label:hover,
-label:hover ~ label {
+p.clasificacion label:hover,
+p.clasificacion label:hover ~ label,
+p.clasificacion input:checked ~ label {
   color: orange;
 }
 
-input[type="radio"]:checked ~ label {
-  color: orange;
-}
+
+
 
 </style>
 @endsection
@@ -329,9 +331,9 @@ input[type="radio"]:checked ~ label {
 
 
                                             <div class="group-btn">
-                                                @if($pedido->status=='enviadoComprador' || $pedido->status=='recibido')
+                                             
                                                 <button type="button"  class="btn btn-info " data-toggle="modal" data-target="#myModal">Calificar</button>
-                                                @endif
+                                             
                                                 <!-- Modal -->
                                                 <div id="myModal" class="modal fade" role="dialog">
                                                 <div class="modal-dialog">
@@ -348,7 +350,7 @@ input[type="radio"]:checked ~ label {
                                                             
                                                         <input type="hidden" name="producto_id" value="{{$item->id}}">
                                                         <input type="hidden" name="pedido_id" value="{{$pedido->id}}">
-                                                            <div class="form-group">
+                                                            <p class="clasificacion">
                                                                 <span>Nivel de calificacion<span>
                                                                 <input id="radio1" type="radio" name="estrellas" value="5"><!--
                                                                 --><label for="radio1"><i class="fa fa-star"></i></label><!--
@@ -360,7 +362,7 @@ input[type="radio"]:checked ~ label {
                                                                 --><label for="radio4"><i class="fa fa-star"></i></label><!--
                                                                 --><input id="radio5" type="radio" name="estrellas" value="1"><!--
                                                                 --><label for="radio5"><i class="fa fa-star"></i></label>
-                                                            </div>
+                                                            </p>
 
 
                                                             <div class="form-group">
@@ -482,7 +484,11 @@ input[type="radio"]:checked ~ label {
                                             <div class="col-sm-4">
 
                                                 <dt class="">Fecha</dt>
-                                                <dd class="">En espera  </dd>
+                                                @if ($pedido->referenciaEnvio)
+                                                {{$pedido->updated_at->format('d-m-Y')}}
+                                                @else  
+                                                <dd class="">En espera</dd>
+                                                @endif
                                             </div>
                                             <div class="col-sm-4">
 
@@ -491,8 +497,13 @@ input[type="radio"]:checked ~ label {
                                             </div>
                                             <div class="col-sm-4">
 
-                                                <dt class="">Número de seguimiento</dt>
+                                                <dt class="">Referencia de envio</dt>
+                                                @if ($pedido->referenciaEnvio)
+                                                {{$pedido->referenciaEnvio}}
+                                                @else   
                                                 <dd class="">En espera</dd>
+                                                @endif
+                                                
                                             </div>
                                            
 

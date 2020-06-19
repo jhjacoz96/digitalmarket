@@ -115,8 +115,13 @@ class RegisterController extends Controller
 
                 $tienda->codigo=$nombre[0].$nombre[1]. 00 .$numero;
                 $tienda->user_id=$user->id;
+                
                 $tienda->planAfilizacion_id=1;
                 $tienda->save();
+                
+                $tiendaCuentaBancario=new TiendaCientaBancario();
+                $tiendaCuentaBancario->tienda_id=$tienda->id;
+                $tiendaCuentaBancario->save();
 
                 return $user;
             }

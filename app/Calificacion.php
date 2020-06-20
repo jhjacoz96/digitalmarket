@@ -13,7 +13,7 @@ class Calificacion extends Model
     ];
 
     public function producto(){
-        $this->belognsTo('App\Producto','producto_id');
+       return $this->belongsTo('App\Producto','producto_id');
     }
 
 }

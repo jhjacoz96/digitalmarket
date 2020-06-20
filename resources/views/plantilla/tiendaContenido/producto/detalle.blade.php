@@ -24,6 +24,13 @@
         
     </script>
 @endsection
+@section('style')    
+<style>
+
+  
+
+</style>
+@endsection
 @section('contenido')
 <div id="detalleProducto">
 <section>
@@ -196,18 +203,135 @@
                         </div>
                         
                         <div class="tab-pane fade" id="calificacion" >
-                            <div class="col-sm-12">
-                               <div class="media">
-                                    <div class="media-left">
-                                      <a href="#">
-                                        <img class="media-object" src="..." alt="...">
-                                      </a>
+
+                            <div class="col-sm-12 " style="padding: 2%;">
+                                <div class="row " style="margin-bottom: 3%;">
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-3">
+
+                                            <span style="font-size: 45px;" class=" pull-left title-heading">
+                                                {{$promedio}}
+                                            </span>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p class="pull-right" style="margin-right: 40px; font-size: 22px;">
+                                                @if($formatPromedio==='5')
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                
+                                                @endif
+                                                @if($formatPromedio==='4')
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                
+                                                @endif
+                                                @if($formatPromedio==='3')
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                
+                                                @endif
+                                                @if($formatPromedio==='2')
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                
+                                                @endif
+                                                @if($formatPromedio==='1')
+                                                <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                
+                                                @endif
+                                            </p>
+                                            <p>
+                                                Promedio entre {{count($producto->calificacion)}} @if(count($producto->calificacion)>1) comentarios @endif @if(count($producto->calificacion)<2) comentario @endif
+
+                                              
+                                            </p>
+                                        </div>
+                                           
+                                       
                                     </div>
-                                    <div class="media-body">
-                                      <h4 class="media-heading">Media heading</h4>
-                                      hola
+                                </div>
+                                
+
+                                @foreach ($producto->calificacion as $item)
+                                <div class="panel  panel-default ">   
+                                    <div class="panel-body">         
+                                        <h4 class="title-heading">
+
+                                            <p  class="clasificacion">
+                                                <span >
+
+                                                    {{$item->titulo}} 
+                                                </span>
+                                                   
+                                                    @if($item->calificacion===5)
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    
+                                                    @endif
+                                                    @if($item->calificacion===4)
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                    
+                                                    @endif
+                                                    @if($item->calificacion===3)
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                    
+                                                    @endif
+                                                    @if($item->calificacion===2)
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                    
+                                                    @endif
+                                                    @if($item->calificacion===1)
+                                                    <span style="color: #FE980F;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                    <span style="color: aliceblue;"><i class="fa fa-star"></i></span>
+                                                    
+                                                    @endif
+                                                
+                                            
+                                            </p>
+                                        </h4>
+                                    
+                                        
+                                        {{$item->comentario}}
+                                    
                                     </div>
-                                  </div>
+                                </div>
+                                @endforeach
+                                  
+                           
                             </div>
                         </div>
                         

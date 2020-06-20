@@ -55,7 +55,7 @@ class Producto extends Model
     }
 
     public function calificacion(){
-        $this->hasMany('App\Calificacion','producto_id');
+       return $this->hasMany('App\Calificacion','producto_id');
     }
 
     public static function carritoCount(){

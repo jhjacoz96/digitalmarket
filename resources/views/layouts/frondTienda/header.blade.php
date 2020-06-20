@@ -77,7 +77,7 @@
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
                             
-                        <li><a href="{{url('/lista-deseo')}}"><i class="fa fa-star"></i>Lista de deseos</a></li>
+                        <li><a href="{{url('/lista-deseo')}}"><i class="fa fa-heart"></i>Lista de deseos</a></li>
                             
                             <li><a href="{{url('/carrito')}}"><i class="fa fa-shopping-cart"></i>Carrito
                                 @if($carritoCount>0)
@@ -86,7 +86,7 @@
                             </a></li>
                             @if(empty(\Auth::check()))
                         <li><a href="{{url('/registrar-usuario')}}"><i class="fa fa-user"></i> Registrarse</a></li>
-                        <li><a href="{{url('/iniciar-sesion')}}"><i xclass="fa fa-lock"></i>Iniciar sesión</a></li>
+                        <li><a href="{{url('/iniciar-sesion')}}"><i class="fa fa-lock"></i>Iniciar sesión</a></li>
                             @else
                           
                             <li>

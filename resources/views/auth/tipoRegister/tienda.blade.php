@@ -103,14 +103,14 @@
 
 
 <div class="row">
-  <div class="col-md-6">
-    <button type="submit" class=" btn-block">Register</button>
+  <div class="col-md-12">
+    <a href="{{url('/iniciar-sesion')}}" class="text-center">Ya estoy registrado</a>
+  </div>
+  <div class="col-md-12">
+    <button type="submit" class=" btn-block">Registrar</button>
   </div>
 
-  <div class="col-md-6">
-    <a href="{{route('login')}}" class="text-center">Ya estoy registrado</a>
-
-  </div>
+  
  
 </div>
 

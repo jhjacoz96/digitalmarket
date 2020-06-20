@@ -15,6 +15,7 @@ use App\Direccion;
 use App\GrupoAtributo;
 use App\Imagen;
 use App\Carrito;
+use App\Calificacion;
 use App\TipoComprador;
 use App\MetodoPago;
 use App\BancoMetodoPago;
@@ -738,7 +739,7 @@ class productoController extends Controller
 
         $categoria=Categoria::where('estatus','A')->get();
 
-        $producto=Producto::where('status','si')->with('marca')->where('slug',$slug)->first();
+        $producto=Producto::where('status','si')->with('marca')->with('calificacion')->where('slug',$slug)->first();
         
         $producto->visitas=$producto->visitas+1;
         $producto->save();
@@ -746,38 +747,14 @@ class productoController extends Controller
         $relacionProducto=Producto::where('slug','!=',$slug)->where('subCategoria_id',$producto->subCategoria_id)->get();
         
         $miga="<a style='color:#333;' href='/'>Home</a> / <a style='color:#333;'href='/mainCategorias/".$producto->subCategoria->categoria->slug."'>".$producto->subCategoria->categoria->nombre."</a> / <a style='color:#333;'href='/categorias/".$producto->subCategoria->slug."'>".$producto->subCategoria->nombre."</a>";
-
-        /*$combinacion=Combinacion::where('producto_id',$producto->id)->with('atributo')->get();
-    
-        $grupo=$producto->combinacion[0]->atributo;
-        
-        $grupos=[];
-        for ($i=0; $i < count($grupo) ; $i++) { 
-        $f= $grupo[$i]->grupoAtributo;
-            $atributo=[];
-
-        for ($j=0; $j <count($combinacion) ; $j++) { 
-                $item=$combinacion[$j]['atributo'];
-
-                for ($k=0; $k < count($item) ; $k++) { 
-
-                    if($item[$k]['grupoAtributo_id']==$f['id']){
-                    $f=\Arr::add($f,'atributo',$item[$k]);
-                    }
-
-                }
-
-        }
-
-        \array_push($grupos,$f);
-        }
-
-        $atributo=Atributo::where('id',3)->with('combinacion')->first();
-        */
         
         $marca=Marca::All();
 
-        return view('plantilla.tiendaContenido.producto.detalle',compact('producto','categoria','relacionProducto','miga','marca'));
+        $sumaCalificacion=Calificacion::where('producto_id',$producto->id)->sum('calificacion');
+        $promedio=$sumaCalificacion/count($producto->calificacion);
+        $formatPromedio=number_format($promedio,0);
+
+        return view('plantilla.tiendaContenido.producto.detalle',compact('producto','categoria','relacionProducto','miga','marca','promedio','formatPromedio'));
     }
 
     //FIN DE DETALLES DE PRODUCTOS

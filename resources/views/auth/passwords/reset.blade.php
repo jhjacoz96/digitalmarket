@@ -8,7 +8,8 @@
       <!-- /.login-logo -->
       <div class="card">
         <div class="card-body login-card-body">
-          <p class="login-box-msg">You are only one step a way from your new password, recover your password now.</p>
+          <p class="login-box-msg">
+            Estás a solo un paso de tu nueva contraseña, recupera tu contraseña ahora.</p>
     
           <form method="POST" action="{{ route('password.update') }}">
             @csrf

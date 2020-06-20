@@ -10,6 +10,7 @@ use App\Banner;
 use App\Imagen;
 use App\PlanAfilizacion;
 use App\Tienda;
+use App\Calificacion;
 use App\Marca;
 class indexController extends Controller
 {
@@ -44,7 +45,7 @@ class indexController extends Controller
 
     public function tienda($id){
 
-        $producto=Producto::where('tienda_id',$id)->where('status','si')->with('imagen')->get();
+        $producto=Producto::where('tienda_id',$id)->where('status','si')->with('imagen')->paginate(12);
         
         $tienda=Tienda::find($id);
 
@@ -52,7 +53,35 @@ class indexController extends Controller
 
         $marca=Marca::All();
 
-        return view('plantilla.tiendaContenido.tienda',compact('categoria','marca','producto','tienda'));
+        $sumaCalificacion=Calificacion::whereHas('producto',function($q) use($tienda){
+            $q->where('tienda_id',$tienda->id);
+        })->sum('calificacion');
+
+        $countCalificacion=Calificacion::whereHas('producto',function($q) use($tienda){
+            $q->where('tienda_id',$tienda->id);
+        })->count();
+        
+       $promedio=$sumaCalificacion/$countCalificacion;
+     
+      $formatPromedio=number_format($promedio,0);
+   
+        $star5=Calificacion::whereHas('producto',function($q) use($tienda){
+            $q->where('tienda_id',$tienda->id);
+        })->where('calificacion',5)->count();
+        $star4=Calificacion::whereHas('producto',function($q) use($tienda){
+            $q->where('tienda_id',$tienda->id);
+        })->where('calificacion',4)->count();
+        $star3=Calificacion::whereHas('producto',function($q) use($tienda){
+            $q->where('tienda_id',$tienda->id);
+        })->where('calificacion',3)->count();
+        $star2=Calificacion::whereHas('producto',function($q) use($tienda){
+            $q->where('tienda_id',$tienda->id);
+        })->where('calificacion',2)->count();
+        $star1=Calificacion::whereHas('producto',function($q) use($tienda){
+            $q->where('tienda_id',$tienda->id);
+        })->where('calificacion',1)->count();
+
+        return view('plantilla.tiendaContenido.tienda',compact('categoria','marca','producto','tienda','sumaCalificacion','promedio','formatPromedio','countCalificacion','star5','star4','star3','star2','star1'));
 
     }
 

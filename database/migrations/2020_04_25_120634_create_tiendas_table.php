@@ -23,6 +23,7 @@ class CreateTiendasTable extends Migration
             $table->String('codigo');
             $table->String('direccion')->nullable();
             $table->String('estatus')->default('A');
+            $table->date('fechaPlanAfiliacion');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('planAfilizacion_id')->nullable();
 

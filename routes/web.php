@@ -221,7 +221,9 @@ route::get('/pagar/{id}','tiendaController@pagar');
 route::get('/pagos-tiendas','tiendaController@montrarPagos');
 
 //reportes graficos//
-route::get('/reportes/comprador-charts','reporteController@compradorCharts');
+route::get('/reporte-comprador/{anio}/{mes}','reporteController@graficaComprador');
+route::get('/reporte-pedido/{anio}/{mes}','reporteController@graficaPedido');
+route::get('/reporte-plan/{anio}/{mes}','reporteController@graficaPlan');
 //fin de reportes graficos//
 
 ////////////////////////////////////////////////////////

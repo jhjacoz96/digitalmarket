@@ -7,9 +7,11 @@ use App\Providers\RouteServiceProvider;
 use App\User;
 use App\Comprador;
 use App\Tienda;
+use App\TiendaCuentaBancaria;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -115,13 +117,14 @@ class RegisterController extends Controller
 
                 $tienda->codigo=$nombre[0].$nombre[1]. 00 .$numero;
                 $tienda->user_id=$user->id;
-                
+              
+                $tienda->fechaPlanAfiliacion=Carbon::now()->format('Y-m-d H:i:s');
                 $tienda->planAfilizacion_id=1;
                 $tienda->save();
                 
-                $tiendaCuentaBancario=new TiendaCientaBancario();
-                $tiendaCuentaBancario->tienda_id=$tienda->id;
-                $tiendaCuentaBancario->save();
+                $tiendaCuentaBancaria=new TiendaCuentaBancaria();
+                $tiendaCuentaBancaria->tienda_id=$tienda->id;
+                $tiendaCuentaBancaria->save();
 
                 return $user;
             }

@@ -15,8 +15,8 @@ class CreateTiendaCuentaBancariasTable extends Migration
     {
         Schema::create('tienda_cuenta_bancarias', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('moneda')->nunllable();
-            $table->string('medioPago')->nunllable();
+            $table->string('moneda')->nullable();
+            $table->string('medioPago')->nullable();
             $table->string('cuenta')->nullable();
             $table->string('titular')->nullable();
             $table->string('tipoCuenta')->nullable();

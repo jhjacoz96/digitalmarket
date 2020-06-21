@@ -17,6 +17,7 @@ class CreateMarcasTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre');
             $table->string('descripcion')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }

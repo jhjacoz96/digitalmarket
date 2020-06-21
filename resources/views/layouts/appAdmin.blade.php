@@ -175,6 +175,8 @@
 
 <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
 
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
 
 <script></script>

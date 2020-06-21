@@ -15,7 +15,7 @@ class CreatePagoTiendaPedidosTable extends Migration
     {
         Schema::create('pago_tienda_pedidos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('moneda');
+            $table->string('moneda')->nullable();
             $table->string('status');
             $table->decimal('montoPagado',12,2);
             $table->unsignedBigInteger('pedido_id');

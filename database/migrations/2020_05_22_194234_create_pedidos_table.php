@@ -19,9 +19,9 @@ class CreatePedidosTable extends Migration
             $table->string('codigoCupon')->nullable();
             $table->integer('cantidadCupon')->nullable();
             $table->integer('descuentoAdicional')->nullable();
-            $table->string('envioGratis');
             $table->string('referenciaEnvio')->nullable();
             $table->string('status');
+            $table->string('envioGratis');
             $table->string('codigo')->nullable();
             $table->unsignedBigInteger('metodoEnvio_id')->nullable();
 
@@ -38,8 +38,6 @@ class CreatePedidosTable extends Migration
             $table->unsignedBigInteger('factura_id')->nullable();
 
             $table->foreign('factura_id')->references('id')->on('direccion_facturas');
-
-            
 
             $table->timestamps();
         });

@@ -1,4 +1,6 @@
-<!-- Content Wrapper. Contains page content -->
+@extends('layouts.appAdmin')
+
+@section('contenido')
 <div id='multi'>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -21,3 +23,4 @@
     <!-- /.content-wrapper -->
     <div>
 </div>
+@endsection

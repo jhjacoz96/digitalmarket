@@ -6,6 +6,7 @@ use App\Tienda;
 use App\PlanAfilizacion;
 use App\TiendaCuentaBancaria;
 use App\Imagen;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
@@ -157,6 +158,11 @@ class administradorController extends Controller
             $tienda->nombre=$request->nombre;
             $tienda->apellido=$request->apellido;
             $tienda->correo=$request->correo;
+            
+            if($tienda->planAfilizacion_id!=$request->planAfiliacion){
+                $tienda->fechaPlanAfiliacion=Carbon::now()->format('Y-m-d H:i:s');
+            }
+
             $tienda->telefono=$request->telefono;
             $tienda->planAfilizacion_id=$request->planAfiliacion;
             $tienda->save();

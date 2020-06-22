@@ -26,7 +26,7 @@ class tiendaController extends Controller
     {
         $nombre=$request->get('nombre');
         
-        $tienda=Tienda::where('nombreTienda','like',"%$nombre%")->paginate(2);
+        $tienda=Tienda::where('nombreTienda','like',"%$nombre%")->get();
         return view('plantilla.contenido.admin.tienda.consultar',compact('tienda'));
     }
 

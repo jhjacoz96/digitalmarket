@@ -209,15 +209,7 @@ p.clasificacion input:checked ~ label {
                     </div>
                 </div>
                 
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h5 class="card-title">Calificar productos</h5>
-                    </div>
-                </div>
-
-
-
-
+     
                  <div class="row">
                      <div class=" col-sm-5">
       
@@ -303,6 +295,7 @@ p.clasificacion input:checked ~ label {
        
                                          <tr>
                                              <td>{{$item->nombre}} <br>
+                                                @if($item->tipoCliente=='combinacion')
                                                <span>
                                                    @foreach ($combinacion->atributo as $items)
                                                        
@@ -310,6 +303,7 @@ p.clasificacion input:checked ~ label {
                    
                                                    @endforeach
                                                </span>
+                                               @endif
                                            </td>
                                            
                                            <td>
@@ -331,9 +325,9 @@ p.clasificacion input:checked ~ label {
 
 
                                             <div class="group-btn">
-                                             
+                                             @if($pedido->status=='culminado' || $pedido->status=='enviadoComprador')
                                                 <button type="button"  class="btn btn-info " data-toggle="modal" data-target="#myModal">Calificar</button>
-                                             
+                                             @endif
                                                 <!-- Modal -->
                                                 <div id="myModal" class="modal fade" role="dialog">
                                                 <div class="modal-dialog">
@@ -402,6 +396,7 @@ p.clasificacion input:checked ~ label {
                                   
                                    </table>
                                </div>
+                               
                             </div> 
 
                             <div class="row">
@@ -415,39 +410,34 @@ p.clasificacion input:checked ~ label {
                                                     <td>Bs{{$montoTotaal}}</</td>
                                                 </tr>
                                                 
-                                                @if(\Auth::user()->comprador->tipoComprador->envioGratis===1)
-                                                <tr class="shipping-cost">
-                                                    <td>Costo de envío</td>
-                                                    <td>Gratis</td>			
-                                                </tr>
-                                                @else
                                                 <tr class="shipping-cost">
                                                     <td>Costo de envío</td>
                                                     <td>
-                                                        @if(\Auth::user()->comprador->tipoComprador->envioGratis==0)
-                                                        Bs{{$pedido->medioEnvio->precioEnvio}}
+                                                        @if($pedido->envioGratis!='0')
+                                                        Bs{{$pedido->envioGratis}}
                                                         @else
                                                         Envio gratis
                                                         @endif
                                                     </td>			
                                                 </tr>
-                                                @endif
+                                                
             
                                                 <tr class="shipping-cost">
-                                                    <td>Cupón</td>
+                                                @if(!empty($pedido->codigoCupon))
+                                                <td>Cupón</td>
                                                 <td>
-                                                    @if(!empty($pedido->codigoCupon))
-                                                        Bs{{$pedido->cantidadCupon}}
-                                                    @else
-                                                        Bs0
-                                                    @endif
-                                                </td>			
+                                                    Bs{{$pedido->cantidadCupon}}
+                                                </td>	
+                                                @endif	
+                                                </tr>
+                                                @if(!empty($pedido->descuentoAficional))	
                                                 <tr class="shipping-cost">
                                                     <td>Descuento adicional</td>
                                                 <td>
-                                                   
+                                                    Bs {{$pedido->descuentoAficional}}
                                                 </td>			
                                                 </tr>
+                                                @endif
                                                 <tr>
                                                     <td>Monto Total</td>
                                                 <td><span>Bs {{$pedido->montoTotal}}</span></td>

@@ -51,7 +51,7 @@ class productoController extends Controller
             
             $nombre=$request->get('nombre');
               
-              $producto=Producto::with('imagen','subCategoria')->where('nombre','like',"%$nombre%")->paginate(2);
+              $producto=Producto::with('imagen','subCategoria')->where('nombre','like',"%$nombre%")->get();
               
               return view('plantilla.contenido.admin.producto.consultar',compact('producto'));
 
@@ -59,7 +59,7 @@ class productoController extends Controller
 
             $nombre=$request->get('nombre');
               
-              $producto=Producto::with('imagen','subCategoria')->where('nombre','like',"%$nombre%")->where('tienda_id',\Auth::user()->tienda->id)->paginate(2);
+              $producto=Producto::with('imagen','subCategoria')->where('nombre','like',"%$nombre%")->where('tienda_id',\Auth::user()->tienda->id)->get();
               
               return view('plantilla.contenido.tienda.producto.consultar',compact('producto'));
 
@@ -249,7 +249,9 @@ class productoController extends Controller
         $producto->cantidad=$request->cantidad;
         $producto->peso=$request->peso;
 
-        
+        if(!empty($request->minStock)){
+            $producto->notificarStock=$request->minStock;
+        }
 
         $producto->subCategoria_id=$request->subCategoria_id;
         $producto->precioAnterior=$request->precioAnterior;
@@ -457,7 +459,7 @@ class productoController extends Controller
         
         if(\Auth::user()->rol_id==3){
             $rol=\Auth::user()->rol_id;
-        return view('plantilla.contenido.admin.producto.modificar',compact('producto','categoria','rol'));
+        return view('plantilla.contenido.admin.producto.modificar',compact('producto','categoria','rol','marca'));
         }else{
             $rol=\Auth::user()->rol_id;
             $tienda_id=\Auth::user()->tienda->id;
@@ -552,6 +554,9 @@ class productoController extends Controller
         $producto->peso=$request->peso;
         if($producto->tipoCliente=='comun'){
             $producto->cantidad=$request->cantidad;
+        }
+        if(!empty($request->minStock)){
+            $producto->notificarStock=$request->minStock;
         }
         $producto->subCategoria_id=$request->subCategoria_id;
         $producto->precioAnterior=$request->precioAnterior;
@@ -736,7 +741,7 @@ class productoController extends Controller
     //DETALLES DE PRODUCTO
 
     public function detalleProducto($slug){
-
+        
         $categoria=Categoria::where('estatus','A')->get();
 
         $producto=Producto::where('status','si')->with('marca')->with('calificacion')->where('slug',$slug)->first();
@@ -749,10 +754,17 @@ class productoController extends Controller
         $miga="<a style='color:#333;' href='/'>Home</a> / <a style='color:#333;'href='/mainCategorias/".$producto->subCategoria->categoria->slug."'>".$producto->subCategoria->categoria->nombre."</a> / <a style='color:#333;'href='/categorias/".$producto->subCategoria->slug."'>".$producto->subCategoria->nombre."</a>";
         
         $marca=Marca::All();
+       
+        if(count($producto->calificacion)<=0){
+            
+            $promedio=0;
+            $formatPromedio=0;
+        }else{
 
-        $sumaCalificacion=Calificacion::where('producto_id',$producto->id)->sum('calificacion');
-        $promedio=$sumaCalificacion/count($producto->calificacion);
-        $formatPromedio=number_format($promedio,0);
+            $sumaCalificacion=Calificacion::where('producto_id',$producto->id)->sum('calificacion');
+            $promedio=$sumaCalificacion/count($producto->calificacion);
+            $formatPromedio=number_format($promedio,0);
+        }
 
         return view('plantilla.tiendaContenido.producto.detalle',compact('producto','categoria','relacionProducto','miga','marca','promedio','formatPromedio'));
     }
@@ -843,11 +855,11 @@ class productoController extends Controller
 
         
 
-        if(empty($session_id)){
+        if(!empty(\Session::get('session_id'))){
+            $session_id=\Session::get('session_id');
+        }else{
             $session_id=\Str::random(40);
             \Session::put('session_id',$session_id);
-        }else{
-            $session_id=\Session::get('session_id');
         }
 
         if($producto->tipoCliente=='comun'){
@@ -859,13 +871,22 @@ class productoController extends Controller
             }
 
 
-
-        $cantidadProducto=\DB::table('carritos')->where(['producto_id'=>$request['producto_id'],'session_id'=>$session_id])->count();
+        if(!empty(\Auth::check())){
+            $cantidadProducto=\DB::table('carritos')->where(['producto_id'=>$request['producto_id'],'comprador_id'=>$comprador_id])->count();
+        }else{
+            $cantidadProducto=\DB::table('carritos')->where(['producto_id'=>$request['producto_id'],'session_id'=>$session_id])->count();
+        }
             
             if( $cantidadProducto>0){
 
-                $carrito=Carrito::where(['producto_id'=>$request['producto_id'],'session_id'=>$session_id])->first();
+                if(empty(\Auth::check())){
+                    $carrito=Carrito::where(['producto_id'=>$request['producto_id'],'session_id'=>$session_id])->first();
+                }else{
+                    $carrito=Carrito::where(['producto_id'=>$request['producto_id'],'comprador_id'=>$comprador_id])->first();
 
+                }
+
+                
                 if($request['cantidad']+$carrito->cantidad>$producto->cantidad){
 
                     \flash('No esta disponible esta cantidad')->warning()->important();
@@ -1127,13 +1148,15 @@ class productoController extends Controller
     public function realizarPedido(Request $request){
 
         if($request->isMethod('post')){
-
+          
             $metodoPago=json_decode($request['metodoPagos'],true);
             $metodoEnvio=json_decode($request['metodoEnvio'],true);
             $pedido=new Pedido();
             $pedido->montoTotal=$request->precioFijoBs;
             $pedido->codigoCupon=$request->codigoCupon;
-
+           
+            $pedido->envioGratis=$request->envioGratis;
+           
             $pedido->cantidadCupon=$request->cantidadCupon;
             $pedido->status='esperaTransferencia';
             $pedido->metodoEnvio_id=$metodoEnvio['id'];
@@ -1187,6 +1210,7 @@ class productoController extends Controller
             
             $pedido->save();
 
+
             for ($i=0; $i <count($metodoPago) ; $i++) {     
                 $pedido->metodoPago()->attach($metodoPago[$i]['id'],['cantidad'=>$metodoPago[$i]['cantidad'],
                 'status'=>'espera'
@@ -1208,7 +1232,20 @@ class productoController extends Controller
                 if($obtenerStockProducto->tipoCliente=='comun'){
 
                     $nuevoStock=$obtenerStockProducto->cantidad-$carritoProducto[$i]->cantidad;
+
                     Producto::where('id',$carritoProducto[$i]->producto_id)->update(['cantidad'=>$nuevoStock]);
+
+                    //notificar stock minimo
+                    $cantidadRestante=Producto::find($carritoProducto[$i]->producto_id);
+
+                    if($cantidadRestante->cantidad<=$obtenerStockProducto->notificarStock){
+
+                        $comment = 'productoStock'; 
+                        $t=$obtenerStockProducto->tienda;
+                        $t->notify(new pedidoNotification($comment,$obtenerStockProducto->id));
+
+                    }
+
                 }else{
                     $obtenerCombinacion=Combinacion::where('id',$carritoProducto[$i]->combinacion_id)->first();
 
@@ -1239,7 +1276,6 @@ class productoController extends Controller
                 'correo'=>$correo,
                 'comprador'=>$comprador,
                 'nombre'=>$comprador->nombre,
-                'pedido_id'=>$pedido->id,
                 'detalleProducto'=>$pedido,
                 'direccionFactura'=>$direccionFactura,
                 'direccionEnvio'=>$direccionEnvio

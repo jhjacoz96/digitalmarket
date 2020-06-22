@@ -18,7 +18,7 @@ class tipoCompradorController extends Controller
     public function index(Request $request)
     {
         $nombre=$request->get('nombre');
-        $tipo=TipoComprador::with('comprador')->where('estatus',1)->where('nombre','like',"%$nombre%")->paginate(2);
+        $tipo=TipoComprador::with('comprador')->where('estatus',1)->where('nombre','like',"%$nombre%")->get();
 
         return view('plantilla.contenido.admin.tipoComprador.consultar',compact('tipo'));
     }

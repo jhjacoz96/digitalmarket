@@ -68,7 +68,7 @@
         <tr><td>&nbsp;</td></tr>
         <tr><td>Los detalles de su pedido son los siguientes;-</td></tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>Pedido No: {{ $pedido_id}}</td></tr>
+        <tr><td>Pedido No: {{$detalleProducto['id']}}</td></tr>
         <tr><td>&nbsp;</td></tr>
 
         <tr><td>
@@ -87,13 +87,11 @@
                 @endforeach
                 <tr>
                     <td colspan="5" align="right">Gastos de envio</td>
-                    @php
-                     $pedido=Pedido::find($pedido_id);  
-                    @endphp
-                    @if($detalleProducto['medioEnvio']->envioGratis=='I' ||$pedido->comprador->tipoComprador->envioGratis==0 || )
+                    
+                    @if($detalleProducto['envioGratis']=='0')
                     <p>Envio gratis</p>
                     @else
-                    <td >Bs {{$detalleProducto['medioEnvio']->precioEnvio}}</td>
+                    <td >Bs {{$detalleProducto['envioGratis']}}</td>
                     @endif
             
                 </tr>

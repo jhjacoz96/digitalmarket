@@ -19,7 +19,7 @@ class metodoPagoController extends Controller
     {
         $nombre=$request->get('nombre');
         
-        $pago=metodoPago::where('nombre','like',"%$nombre%")->paginate(2);
+        $pago=metodoPago::where('nombre','like',"%$nombre%")->get();
         
         return view('plantilla.contenido.admin.metodoPago.consultar',compact('pago'));
     }

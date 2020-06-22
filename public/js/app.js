@@ -52159,6 +52159,8 @@ var checkout = new Vue({
           this.precioFijoBs = this.totalBs;
           this.precioFijoDolar = this.totalDolar;
         }
+      } else {
+        this.selectEnvio.precioEnvio = 0;
       }
     },
     calcularRestante: function calcularRestante() {
@@ -52407,36 +52409,36 @@ var detalleProducto = new Vue({
     }).catch(e=>{
         console.log(e.response)
     })*/
-    axios.get('/obtenerGrupo/' + data.datos.slug).then(function (res) {
-      _this.grupoCombinacion = res.data;
-      _this.count = _this.grupoCombinacion.length;
-      var f = _this.grupoCombinacion;
+    if (this.tipoProducto == 'combinacion') {
+      axios.get('/obtenerGrupo/' + data.datos.slug).then(function (res) {
+        _this.grupoCombinacion = res.data;
+        _this.count = _this.grupoCombinacion.length;
+        var f = _this.grupoCombinacion;
 
-      if (_this.count > 1) {
-        for (var i = 0; i < f.length; i++) {
-          if (i == 0) {
-            _this.grupoCombinacion2 = f[i];
-            console.log(_this.grupoCombinacion2);
-          }
+        if (_this.count > 1) {
+          for (var i = 0; i < f.length; i++) {
+            if (i == 0) {
+              _this.grupoCombinacion2 = f[i];
+            }
 
-          if (i == 1) {
-            _this.grupoCombinacion3 = f[i];
-            console.log(_this.grupoCombinacion3);
+            if (i == 1) {
+              _this.grupoCombinacion3 = f[i];
+            }
           }
         }
-      }
-    })["catch"](function (e) {
-      console.log(e.response);
-    });
-    axios.get("/obtenerCombinacion/".concat(data.datos.slug)).then(function (res) {
-      _this.combinacion = res.data; //console.log(this.combinacion)
-    })["catch"](function (e) {
-      console.log(e.response);
-    });
+      })["catch"](function (e) {
+        console.log(e.response);
+      });
+      axios.get("/obtenerCombinacion/".concat(data.datos.slug)).then(function (res) {
+        _this.combinacion = res.data; //console.log(this.combinacion)
+      })["catch"](function (e) {
+        console.log(e.response);
+      });
+    }
   },
   computed: {
     validarCantidad: function validarCantidad() {
-      if (this.cantidad > this.disponibilidad || this.cantidad == '') {
+      if (parseFloat(this.cantidad) > parseFloat(this.disponibilidad) || this.cantidad == '' || this.cantidad == 0) {
         this.mensaje = 'Esta cantidad no esta disponible';
         this.mostrarMensaje = true;
         this.disabledBoton = true;
@@ -52513,8 +52515,9 @@ var detalleProducto = new Vue({
         this.disabledBoton = true;
       }
     } else {
-      this.disponibilidad = 0;
-      this.disabledBoton = true;
+      if (this.disponibilidad == 0) {
+        this.disabledBoton = true;
+      }
     }
   }
 });

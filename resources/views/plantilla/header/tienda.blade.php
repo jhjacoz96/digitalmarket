@@ -25,6 +25,12 @@
           <i class="fas fa-shopping-bag mr-2"></i> Pago de pedido-{{$notificacion['data']['pedido']}}
           <span class="float-right text-muted text-sm">{{$notificacion->created_at->diffForHumans()}}</span>
         </a>
+        @endif
+        @if($notificacion->data["estado"]=='productoStock')
+        <a href="{{url('/tiendas/producto/'.$notificacion['data']['pedido'].'/edit')}}" onclick="markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
+          <i class="fas fa-shopping-bag mr-2"></i> Stock mínimo de producto
+          <span class="float-right text-muted text-sm">{{$notificacion->created_at->diffForHumans()}}</span>
+      </a>
         @else
         <a href="{{url('/tiendas/pedido/detalle/'.$notificacion['data']['pedido'])}}" onclick="markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
             <i class="fas fa-shopping-bag mr-2"></i> Nuevo pedido-{{$notificacion['data']['pedido']}}

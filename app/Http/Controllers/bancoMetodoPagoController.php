@@ -20,7 +20,7 @@ class bancoMetodoPagoController extends Controller
     {
         $nombre=$request->get('nombre');
     
-        $banco=BancoMetodoPago::where('nombreBanco','like',"%$nombre%")->paginate(2);
+        $banco=BancoMetodoPago::where('nombreBanco','like',"%$nombre%")->get();
 
         return view('plantilla.contenido.admin.metodoPago.bancoMetodoPago.consultar',compact('banco'));
     }

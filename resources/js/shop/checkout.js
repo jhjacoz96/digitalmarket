@@ -140,6 +140,8 @@ const checkout= new Vue({
                     this.precioFijoDolar= this.totalDolar
                     
                 }
+            }else{
+                this.selectEnvio.precioEnvio=0
             }
           
         },

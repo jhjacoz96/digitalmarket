@@ -22,7 +22,7 @@ class CreateDireccionFacturasTable extends Migration
             $table->string('puntoReferencia');
             $table->string('primerTelefono');
             $table->string('segundoTelefono');
-            $table->string('observacion');
+            $table->string('observacion')->nullable();
             $table->string('zona');
             $table->string('parroquia');
             $table->string('municipio');

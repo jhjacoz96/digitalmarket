@@ -639,24 +639,32 @@
                       
                     </div> /.form-group -->
                     <!-- /.col -->
-                    <div class="col-sm-6">
-                          <!-- checkbox -->
-                          <div class="form-group clearfix">
-                            <div class="custom-control custom-checkbox">
-                              <input type="checkbox" class="custom-control-input" id="status" name="status">
-                              <label class="custom-control-label" for="status">Activo</label>
-                           </div>
-      
-                          </div>
-    
-                    </div>
+                    
 
+                    <div class="col-sm-6"> 
+                      <div class="form-group">
+                        <label for="">Mínimo de stock</label>
+                      <input type="text" class="form-control" name="minStock">
+                      </div>
+                    </div>
                     <div class="col-sm-6"> 
                       <div class="form-group">
                         <label for="">Peso exacto del producto</label>
                       <input type="text" class="form-control" name="peso">
                       </div>
                     </div>
+                    
+                    <div class="col-sm-6">
+                      <!-- checkbox -->
+                      <div class="form-group clearfix">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="status" name="status">
+                          <label class="custom-control-label" for="status">Activo</label>
+                       </div>
+  
+                      </div>
+
+                </div>
       
                       
       

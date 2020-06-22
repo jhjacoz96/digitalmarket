@@ -48,22 +48,31 @@ class indexController extends Controller
         $producto=Producto::where('tienda_id',$id)->where('status','si')->with('imagen')->paginate(12);
         
         $tienda=Tienda::find($id);
-
+       
         $categoria=Categoria::with('subCategoria')->get();
 
         $marca=Marca::All();
 
-        $sumaCalificacion=Calificacion::whereHas('producto',function($q) use($tienda){
-            $q->where('tienda_id',$tienda->id);
-        })->sum('calificacion');
+        
 
         $countCalificacion=Calificacion::whereHas('producto',function($q) use($tienda){
             $q->where('tienda_id',$tienda->id);
         })->count();
         
-       $promedio=$sumaCalificacion/$countCalificacion;
-     
-      $formatPromedio=number_format($promedio,0);
+        if($countCalificacion<=0){
+
+            $promedio=0;
+            $formatPromedio=0;
+        }else{
+
+            $sumaCalificacion=Calificacion::whereHas('producto',function($q) use($tienda){
+                $q->where('tienda_id',$tienda->id);
+            })->sum('calificacion');
+
+            $promedio=$sumaCalificacion/$countCalificacion;
+          
+           $formatPromedio=number_format($promedio,0);
+        }
    
         $star5=Calificacion::whereHas('producto',function($q) use($tienda){
             $q->where('tienda_id',$tienda->id);

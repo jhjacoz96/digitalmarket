@@ -24,7 +24,7 @@ class categoriaController extends Controller
     {
         $nombre=$request->get('nombre');
         
-        $categoria=Categoria::where('nombre','like',"%$nombre%")->paginate(5);
+        $categoria=Categoria::where('nombre','like',"%$nombre%")->get();
         return \view('plantilla.contenido.admin.categorias.consultar',\compact('categoria'));    
     }
 

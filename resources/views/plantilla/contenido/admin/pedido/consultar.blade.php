@@ -35,95 +35,83 @@
                 <div class="card-header">
                   <h3 class="card-title">Consultar pedidos</h3>
   
-                  <div class="card-tools">
-
-                    <form >
-                      <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="codigo" class="form-control float-right" placeholder="Código"
-                      value="{{request()->get('codigo')}}"
-                        >
-    
-                        <div class="input-group-append">
-                          <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                        </div>
-                    </form>
-
-                    </div>
-                  </div>
+                  
                 </div>
                 
                 <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Fecha de pedido</th>
-                        <th>Correo del comprador</th>
-                        <th>Monto Total</th>
-                        <th>estado</th>
-                        <th>Acción</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-                         $total=0;
-                         ?>
-                       @foreach ($pedido as $item)
+                <div class="card-body ">
+                  <div class="table-responsive p-0">
+                    <table id="table_id" class="display">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Fecha de pedido</th>
+                          <th>Correo del comprador</th>
+                          <th>Monto Total</th>
+                          <th>estado</th>
+                          <th>Acción</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                           $total=0;
+                           ?>
+                         @foreach ($pedido as $item)
+                             
+                         <tr>
+                         <td class="mailbox-star">{{$item->id}}</td>
+                         <td class="mailbox-star">{{$item->created_at}}</td>
+                         <td class="mailbox-star">
+                          {{$item->comprador->correo}}
+                        </td>
+                         <td class="mailbox-star">
                            
-                       <tr>
-                       <td class="mailbox-star">{{$item->id}}</td>
-                       <td class="mailbox-star">{{$item->created_at}}</td>
-                       <td class="mailbox-star">
-                        {{$item->comprador->correo}}
-                      </td>
-                       <td class="mailbox-star">
-                         
-                      Bs {{$item->montoTotal}}
-
-                      </td>
-
-                      <td class="mailbox-star">
-                        @if($item->status=='esperaTransferencia')
-                          <span class="badge badge-primary">Espera por transferencia</span>
-                        @endif
-                        
-                        @if($item->status=='pagoAceptado')
-                          <span class="badge badge-success">Pago aceptado</span>
-                        @endif
-
-                        @if($item->status=='preparandoPedido')
-                          <span class="badge badge-warning">Preparando pedido</span>
-                        @endif
-                        
-
-                        @if($item->status=='enviadoComprador')
-                          <span class="badge" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span>
-                        @endif
-
-                        @if($item->status=='cancelado')
-                          <span class="badge badge-danger">Cancelado</span>
-                        @endif
-
-                           </td>
-                         
+                        Bs {{$item->montoTotal}}
+  
+                        </td>
+  
+                        <td class="mailbox-star">
+                          @if($item->status=='esperaTransferencia')
+                            <span class="badge badge-primary">Espera por transferencia</span>
+                          @endif
+                          
+                          @if($item->status=='pagoAceptado')
+                            <span class="badge badge-success">Pago aceptado</span>
+                          @endif
+  
+                          @if($item->status=='preparandoPedido')
+                            <span class="badge badge-warning">Preparando pedido</span>
+                          @endif
+                          
+  
+                          @if($item->status=='enviadoComprador')
+                            <span class="badge" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span>
+                          @endif
+  
+                          @if($item->status=='cancelado')
+                            <span class="badge badge-danger">Cancelado</span>
+                          @endif
+  
+                             </td>
                            
-                           <td class="mailbox-star">
-                               <div class="btn-group">
-                               
-
-                               <a href="{{route('pedido.detalle',$item->id)}}" class="btn btn-default btn-sm">  <span class="fas fa-eye" aria-hidden ="true" ></span></a>
-                               
-                               </div>
-                           </td>
-                       </tr>
-                       @endforeach
-                            
-                        
-                    
-                     
-                    </tbody>
-                  </table>
+                             
+                             <td class="mailbox-star">
+                                 <div class="btn-group">
+                                 
+  
+                                 <a href="{{route('pedido.detalle',$item->id)}}" class="btn btn-default btn-sm">  <span class="fas fa-eye" aria-hidden ="true" ></span></a>
+                                 
+                                 </div>
+                             </td>
+                         </tr>
+                         @endforeach
+                              
+                          
+                      
+                       
+                      </tbody>
+                    </table>
+                  </div>
             
 
       

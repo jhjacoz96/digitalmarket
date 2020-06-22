@@ -21,7 +21,7 @@ class CreatePedidosTable extends Migration
             $table->integer('descuentoAdicional')->nullable();
             $table->string('referenciaEnvio')->nullable();
             $table->string('status');
-            $table->string('envioGratis');
+            $table->decimal('precioEnvio',12,2)->default(0);
             $table->string('codigo')->nullable();
             $table->unsignedBigInteger('metodoEnvio_id')->nullable();
 

@@ -35,85 +35,73 @@
                 <div class="card-header">
                   <h3 class="card-title">Consultar pagos a tiendas</h3>
   
-                  <div class="card-tools">
-
-                    <form >
-                      <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="nombre" class="form-control float-right" placeholder="Buscar"
-                      value="{{request()->get('nombre')}}"
-                        >
-    
-                        <div class="input-group-append">
-                          <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                        </div>
-                    </form>
-
-                    </div>
-                  </div>
+                  
                 </div>
                 
                 <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
+                <div class="card-body ">
+                  <div class="table-responsive p-0">
+                    <table id="table_id" class="display">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                         
+                          <th>Monto a pagar</th>
+                          <th>Id pedido</th>
+                          <th>Código tienda</th>
+                          <th>Nombre tienda</th>
+                          <th>Estado</th>
+                          <th>Acción</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                         @foreach ($tiendaPago as $item)
+                         <tr>
+                         <td class="mailbox-star">{{$item->id}}</td>
+                             <td class="mailbox-star">Bs {{$item->montoPagado}}</td>
+                             <td class="mailbox-star"> 
+                              {{$item->pedido->id}}
+                             </td>
+  
+                             <td class="mailbox-star"> 
+                              {{$item->tienda->codigo}}
+                             </td>
+  
+                             <td class="mailbox-star"> 
+                              {{$item->tienda->nombreTienda}}
+                             </td>
+                             <td class="mailbox-star"> 
+                              @if($item->status=='espera')
+                              En espera
+                              @else
+                              Pagado
+                              @endif
+  
+                             </td>
+  
+                             <td class="mailbox-star">
+                                 <div class="btn-group">
+                                 
+                                  @if($item->status!='pagado')
+                                 <a href="{{url('/pago-tienda/'.$item->id)}}" class="btn btn-default btn-sm" >  <span class="far fa-money-bill-alt" aria-hidden ="true" ></span></a>
+                                     @endif
+                              
+                                 </div>
+                             </td>
+                         </tr>
+                         @endforeach
+                              
+                          
+                      
                        
-                        <th>Monto a pagar</th>
-                        <th>Id pedido</th>
-                        <th>Código tienda</th>
-                        <th>Nombre tienda</th>
-                        <th>Estado</th>
-                        <th>Acción</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                       @foreach ($tiendaPago as $item)
-                       <tr>
-                       <td class="mailbox-star">{{$item->id}}</td>
-                           <td class="mailbox-star">Bs {{$item->montoPagado}}</td>
-                           <td class="mailbox-star"> 
-                            {{$item->pedido->id}}
-                           </td>
-
-                           <td class="mailbox-star"> 
-                            {{$item->tienda->codigo}}
-                           </td>
-
-                           <td class="mailbox-star"> 
-                            {{$item->tienda->nombreTienda}}
-                           </td>
-                           <td class="mailbox-star"> 
-                            @if($item->status=='espera')
-                            En espera
-                            @else
-                            Pagado
-                            @endif
-
-                           </td>
-
-                           <td class="mailbox-star">
-                               <div class="btn-group">
-                               
-                                @if($item->status!='pagado')
-                               <a href="{{url('/pago-tienda/'.$item->id)}}" class="btn btn-default btn-sm" >  <span class="far fa-money-bill-alt" aria-hidden ="true" ></span></a>
-                                   @endif
-                            
-                               </div>
-                           </td>
-                       </tr>
-                       @endforeach
-                            
-                        
-                    
-                     
-                    </tbody>
-                  </table>
+                      </tbody>
+                    </table>
+                  </div>
                   
 
                   <div class="box-footer p-3 float-right">
                   
-            
+                    
                   </div>
                 </div>
                 <!-- /.card-body -->

@@ -21,14 +21,14 @@ class grupoAtributoController extends Controller
 
             $nombre=$request->get('nombre');
             
-            $grupoAtributo=GrupoAtributo::where('nombre','like',"%$nombre%")->paginate(5);
+            $grupoAtributo=GrupoAtributo::where('nombre','like',"%$nombre%")->get();
             return view('plantilla.contenido.admin.grupoAtributo.consultar',compact('grupoAtributo'));
 
         }else{
 
             $nombre=$request->get('nombre');
             
-            $grupoAtributo=GrupoAtributo::where('nombre','like',"%$nombre%")->where('tienda_id',\Auth::user()->tienda->id)->paginate(5);
+            $grupoAtributo=GrupoAtributo::where('nombre','like',"%$nombre%")->where('tienda_id',\Auth::user()->tienda->id)->get();
             return view('plantilla.contenido.tienda.grupoAtributo.consultar',compact('grupoAtributo'));
 
         }

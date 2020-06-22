@@ -97,7 +97,7 @@ class perfilController extends Controller
         $user->apellido=$request->apellido;
         $user->email=$request->email;
         $user->save();
-
+        
         $comprador->nombre=$request->nombre;
         $comprador->apellido=$request->apellido;
         $comprador->correo=$request->email;

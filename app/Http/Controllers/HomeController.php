@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Producto;
+use App\Pedido;
+use App\ProductoPedido;
+use App\MetodoPagoPedido;
 
 class HomeController extends Controller
 {
@@ -24,7 +27,30 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        if(\Auth::user()->rol_id=='3'){
+
+            $countEt=Pedido::where('status','esperaTransferencia')->count();
+            $countPa=Pedido::where('status','pagoAceptado')->count();
+            $countPp=Pedido::where('status','preparandoPedido')->count();
+            $countEc=Pedido::where('status','enviadoComprador')->count();
+            $countCu=Pedido::where('status','culminado')->count();
+
+            return view('home',compact('countEt','countPa','countPp','countEc','countCu'));
+        }
+        
+        
+        if(\Auth::user()->rol_id=='2'){
+            $nowPedido=Pedido::whereHas('producto',function($q){
+                $q->where('tienda_id',\Auth::user()->tienda->id);
+            })->where('status','pagoAceptado')->count();
+            
+            $productoStock=Producto::where('tienda_id',\Auth::user()->tienda->id)->whereBetween('cantidad', [0,'notificarStock'])->count();
+
+            return view('home',compact('nowPedido', 'productoStock'));
+        }
+                
+                
     }
 
     public function autoComplete(Request $request){

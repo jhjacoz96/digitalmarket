@@ -513,7 +513,7 @@
 											</span>
 											<span class="col-sm-3">
 												<label v-if="envio.envioGratis=='A' || envio.precioEnvio==0">Gratis</label>
-												<label v-else=>@{{envio.precioEnvio}}</label>
+												<label v-else>BS @{{envio.precioEnvio}}</label>
 											</span>
 										</div>
 									</div>
@@ -603,6 +603,7 @@
 													<td>Costo de envío</td>
 													<td>Gratis</td>
 												</tr>
+												
 												@else
 												<tr class="shipping-cost">
 													<td>Costo de envío</td>
@@ -662,7 +663,11 @@
 							@csrf
 							
 							<input type="hidden" name="precioFijoBs"  v-model="precioFijoBs">
-		
+							
+							
+							<input type="hidden" v-model="selectEnvio.precioEnvio" name="envioGratis">
+							
+
 							<input type="hidden" name="direccionEnvio"  v-model="direccionEnvio">
 							<input type="hidden" name="direccionFactura"  v-model="direccionFactura">
 							<input type="hidden" name="metodoPagos"  v-model="metodoPagos">

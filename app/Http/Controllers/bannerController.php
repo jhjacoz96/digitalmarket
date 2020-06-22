@@ -20,7 +20,7 @@ class bannerController extends Controller
     public function index()
     {
 
-        $banner=Banner::with('imagen')->paginate(2);
+        $banner=Banner::with('imagen')->get();
         return view('plantilla.contenido.admin.banner.consultar',compact('banner'));
     }
 

@@ -31,41 +31,43 @@ const detalleProducto= new Vue({
             console.log(e.response)
         })*/
 
-        axios.get('/obtenerGrupo/'+data.datos.slug).then(res=>{
-            
-            this.grupoCombinacion=res.data
-            this.count=this.grupoCombinacion.length
-            const f=this.grupoCombinacion
-            if(this.count>1){
-               for (let i = 0; i < f.length; i++) {
-                   if(i==0){
-                    this.grupoCombinacion2=f[i]
-                    console.log( this.grupoCombinacion2)
-                   }
-                   if(i==1){
-                    this.grupoCombinacion3=f[i]
-                    console.log( this.grupoCombinacion3)
-                   }
+        if(this.tipoProducto=='combinacion'){
 
-                  
-                   
-               }
-            }
-        }).catch(e=>{
-            console.log(e.response)
-        })
+            axios.get('/obtenerGrupo/'+data.datos.slug).then(res=>{
+                
+                this.grupoCombinacion=res.data
+                this.count=this.grupoCombinacion.length
+                const f=this.grupoCombinacion
+                if(this.count>1){
+                for (let i = 0; i < f.length; i++) {
+                    if(i==0){
+                        this.grupoCombinacion2=f[i]
+                    
+                    }
+                    if(i==1){
+                        this.grupoCombinacion3=f[i]
+                      
+                    }
+
+                    
+                    
+                }
+                }
+            }).catch(e=>{
+                console.log(e.response)
+            })
        
 
     
 
-    axios.get(`/obtenerCombinacion/${data.datos.slug}`).then(res=>{
-            this.combinacion=res.data
-         //console.log(this.combinacion)
-        }).catch(e=>{
-            console.log(e.response)
-        })
+            axios.get(`/obtenerCombinacion/${data.datos.slug}`).then(res=>{
+                    this.combinacion=res.data
+                //console.log(this.combinacion)
+                }).catch(e=>{
+                    console.log(e.response)
+                })
 
-        
+        }   
 
 
 
@@ -73,16 +75,17 @@ const detalleProducto= new Vue({
     },
     computed: {
         validarCantidad:function(){
-            if(this.cantidad>this.disponibilidad ||this.cantidad=='' ){
+
+            if(parseFloat(this.cantidad)>parseFloat(this.disponibilidad)||this.cantidad=='' ||this.cantidad==0 ){
                 this.mensaje='Esta cantidad no esta disponible'
                 this.mostrarMensaje=true
                 this.disabledBoton=true
             }else{
+                
                 this.mensaje=''
                 this.mostrarMensaje=false
                 this.disabledBoton=false
             }
-            
             return ''
         }
     },
@@ -153,15 +156,17 @@ const detalleProducto= new Vue({
         this.slug=data.datos.slug
         
         this.tipoProducto=data.datos.tipoProducto
-
+        
         if(this.tipoProducto=='comun'){
             this.disponibilidad=data.datos.cantidad
             if(this.disponibilidad==0){
                 this.disabledBoton=true
             }
         }else{
-            this.disponibilidad=0
-            this.disabledBoton=true
+
+            if(this.disponibilidad==0){
+                this.disabledBoton=true
+            }
         }
 
     }

@@ -656,7 +656,23 @@
              <div class="row">
                     
                     <!-- /.col -->
-                    <div class="col-sm-6">
+      
+
+                        <div class="col-sm-6"> 
+                          <div class="form-group">
+                            <label for="">Mínimo de stock</label>
+                          <input type="text" class="form-control"  name="minStock">
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6"> 
+                          <div class="form-group">
+                            <label for="">Peso exacto del producto</label>
+                          <input type="text" class="form-control" name="peso">
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6">
                           <!-- checkbox -->
                           <div class="form-group clearfix">
                             <div class="custom-control custom-checkbox">
@@ -673,13 +689,6 @@
                           </div>
                         </div>
                       -->
-                        </div>
-
-                        <div class="col-sm-6"> 
-                          <div class="form-group">
-                            <label for="">Peso exacto del producto</label>
-                          <input type="text" class="form-control" name="peso">
-                          </div>
                         </div>
       
                       

@@ -405,59 +405,113 @@
               </h3>
             </div>
 
-            <div class="row">
+            
 
-              <div class="card-body table-responsive p-0">
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Tienda</th>
-                      <th>Producto</th>
-                      <th>Cantidad</th>
-                      <th>Precio</th>
-                      <th>Total</th>
-                      <th>Estado</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach ($pedido->producto as $item)
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-md-12">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Tienda</th>
+                          <th>Producto</th>
+                          <th>Cantidad</th>
+                          <th>Precio</th>
+                          <th>Total</th>
+                          <th>Estado</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @php
+                            $montoTotaal=0;
+                        @endphp
+                        @foreach ($pedido->producto as $item)
+    
+                        <tr>
+                          <td class="mailbox-star">{{$item->id}}</td>
+                          <td class="mailbox-star">{{$item->tienda->nombreTienda}}</td>
+                          <td class="mailbox-star">{{$item->nombre}}</td>
+                          <td class="mailbox-star">
+                            {{$item->pivot->cantidadProducto}}
+                          </td>
+                          <td class="mailbox-star">Bs {{$item->pivot->precioProducto}}</td>
+                          <td class="mailbox-star">Bs {{$item->pivot->precioProducto*$item->pivot->cantidadProducto}}</td>
+                          <td class="mailbox-star">
+  
+                            <?php $montoTotaal=$montoTotaal+($item->pivot->cantidadProducto*$item->pivot->precioProducto);?>
+  
+                            @if($item->pivot->status=='enviadoAlmacen')
+                              <span class="">Enviado al almacen</span>
+                            @endif
+                            @if($item->pivot->status=='listoEnviar')
+                              <span class="">Listo para enviar</span>
+                            @endif
+                         
+                          </td>
+    
+                          @if($item->pivot->status=='pagoAceptado')
+                          <td class="mailbox-star">
+                          <a href="{{url('/estado-almacen/'.$item->pivot->id)}}" class="btn btn-default">Verificar</a>
+                          </td>
+                          @endif
+    
+                        </tr>
+                        @endforeach
+    
+    
+    
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 
-                    <tr>
-                      <td class="mailbox-star">{{$item->id}}</td>
-                      <td class="mailbox-star">{{$item->tienda->nombreTienda}}</td>
-                      <td class="mailbox-star">{{$item->nombre}}</td>
-                      <td class="mailbox-star">
-                        {{$item->pivot->cantidadProducto}}
-                      </td>
-                      <td class="mailbox-star">Bs {{$item->pivot->precioProducto}}</td>
-                      <td class="mailbox-star">Bs {{$item->pivot->precioProducto*$item->pivot->cantidadProducto}}</td>
-                      <td class="mailbox-star">
-                        @if($item->pivot->status=='enviadoAlmacen')
-                          <span class="">Enviado al almacen</span>
-                        @endif
-                        @if($item->pivot->status=='listoEnviar')
-                          <span class="">Listo para enviar</span>
-                        @endif
-                     
-                      </td>
-
-                      @if($item->pivot->status=='pagoAceptado')
-                      <td class="mailbox-star">
-                      <a href="{{url('/estado-almacen/'.$item->pivot->id)}}" class="btn btn-default">Verificar</a>
-                      </td>
-                      @endif
-
-                    </tr>
-                    @endforeach
-
-
-
-                  </tbody>
-                </table>
+              
+                  <div class="row ">
+                    <div class="col-md-6 float-right">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <tr>
+                            
+                            <th style="width:50%">Costo de envío:</th>
+                            <td> 
+                              Bs {{ $montoTotaal}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Costo de envio</th>
+                            <td>
+                              @if($pedido->envioGratis!='0')
+                                Bs{{$pedido->envioGratis}}
+                                @else
+                                Envio gratis
+                              @endif
+                            </td>
+                          </tr>
+                          @if(!empty($pedido->codigoCupon))
+                          <tr>
+                            <th>Cupón:</th>
+                            <td> Bs {{$pedido->cantidadCupon}}</td>
+                          </tr>
+                          @endif
+                          @if(!empty($pedido->descuentoAficional))
+                          <tr>
+                            <th>Descuento adicional:</th>
+                            <td>Bs {{$pedido->descuentoAficional}}</td>
+                          </tr>
+                          @endif
+                          <tr>
+                            <th>Monto Total:</th>
+                            <td><span>Bs {{$pedido->montoTotal}}</span></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+        
               </div>
 
-            </div>
+         
 
           </div>
 

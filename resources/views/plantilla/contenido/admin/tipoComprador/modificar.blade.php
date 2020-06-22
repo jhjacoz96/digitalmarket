@@ -74,6 +74,7 @@
                            
                         </div>
                       </div>
+                      <!--
                     <div class="form-group">
                         <div class="custom-control custom-switch">
                            
@@ -87,7 +88,7 @@
                             
                         </div>
                       </div>
-
+                    -->
                     <div class="form-group">
                         <div class="custom-control custom-switch">
                             <input type="checkbox" 

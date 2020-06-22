@@ -85,7 +85,7 @@
                         <div class="form-group">
                           <label for="exampleInputEmail1">Telefono</label>
                           <input type="text" required="true" value="{{$tienda->telefono}}"
-                          name="apellido" class="form-control" id="apellido" placeholder="Ingrese su apellido" disabled>
+                          name="telefono" class="form-control" id="telefono" placeholder="Ingrese su apellido" disabled>
                         </div>
                       
                         

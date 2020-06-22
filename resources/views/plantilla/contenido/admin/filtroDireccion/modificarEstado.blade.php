@@ -121,9 +121,10 @@
 
                     </div>
 
-                    <div class="card-body table-responsive p-0 ">
+                    <div class="card-body">
                     <label>Municipios pertenecientes al estado {{$estados->nombre}}</label>
-                      <table class="table table-hover">
+                    <div class="table-responsive p-0">
+                      <table  id="table_id" class="display">
                         <thead>
                           <tr>
                             <th>ID</th>
@@ -163,6 +164,7 @@
 
                         </tbody>
                       </table>
+                    </div>
 
                     </div>
                   </div>

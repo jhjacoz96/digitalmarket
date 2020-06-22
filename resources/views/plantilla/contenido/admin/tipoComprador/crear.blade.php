@@ -58,12 +58,13 @@
                           
                         </div>
                       </div>
+                      <!--
                     <div class="form-group">
                         <div class="custom-control custom-switch">
                           <input type="checkbox"  class="custom-control-input" id="precio" name="precio">
                           <label class="custom-control-label" for="precio">Mostrar precio de los productos</label>
                         </div>
-                      </div>
+                      </div>-->
                   
                  
                   <div class="form-group">

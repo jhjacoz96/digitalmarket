@@ -18,6 +18,108 @@
     </section>
       <!-- Main content -->
       <section class="content">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header border-0">
+                <div class="justify-content-between">
+                  <h3 class="card-title">Estados</h3>
+                  
+                </div>
+              </div>
+  
+              <div class="card-body">
+                
+                <div class="row">
+                  
+                  <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                      <div class="inner">
+                       
+                        <h3> {{$countEt}}</h3>
+        
+                        <p>Espera por pago</p>
+                      </div>
+                      <div class="icon">
+                        <i class="ion ion-bag"></i>
+                      </div>
+                      <a href="{{route('pedido.consultar','esperaTransferencia')}}" class="small-box-footer">Ver detalles<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                  </div>
+                  <!-- ./col -->
+                  <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-success">
+                      <div class="inner">
+                      <h3>{{$countPa}}</h3>
+        
+                        <p>Pago aceptado</p>
+                      </div>
+                      <div class="icon">
+                        <i class="ion ion-bag"></i>
+                      </div>
+                      <a href="{{route('pedido.consultar','pagoAceptado')}}" class="small-box-footer">Ver detalles<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                  </div>
+                  <!-- ./col -->
+                  <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                      <div class="inner">
+                      <h3>{{$countPp}}</h3>
+        
+                        <p>Preparando pedido</p>
+                      </div>
+                      <div class="icon">
+                        <i class="ion ion-bag"></i>
+                      </div>
+                      <a href="{{route('pedido.consultar','preparandoPedido')}}" class="small-box-footer">Ver detalles<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                  </div>
+                  <!-- ./col -->
+                  <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box" style="background-color:deeppink; color: floralwhite;" >
+                      <div class="inner">
+                        <h3>{{$countEc}}</h3>
+        
+                        <p>Pedido enviado</p>
+                      </div>
+                      <div class="icon">
+                        <i class="ion ion-bag"></i>
+                      </div>
+                      <a href="{{route('pedido.consultar','enviadoComprador')}}"  class="small-box-footer">Ver detalles<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box" style="background-color:blueviolet; color: floralwhite;">
+                      <div class="inner">
+                        <h3>{{$countCu}}</h3>
+        
+                        <p>Culminado</p>
+                      </div>
+                      <div class="icon">
+                        <i class="ion ion-bag"></i>
+                      </div>
+                      <a href="{{route('pedido.consultar','recibido')}}" class="small-box-footer">Ver detalles<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                  </div>
+                  <!-- ./col -->
+                </div>
+  
+  
+  
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+  
           <div class="row">
             <div class="col-lg-12">
               <div class="card">
@@ -28,7 +130,10 @@
                   </div>
                 </div>
                 
+                
+
                 <div class="card-body">
+                  
                   <div class="row">
 
                     

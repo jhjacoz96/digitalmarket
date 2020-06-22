@@ -146,6 +146,7 @@
                              
                                 <h2>$ {{$moneda}}</h2>
                                 <label>Cantidad:</label>
+
                                 <input type="text" v-model="cantidad"/>
                                 <button type="submit" name="carrito"  class="btn btn-fefault cart" :disabled="disabledBoton">
                                     <i class="fa fa-shopping-cart"></i>
@@ -157,13 +158,12 @@
 
                             </span>
                                     
+                        
                             
                             <p><b>Disponibilidad:</b>
-                            @if($producto->tipoCliente=='comun')
-                                {{$producto->cantidad}}
-                            @else
+                           
                                 @{{disponibilidad}}
-                            @endif
+                           
 
 
                         </p>

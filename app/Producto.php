@@ -62,10 +62,12 @@ class Producto extends Model
         if (\Auth::check()){ 
             $comprador=\Auth::user()->comprador;
            $carrito=\DB::table('carritos')->where('comprador_id', $comprador->id)->sum('cantidad');
-        }else{
+        }
+        if(!empty(\Session::get('session_id'))){
             $session_id=\Session::get('session_id');
             $carrito=\DB::table('carritos')->where('session_id',$session_id)->sum('cantidad');
         }
+        $carrito=0;
         return $carrito;
     }
 

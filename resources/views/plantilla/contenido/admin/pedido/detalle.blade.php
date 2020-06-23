@@ -49,7 +49,7 @@
               <!-- /.info-box -->
             </div>
             <!-- /.col -->
-            <div class="col-md-4 col-sm-6 col-12">
+            <div class="col-md-4 col-sm-6 col-12">  
               <div class="info-box">
                 <span class="info-box-icon bg-success"><i class="far fa-money-bill-alt"></i></span>
   

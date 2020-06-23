@@ -7,6 +7,7 @@ use App\Producto;
 use App\Pedido;
 use App\ProductoPedido;
 use App\MetodoPagoPedido;
+use App\PlanAfilizacion;
 
 class HomeController extends Controller
 {
@@ -47,7 +48,9 @@ class HomeController extends Controller
             
             $productoStock=Producto::where('tienda_id',\Auth::user()->tienda->id)->whereBetween('cantidad', [0,'notificarStock'])->count();
 
-            return view('home',compact('nowPedido', 'productoStock'));
+            $plan=PlanAfilizacion::All();
+
+            return view('home',compact('nowPedido', 'productoStock','plan'));
         }
                 
                 

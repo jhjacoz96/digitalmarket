@@ -70,10 +70,11 @@
                 </address>
               </div>
               <!-- /.col -->
-              <div class="col-sm-4 invoice-col">
-                <b>Factura #{{$pedido->id}}</b><br>
+              <div class="col-sm-4 invoice-col float-right ">
+                <b>Factura #{{$pedido->id}} 
+                  <span style="float: right;"><?php echo  DNS1D :: getBarcodeHTML ($pedido->id , 'C39' );?> </span> </b><br>
                 <br>
-                <b>Pedido ID:</b> {{$pedido->id}}<br>
+                <b>Pedido ID:</b> {{$pedido->id}} <br>
                 <b>Fecha de pago:</b> {{$pedido->created_at->format('d-m-Y')}}<br>
                 <b>Comprador ID:</b> {{$pedido->comprador->id}}
               </div>
@@ -103,7 +104,7 @@
                     <tr>
                       <td>{{$item->id}}</td>
                       <td>{{$item->nombre}}</td>
-                      <td>{{$item->cantidad}}</td>
+                      <td>{{$item->pivot->cantidadProducto}}</td>
                       <td>Bs {{$item->pivot->precioProducto}}</td>
                       <td>Bs {{$item->pivot->precioProducto*$item->pivot->cantidadProducto}}</td>
                     </tr>
@@ -140,26 +141,37 @@
                 <div class="table-responsive">
                   <table class="table">
                     <tr>
-                      <th style="width:50%">Subtotal:</th>
-                      <td>Bs {{$subTotal}}</td>
+                            
+                      <th style="width:50%">Costo de envío:</th>
+                      <td> 
+                        Bs {{ $subTotal}}
+                      </td>
                     </tr>
                     <tr>
-                      <th>Gastos de envío</th>
-                      @if($pedido->medioEnvio->precioEnvio==0)
-                      <td>Gratis</td>
-                      @else
-                      <td>Bs {{$pedido->medioEnvio->precioEnvio}}</td>
-                      @endif
+                      <th>Costo de envio</th>
+                      <td>
+                        @if($pedido->envioGratis!='0')
+                          Bs{{$pedido->envioGratis}}
+                          @else
+                          Envio gratis
+                        @endif
+                      </td>
                     </tr>
-                    @if(!empty($pedido->cantidadCupon))
+                    @if(!empty($pedido->codigoCupon))
                     <tr>
-                      <th>Monto por cupón:</th>
-                      <td>Bs {{$pedido->cantidadCupon}}</td>
+                      <th>Cupón:</th>
+                      <td> Bs {{$pedido->cantidadCupon}}</td>
+                    </tr>
+                    @endif
+                    @if(!empty($pedido->descuentoAficional))
+                    <tr>
+                      <th>Descuento adicional:</th>
+                      <td>Bs {{$pedido->descuentoAficional}}</td>
                     </tr>
                     @endif
                     <tr>
-                      <th>Total:</th>
-                      <td>Bs {{$subTotal+$pedido->medioEnvio->precioEnvio-$pedido->cantidadCupon}}</td>
+                      <th>Monto Total:</th>
+                      <td><span>Bs {{$pedido->montoTotal}}</span></td>
                     </tr>
                   </table>
                 </div>

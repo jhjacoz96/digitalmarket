@@ -51211,7 +51211,8 @@ var producto = new Vue({
     if (data.editar == 'si') {
       if (data.datos.tipoCliente == 'combinacion') {
         axios.get("/combinacion/".concat(data.datos.id, "/edit")).then(function (res) {
-          _this.listaCombinacion2 = res.data; //console.log(this.listaCombinacion2)
+          _this.listaCombinacion2 = res.data;
+          console.log(_this.listaCombinacion2);
         })["catch"](function (e) {
           console.log(e.respose);
         });
@@ -51430,11 +51431,7 @@ var producto = new Vue({
         if (result.value) {
           //this.listaCombinacion2.splice(index, 1)
           axios["delete"]("/combinacion/".concat(item.id)).then(function (res) {
-            if (res.data == 'activo') {
-              Swal.fire('No puede eliminar una combinacion de un producto activo', 'Su combinación no se ha elimiando', 'warning');
-            } else {
-              Swal.fire('Eliminado!', 'Su combinación  se ha elimiando', 'success');
-            }
+            Swal.fire('Eliminada!', 'Su combinación  se ha elimiando', 'success');
           })["catch"](function (e) {
             console.log(es.respose);
           });
@@ -52111,7 +52108,6 @@ var checkout = new Vue({
     });
     axios.get('/obtenerMetodoPagoInternacional').then(function (res) {
       _this.metodoPagoInternacional = res.data;
-      console.log(res.data);
       var a = _this.metodoPagoInternacional;
       var o = _this.arrayInternacional;
       var d = {
@@ -52148,7 +52144,6 @@ var checkout = new Vue({
   methods: {
     seleccionEnvio: function seleccionEnvio(envio) {
       this.selectEnvio = envio;
-      console.log(this.selectEnvio);
 
       if (this.envioFree == 0) {
         var f = this.selectEnvio;
@@ -52200,7 +52195,6 @@ var checkout = new Vue({
         axios.get('/getMunicipio/' + this.estado_id).then(function (res) {
           _this2.municipios = res.data;
           document.getElementById('municipio_id').disabled = false;
-          console.log(_this2.municipios);
         })["catch"](function (e) {
           console.log(e.response);
         });
@@ -52219,7 +52213,6 @@ var checkout = new Vue({
         axios.get('/getParroquia/' + this.municipio_id).then(function (res) {
           _this3.parroquias = res.data;
           document.getElementById('parroquia_id').disabled = false;
-          console.log(_this3.parroquias);
         })["catch"](function (e) {
           console.log(e.response);
         });
@@ -52236,7 +52229,6 @@ var checkout = new Vue({
         axios.get('/getZona/' + this.parroquia_id).then(function (res) {
           _this4.zonas = res.data;
           document.getElementById('zona_id').disabled = false;
-          console.log(_this4.zonas);
         })["catch"](function (e) {
           console.log(e.response);
         });
@@ -52350,9 +52342,6 @@ var checkout = new Vue({
     }
   },
   mounted: function mounted() {
-    console.log(this.metodoPagoInternacional);
-    console.log(this.metodoPagoNacional);
-    console.log(this.arrayNacional);
     this.totalPeso = data.datos.totalPeso;
     this.envioFree = data.datos.envioFree;
     this.totalBs = data.datos.totalBs;
@@ -52409,9 +52398,10 @@ var detalleProducto = new Vue({
     }).catch(e=>{
         console.log(e.response)
     })*/
-    if (this.tipoProducto == 'combinacion') {
+    if (data.datos.tipoProducto == 'combinacion') {
       axios.get('/obtenerGrupo/' + data.datos.slug).then(function (res) {
         _this.grupoCombinacion = res.data;
+        console.log(_this.grupoCombinacion);
         _this.count = _this.grupoCombinacion.length;
         var f = _this.grupoCombinacion;
 

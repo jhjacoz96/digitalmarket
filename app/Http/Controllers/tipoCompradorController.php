@@ -163,19 +163,21 @@ class tipoCompradorController extends Controller
      */
     public function destroy($id)
     {  
-        $tipo=TipoComprador::with('comprador')->findOrFail($id);
+        $tipo=TipoComprador::with('comprador')->with('cupon')->findOrFail($id);
         if(count($tipo->comprador)>0){
-            flash('No puede eliminar este tipo de comprador, ya que posee ' . count($tipo->comprador) . ' compradores asociado(s)')->important()->warning();
+            flash('No puede eliminar este tipo de comprador ya que posee ' . count($tipo->comprador) . ' comprador(es) asociado(s)')->important()->warning();
             return redirect()->route('tipoComprador.index');
-        }else{
-            if($tipo->nombre=='Comprador'||$tipo->nombre=='comprador'){
+        }else if($tipo->nombre=='Comprador'||$tipo->nombre=='comprador'){
                 flash('El tipo de cliente ' . $tipo->nombre . ' no se puede eliminar ya que es un tipo de cliente predeterminado')->important()->warning();
+                return redirect()->route('tipoComprador.index');
+            }else if(count($tipo->cupon)>0){
+                flash('No puede eliminar este tipo de comprador ya que posee ' . count($tipo->cupon) . ' cupon(es) de descuento asociado(s)')->important()->warning();
                 return redirect()->route('tipoComprador.index');
             }else{
                 $tipo->delete();
                 flash('Tipo de comprador eliminado con exito')->important()->success();
                  return redirect()->route('tipoComprador.index');
-            }
         }
+        
     }
 }

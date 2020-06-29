@@ -68,7 +68,7 @@
                     {!!$errors->first('tiempoEntrega','<small>:message</small><br>')!!}
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group" >
                     <div class="custom-control custom-switch ">
                       <input type="checkbox"  
                       class="custom-control-input" id="envioGratis"   v-model="envioGratis"
@@ -107,7 +107,7 @@
 
                   <div class="form-group col-md-6" v-if="envioGratis==false">
                     <label for="">Precio de envio de 51kg a 100kg</label>
-                    <input  class="form-control"  v-model="precio51kg100g" placeholder="" name="precio51kg100kg"  type="text">
+                    <input  class="form-control"  v-model="precio51kg100kg" placeholder="" name="precio51kg100kg"  type="text">
                     {!!$errors->first('precio51kg100kg','<small>:message</small><br>')!!}
                   </div>
 

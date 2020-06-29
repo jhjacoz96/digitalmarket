@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Combinacion;
 use App\Atributo;
 
+use Laracasts\Flash\Flash;
+use Illuminate\Support\Facades\Validator;
+
+
 class atributosController extends Controller
 {
     /**
@@ -58,7 +62,8 @@ class atributosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $atributo=Atributo::findOrFail($id);
+        return view('plantilla.contenido.tienda.grupoAtributo.modificarAtributo',compact('atributo'));
     }
 
     /**
@@ -70,7 +75,12 @@ class atributosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $atributo=Atributo::findOrFail($id);
+        $atributo->nombre=$request->atributo;
+        $atributo->save();
+
+        flash('Atributo actualizado con exito')->important()->success();
+        return redirect()->route('tiendas.grupoAtributo.index');
     }
 
     /**

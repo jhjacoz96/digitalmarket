@@ -78,7 +78,7 @@
 @enderror
 
   <div class="mb-3">
-       <input id="password" type="password"  class="form-control @error('password') is-invalid @enderror" name="password" required  placeholder="password">
+       <input id="password" type="password"  class="form-control @error('password') is-invalid @enderror" name="password" required  placeholder="Contraseña">
   
   </div>
   
@@ -89,7 +89,7 @@
 @enderror
 
   <div class=" mb-3">
-       <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder=" Confirmacion Password">
+       <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder=" Confirmar contraseña">
    
   </div>
   

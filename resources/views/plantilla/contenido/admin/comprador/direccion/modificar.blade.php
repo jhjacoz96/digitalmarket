@@ -55,22 +55,24 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-            <form role="form" action="{{url('/comprador/direccion'.$direccion)}}" method="post" id="quickForm">
+            <form role="form" action="{{route('direccion.update',$direccion)}}" method="post" id="quickForm">
                 @method('PUT')
                 @csrf
                 
                 <div class="card-body">
                   
     
-                      <div >
-                       
-                      <input type="text" required="true" name="nombre" class="form-control"  placeholder="Jhon" value="{{$direccion->nombre}}">
+                      <div class="form-group col-md-6" >
+
+                      <input type="hidden" name="correo" value="{{$direccion->comprador->correo}}">
+
+                      <input type="text" required="true" name="nombre"  class="form-control"  placeholder="Jhon" value="{{$direccion->nombre}}">
                         {!!$errors->first('nombre','<small>:message</small><br>')!!}
                       </div>
     
                       <div class="form-group col-md-6">
                         <label for="exampleInputEmail1">Apellido</label>
-                        <input type="text" required="true" name="Apellido" value="{{$direccion->apellido}}" class="form-control" id="apellido" placeholder="Contreras">
+                        <input type="text" required="true" name="apellido" value="{{$direccion->apellido}}" class="form-control" id="apellido" placeholder="Contreras">
                         {!!$errors->first('apellido','<small>:message</small><br>')!!}
                       </div>
     
@@ -169,7 +171,7 @@
                 <a class="btn btn-secondary float-left" href="{{route('direccion.index')}}">Atrás</a>
                
                 
-                <button type="submit"  class="btn btn-primary float-right">Actualizar direción</button>
+                <button type="submit"  class="btn btn-primary float-right">Actualizar dirección</button>
                 </div>
 
               </form>

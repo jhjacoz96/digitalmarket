@@ -224,6 +224,7 @@ route::get('/pagos-tiendas','tiendaController@montrarPagos');
 route::get('/reporte-comprador/{anio}/{mes}','reporteController@graficaComprador');
 route::get('/reporte-pedido/{anio}/{mes}','reporteController@graficaPedido');
 route::get('/reporte-plan/{anio}/{mes}','reporteController@graficaPlan');
+route::get('/reporte-pago/{anio}/{mes}','reporteController@graficaPago');
 //fin de reportes graficos//
 
 ////////////////////////////////////////////////////////
@@ -235,6 +236,11 @@ route::prefix('tiendas')->name('tiendas.')->middleware('auth')->group(function()
     route::resource('grupoAtributo','grupoAtributoController');
     route::get('pedido/consultar','pedidoController@pedido')->name('pedido.consultar');
     route::get('pedido/detalle/{id}','pedidoController@detallePedido')->name('pedido.detalle');
+    route::get('ver-cuenta','tiendaController@verCuenta');
+    route::get('actualizar-cuenta','tiendaController@actualizarCuenta');
+    route::put('actualizar-cuenta/{id}','tiendaController@modificarCuenta');
+    route::get('cambiar-plan/{id}','tiendaController@cambiarPlan');
+    route::resource('atributos','atributosController');
 });
 
 ////////////////////////////////////////////////////////

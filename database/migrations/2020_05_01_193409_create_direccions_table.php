@@ -23,7 +23,6 @@ class CreateDireccionsTable extends Migration
             $table->string('primerTelefono');
             $table->string('segundoTelefono');
             $table->string('observacion')->nullable();
-
             $table->unsignedBigInteger('comprador_id')->nullable();
             $table->foreign('comprador_id')->references('id')->on('compradors');
 

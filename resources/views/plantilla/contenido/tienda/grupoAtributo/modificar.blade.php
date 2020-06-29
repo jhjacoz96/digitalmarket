@@ -121,8 +121,7 @@
                               <div class="btn-group">
 
 
-                              <a href="" class="btn btn-default btn-sm"> <span class="fas fa-edit"
-                                    aria-hidden="true"></span></a>
+                                <a href="{{route('tiendas.atributos.edit',$atributo->id)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
 
 
                                 

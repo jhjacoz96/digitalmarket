@@ -18,8 +18,8 @@ class marcaController extends Controller
      */
     public function index(Request $request)
     {
-        $marca=marca::with('producto','imagen')->paginate(5);
-        return view('plantilla.contenido.admin.marca.consultar',compact('marca','categria'));
+        $marca=marca::with('producto','imagen')->get();
+        return view('plantilla.contenido.admin.marca.consultar',compact('marca'));
     }
 
     /**
@@ -53,26 +53,29 @@ class marcaController extends Controller
         $marca->nombre=$request->nombre;
         $marca->descripcion=$request->descripcion;
 
-        /*
+      
         if($request->status){
+
             $marca->status='A';
         }else{
             $marca->status='I';
-        }*/
-
-       
-            $imagen=$request->file('imagen');
-           
-            $nombre=time().'_'.$imagen->getClientOriginalName();
-            $ruta=public_path().'/imagenes/marcas';
-            $imagen->move($ruta , $nombre);
-
-            $urlImagen['url']='/imagenes/marcas/'.$nombre;
-            
+        }
 
         $marca->save();
 
-            $marca->imagen()->create($urlImagen);
+            if($request->file('imagen')){
+     
+                $imagen=$request->file('imagen');
+               
+                $nombre=time().'_'.$imagen->getClientOriginalName();
+                $ruta=public_path().'/imagenes/marcas';
+                $imagen->move($ruta , $nombre);
+     
+                $urlImagen['url']='/imagenes/marcas/'.$nombre;
+                
+                $marca->imagen()->create($urlImagen);
+            }
+
 
             \flash('Marca agregado con exito')->important()->success();
 
@@ -127,28 +130,30 @@ class marcaController extends Controller
         $marca=Marca::findOrFail($id);
 
         $marca->nombre=$request->nombre;
-        $marca->descipcion=$request->descipcion;
+        $marca->descripcion=$request->descripcion;
         
 
-        /*f($request->status){
+        if($request->status){
             $marca->status='A';
         }else{
             $marca->status='I';
-        }*/
+        }
+
+        $marca->save();
 
         $imagen=$request->file('imagen');
         if($imagen!=null){
-
+         
             $nombre=time().'_'.$imagen->getClientOriginalName();
             $ruta=public_path().'/imagenes/marcas';
             $imagen->move($ruta , $nombre);
     
             $urlImagen['url']='/imagenes/marcas/'.$nombre;
+            $marca->imagen()->create($urlImagen);
         }   
        
-        $marca->save();
+       
 
-        $marca->imagen()->create($urlImagen);
 
         \flash('Marca actualizada con exito')->important()->success();
 

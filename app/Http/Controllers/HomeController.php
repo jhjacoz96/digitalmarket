@@ -7,6 +7,8 @@ use App\Producto;
 use App\Pedido;
 use App\ProductoPedido;
 use App\MetodoPagoPedido;
+use App\MetodoPago;
+use App\MedioEnvio;
 use App\PlanAfilizacion;
 
 class HomeController extends Controller
@@ -30,7 +32,7 @@ class HomeController extends Controller
     {
 
         if(\Auth::user()->rol_id=='3'){
-
+    
             $countEt=Pedido::where('status','esperaTransferencia')->count();
             $countPa=Pedido::where('status','pagoAceptado')->count();
             $countPp=Pedido::where('status','preparandoPedido')->count();
@@ -48,12 +50,14 @@ class HomeController extends Controller
             
             $productoStock=Producto::where('tienda_id',\Auth::user()->tienda->id)->whereBetween('cantidad', [0,'notificarStock'])->count();
 
-            $plan=PlanAfilizacion::All();
+            $plan=PlanAfilizacion::where('estatus','A')->get();
+
+           
 
             return view('home',compact('nowPedido', 'productoStock','plan'));
         }
                 
-                
+            
     }
 
     public function autoComplete(Request $request){

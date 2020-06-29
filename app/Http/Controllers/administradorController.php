@@ -67,7 +67,7 @@ class administradorController extends Controller
         if($user->rol_id=='2'){ 
             $tienda=Tienda::with('imagen')->with('tiendaCuentaBancaria')->findOrFail($user->tienda->id);
            
-            return \view('plantilla.contenido.perfil.perfilTienda',compact('tienda'),compact('user'));
+            return \view('plantilla.contenido.tienda.perfil.perfilTienda',compact('tienda'),compact('user'));
         }
 
 
@@ -147,12 +147,17 @@ class administradorController extends Controller
             }
          
 
+            
+            
+            
+            
+            
             $user=User::findOrFail(\Auth::user()->id);
             $user->email=$request->correo;
             $user->nombre=$request->nombre;
             $user->apellido=$request->apellido;
             $user->save();
-
+            
             $tienda=Tienda::findOrFail($id);
             $tienda->nombreTienda=$request->nombreTienda;
             $tienda->nombre=$request->nombre;
@@ -177,24 +182,6 @@ class administradorController extends Controller
                 $urlImagen['url']='/imagenes/tienda/'.$nombre;
                 $tienda->imagen()->create($urlImagen);
             }
-
-
-            $t=\Auth::user()->tienda->tiendaCuentaBancaria;
-          
-            $tiendCuentaBancaria=TiendaCuentaBancaria::findOrFail($t->id);
-            $tiendCuentaBancaria->medioPago=$request->nombreBanco;
-            $tiendCuentaBancaria->moneda='bolivar';
-            $tiendCuentaBancaria->cuenta=$request->detalleCuenta;
-            $tiendCuentaBancaria->tipoDocumento=$request->tipo;
-            $tiendCuentaBancaria->documentoIndentidad=$request->documentoIdentidad;
-            $tiendCuentaBancaria->titular=$request->titularCuenta;
-            $tiendCuentaBancaria->tipoCuenta=$request->tipoCuenta;
-            $tiendCuentaBancaria->telefono=$request->telefonoCuenta;
-            $tiendCuentaBancaria->correo=$request->correoCuenta;
-            $tiendCuentaBancaria->tienda_id=\Auth::user()->tienda->id;
-            $tiendCuentaBancaria->save();
-            
-
 
             flash('Perfil modificado  con exito!')->success()->important();
 

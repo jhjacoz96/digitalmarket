@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Comprador;
 use App\Pedido;
 use App\PlanAfilizacion;
+use App\MetodoPago;
 use App\Tienda;
 use Carbon\Carbon;
 
@@ -141,14 +142,14 @@ class reporteController extends Controller
 
         return json_encode($data);
     }
-
+    
     public function graficaPlan($anio,$mes){
         $primer_dia=1;
         $ultimo_dia=$this->getUltimoDiaMes($anio,$mes);
         $fecha_inicial=date("Y-m-d", strtotime($anio."-".$mes."-".$primer_dia) );
         $fecha_final=date("Y-m-d", strtotime($anio."-".$mes."-".$ultimo_dia) );
        
-        $planAfiliacion=PlanAfilizacion::All();
+        $planAfiliacion=PlanAfilizacion::where('estatus','A')->get();
 
 
         $nombre=array();
@@ -159,6 +160,44 @@ class reporteController extends Controller
 
             array_push($numero,$t);
             array_push($nombre,$planAfiliacion[$i]['nombre']);
+            
+        }   
+
+        $data=array("nombre"=>$nombre,"numero"=>$numero);
+        
+        return   json_encode($data);
+
+    }
+
+
+    public function graficaPago($anio,$mes){
+        $primer_dia=1;
+        $ultimo_dia=$this->getUltimoDiaMes($anio,$mes);
+       $fecha_inicial=date("Y-m-d", strtotime($anio."-".$mes."-".$primer_dia) );
+        $fecha_final=date("Y-m-d", strtotime($anio."-".$mes."-".$ultimo_dia) );
+       
+        /*
+        $pago=MetodoPago::with(['pedido'=>function($q)use($fecha_inicial, $fecha_final){
+            $q->whereBetween('created_at', [$fecha_inicial,$fecha_final]);
+        }])->get();*/
+
+        $pago=MetodoPago::All();
+
+        $nombre=array();
+        $numero=array();
+        for ($i=0; $i < count($pago) ; $i++) { 
+            /*
+            $t=MetodoPago::with(['pedido'=>function($q)use($fecha_inicial,$fecha_final){
+                $q->whereBetween('created_at', [date($fecha_inicial), $fecha_final]);
+            }])->find(1);
+            $f=count($t->pedido);
+            return $f;*/
+
+            $t=MetodoPago::with('pedido')->find($pago[$i]['id']);
+            $f=count($t->pedido);
+
+            array_push($numero,$f);
+            array_push($nombre,$pago[$i]['nombre']);
             
         }   
 

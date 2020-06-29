@@ -12,7 +12,7 @@
 &nbsp;
 @if ($estado=='aceptado')    
 <p>Hola {{$comprador->nombre}}, el pago por {{$metodoPago->nombre}} de su pedido No.{{$pedido->id}} ha sido verificado con exito.</p>
-&nbsp;
+&nbsp;      
 @else
 <p>Hola {{$comprador->nombre}}, el pago por {{$metodoPago->nombre}} de su pedido No.{{$pedido->id}} ha sido rechazado, se le informa que debe verificar el código de pago y modificarlo.</p>
 &nbsp;

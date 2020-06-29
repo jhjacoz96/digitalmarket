@@ -16,6 +16,7 @@ class CreateCombinacionsTable extends Migration
         Schema::create('combinacions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('cantidad')->unsigned()->default(0);
+            $table->string('status')->default('A');
             $table->unsignedBigInteger('producto_id')->nullable();
             $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

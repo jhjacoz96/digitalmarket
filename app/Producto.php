@@ -63,21 +63,23 @@ class Producto extends Model
             $comprador=\Auth::user()->comprador;
            $carrito=\DB::table('carritos')->where('comprador_id', $comprador->id)->sum('cantidad');
         }
-        if(!empty(\Session::get('session_id'))){
+        else if(!empty(\Session::get('session_id'))){
             $session_id=\Session::get('session_id');
             $carrito=\DB::table('carritos')->where('session_id',$session_id)->sum('cantidad');
+        }else {
+
+            $carrito=0;
         }
-        $carrito=0;
         return $carrito;
     }
 
     public static function productoCount($id){
-        $categoriaCount=Producto::where(['subCategoria_id'=>$id])->count();
+        $categoriaCount=Producto::where(['subCategoria_id'=>$id,'status'=>'si'])->count();
         return $categoriaCount;
     }
 
     public static function marcaCount($id){
-        $marcaCount=Producto::where(['marca_id'=>$id])->count();
+        $marcaCount=Producto::where(['marca_id'=>$id,'status'=>'si'])->count();
         return  $marcaCount;
     }
 

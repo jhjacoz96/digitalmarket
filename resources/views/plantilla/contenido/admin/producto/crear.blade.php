@@ -271,9 +271,8 @@
                   </div>
                
                   <div class="row">
-                    @{{value}}
-                    <br>
-                    @{{listaCombinacion}}
+                 
+                 
                     <div class="col-md-4">
                      
                           <div class="form-group" v-for="(item,index) in grupos">
@@ -281,7 +280,7 @@
                             <!--<select v-model="select"   class="form-control"  multiple   >
                             <option   :value="items" v-for="(items,index) in item.atributo">@{{items.nombre}}</option>
                             </select>-->
-                            <vue-multiselect v-model="select" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="nombre" track-by="id"      
+                            <vue-multiselect v-model="select" tag-placeholder="Add this as new tag" placeholder="Seleccione un atributo" label="nombre" track-by="id"      
                             :options="item.atributo"
                             :multiple="true" :taggable="true" @tag="addTag"></vue-multiselect>
                           </div>
@@ -289,17 +288,7 @@
                     </div>
                     <div class="col-md-8">
   
-                        <div class="form-group">
-                            
-                            <button type="button" class="btn btn-secondary float-right" v-on:click="generarLista()">
-                                combinar
-                            </button>
-    
-                            <button type="button" class="btn btn-outline-secondary float-left " v-if="aparecer" v-on:click.prevent="reset">
-                                resetear
-                            </button>
-                           
-                        </div>
+                        
                         
                         <input type="hidden" v-model="value" name="value">
                         
@@ -357,9 +346,18 @@
                 
                 <div class="card-footer">
                         
-                        <button v-on:click.prevent="convertir()" class="btn btn-primary" type="button" >
-                            formato
-                        </button>
+                  <div class="form-group">
+                            
+                    
+                    <button type="button" class="btn btn-outline-secondary  " v-if="aparecer" v-on:click.prevent="reset">
+                      resetear
+                    </button>
+
+                    <button type="button" class="btn btn-info" v-on:click="generarLista()">
+                        combinar
+                    </button>
+                    
+                </div>
                     
                 </div>
            
@@ -383,6 +381,7 @@
                       <label for="">Precio  del producto</label>
                       <input 
                         v-model.numer="precioAnterior"
+                        @blur="convertir()"
                         class="form-control" type="number" id="precioAnterior" name="precioAnterior" min="0" value="0" step=".01"> 
                     </div>
                   </div>

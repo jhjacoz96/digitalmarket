@@ -14,7 +14,7 @@
           <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
           <li class="breadcrumb-item"><a href="{{route('administrador.show',Auth::user()->id)}}">Perfil</a></li>
-          <li class="breadcrumb-item active">Actualizar perfil</li>
+          <li class="breadcrumb-item active">Actualizar cuenta bancaria</li>
           </ol>
 
       </div>
@@ -47,7 +47,7 @@
                  <div class="row">
                    <div class="col-md-6">
                     
-                    <p class="lead">Información la tienda</p>
+                    <p class="lead">Información la cuenta bancaria</p>
                        <hr>
 
                      <div class="form-group">
@@ -110,91 +110,7 @@
                      
                    </div>
  
-                   <div class=" col-md-6">
- 
-                     <p class="lead">Información la cuenta bancaria</p>
-                       <hr>
- 
                   
-                     <div class="form-group ">
-                       <label for="exampleInputEmail1">Nombre del banco</label>
-                       <input  type="text" required="true" value="{{$tiendaCuentaBancaria->medioPago}}" name="nombreBanco" class="form-control" id="nombreBanco" >
-                       {!!$errors->first('nombreBanco','<small>:message</small><br>')!!}
- 
-                     </div>
- 
-                     <div class="form-group ">
-                       <label for="exampleInputEmail1">Detalle de la cuenta</label>
-                       <input type="text" value="{{$tiendaCuentaBancaria->cuenta}}" name="detalleCuenta" class="form-control" id="detalleCuenta" >
-                       {!!$errors->first('detalleCuenta','<small>:message</small><br>')!!}
-                     </div>
- 
-                   
- 
-                     <div class="form-group ">
-                       <label for="exampleInputEmail1">Documento de identidad</label>
-                       <div class="d-flex">
-                           <select  name="tipo" class="form-control col-3" id="" >
-                            <option value="" >Seleccione una opción</option>
-                            <option
-                            @if($tiendaCuentaBancaria->tipodocumento=='V-')
-                            selected
-                            @endif
-                            value="V-">V-Venezolano</option>
-                            <option
-                            @if($tiendaCuentaBancaria->tipodocumento=='P-')
-                            selected
-                            @endif
-                            value="P-">P-Pasaporte</option>
-                            <option
-                            @if($tiendaCuentaBancaria->tipodocumento=='E-')
-                            selected
-                            @endif
-                            value="E-">E-Extranjero</option>
-                            <option 
-                            @if($tiendaCuentaBancaria->tipodocumento=='J-')
-                            selected
-                            @endif
-                            value="J-">J-Jurídico</option>
-                            <option
-                            @if($tiendaCuentaBancaria->tipodocumento=='R-')
-                            selected
-                            @endif
-                            value="R-">R-Firmas Personales</option>
-                            <option
-                            @if($tiendaCuentaBancaria->tipodocumento=='O-')
-                            selected
-                            @endif
-                            value="O-">O-Organización Comunal</option>
-                           </select>
-                       <input type="text"  name="documentoIdentidad" class="form-control ml-1" id="documentoIdentidad"  >
-                       </div>
- 
-                     </div>
- 
- 
-                     <div class="form-group ">
-                       <label for="">Titular de la cuenta</label>
-                       <input  value="{{$tiendaCuentaBancaria->titular}}"  class="form-control" type="text" name="titularCuenta" >
-                     </div>
-                     
-                     <div class="form-group">
-                       <label for="">Tipo cuenta</label>
-                       <input  value="{{$tiendaCuentaBancaria->tipoCuenta}}" class="form-control" type="text" name="tipoCuenta" >
-                     </div>
- 
-                     <div class="form-group ">
-                       <label for="">Correo</label>
-                       <input  value="{{$tiendaCuentaBancaria->correo}}" class="form-control" type="text" name="correoCuenta" >
-                     </div>
- 
-                     <div class="form-group ">
-                       <label for="">Telefono</label>
-                       <input value="{{$tiendaCuentaBancaria->telefono}}" class="form-control" type="text" name="telefonoCuenta" >
-                     </div>
- 
- 
-                   </div>
                  </div>
               </div>
 

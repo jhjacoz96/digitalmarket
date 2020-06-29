@@ -46,7 +46,7 @@
           </form>
     
           <p class="mt-3 mb-1">
-            <a href="{{route('login')}}">Inciciar sesión</a>
+            <a href="{{url('/iniciar-sesion')}}">Inciciar sesión</a>
           </p>
 
         </div>

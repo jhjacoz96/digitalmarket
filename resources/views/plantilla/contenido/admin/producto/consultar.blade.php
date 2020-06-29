@@ -80,12 +80,14 @@
                       <thead>
                         <tr>
                           <th>ID</th>
+                          <th>Sku</th>
+                          <th>Tienda</th>
                           <th>Nombre</th>
                           <th>Imagen</th>
                           <th>Sub categoria</th>
                           <th>Categoria</th>
-                          <th>Acción</th>
                           <th>Estado</th>
+                          <th>Acción</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -93,6 +95,8 @@
                              
                          <tr>
                             <td class="mailbox-star">{{$item->id}}</td>
+                            <td class="mailbox-star">{{$item->sku}}</td>
+                            <td class="mailbox-star">{{$item->tienda->nombreTienda}}</td>
   
                              <td class="mailbox-star">{{$item->nombre}}</td>
   
@@ -128,7 +132,7 @@
                                      <form action="{{route('producto.destroy',$item)}}" method="POST">
                                          @method('DELETE')
                                          @csrf
-                                         <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este producto?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
+                                         <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea inhabilitar este producto?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
                                     </form>
                                      
                                      

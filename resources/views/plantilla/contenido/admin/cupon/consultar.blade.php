@@ -61,7 +61,7 @@
                               <td class="mailbox-star">{{$item->id}}</td>
                               <td class="mailbox-star">{{$item->codigoCupon}}</td>
                               <td class="mailbox-star">{{$item->tipoCupon}}</td>
-                              <td class="mailbox-star">{{$item->created_at}}</td>
+                              <td class="mailbox-star">{{$item->created_at->format('d-m-Y')}}</td>
                               <td class="mailbox-star">{{$item->fechaExpiracion}}</td> 
                               <td class="mailbox-star">
                                 @if($item->tipoCupon=='Porcentaje')
@@ -86,7 +86,7 @@
                               </td> 
                     
                               <td class="mailbox-star">
-                                  <div class="button-group">
+                                  <div class="btn-group">
                                   
                                   <a href="{{route('cupon.edit',$item)}}" class="btn btn-default btn-sm mx-1">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
   
@@ -95,7 +95,7 @@
                                       <form action="{{route('cupon.destroy',$item)}}" method="POST"  >
                                           @method('DELETE')
                                           @csrf
-                                          <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este cupón?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
+                                          <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar este cupón?')"><span class="fas fa-trash-alt " aria-hidden ="true" ></span></button>
                                         </form>
                                       
                                       

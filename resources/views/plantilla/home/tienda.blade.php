@@ -11,6 +11,8 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
    
+
+
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -20,6 +22,10 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
+
+    <div class="p-2">
+      @include('flash::message')
+   </div>
       <!-- Main content -->
       <section class="content">
 
@@ -99,17 +105,34 @@
                                 <li><span></span></li>
                               </ul>
                               @if($item->nombre!='Gratuita')
-                            <a href="{{url('/administrador/'.\Auth::user()->id.'/edit')}}" class="pricing-table-button estandar ">!Afiliarme¡</a>
+                              <form action="{{url('/tiendas/cambiar-plan/'.$item->id)}}" method="get">
+                                <div class="form-group">
+                                    
+                                    <button type="submit" onclick="return confirm('¿Esta seguro que sea cambiar el plan de afiliación?')" class="pricing-table-button estandar ">!Afiliarme¡</button>
+                                  
+                                </div>
+                              </form>
                               @endif
+
                             </div>
                           </div>
                         </div>
+
+
+                     
+
                         @endforeach
                       
                      
                  
                     </div>
                   </div>
+
+
+
+
+<!-- Modal -->
+                
         
                 
 

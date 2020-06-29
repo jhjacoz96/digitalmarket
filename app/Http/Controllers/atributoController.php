@@ -100,7 +100,7 @@ class atributoController extends Controller
         $producto=Producto::where('status','si')->where('slug',$slug)->first();
 
 
-        $combinacion=Combinacion::where('producto_id',$producto->id)->with('atributo')->get(); 
+        $combinacion=Combinacion::where('producto_id',$producto->id)->where('status','A')->with('atributo')->get(); 
 
         return $combinacion;
 
@@ -156,7 +156,7 @@ class atributoController extends Controller
      */
     public function edit($id)
     {
-        $combinacion=Combinacion::with('atributo')->where('producto_id',$id)->get();
+        $combinacion=Combinacion::with('atributo')->where('producto_id',$id)->where('status','A')->get();
         return $combinacion;
     }
 
@@ -216,14 +216,12 @@ class atributoController extends Controller
        $combinacion=Combinacion::findOrFail($id);
         $producto=$combinacion->producto;
         
-        if($producto->status=='si'){
-            $mensaje='activo';
-            return $mensaje;
-        }else{
-            $mensaje='inactivo';
-            $combinacion->delete();
-            return $mensaje;
-        }
+        
+            $combinacion->status='I';
+            $combinacion->save();
+
+            return  $combinacion;
+        
 
        
        

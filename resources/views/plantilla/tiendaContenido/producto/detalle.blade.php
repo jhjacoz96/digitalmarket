@@ -161,8 +161,12 @@
                         
                             
                             <p><b>Disponibilidad:</b>
-                           
+                            <div v-if="disponibilidad!=0">
                                 @{{disponibilidad}}
+                            </div>
+                            <div v-else>
+                                <p>Producto sin stock</p>
+                            </div>
                            
 
 

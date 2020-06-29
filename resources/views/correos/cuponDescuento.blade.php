@@ -12,7 +12,7 @@
     <p>Debe usarlo ante del {{$cupon->fechaExpiracion}}.<p><br>
     @if($cupon->tipoCupon=='Porcentaje')
     <p>Este cupón será aplicaciado sobre el monto total carrito.<p><br>
-    <p>Este prodrá usarlo sobre el monto total del carrito, si lo supera, el resto podrá aplicarlo en otro pedido.<p><br>
+    <!--<p>Este prodrá usarlo sobre el monto total del carrito, si lo supera, el resto podrá aplicarlo en otro pedido.<p><br>-->
     @else
     <p>Este cupón será aplicaciado sobre el monto total carrito.<p><br>
     @endif

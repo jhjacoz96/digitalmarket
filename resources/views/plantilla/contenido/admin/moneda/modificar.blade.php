@@ -44,7 +44,7 @@
                 <div class="card-body">
 
                     <div class="form-group col-md-6">
-                        <label for="exampleInputEmail1">Código</label>
+                        <label for="exampleInputEmail1">Abreviatura de moneda</label>
                 
                     <input type="text" required="true" value="{{$moneda->codigo}}" name="codigo" class="form-control" >
           

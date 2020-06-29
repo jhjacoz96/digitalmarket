@@ -53,6 +53,7 @@
                         <option value="nacional">Transferencias en moneda nacional</option>
                         <option value="internacional">Transferencias en moneda Internacional</option>
                     </select>
+                    {!!$errors->first('tipoMetodo','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group col-md-6 ">
@@ -62,6 +63,7 @@
                         <option value="Bolivares">Bolivares</option>
                         <option value="Dolar">Dolar</option>
                     </select>
+                    {!!$errors->first('moneda','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group col-md-6">

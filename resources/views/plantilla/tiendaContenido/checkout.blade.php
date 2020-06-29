@@ -294,7 +294,7 @@
 												@{{direccion.direccionExacta}}<br>
 												@{{direccion.puntoReferencia}}<br>
 												@{{direccion.primerTelefono}}<br>
-												@{{direccion.segundoTelefono}}
+												@{{direccion.codigoPostal}}
 
 											</div>
 
@@ -320,7 +320,7 @@
 												@{{direccion.direccionExacta}}<br>
 												@{{direccion.puntoReferencia}}<br>
 												@{{direccion.primerTelefono}}<br>
-												@{{direccion.segundoTelefono}}
+												@{{direccion.codigoPostal}}
 											</div>
 
 										</div>
@@ -747,7 +747,7 @@
 			
 														<div class="form-group col-sm-6">
 															
-															<span><label class="mx-1" for="">Monto bs</label><input class=" form-control float-right"  v-model.numer="pago.cantidad" type="text"></span>
+															<span><label class="mx-1" for="">Monto bs</label><input class=" form-control pull-right"   v-model.numer="pago.cantidad" type="text"></span>
 															
 														</div>
 													</div>
@@ -769,7 +769,7 @@
 													</div>
 													<div class="panel-body">
 														<div class="form-group col-sm-6">
-															<span><label class="mx-1" for="">Monto $</label><input class=" form-control float-right"  v-model.numer="pago.cantidad" type="text"></span>
+															<span><label class="mx-1" for="">Monto $</label><input class=" form-control pull-right"  v-model.numer="pago.cantidad" type="text"></span>
 														</div>
 													</div>
 												</div>

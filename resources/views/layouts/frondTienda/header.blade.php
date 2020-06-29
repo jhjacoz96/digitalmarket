@@ -47,9 +47,10 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="logo pull-left">
-                    <a href="{{url('/')}}"><img src="{{asset('shop/images/home/logo.png')}}" alt="" /></a>
+                    <a href="{{url('/')}}"><img width="60" src="{{asset('/imagenes/logo/logo.png')}}"/></a>
                     </div>
                     <div class="btn-group pull-right">
+                        <!--
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
                                 USA
@@ -60,7 +61,7 @@
                                 <li><a href="#">UK</a></li>
                             </ul>
                         </div>
-                        
+                   
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
                                 DOLLAR
@@ -71,6 +72,7 @@
                                 <li><a href="#">Pound</a></li>
                             </ul>
                         </div>
+                         -->
                     </div>
                 </div>
                 <div class="col-sm-8">

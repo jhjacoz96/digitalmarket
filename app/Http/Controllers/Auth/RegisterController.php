@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use App\User;
 use App\Comprador;
 use App\Tienda;
+use App\PlanAfilizacion;
 use App\TiendaCuentaBancaria;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -77,6 +78,9 @@ class RegisterController extends Controller
 
             if($data['rol_id']==1){
 
+
+
+
                 $user=new User();
                  $user->nombre= $data['nombre'];
                 $user->apellido = $data['apellido'];
@@ -97,6 +101,9 @@ class RegisterController extends Controller
             }
 
             if($data['rol_id']==2){
+
+                
+             
                 $user=new User();
                 $user->nombre= $data['nombreEncargado'];
                 $user->apellido = $data['apellidoEncargado'];

@@ -45,14 +45,14 @@ class bancoMetodoPagoController extends Controller
     {
         $v=Validator::make($request->all(),[
             'nombreBanco'=>'required|unique:banco_metodo_pagos,nombreBanco',
-            'detalleCuenta'=>'required|min:15|max:20',
+            'detalleCuenta'=>'required|min:15|max:20|unique:banco_metodo_pagos,detalleCuenta',
             'documentoIdentidad'=>'max:8'
         ]);
 
         if ($v->fails()) {
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
-        
+        return 'no';
         $banco=new BancoMetodoPago();
         $banco->nombreBanco=$request->nombreBanco;
         $banco->detalleCuenta=$request->detalleCuenta;
@@ -61,6 +61,8 @@ class bancoMetodoPagoController extends Controller
         $banco->titular=$request->titularCuenta;
         $banco->tipoCuenta=$request->tipoCuenta;
         $banco->save();
+
+
 
         \flash('Banco agregado con exito')->important()->success();
             return  \redirect()->route('bancoMetodoPago.index');
@@ -137,7 +139,7 @@ class bancoMetodoPagoController extends Controller
             \flash('Banco eliminado con exito')->important()->success();
                 return  \redirect()->route('bancoMetodoPago.index');
         }else{
-            \flash('No puede eliminiar este banco ya que esta sociado a un metodo de')->important()->warning();
+            \flash('No puede eliminiar este banco ya que esta asociado a un medio de pago')->important()->warning();
             return  \redirect()->route('bancoMetodoPago.index');
         }
     }

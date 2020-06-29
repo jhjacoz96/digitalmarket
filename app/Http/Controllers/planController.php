@@ -144,7 +144,7 @@ class planController extends Controller
         }
         $plan->save();
         
-        flash('Plan de afiliación modificado con exito')->success()->important();
+        flash('Plan de afiliación actualizado con exito')->success()->important();
 
          return \redirect()->route('Plan.index');
     }
@@ -157,10 +157,16 @@ class planController extends Controller
      */
     public function destroy($id)
     {
-        $plan=PlanAfilizacion::findOrFail($id);
-        $plan->delete();
-        flash('Plan de afiliación eliminado con exito')->success()->important();
-        return \redirect()->route('Plan.index');
+        $plan=PlanAfilizacion::with('tienda')->findOrFail($id);
+        if(count($plan->tienda)>0){
+            flash('No es posible eliminar este plan de afliliación ya que posee ' . count($plan->tienda) . ' tiendas afiliadas')->warning()->important();
+            return \redirect()->route('Plan.index');
+        }else{
+
+            $plan->delete();
+            flash('Plan de afiliación eliminado con exito')->success()->important();
+            return \redirect()->route('Plan.index');
+        }
 
     }
 }

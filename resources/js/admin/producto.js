@@ -78,7 +78,8 @@ const producto = new Vue({
             if(data.datos.tipoCliente=='combinacion'){
                 axios.get(`/combinacion/${data.datos.id}/edit`).then(res=>{
                     this.listaCombinacion2=res.data
-                    //console.log(this.listaCombinacion2)
+
+                    console.log(this.listaCombinacion2)
                 }).catch(e=>{
                     console.log(e.respose)
                 })
@@ -331,23 +332,14 @@ const producto = new Vue({
 
                     //this.listaCombinacion2.splice(index, 1)
                     axios.delete(`/combinacion/${item.id}`).then((res)=>{
-                        if(res.data=='activo'){
-
+                        
                             Swal.fire(
-                                'No puede eliminar una combinacion de un producto activo',
-                                'Su combinación no se ha elimiando',
-                                'warning'
-                            )
-
-                        }else{
-
-                            Swal.fire(
-                                'Eliminado!',
+                                'Eliminada!',
                                 'Su combinación  se ha elimiando',
                                 'success'
                             )
 
-                        }
+                        
                     }).catch(e=>{
                         console.log(es.respose)
                     })

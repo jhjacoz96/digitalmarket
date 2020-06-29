@@ -43,7 +43,16 @@ class metodoPagoController extends Controller
      */
     public function store(Request $request)
     {
-       
+        $v=Validator::make($request->all(),[
+            'nombre'=>'required|unique:metodoPagos,nombre,'.$id,
+            'tipoMetodo'=>'required',
+            'moneda'=>'required'
+        ]);
+
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+
         $metodo=new MetodoPago();
         $metodo->nombre=$request->nombre;
         $metodo->descripcion=$request->descripcion;
@@ -53,7 +62,7 @@ class metodoPagoController extends Controller
         $metodo->correo=$request->correo;
         $metodo->bancoMetodoPago_id=$request->bancoMetodoPago;
         $metodo->save();
-        \flash('Metodo de pago agregado con exito')->important()->success();
+        \flash('Medio de pago agregado con exito')->important()->success();
         return \redirect()->route('metodoPago.index');
     }
 
@@ -99,7 +108,7 @@ class metodoPagoController extends Controller
         $bancos->correo=$request->correo;
         $bancos->bancoMetodoPago_id=$request->bancoMetodoPago;
         $bancos->save();
-        \flash('Metodo de pago modificado con exito')->important()->success();
+        \flash('Medio de pago modificado con exito')->important()->success();
         return \redirect()->route('metodoPago.index');
     }
 
@@ -111,10 +120,19 @@ class metodoPagoController extends Controller
      */
     public function destroy($id)
     {
+
         $bancos=MetodoPago::findOrFail($id);
         
-        $bancos->delete();
-        \flash('Metodo de pago eliminado con exito')->important()->success();
+        $pedido=count($bancos->pedido);
+        
+        if($pedido>0){
+            \flash('No es posible eliminar este medio de envío ya que posee pedidos asociado')->important()->warning();
         return \redirect()->route('metodoPago.index');
+        }else{
+
+            \flash('Medio de pago eliminado con exito')->important()->success();
+            return \redirect()->route('metodoPago.index');
+        }
+
     }
 }

@@ -110,8 +110,7 @@
                       </tbody>
                     </table>
                   </div>
-                  {{$marca->appends($_GET)->links()}}
-
+                  
                   <div class="box-footer p-3 float-right">
                   <a href=" {{route('marca.create')}}"  class="btn  btn-info ">Agregar marca</a>
             

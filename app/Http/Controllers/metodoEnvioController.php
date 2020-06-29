@@ -45,7 +45,7 @@ class metodoEnvioController extends Controller
      */
     public function store(Request $request)
     {
-     
+       
         $v=Validator::make($request->all(),[
             'nombre'=>'required',
             'tiempoEntrega'=>'required'
@@ -180,33 +180,30 @@ class metodoEnvioController extends Controller
             $envio['101kgA200kg']=$request->precio101kg200kg;
             $envio['mayorA201kg']=$request->precio201kg;
         }
+
+       
         $envio->save();
 
-        \flash('Método de envio actualizado con exito')->important()->success();
+        \flash('Medio de envio actualizado con exito')->important()->success();
         return \redirect()->route('metodoEnvio.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function destroy($id)
     {
-        $envio=MedioEnvio::findOrfail($id);
+        $envio=MedioEnvio::finPdOrfail($id);
         $pedidos=$envio->pedido;
         if(count($pedidos)<=0){
-            return 'f';
+         
             $envio->delete();
-            \flash('Método de envio eliminado con exito')->important()->success();
+            \flash('Medio de envio eliminado con exito')->important()->success();
             return \redirect()->route('metodoEnvio.index');
         }else{
-            
-            \flash('No puede eliminar este método de envio, a que posee pedidos asociados')->important()->warning();
+    
+            \flash('No puede eliminar este medio de envio, ya que posee pedidos asociados')->important()->warning();
             return \redirect()->route('metodoEnvio.index');
+        
         }
-       
     }
 
 

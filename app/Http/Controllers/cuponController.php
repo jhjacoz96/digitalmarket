@@ -212,7 +212,7 @@ class cuponController extends Controller
         if($fechaExpiracion< $fechaActual){
             \flash('Este cupón ya ha expirado')->important()->warning();
             return redirect()->route('carrito'); 
-        }    
+        }        
         
         $session_id=\Session::get('session_id');
 
@@ -221,16 +221,17 @@ class cuponController extends Controller
             $tipoComprador=\Auth::user()->comprador->tipoComprador;
             $carrito=\DB::table('carritos')->where(['comprador_id'=>$comprador_id])->get();
         }else{
-            $session_id=\Session::get('session_id');
-            $carrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get();
+            \flash('Debe autenticarse para poder canjear un cupón de descuento')->important()->warning();
+            return redirect()->route('carrito'); 
+           /* $session_id=\Session::get('session_id');
+            $carrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get();*/
         }
 
 
         $totalCantidad=0;
         foreach($carrito as $item){
             $totalCantidad=$totalCantidad+($item->precio*$item->cantidad);
-        }
-
+        }   
      
         $comprador=\Auth::user()->comprador;
         $tc=$cupon->tipoComprador;
@@ -241,7 +242,7 @@ class cuponController extends Controller
 
             if($tc[$i]['id']==$comprador->tipoComprador->id){
 
-                if($cupon->tipoCupon=='Porcentaje'){
+                if($cupon->tipoCupon=='Porcentaje'){    
 
                     $pedido=Pedido::where('comprador_id', $comprador->id)->where('codigoCupon',$cupon->codigoCupon)->count();
     
@@ -268,7 +269,7 @@ class cuponController extends Controller
                     $cantidadd=Pedido::where('comprador_id', $comprador->id)->where('codigoCupon',$cupon->codigoCupon)->count();
 
                     if($cantidadd>0){
-                        flash('Usted ya ha usado este código.')->warning()->important();
+                        flash('Usted ya ha usado este cupón de descuento.')->warning()->important();
                         return redirect()->route('carrito');
                     }
 

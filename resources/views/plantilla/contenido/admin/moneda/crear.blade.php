@@ -40,7 +40,7 @@
                 <div class="card-body">
 
                     <div class="form-group col-md-6">
-                      <label for="exampleInputEmail1">Código de moneda</label>
+                      <label for="exampleInputEmail1">Abreviatura de moneda</label>
               
                         <input type="text" required="true" name="codigo" class="form-control" >
 

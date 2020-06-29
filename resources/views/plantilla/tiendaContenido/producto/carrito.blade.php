@@ -168,7 +168,7 @@
                         
                     </ul>
                    
-                <a class="btn btn-default check_out" href="{{url('/checkout/'.$subMonto)}}">Check Out</a>
+                <a class="btn btn-default check_out" href="{{url('/checkout/'.$subMonto)}}">Procesar compra</a>
                 
                 </div>
             </div>

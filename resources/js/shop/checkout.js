@@ -85,7 +85,7 @@ const checkout= new Vue({
 
         axios.get('/obtenerMetodoPagoInternacional').then(res=>{
             this.metodoPagoInternacional=res.data
-            console.log(res.data)
+          
             const a=this.metodoPagoInternacional
 
             const o=this.arrayInternacional
@@ -130,7 +130,7 @@ const checkout= new Vue({
         seleccionEnvio:function(envio){
             
             this.selectEnvio=envio
-            console.log(this.selectEnvio)
+           
             if(this.envioFree==0){
                 const f=this.selectEnvio
                 if(f!=''){
@@ -193,7 +193,7 @@ const checkout= new Vue({
                 axios.get('/getMunicipio/'+this.estado_id).then(res=>{
                     this.municipios=res.data
                     document.getElementById('municipio_id').disabled=false
-                    console.log(this.municipios)
+                   
                 }).catch(e=>{
                     console.log(e.response)
                 })
@@ -212,7 +212,7 @@ const checkout= new Vue({
                 axios.get('/getParroquia/'+this.municipio_id).then(res=>{
                     this.parroquias=res.data
                     document.getElementById('parroquia_id').disabled=false
-                    console.log(this.parroquias)
+                   
                 }).catch(e=>{
                     console.log(e.response)
                 })
@@ -227,7 +227,7 @@ const checkout= new Vue({
                 axios.get('/getZona/'+this.parroquia_id).then(res=>{
                     this.zonas=res.data
                     document.getElementById('zona_id').disabled=false
-                    console.log(this.zonas)
+                   
                 }).catch(e=>{
                     console.log(e.response)
                 })
@@ -399,9 +399,6 @@ const checkout= new Vue({
        
     },
     mounted() {
-        console.log(this.metodoPagoInternacional)
-        console.log(this.metodoPagoNacional)
-        console.log(this.arrayNacional)
 
         this.totalPeso=data.datos.totalPeso
 

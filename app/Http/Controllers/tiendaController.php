@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Tienda;
 use App\User;
+use App\Pedido;
 use App\PlanAfilizacion;
 use App\PagoTiendaPedido;
+use App\TiendaCuentaBancaria;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -85,7 +87,7 @@ class tiendaController extends Controller
         $tienda->nombreTienda=$request->nombreTienda;
         $tienda->nombre=$request->nombre;
         $tienda->apellido=$request->apellido;  
-
+        $tienda->fechaPlanAfiliacion=Carbon::now()->format('Y-m-d H:i:s');  
         $tienda->telefono=$request->telefono;  
         $tienda->planAfilizacion_id=$request->planAfiliacion;  
         $tienda->correo=$request->correo;  
@@ -184,7 +186,9 @@ class tiendaController extends Controller
         $tienda->nombreTienda=$request->nombreTienda;
         $tienda->nombre=$request->nombre;
         $tienda->apellido=$request->apellido;  
-
+        if($tienda->planAfilizacion_id!=$request->planAfiliacion){
+            $tienda->fechaPlanAfiliacion=Carbon::now()->format('Y-m-d H:i:s');
+        }
         $tienda->telefono=$request->telefono;  
         $tienda->planAfilizacion_id=$request->planAfiliacion;  
         $tienda->correo=$request->correo;  
@@ -304,4 +308,67 @@ class tiendaController extends Controller
         flash('El pedido ' . $pagoTiendaPedido->pedido->id . ' ha sido pagado a la tienda ' .  $pagoTiendaPedido->tienda->nombreTienda . ' por un monto de  Bs'. $pagoTiendaPedido->montoPagado . ' ')->important()->success();
         return redirect('/pagos-tiendas');
     }
+
+
+    public function verCuenta(){
+        
+        $user=User::findOrFail(\Auth::user()->id);
+        $tienda=Tienda::with('imagen')->with('tiendaCuentaBancaria')->findOrFail(\Auth::user()->tienda->id);
+        return view('plantilla.contenido.tienda.perfil.VerCuentaTienda',compact('tienda','user'));
+    }
+
+    public function actualizarCuenta(){
+        $user=User::findOrFail(\Auth::user()->id);
+        $tienda=Tienda::with('imagen')->with('tiendaCuentaBancaria')->findOrFail(\Auth::user()->tienda->id);
+        $tiendaCuentaBancaria=$tienda->tiendaCuentaBancaria;
+        return view('plantilla.contenido.tienda.perfil.actualizarCuentaBancaria',compact('tienda','user'));
+    } 
+
+    public function modificarCuenta(Request $request,$id){
+        $t=\Auth::user()->tienda->tiendaCuentaBancaria;
+          
+        $tiendCuentaBancaria=TiendaCuentaBancaria::findOrFail($t->id);
+        $tiendCuentaBancaria->medioPago=$request->nombreBanco;
+        $tiendCuentaBancaria->moneda='bolivar';
+        $tiendCuentaBancaria->cuenta=$request->detalleCuenta;
+        $tiendCuentaBancaria->tipoDocumento=$request->tipo;
+        $tiendCuentaBancaria->documentoIndentidad=$request->documentoIdentidad;
+        $tiendCuentaBancaria->titular=$request->titularCuenta;
+        $tiendCuentaBancaria->tipoCuenta=$request->tipoCuenta;
+        $tiendCuentaBancaria->telefono=$request->telefonoCuenta;
+        $tiendCuentaBancaria->correo=$request->correoCuenta;
+        $tiendCuentaBancaria->tienda_id=\Auth::user()->tienda->id;
+        $tiendCuentaBancaria->save();
+
+        flash('Se ha actualizado la cuenta bancaria con exito con exito!')->success()->important();
+
+        return \redirect()->route('administrador.show',\Auth::user()->id);
+
+    }
+
+    public function cambiarPlan($id){
+       $plan=PlanAfilizacion::find($id);
+
+       $tienda=\Auth::user()->tienda;
+
+       $pedido=Pedido::whereHas('producto',function($q) use($tienda){
+        $q->where('tienda_id',$tienda->id);
+        })->where('status','!=','culminado')->count();
+        
+
+        if($pedido>=0){
+            flash('Lo sentimos. No puede afiliarce a un plan si posee pedidos en proceso de compra.')->warning()->important();
+
+            return \redirect('/home');
+        }else{
+
+            flash('Usted se ha afiliado al plan ' . $plan->nombre . ' . Debe tener en cuenta que el procentaje por venta es de ' . $plan->precio.'%.')->warning()->important();
+
+            return \redirect('/home');
+
+        }
+
+    }
+
+
 }

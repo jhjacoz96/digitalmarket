@@ -30,12 +30,13 @@ const detalleProducto= new Vue({
         }).catch(e=>{
             console.log(e.response)
         })*/
-
-        if(this.tipoProducto=='combinacion'){
-
+               
+        if(data.datos.tipoProducto=='combinacion'){
+           
             axios.get('/obtenerGrupo/'+data.datos.slug).then(res=>{
-                
+              
                 this.grupoCombinacion=res.data
+                console.log(this.grupoCombinacion)
                 this.count=this.grupoCombinacion.length
                 const f=this.grupoCombinacion
                 if(this.count>1){
@@ -156,7 +157,7 @@ const detalleProducto= new Vue({
         this.slug=data.datos.slug
         
         this.tipoProducto=data.datos.tipoProducto
-        
+       
         if(this.tipoProducto=='comun'){
             this.disponibilidad=data.datos.cantidad
             if(this.disponibilidad==0){

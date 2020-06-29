@@ -12,7 +12,7 @@
     <p>Código de pedido: {{$pedido->id}}</p>
     <p>Estado del pedido: Preparando pedido</p>
     &nbsp;
-        <p>Hola {{$nombre}}, queremos informate que tus productos ya se encuentran en nuestro almacen; listos y verificados. Una vez su pedido este listo para el envio, se notificará por este medio.</p>
+        <p>Hola {{$nombre}}, queremos informate que tus productos ya se encuentran en nuestro almacen; listos y verificados. Una vez su pedido este listo para el envio, se notificará.</p>
     @endif
 
     @if($pedido->status=='enviadoComprador')
@@ -20,7 +20,7 @@
     <p>Estado del pedido: Enviado al comprador</p>
     <p>Referencia de envio: {{$pedido->refenciaEnvio}}</p>
     &nbsp;
-        <p>Hola {{$nombre}}, queremos informate que tu pedido ya ha sido envido a la dirección que usted ha indicado. Esperamos que disfrute sus productos y gracias por preferirnos.</p>
+        <p>Hola {{$nombre}}, queremos informate que tu pedido ya ha sido envido a la dirección que usted ha indicado. Esperamos que disfrute sus productos y gracias por preferirnos.</p>   
     &nbsp;
 
         <p>Nota: No debe olvidar calificar los productos de su pedido. Si no se realiza esta, su pedido será culminado por nosotros.</p>

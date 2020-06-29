@@ -120,7 +120,7 @@
                     </table>
                   </div>
                   <div class="box-footer p-3 ">
-                  <a href=" {{route('Plan.create')}} "  class="btn  btn-info float-right">Agregar Plan de afilización</a>
+                  <a href=" {{route('Plan.create')}} "  class="btn  btn-info float-right">Agregar Plan de afiliación</a>
             
                   </div>
                 </div>

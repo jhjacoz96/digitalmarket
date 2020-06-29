@@ -81,10 +81,10 @@
                         
                       <div class="custom-control custom-switch">
                         <input type="checkbox"
-                        @if($marca->estatus=='A')
+                        @if($marca->status=='A')
                             checked
                         @endif
-                        name="estatus"  class="custom-control-input" id ="activo" name="activo">
+                        "  class="custom-control-input" id ="activo" name="status">
                         <label class="custom-control-label" for="activo">Activo</label>
                       </div>
   

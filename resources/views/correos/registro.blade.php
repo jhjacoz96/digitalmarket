@@ -39,7 +39,33 @@
         </tr>
         <tr>
             <td>
-             Contraseña: **** (Según lo elegido por ti)
+               <H3>Consejos de seguridad</H3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+               Mantenga los datos de su cuenta en un lugar seguro.
+            </td>
+        </tr>
+        <tr>
+            <td>
+              No comparta los detalles de su cuenta con otras personas.
+            </td>
+        </tr>
+        <tr>
+            <td>
+              Cambie su clave regularmente.
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+               &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+             Contraseña: **** (Según lo elegido por usted)
             </td>
         </tr>
         <tr>

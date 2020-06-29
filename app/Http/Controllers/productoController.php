@@ -78,10 +78,10 @@ class productoController extends Controller
     public function create()
     {
         $categoria=Categoria::orderBy('nombre')->get();
-        $marca=Marca::orderBy('nombre')->get();
+        $marca=Marca::orderBy('nombre')->where('status','A')->get();
         if(\Auth::user()->rol_id==3){
             $rol=\Auth::user()->rol_id;
-        return \view('plantilla.contenido.admin.producto.crear',compact('categoria','rol'));
+        return \view('plantilla.contenido.admin.producto.crear',compact('categoria','rol','marca'));
         }else{
             $planAfiliacion=\Auth::user()->tienda->planAfiliacion;
 
@@ -97,7 +97,7 @@ class productoController extends Controller
             }
             $rol=\Auth::user()->rol_id;
             $tienda_id=\Auth::user()->tienda->id;
-            return \view('plantilla.contenido.tienda.producto.crear',compact('categoria','tienda_id','rol','marca'));
+            return \view('plantilla.contenido.tienda.producto.crear',compact('categoria','tienda_id','rol','marca'));   
         }
     }
 
@@ -109,7 +109,6 @@ class productoController extends Controller
      */
     public function store(Request $request)
     {
-  
         
         $v=Validator::make($request->all(),[
             'nombre'=>'min:2|required|unique:productos,nombre',
@@ -153,7 +152,7 @@ class productoController extends Controller
                     $cantidad=Producto::where('tienda_id',$tienda->id)->where('status','si')->count();
                     if($cantidad+1>$planAfiliacion->cantidadPublicacion){
                         $producto=Producto::All();
-                        \flash('Ha superado la cantidad de productos activos. Si desea seguir publicando productos, debe afiliace a uno de nuestros planes con mayor cantidad de publicaciones.')->warning()->important();
+                        \flash('Ha superado la cantidad de productos activos. Si desea seguir publicando productos, debe afiliarse a uno de nuestros planes con mayor cantidad de publicaciones.')->warning()->important();
                         return redirect()->route('producto.index',compact('producto'));
                     }
                 }
@@ -216,7 +215,7 @@ class productoController extends Controller
                     if($request->cantidad>$planAfiliacion->tiempoPublicacion){
                         
                         $producto=Producto::All();
-                        \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
+                        \flash('Ha superado el stock maximo del plan de afiliación al que pertenece. Si desea tener  un limite mayor puede cambiar su plan de afiliación .')->warning()->important();
                         return redirect()->route('tiendas.producto.index',compact('producto'));
                     }
                 }
@@ -318,6 +317,7 @@ class productoController extends Controller
                 for ($i=0; $i < count($d) ; $i++) { 
                     $combinacion = new Combinacion();
                     $combinacion->cantidad=$d[$i]['cantidad'];
+                    $combinacion->status='A';
                     $combinacion->producto_id=$producto->id;
                     $combinacion->save();
                     $s=$d[$i]['elemento'];
@@ -673,18 +673,32 @@ class productoController extends Controller
     {
         $producto=Producto::with('imagen')->findOrFail($id);
         
+        /*
         foreach ($producto->imagen as $imagen) {
            
             $archivo=substr($imagen->url,1);
             File::delete($archivo);
             $imagen->delete();
+        }*/
+
+        
+        if($producto->status=='si'){
+
+            $producto->status='no';
+            $producto->save();
+            flash('Producto inhabilitado con exito. Debe tomar en cuenta que ya no estará disponible en el catalogo de DigitalMarket')->important()->success();
+
+            return  redirect()->route('producto.index');
+        }else{
+            flash('Este producto ya se encuentra inhabilitado')->important()->warning();
+
+            return  redirect()->route('producto.index');
+           
         }
+     
+     
 
-        $producto->delete();
-
-        flash('producto eliminado con exito')->important()->success();
-
-        return  redirect()->route('producto.index');
+       
     }
 
     public function obtenerTienda($codigo){
@@ -712,9 +726,11 @@ class productoController extends Controller
 
             $categoria=Categoria::where('estatus','A')->get();
         
-        $subCategoria=subCategoria::where('slug',$slug)->with('producto')->first();
+        $subCategoria=subCategoria::where('slug',$slug)->with(['producto'=>function($q){
+            $q->where('status','si');
+        }])->first();
         
-        $marca=Marca::All();
+        $marca=Marca::where('status','A');
        
         
             return view('plantilla.tiendaContenido.filtroCategoria.subCategoria',compact('categoria','subCategoria','marca'));
@@ -968,10 +984,15 @@ class productoController extends Controller
     } 
 
     public function carrito(){
+
+       
         
         if(\Auth::check()){
             $comprador_id=\Auth::user()->comprador->id;
             $userCarrito=\DB::table('carritos')->where(['comprador_id'=>$comprador_id])->get();
+
+            
+
         }else{
             $session_id=\Session::get('session_id');
             $userCarrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get();
@@ -991,7 +1012,62 @@ class productoController extends Controller
         
                 \Session::put('$montoDescuentoTipoComrador',$montoDescuentoTipoComrador);
             }
+
+
+            foreach ($userCarrito as $item) {
+             
+                $productoCount=Producto::where('id',$item->producto_id)->where('status','no')->count();
+ 
+                if($productoCount>0){
+                 \DB::table('carritos')->where(['comprador_id'=>$comprador_id,'producto_id'=>$item->producto_id])->delete();
+                 
+                
+                }else{
+                    $producto=Producto::find($item->producto_id);
+                }
+
+
+                if($producto->tipoCliente=='combinacion'){
+                    $combinacion=Combinacion::where('id',$item->combinacion_id)->where('status','I')->count();
+
+                    if( $combinacion>0){
+                        \DB::table('carritos')->where(['comprador_id'=>$comprador_id,'producto_id'=>$item->producto_id,'combinacion_id'=>$item->combinacion_id])->delete();
+                    }
+
+                }
+
+                
+            }
             
+            $userCarrito=\DB::table('carritos')->where(['comprador_id'=>$comprador_id])->get();
+
+            
+        }else{
+
+
+            foreach ($userCarrito as $item) {
+                $productoCount=Producto::where('id',$item->producto_id)->where('status','no')->count();
+ 
+                if($productoCount>0){
+                    \DB::table('carritos')->where(['session_id'=>$session_id,'producto_id'=>$item->producto_id])->delete();
+                    
+                }else{
+                    $producto=Producto::find($item->producto_id);
+                }
+
+                if($producto->tipoCliente=='combinacion'){
+                    $combinacion=Combinacion::where('id',$item->combinacion_id)->where('status','I')->count();
+
+                    if( $combinacion>0){
+                        \DB::table('carritos')->where(['session_id'=>$session_id,'producto_id'=>$item->producto_id,'combinacion_id'=>$item->combinacion_id])->delete();
+                    }
+
+                }
+
+                
+            }
+            
+            $userCarrito=\DB::table('carritos')->where(['session_id'=>$session_id])->get();
         }
 
 
@@ -1027,7 +1103,7 @@ class productoController extends Controller
     
             }else{
                 
-                flash('Esta cantidad exede la existente')->warning()->important();
+                flash('Esta cantidad excede la existente en este producto')->warning()->important();
                 return redirect()->route('carrito');
             }
 
@@ -1041,7 +1117,7 @@ class productoController extends Controller
                 return redirect()->route('carrito');
     
             }else{
-                flash('Esta cantidad exede la existente')->warning()->important();
+                flash('Esta cantidad excede la existente en este producto')->warning()->important();
                 return redirect()->route('carrito');
             }
 
@@ -1082,26 +1158,28 @@ class productoController extends Controller
                
                 if($carrito->cantidad>$producto->cantidad){
                     $carritoDelete->delete();
-                    flash('El producto que desea comprar ya no posee la cantidad que usted require')->warning()->important();
+                    flash('El producto que desea comprar no posee la cantidad que usted require')->warning()->important();
                 return redirect()->route('carrito');
                 }
 
             }else{
 
-                $countCombinacion=Combinacion::where('id',$carrito->combinacion_id)->count();
-
-                if($countCombinacion<=0){
+                $countCombinacion=Combinacion::where('id',$carrito->combinacion_id)->where('status','I')->count();
+                
+                if($countCombinacion>0){
                     $carritoDelete->delete();
-                    flash('Este producto ya no se encuentra disponible')->warning()->important();
+                    flash('La combinación del producto ' . $producto->nombre . ' ya no se encuentra disponible.')->warning()->important();
                     return redirect()->route('carrito');
+                }else{
+
+                    $combinacion=Combinacion::where('id',$carrito->combinacion_id)->first();
+                    if($carrito->cantidad>$combinacion->cantidad){
+                        $carritoDelete->delete();
+                        flash('El producto que desea comprar ya no posee la cantidad que usted require')->warning()->important();
+                    return redirect()->route('carrito');
+                    }
                 }
 
-                $combinacion=Combinacion::where('id',$carrito->combinacion_id)->first();
-                if($carrito->cantidad>$combinacion->cantidad){
-                    $carritoDelete->delete();
-                    flash('El producto que desea comprar ya no posee la cantidad que usted require')->warning()->important();
-                return redirect()->route('carrito');
-                }
 
             }
 
@@ -1148,15 +1226,15 @@ class productoController extends Controller
     public function realizarPedido(Request $request){
 
         if($request->isMethod('post')){
-          
+            
             $metodoPago=json_decode($request['metodoPagos'],true);
             $metodoEnvio=json_decode($request['metodoEnvio'],true);
             $pedido=new Pedido();
             $pedido->montoTotal=$request->precioFijoBs;
             $pedido->codigoCupon=$request->codigoCupon;
            
-            $pedido->envioGratis=$request->envioGratis;
-           
+            $pedido->precioEnvio=floatval($request->envioGratis);
+              
             $pedido->cantidadCupon=$request->cantidadCupon;
             $pedido->status='esperaTransferencia';
             $pedido->metodoEnvio_id=$metodoEnvio['id'];
@@ -1215,7 +1293,7 @@ class productoController extends Controller
                 $pedido->metodoPago()->attach($metodoPago[$i]['id'],['cantidad'=>$metodoPago[$i]['cantidad'],
                 'status'=>'espera'
                 ]);
-            } 
+            }
 
             $carritoProducto=\DB::table('carritos')->where(['comprador_id'=> $pedido->comprador_id])->get();
             for ($i=0; $i <count($carritoProducto) ; $i++) {     
@@ -1331,6 +1409,11 @@ class productoController extends Controller
             $comprador_id=\Auth::user()->comprador->id;
             $listaDeseo=Deseo::where(['comprador_id'=>$comprador_id])->get();   
             return view('plantilla.tiendaContenido.producto.listaDeseo',compact('listaDeseo'));
+
+            
+
+
+
         }else{
             flash('Debe autenticarse para poder ver la lista de deseos')->warning()->important();
             return redirect()->back();

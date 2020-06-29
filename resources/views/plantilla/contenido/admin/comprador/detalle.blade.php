@@ -73,16 +73,89 @@
               <div class="card-header">
                   <span class="fas fa-shopping-bag float-left
                   "></span>
-                <h3 class="card-title ml-1">Pedidos <span class="badge badge-info">0</span></h3>
+              <h3 class="card-title ml-1">Pedidos <span class="badge badge-info">{{count($comprador->pedido)}}</span></h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
             
                 <div class="card-body text-center">
 
+                  @if(count($comprador->pedido)==0)
                 <span >{{$comprador->nombre}} {{$comprador->apellido}} todavía no ha realizado nungún pedido. </span>
+                @endif
+                @if(count($comprador->pedido)!=0)
+                <div class="card-body table-responsive p-0">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Fecha de pedido</th>
+                        <th>Monto Total</th>
+                        <th>estado</th>
+                        <th>Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                        $total=0;
+                        ?>
+                      @foreach ($comprador->pedido as $item)
+                          
+                      <tr>
+                      <td class="mailbox-star">{{$item->id}}</td>
+                      <td class="mailbox-star">{{$item->created_at}}</td>
+                      <td class="mailbox-star">
+                        {{$item->comprador->correo}}
+                      </td>
+                      <td class="mailbox-star">
+                        
+                      Bs {{$item->montoTotal}}
 
-                      
+                      </td>
+
+                      <td class="mailbox-star">
+                        @if($item->status=='esperaTransferencia')
+                          <span class="badge badge-primary">Espera por transferencia</span>
+                        @endif
+                        
+                        @if($item->status=='pagoAceptado')
+                          <span class="badge badge-success">Pago aceptado</span>
+                        @endif
+
+                        @if($item->status=='preparandoPedido')
+                          <span class="badge badge-warning">Preparando pedido</span>
+                        @endif
+                        
+
+                        @if($item->status=='enviadoComprador')
+                          <span class="badge" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span>
+                        @endif
+
+                        @if($item->status=='cancelado')
+                          <span class="badge badge-danger">Cancelado</span>
+                        @endif
+
+                          </td>
+                        
+                          
+                          <td class="mailbox-star">
+                              <div class="btn-group">
+                              
+
+                              <a href="{{route('pedido.detalle',$item->id)}}" class="btn btn-default btn-sm">  <span class="fas fa-eye" aria-hidden ="true" ></span></a>
+                              
+                              </div>
+                          </td>
+                      </tr>
+                      @endforeach
+                            
+                        
+                    
+                    
+                    </tbody>
+                  </table>
+                </div>
+                @endif
                   
                 </div>
             </div>   
@@ -90,7 +163,7 @@
               <div class="card-header">
                   <span class="fas fa-map-marker-alt float-left"></span>
                 
-                <h3 class="card-title ml-1">Direcciones <span class="badge badge-info">0</span></h3>
+              <h3 class="card-title ml-1">Direcciones <span class="badge badge-info">{{count($comprador->direccion)}}</span></h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -110,7 +183,7 @@
                       <th>Apellido</th>
                       <th>direccion de envio</th>
                       <th>Código postal</th>
-                      <th>Acción</th>
+  
                     </tr>
                   </thead>
                   <tbody>
@@ -123,25 +196,7 @@
                          <td class="mailbox-star">{{$item->zona->parroquia->municipio->estado->nombre}}-{{$item->zona->parroquia->municipio->nombre}}-{{$item->zona->parroquia->nombre}}-{{$item->zona->nombre}}</td>
                          <td class="mailbox-star">{{$item->zona->codigoPostal}}</td>
                          
-                         
-                         <td class="mailbox-star">
-                             <div class="btn-group">
-                             
-
-                             <a href="{{route('direccion.edit',$item->id)}}" class="btn btn-default btn-sm">  <span class="fas fa-edit" aria-hidden ="true" ></span></a>
-
-                                 
-                                 
-                                 <form action="{{route('direccion.destroy',$item)}}" method="POST">
-                                     @method('DELETE')
-                                     @csrf
-                                     <button class="btn btn-default btn-sm d-inline float-left" onclick="return confirm('¿Esta seguro que desea eliminar esta dircción?')"><span class="fas fa-trash-alt" aria-hidden ="true" ></span></button>
-                                   </form>
-                                 
-                                 
-                               
-                             </div>
-                         </td>
+                  
                      </tr>
                      @endforeach
                           

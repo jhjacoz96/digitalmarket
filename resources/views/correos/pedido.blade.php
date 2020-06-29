@@ -22,7 +22,7 @@
         <tr><td>&nbsp;</td></tr>
         <tr><td>Gracias por su compra con nosotros</td></tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>El pago de su pedido debe hacerlos a través de los siguientes métodos de pago:</td></tr>
+        <tr><td>El pago de su pedido debe hacerlos a través de los siguientes métodos de pago:</td></tr>    
         <tr><td>&nbsp;</td></tr>
         <tr><td>
             <div class="row">
@@ -50,7 +50,7 @@
                         @endempty
                         @empty(!$pago->bancoMetodoPago->detalleCuenta)    
                             Número de cuenta: {{$pago->bancoMetodoPago->detalleCuenta}}<br>
-                        @endempty
+                        @endempty   
                         @empty(!$pago->bancoMetodoPago->documentoIdentidad)    
                             Documento de identidad: {{$pago->bancoMetodoPago->tipoDocumento}}{{$pago->bancoMetodoPago->documentoIdentidad}}<br>
                         @endempty
@@ -77,12 +77,14 @@
                     <td>Producto</td>
                     <td>Cantidad</td>
                     <td>Precio unitario</td>
+                    <td>Precio total</td>
                 </tr>
                 @foreach ($detalleProducto['producto'] as $producto)
                 <tr>
                     <td>{{$producto->nombre}}</td>
                     <td>{{$producto->pivot->cantidadProducto}}</td>
                     <td>{{$producto->pivot->precioProducto}}</td>
+                    <td>{{$producto->pivot->precioProducto*$producto->pivot->cantidadProducto}}</td>
                 </tr>
                 @endforeach
                 <tr>

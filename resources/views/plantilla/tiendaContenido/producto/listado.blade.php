@@ -38,7 +38,7 @@ use App\Marca;
                                     <h4>Bs {{$productos->precioAnterior}}</h4>
                                     @endif
                                         <p>{{$productos->nombre}}</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Ver detalles</a>
+                                    <a href="{{url('/detalleProducto/'.$productos->slug)}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Ver detalles</a>
                                     </div>
                                    
                             </div>

@@ -75,6 +75,7 @@ class direccionController extends Controller
         $parroquia=Parroquia::where('minicipio_id',$id)->get();
         return $parroquia;
      }
+     
      public function getZona($id){
         $zona=Zona::where('parroquia_id',$id)->get();
         return $zona;
@@ -180,11 +181,10 @@ class direccionController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        
         $v=Validator::make($request->all(),[
             'nombre'=>'required',
             'apellido'=>'required',
-            
             'direccion'=>'required',
             'puntoReferencia'=>'required',
             'primerTelefono'=>'required|min:10',
@@ -211,6 +211,7 @@ class direccionController extends Controller
         if(\Auth::user()->rol_id==3){
             $d=$request->correo;
             $comprador=Comprador::where('correo',$d)->first();
+           
             $direccion->comprador_id=$comprador->id;
 
             $direccion->save();

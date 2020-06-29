@@ -45,7 +45,7 @@
                       <thead>
                         <tr>
                           <th>ID</th>
-                          <th>Código</th>
+                          <th>Abreviatura de moneda</th>
                           <th>Cambio</th>
                           <th>Estado</th>
                           <th>Acción</th>

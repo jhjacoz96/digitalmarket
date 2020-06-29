@@ -25,6 +25,7 @@ class indexController extends Controller
             $tienda->whereHas('planAfiliacion',function($plan){
                 $plan->where('exposicion','Maxima');
         });
+
         })->where('status','si')->with('imagen')->orderBy('ventas','desc')->get();
 
         $productoOferta=Producto::whereHas('tienda',function($tienda){

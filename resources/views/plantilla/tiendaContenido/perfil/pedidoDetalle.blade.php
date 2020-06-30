@@ -182,7 +182,7 @@ p.clasificacion input:checked ~ label {
                                 <span class="label label-primary" >Espera por transferencia</span>
                                 @endif
 
-                                @if($pedido->status=='pagoAcepado')
+                                @if($pedido->status=='pagoAceptado')
                                 <span class="label label-success">Pago aceptado</span>
                                 @endif
 
@@ -198,8 +198,8 @@ p.clasificacion input:checked ~ label {
                                 <span class="label label-warning">Preparando pedido</span>
                                 @endif
                                 
-                                @if($pedido->status=='recibido')
-                                <span class="badge" style="background-color:darkorchid; color: floralwhite;">Recibido</span>
+                                @if($pedido->status=='culminado')
+                                <span class="badge" style="background-color:darkorchid; color: floralwhite;">Culminado</span>
                                 @endif
 
                             </dd>
@@ -413,8 +413,8 @@ p.clasificacion input:checked ~ label {
                                                 <tr class="shipping-cost">
                                                     <td>Costo de envío</td>
                                                     <td>
-                                                        @if($pedido->envioGratis!='0')
-                                                        Bs{{$pedido->envioGratis}}
+                                                        @if($pedido->precioEnvio!='0')
+                                                        Bs{{$pedido->precioEnvio}}
                                                         @else
                                                         Envio gratis
                                                         @endif

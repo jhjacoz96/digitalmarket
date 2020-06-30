@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-          <h5>Cantidad de metodos de pagos:{{count($pago)}}</h5>
+          <h5>Cantidad de medios de pago:{{count($pago)}}</h5>
           </div>
 
           <div class="col-sm-6">
@@ -33,7 +33,7 @@
                </div>
 
                 <div class="card-header">
-                  <h3 class="card-title">Consultar metodos de pagos</h3>
+                  <h3 class="card-title">Consultar medios de pago</h3>
   
                   
                 </div>
@@ -46,7 +46,7 @@
                         <tr>
                           <th>ID</th>
                           <th>Nombre</th>
-                          <th>Tipo de metodo de pago</th>
+                          <th>Tipo de medio de pago</th>
                           <th>moneda</th>
                           <th>Banco asociado</th>
                           <th>Acción</th>
@@ -98,7 +98,7 @@
                   
 
                   <div class="box-footer p-3 float-right">
-                  <a href=" {{route('metodoPago.create')}} "  class="btn  btn-info ">Agregar método de pago</a>
+                  <a href=" {{route('metodoPago.create')}} "  class="btn  btn-info ">Agregar medio de pago</a>
             
                   </div>
                 </div>

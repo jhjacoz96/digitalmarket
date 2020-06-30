@@ -58,6 +58,32 @@ use App\GrupoAtributo;
                     <dd class="col-sm-8">{{$pedido->created_at->format('d-m-Y')}}</dd>
                     <dt class="col-sm-4">Correo del comprador</dt>
                     <dd class="col-sm-8">{{$pedido->comprador->correo}}</dd>
+                    <dt class="col-sm-4">Estado del pedido</dt>
+                    <dd class="col-sm-8">
+                      @if($pedido->status=='esperaTransferencia')
+                      <span class="badge badge-primary">Espera por transferencia</span>
+                    @endif
+                        
+                    @if($pedido->status=='pagoAceptado')
+                      <span class="badge badge-success">Pago aceptado</span>
+                    @endif
+
+                    @if($pedido->status=='cancelado')
+                      <span class="badge badge-danger">Cancelado</span>
+                    @endif
+                    
+                    @if($pedido->status=='preparandoPedido')
+                      <span class="badge badge-warning">Preparando pedido para enviar</span>
+                    @endif
+
+                    @if($pedido->status=='enviadoComprador')
+                      <span class="badge" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span>
+                    @endif
+
+                    @if($pedido->status=='culminado')
+                      <span class="badge" style="background-color:darkorchid; color: floralwhite;">Culminado</span>
+                    @endif
+                    </dd>
                   
 
                   </dl>
@@ -92,7 +118,7 @@ use App\GrupoAtributo;
 
                     <dt class="col-sm-8">Monto total</dt>
                     <dd class="col-sm-4">
-                      Bs {{$pedido->pagoTiendaPedido[0]->montoPagado+((\Auth::user()->tienda->planAfiliacion->precio/100)*$pedido->pagoTiendaPedido[0]->montoPagado)}}
+                      Bs {{$pedido->pagoTiendaPedido[0]->montoPagado+((\Auth::user()->tienda->planAfiliacion->precio/100)*$montoPedidotienda)}}
                     </dd>
                    
                     <dt class="col-sm-8">Monto obtenido por este pedido</dt>

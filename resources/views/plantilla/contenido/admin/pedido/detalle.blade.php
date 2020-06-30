@@ -177,8 +177,8 @@
                         <span class="badge" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span>
                       @endif
 
-                      @if($pedido->status=='recibido')
-                        <span class="badge" style="background-color:darkorchid; color: floralwhite;">Recibido</span>
+                      @if($pedido->status=='culminado')
+                        <span class="badge" style="background-color:darkorchid; color: floralwhite;">Culminado</span>
                       @endif
 
                     </div>
@@ -194,36 +194,60 @@
                       <div class="form-group">
                         
                         <select class="form-control" name="estado" id="">
+
                           <option
+
                           @if($pedido->status=='esperaTransferencia')
                           selected
                           @endif
                           value="esperaTransferencia">Espera por transferencia</option>
+
+                          @if($pedido->status=='esperaTransferencia')
+                            <option
+                            @if($pedido->status=='cancelado')
+                            selected
+                            @endif
+                            value="cancelado">Pedido cancelado</option>
+                          @endif
+                    
                           <option 
                           @if($pedido->status=='pagoAceptado')
                           selected
                           @endif
                           value="pagoAceptado">Pago aceptado</option>
-                          <option
-                          @if($pedido->status=='preparandoPedido')
-                          selected
+
+                          @if($pedido->status=='pagoAceptado')
+
+                            <option
+                            @if($pedido->status=='preparandoPedido')
+                            selected
+                            @endif
+                            value="preparandoPedido">Preparando pedido</option>
+
+                            @if($pedido->status=='preparandoPedido')
+
+                                <option
+                                @if($pedido->status=='enviadoComprador')
+                                selected
+                                @endif
+                                value="enviadoComprador">Enviado al comprador</option>
+
+                                @if($pedido->status=='enviadoComprador')
+
+                                  <option
+                                  @if($pedido->status=='culminado')
+                                  selected
+                                  @endif
+                                  value="culminado">Culminado</option>
+
+                                @endif
+
+                            @endif
+
+
+
                           @endif
-                          value="preparandoPedido">Preparando pedido</option>
-                          <option
-                          @if($pedido->status=='cancelado')
-                          selected
-                          @endif
-                          value="cancelado">Pedido cancelado</option>
-                          <option
-                          @if($pedido->status=='enviadoComprador')
-                          selected
-                          @endif
-                          value="enviadoComprador">Enviado al comprador</option>
-                          <option
-                          @if($pedido->status=='recibido')
-                          selected
-                          @endif
-                          value="recibido">Recibido</option>
+
                         </select>
                       </div>
                     </div>
@@ -285,8 +309,8 @@
                       <td>
                         @if($item->pivot->status!='Aceptado')
                           <div class="btn-group">
-                          <a href="{{url('/pedido/pago/'.$item->pivot->id.'/'.'aceptado')}}" class="btn btn-default btn-sm">  <span class="fas fa-check" aria-hidden ="true" ></span></a>
-                            <a href="{{url('/pedido/pago/'.$item->pivot->id.'/'.'denegado')}}" class="btn btn-default btn-sm">  <span class="fas fa-ban" aria-hidden ="true" ></span></a>
+                          <a href="{{url('/pedido/pago/'.$item->pivot->id.'/'.'aceptado')}}" onclick="return confirm('Antes de aceptar un pago debe verificar la referencia. ¿Esta seguro que desea aceptar este pago? ')" class="btn btn-default btn-sm">  <span class="fas fa-check" aria-hidden ="true" ></span></a>
+                            <a href="{{url('/pedido/pago/'.$item->pivot->id.'/'.'denegado')}}" onclick="return confirm('Antes de denegar un pago debe verificar la referencia. ¿Esta seguro que desea denegar este pago? ')" class="btn btn-default btn-sm">  <span class="fas fa-ban" aria-hidden ="true" ></span></a>
                           </div>
                         @endif
                       </td>
@@ -481,8 +505,8 @@
                           <tr>
                             <th>Costo de envio</th>
                             <td>
-                              @if($pedido->envioGratis!='0')
-                                Bs{{$pedido->envioGratis}}
+                              @if($pedido->precioEnvio!='0')
+                                Bs{{$pedido->precioEnvio}}
                                 @else
                                 Envio gratis
                               @endif

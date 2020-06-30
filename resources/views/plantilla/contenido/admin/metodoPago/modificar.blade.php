@@ -8,7 +8,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-       <h1>Método pago</h1>
+       <h1>Medio pago</h1>
         </div>
 
         <div class="col-sm-6">
@@ -30,7 +30,7 @@
             <!-- jquery validation -->
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title">Actualizar método pago</h3>
+                <h3 class="card-title">Actualizar medio pago</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -123,7 +123,7 @@
                 <div class="card-footer">
                     <a class="btn btn-secondary" href="{{route('metodoPago.index')}}">Atras</a>
 
-                  <button type="submit"  class="btn btn-primary float-right">Actualizar metodo de envio</button>
+                  <button type="submit"  class="btn btn-primary float-right">Actualizar medio de envio</button>
                 </div>
 
               </form>

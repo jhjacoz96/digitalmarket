@@ -24,7 +24,7 @@
     <div class="container">
         <div class="heading" align="center">
             <h3>Su pedido ha sido solicitado</h3>
-            <p>Su código de pedido es {{\Session::get('pedido_id')}} y el monto total por pagar es {{Session::get('montoTotal')}} </p>
+            <p>Su código de pedido es {{\Session::get('pedido_id')}} y el monto total por pagar es {{Session::get('montoTotal')}} Bs </p>
         </div>
        
     </div>

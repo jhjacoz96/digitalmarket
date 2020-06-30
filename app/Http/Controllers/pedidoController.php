@@ -37,11 +37,17 @@ class pedidoController extends Controller
     public function detallePedido($id){
         
         $pedido=Pedido::with(['producto'=>function($q){
-            $q->where('tienda_id',\Auth::user()->tienda->id);}])->with(['pagoTiendaPedido'=>function($e){
-                $e->where('tienda_id',\Auth::user()->tienda->id);
-            }])->findOrFail($id);
+            $q->where('tienda_id',\Auth::user()->tienda->id);
+            }])->with(['pagoTiendaPedido'=>function($e){
+                $e->where('tienda_id',\Auth::user()->tienda->id);}])->findOrFail($id);
+    
+        $montoPedidotienda=0;
+        
+        foreach ($pedido->producto as $value) {
+            $montoPedidotienda=$montoPedidotienda+($value->pivot->precioProducto*$value->pivot->cantidadProducto);
+        }
 
-        return view('plantilla.contenido.tienda.pedido.detalle',compact('pedido'));
+        return view('plantilla.contenido.tienda.pedido.detalle',compact('pedido','montoPedidotienda'));
 
     }
 
@@ -69,14 +75,14 @@ class pedidoController extends Controller
             return \redirect()->route('pedido.detalle',$pago->pedido_id);
         }
         if($status=='aceptado'){
+        
             $pago->status='Aceptado';
             $pago->save();
 
             
             $pedido=Pedido::with('metodoPago')->findOrFail($pago->pedido_id);
 
-            $comment = 'metodoPagoAceptado'; 
-            $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
+            
 
             $count=count($pedido->metodoPago);
             $valor=[];
@@ -93,80 +99,102 @@ class pedidoController extends Controller
 
                 $pedido->save();
 
-            $tiendas=[];
-            foreach ($pedido->producto as $value) {
+                $tiendas=[];
+                foreach ($pedido->producto as $value) {
 
-                if(!in_array($value->tienda_id,$tiendas)){
+                    if(!in_array($value->tienda_id,$tiendas)){
+                        
+                        array_push($tiendas,$value->tienda_id);
+
+                    }
+
+                }
+                
+                
+
+                foreach($tiendas as $id){
+
+                    $t=Tienda::find($id);
+                
+                    $comment = 'nuevoPedido'; 
+                    $t->notify(new pedidoNotification($comment,$pedido->id));
+
+                
+                    $pagoTiendaPedido= new PagoTiendaPedido();
+        
+                    $pedidoTienda=Pedido::with(['producto'=>function($q) use($t){
+                        $q->where('tienda_id',$t['id']);}])
+                    ->find($pedido->id);
+                
+                    $montoPedidotienda=0;
                     
-                    array_push($tiendas,$value->tienda_id);
+                    foreach ($pedidoTienda->producto as $value) {
+                        $montoPedidotienda=$montoPedidotienda+($value->pivot->precioProducto*$value->pivot->cantidadProducto);
+                    }
+                    
+                   
+
+                    $pagoTiendaPedido->montoPagado=$montoPedidotienda-(($t->planAfiliacion->precio/100)*$montoPedidotienda);
+                    
+                    $pagoTiendaPedido->tienda_id=$t->id;
+                    $pagoTiendaPedido->moneda='indefinida';
+                    $pagoTiendaPedido->pedido_id=$pedido->id;
+                    $pagoTiendaPedido->status='espera';
+                    $pagoTiendaPedido->save();
+
+
+
+
 
                 }
-
-            }
-            
-            foreach($tiendas as $id){
-
-                $t=Tienda::find($id);
-            
-                $comment = 'nuevoPedido'; 
-                $t->notify(new pedidoNotification($comment,$pedido->id));
-
-               
-                $pagoTiendaPedido= new PagoTiendaPedido();
-    
-                $pedidoTienda=Pedido::with(['producto'=>function($q) use($t){
-                    $q->where('tienda_id',$t['id']);}])
-                ->find($pedido->id);
-             
-                $montoPedidotienda=0;
-                
-                foreach ($pedidoTienda->producto as $value) {
-                    $montoPedidotienda=$montoPedidotienda+($value->pivot->precioProducto*$value->pivot->cantidadProducto);
-                }
- 
-
-                $pagoTiendaPedido->montoPagado=$montoPedidotienda-(($t->planAfiliacion->precio/100)*$montoPedidotienda);
-                
-                $pagoTiendaPedido->tienda_id=$t->id;
-                $pagoTiendaPedido->moneda='indefinida';
-                $pagoTiendaPedido->pedido_id=$pedido->id;
-                $pagoTiendaPedido->status='espera';
-                $pagoTiendaPedido->save();
-
-
-
-
-
-            }
 
                 $comment = 'pagoAceptado'; 
                 $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
 
 
+                $metodoPago=MetodoPago::findOrFail($pago->metodoPago_id);
 
-            } 
+                $comprador=$pedido->comprador;
+                $correo=$pedido->comprador->correo;
+                $datosMensaje=[
+                    'metodoPago'=>$metodoPago,
+                    'comprador'=>$comprador,
+                    'pedido'=>$pedido,
+                    'estado'=>$status
+                ];
+                
+                Mail::send('correos.estadoPago',$datosMensaje,function($mensaje) use($correo){
+                    $mensaje->to($correo)->subject('Estado de pago - DigitalMarket');
+                });
 
-            $metodoPago=MetodoPago::findOrFail($pago->metodoPago_id);
+            }else{
 
-            $comprador=$pedido->comprador;
-            $correo=$pedido->comprador->correo;
-            $datosMensaje=[
-                'metodoPago'=>$metodoPago,
-                'comprador'=>$comprador,
-                'pedido'=>$pedido,
-                'estado'=>$status
-            ];
+                $comment = 'metodoPagoAceptado'; 
+                $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
+
+                $comprador=$pedido->comprador;
+                $correo=$pedido->comprador->correo;
+                $datosMensaje=[
+                    'metodoPago'=>$metodoPago,
+                    'comprador'=>$comprador,
+                    'pedido'=>$pedido,
+                    'estado'=>$status
+                ];
+                
+                Mail::send('correos.estadoPago',$datosMensaje,function($mensaje) use($correo){
+                    $mensaje->to($correo)->subject('Estado de pago - DigitalMarket');
+                });
+
+            }
+
             
-            Mail::send('correos.estadoPago',$datosMensaje,function($mensaje) use($correo){
-                $mensaje->to($correo)->subject('Estado de pago - DigitalMarket');
-            });
 
             
             flash('El código de pago se ha  aceptada con exito')->success()->important();
             
             return \redirect()->route('pedido.detalle',$pago->pedido_id);
         }else{
-
+            
             $pedido=Pedido::with('metodoPago')->findOrFail($pago->pedido_id);
             $metodoPago=MetodoPago::findOrFail($pago->metodoPago_id);
 

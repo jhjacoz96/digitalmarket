@@ -46,8 +46,8 @@
                                 {{$item1->nombre}}<br>
                             @endforeach
                         </td>
-                        <td>{{$item->montoTotal}}</td>
-                        <td>{{$item->created_at}}</td>
+                        <td>{{$item->montoTotal}} Bs</td>
+                        <td>{{$item->created_at->format('d-m-Y')}}</td>
                         <td>
                             @if($item->status=='esperaTransferencia')
                             <span class="label label-primary">Espera por transferencia</span>
@@ -69,8 +69,8 @@
                             <span class="label" style="background-color:deeppink; color: floralwhite;">Enviado al comprador</span>
                           @endif
     
-                          @if($item->status=='recibido')
-                            <span class="label" style="background-color:darkorchid; color: floralwhite;">Recibido</span>
+                          @if($item->status=='culminado')
+                            <span class="label" style="background-color:darkorchid; color: floralwhite;">Culminado</span>
                           @endif
                         </td>
                         <td>

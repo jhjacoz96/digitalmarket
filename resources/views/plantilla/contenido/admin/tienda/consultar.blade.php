@@ -45,6 +45,7 @@
                       <thead>
                         <tr>
                           <th>ID</th>
+                          <th>Código</th>
                           <th>Nombre</th>
                           <th>Correo electrónico</th>
                           <th>Plan afiliación</th>
@@ -57,6 +58,7 @@
                           @foreach ($tienda as $item)
                       <tr >
                               <td class="mailbox-star">{{$item->id}}</td>
+                              <td class="mailbox-star">{{$item->codigo}}</td>
                               <td class="mailbox-star">{{$item->nombreTienda}}</td>
                               <td class="mailbox-star">{{$item->correo}}</td>
                       <td class="mailbox-star">{{$item->planAfiliacion->nombre}}</td> 

@@ -44,7 +44,7 @@ class metodoPagoController extends Controller
     public function store(Request $request)
     {
         $v=Validator::make($request->all(),[
-            'nombre'=>'required|unique:metodoPagos,nombre,'.$id,
+            'nombre'=>'required|unique:metodoPagos,nombre',
             'tipoMetodo'=>'required',
             'moneda'=>'required'
         ]);

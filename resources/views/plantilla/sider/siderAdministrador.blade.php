@@ -64,7 +64,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{{route('pedido.consultar','recibido')}}" class="nav-link">
+                    <a href="{{route('pedido.consultar','culminado')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Culminado</p>
                     </a>

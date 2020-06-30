@@ -60,7 +60,7 @@
                              
                          <tr>
                          <td class="mailbox-star">{{$item->id}}</td>
-                         <td class="mailbox-star">{{$item->created_at}}</td>
+                         <td class="mailbox-star">{{$item->created_at->format('d-m-Y')}}</td>
                          <td class="mailbox-star">
                           {{$item->comprador->correo}}
                         </td>
@@ -90,6 +90,10 @@
   
                           @if($item->status=='cancelado')
                             <span class="badge badge-danger">Cancelado</span>
+                          @endif
+
+                          @if($item->status=='culminado')
+                            <span class="badge" style="background-color:darkorchid; color: floralwhite;">Culminado</span>
                           @endif
   
                              </td>

@@ -100,7 +100,7 @@ class userController extends Controller
                             if(!empty(\Session::get('session_id'))){
                                 $session_id=\Session::get('session_id');
                                 \DB::table('carritos')->where('session_id',$session_id)->update(['comprador_id'=>\Auth::user()->comprador->id]);
-                            }   
+                            } 
 
                         return redirect('/');
                     }

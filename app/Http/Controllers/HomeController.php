@@ -39,9 +39,10 @@ class HomeController extends Controller
             $countPp=Pedido::where('status','preparandoPedido')->count();
             $countEc=Pedido::where('status','enviadoComprador')->count();
             $countCu=Pedido::where('status','culminado')->count();
+            $countPc=Pedido::where('status','cancelado')->count();
             $countPt=PagoTiendaPedido::where('status','espera')->count();
 
-            return view('home',compact('countEt','countPa','countPp','countEc','countCu','countPt'));
+            return view('home',compact('countEt','countPa','countPp','countEc','countCu','countPt','countPc'));
         }
         
         
@@ -53,8 +54,6 @@ class HomeController extends Controller
             $productoStock=Producto::where('tienda_id',\Auth::user()->tienda->id)->whereBetween('cantidad', [0,'notificarStock'])->count();
 
             $plan=PlanAfilizacion::where('estatus','A')->get();
-
-           
 
             return view('home',compact('nowPedido', 'productoStock','plan'));
         }

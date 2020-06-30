@@ -123,7 +123,7 @@
                 <div class="card-footer">
                     <a class="btn btn-secondary" href="{{route('metodoPago.index')}}">Atras</a>
 
-                  <button type="submit"  class="btn btn-primary float-right">Actualizar medio de envio</button>
+                  <button type="submit"  class="btn btn-primary float-right">Actualizar medio de pago</button>
                 </div>
 
               </form>

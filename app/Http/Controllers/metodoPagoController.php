@@ -44,7 +44,7 @@ class metodoPagoController extends Controller
     public function store(Request $request)
     {
         $v=Validator::make($request->all(),[
-            'nombre'=>'required|unique:metodoPagos,nombre',
+            'nombre'=>'required|unique:metodo_pagos,nombre',
             'tipoMetodo'=>'required',
             'moneda'=>'required'
         ]);
@@ -99,6 +99,17 @@ class metodoPagoController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $v=Validator::make($request->all(),[
+            'nombre'=>'required|unique:metodo_pagos,nombre,'.$id,
+            'tipoMetodo'=>'required',
+            'moneda'=>'required'
+        ]);
+
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+
         $bancos=MetodoPago::findOrFail($id);
         $bancos->nombre=$request->nombre;
         $bancos->descripcion=$request->descripcion;

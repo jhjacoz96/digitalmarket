@@ -258,10 +258,11 @@ class pedidoController extends Controller
            
         }
         
+        
         $pedido->status=$request->estado;
         $pedido->save();
-       
-
+      
+        
         $correo=$pedido->comprador->correo;
 
         $datosMensaje=[
@@ -280,6 +281,12 @@ class pedidoController extends Controller
             $comment = 'preparandoPedido'; 
             $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
 
+        }
+
+        if($pedido->status=='cancelado'){
+
+            $comment = 'cancelado'; 
+            $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
         }
 
         if($pedido->status=='enviadoComprador'){
@@ -336,6 +343,8 @@ class pedidoController extends Controller
 
         flash('El estado del pedido ha sido modificado con exito')->success()->important();
         return redirect('/pedido/detalle/'.$pedido->id);
+
+
     }
 
     public function verFactura($id){

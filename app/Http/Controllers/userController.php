@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Validator;
 use App\Comprador;
+use App\TipoComprador;
 use App\User;
 use App\Pedido;
 use App\Calificacion;
@@ -45,7 +46,10 @@ class userController extends Controller
                 $comprador->apellido=$request['apellido'];
                 $comprador->correo=$request['email'];
                 $comprador->user_id=$user->id;
-                $comprador->tipoComprador_id=1;
+
+                $tipoComprador=TipoComprador::where('nombre','Comprador')->orWhere('nombre','comprador')->first();
+
+                $comprador->tipoComprador_id=$tipoComprador->id;
                 $comprador->save();
 
                 //enviar correo de bienvenida

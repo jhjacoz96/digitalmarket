@@ -52,7 +52,6 @@ class bancoMetodoPagoController extends Controller
         if ($v->fails()) {
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
-        return 'no';
         $banco=new BancoMetodoPago();
         $banco->nombreBanco=$request->nombreBanco;
         $banco->detalleCuenta=$request->detalleCuenta;

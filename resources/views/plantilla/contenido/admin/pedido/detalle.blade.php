@@ -195,26 +195,32 @@
                         
                         <select class="form-control" name="estado" id="">
 
+                          @if($pedido->status=='esperaTransferencia')
                           <option
-
                           @if($pedido->status=='esperaTransferencia')
                           selected
                           @endif
                           value="esperaTransferencia">Espera por transferencia</option>
-
-                          @if($pedido->status=='esperaTransferencia')
-                            <option
-                            @if($pedido->status=='cancelado')
-                            selected
-                            @endif
-                            value="cancelado">Pedido cancelado</option>
+                          <option
+                          @if($pedido->status=='cancelado')
+                          selected
                           @endif
-                    
+                          value="cancelado">Cancelar pedido</option>
                           <option 
                           @if($pedido->status=='pagoAceptado')
                           selected
                           @endif
                           value="pagoAceptado">Pago aceptado</option>
+                          @endif
+
+                          @if($pedido->status=='cancelado')
+                          <option
+                          @if($pedido->status=='cancelado')
+                          selected
+                          @endif
+                          value="cancelado">Cancelar pedido</option>
+                          @endif
+                        
 
                           @if($pedido->status=='pagoAceptado')
 
@@ -252,7 +258,7 @@
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <button type="submit" class="btn btn-primary btn-sm">Modificar</button>
+                      <button onclick="return confirm('¿Esta seguro que desea modificar el estado del pedido?')" type="submit" class="btn btn-primary btn-sm">Modificar</button>
                     </div>
                   </div>
                   </form>

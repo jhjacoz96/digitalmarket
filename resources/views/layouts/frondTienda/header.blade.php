@@ -125,6 +125,13 @@
                                         </a>
                                     </li>
                                 @endif
+                                @if($notificacion->data["estado"]=='cancelado')
+                                    <li>
+                                    <a href="{{url('/comprador/pedidoDetalle/'.$notificacion->data["pedido"])}}" onclick=" markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
+                                            Pedido {{$notificacion->data["pedido"]}}: pago aceptado <span class="text-sm text-muted">{{$notificacion->created_at->diffForHumans()}}</span>
+                                        </a>
+                                    </li>
+                                @endif
                                
 
                                 @if($notificacion->data["estado"]=='preparandoPedido')

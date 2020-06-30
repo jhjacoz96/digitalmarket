@@ -19,7 +19,7 @@ class grupoAtributoController extends Controller
     {
         if(\Auth::user()->rol_id==3){
 
-            $nombre=$request->get('nombre');
+            $nombre=$request->get('nombre');    
             
             $grupoAtributo=GrupoAtributo::where('nombre','like',"%$nombre%")->get();
             return view('plantilla.contenido.admin.grupoAtributo.consultar',compact('grupoAtributo'));

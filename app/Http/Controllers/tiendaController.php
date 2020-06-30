@@ -187,10 +187,27 @@ class tiendaController extends Controller
         $tienda->nombreTienda=$request->nombreTienda;
         $tienda->nombre=$request->nombre;
         $tienda->apellido=$request->apellido;  
+      
+        $pedido=Pedido::whereHas('producto',function($q) use($tienda){
+            $q->where('tienda_id', $tienda->id);
+            })->where('status','!=','culminado')->count();
+        
+        
         if($tienda->planAfilizacion_id!=$request->planAfiliacion){
-            $tienda->fechaPlanAfiliacion=Carbon::now()->format('Y-m-d H:i:s');
+
+            if($pedido>=0){
+                flash('Lo sentimos. No puede afiliarse a un plan si posee pedidos en proceso de compra.')->warning()->important();
+                return \redirect()->route('tienda.index');
+            }else{
+
+                $tienda->planAfilizacion_id=$request->planAfiliacion;
+                $tienda->fechaPlanAfiliacion=Carbon::now()->format('Y-m-d H:i:s');
+            }
+
         }
+
         $tienda->telefono=$request->telefono;  
+
         $tienda->planAfilizacion_id=$request->planAfiliacion;  
         $tienda->correo=$request->correo;  
         

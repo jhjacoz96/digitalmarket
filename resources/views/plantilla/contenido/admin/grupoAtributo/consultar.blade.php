@@ -103,7 +103,7 @@
                      
                     </tbody>
                   </table>
-                  {{$grupoAtributo->appends($_GET)->links()}}
+                 
 
                   <div class="box-footer p-3 float-right">
                   <a href=" {{route('grupoAtributo.create')}} "  class="btn  btn-info ">Agregar grupo atributo</a>

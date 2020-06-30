@@ -266,8 +266,8 @@
           
                     <h5></h5>
           
-                    <p>  Para agregar combinaciones, primero debe crear grupos de atributos y atributos adecuados en <a href="{{route('grupoAtributo.index')}}">Grupos de atributos</a> .
-                      Cuando termine, puede ingresar los atributos deseados (como "tamaño" o "color") y sus respectivos valores ("10kg", "rojo", etc.) en el campo a continuación; o simplemente selecciónelos de la columna derecha. Luego haga clic en "Generar": ¡creará automáticamente todas las combinaciones para usted!</p>
+                    <p>  Para agregar combinaciones, primero debe crear grupos de atributos y atributos adecuados en Grupos de atributos.
+                      Cuando termine, puede ingresar los atributos deseados (como "tamaño" o "color") y sus respectivos valores ("10kg", "rojo", etc.) en el campo a continuación; o simplemente selecciónelos de la columna derecha. Luego haga clic en "Generar": ¡creará automáticamente todas las combinaciones para usted!</p>pcon
                   </div>
                
                   <div class="row">

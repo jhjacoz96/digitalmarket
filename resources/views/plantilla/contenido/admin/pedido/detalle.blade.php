@@ -268,7 +268,7 @@
           <div class="card card-secondary ">
             <div class="card-header">
               <span class="fas fa-shipping-fast float-left"></span>
-              <h3 class="card-title ml-1">Metodo de pago</h3>
+              <h3 class="card-title ml-1">Medio de pago</h3>
 
             </div>
             <!-- /.card-header -->
@@ -280,8 +280,8 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th>Método de pago</th>
-                      <th>Tipo de metodo de pago</th>
+                      <th>Medio de pago</th>
+                      <th>Tipo de medio de pago</th>
                       <th>Moneda</th>
                       <th>Referencia</th>
                       <th>Estado</th>
@@ -297,7 +297,13 @@
                     <td class="mailbox-star">{{$item->nombre}}</td>
                       <td class="mailbox-star">{{$item->tipoPago}}</td>
                       <td class="mailbox-star">{{$item->moneda}}</td>
-                      <td class="mailbox-star">{{$item->pivot->referencia}}</td>
+                      <td class="mailbox-star">
+                        @if($item->pivot->referencia=='')
+                          En espera
+                        @else
+                        {{$item->pivot->referencia}}
+                        @endif
+                      </td>
                     <td class="mailbox-star">{{$item->pivot->status}}</td>
                       <td class="mailbox-star">
                         @if($item->moneda=='Bolivares')
@@ -307,7 +313,7 @@
                         @endif
                       </td>
                       <td>
-                        @if($item->pivot->status!='Aceptado')
+                        @if($item->pivot->status!='Aceptado' && $item->pivot->referencia!='')
                           <div class="btn-group">
                           <a href="{{url('/pedido/pago/'.$item->pivot->id.'/'.'aceptado')}}" onclick="return confirm('Antes de aceptar un pago debe verificar la referencia. ¿Esta seguro que desea aceptar este pago? ')" class="btn btn-default btn-sm">  <span class="fas fa-check" aria-hidden ="true" ></span></a>
                             <a href="{{url('/pedido/pago/'.$item->pivot->id.'/'.'denegado')}}" onclick="return confirm('Antes de denegar un pago debe verificar la referencia. ¿Esta seguro que desea denegar este pago? ')" class="btn btn-default btn-sm">  <span class="fas fa-ban" aria-hidden ="true" ></span></a>
@@ -331,7 +337,7 @@
           <div class="card card-secondary ">
             <div class="card-header">
               <span class="fas fa-shipping-fast float-left"></span>
-              <h3 class="card-title ml-1">Métedo de envio</h3>
+              <h3 class="card-title ml-1">Medio de envio</h3>
 
             </div>
             <!-- /.card-header -->
@@ -356,11 +362,15 @@
                       <td class="mailbox-star">
                         @if($pedido->status=='enviadoComprador')
                         {{$pedido->updated_at->format('d-m-Y')}}
+                        @else
+                        En espera
                         @endif
                       </td>
                       <td class="mailbox-star">
                         @if($pedido->status=='enviadoComprador')
                         {{$pedido->referenciaEnvio}}
+                        @else
+                        En espera
                         @endif
                       </td>
                       <th>
@@ -497,7 +507,7 @@
                         <table class="table">
                           <tr>
                             
-                            <th style="width:50%">Costo de envío:</th>
+                            <th style="width:50%">Total del carrito:</th>
                             <td> 
                               Bs {{ $montoTotaal}}
                             </td>
@@ -514,7 +524,7 @@
                           </tr>
                           @if(!empty($pedido->codigoCupon))
                           <tr>
-                            <th>Cupón:</th>
+                            <th>Monto de cupón de descuento:</th>
                             <td> Bs {{$pedido->cantidadCupon}}</td>
                           </tr>
                           @endif

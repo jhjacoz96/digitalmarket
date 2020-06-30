@@ -213,7 +213,7 @@ class compradorController extends Controller
         $comprador->estatus='I';
         $comprador->update();
         $usuario->delete();
-        flash('Comprador eliminado con exito')->success()->important();
+        flash('Comprador inhabilitado con exito')->success()->important();
         return redirect()->route('Comprador.index');
     }
 

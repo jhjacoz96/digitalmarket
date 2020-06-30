@@ -4,7 +4,12 @@
 <body class="hold-transition login-page">
     <div class="login-box">
       <div class="login-logo">
-        <a href="../../index2.html"><b>Admin</b>LTE</a>
+        <img src="{{asset('/imagenes/logo/logo.png')}}"
+           alt="AdminLTE Logo"
+           class="brand-image"
+           width="60"
+           style="opacity: .8">
+        <a href="../../index2.html"><b>Digital</b>Market</a>
       </div>
       <!-- /.login-logo -->
       <div class="card">

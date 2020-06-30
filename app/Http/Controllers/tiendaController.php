@@ -341,7 +341,7 @@ class tiendaController extends Controller
         $tiendCuentaBancaria->tienda_id=\Auth::user()->tienda->id;
         $tiendCuentaBancaria->save();
 
-        flash('Se ha actualizado la cuenta bancaria con exito con exito!')->success()->important();
+        flash('Se ha actualizado la cuenta bancaria con exito!')->success()->important();
 
         return \redirect()->route('administrador.show',\Auth::user()->id);
 
@@ -358,12 +358,12 @@ class tiendaController extends Controller
         
 
         if($pedido>=0){
-            flash('Lo sentimos. No puede afiliarce a un plan si posee pedidos en proceso de compra.')->warning()->important();
+            flash('Lo sentimos. No puede afiliarse a un plan si posee pedidos en proceso de compra.')->warning()->important();
 
             return \redirect('/home');
         }else{
 
-            flash('Usted se ha afiliado al plan ' . $plan->nombre . ' . Debe tener en cuenta que el procentaje por venta es de ' . $plan->precio.'%.')->warning()->important();
+            flash('Usted se ha afiliado al plan ' . $plan->nombre . ' . Debe tener en cuenta que el procentaje por venta es de ' . $plan->precio.'%.')->success()->important();
 
             return \redirect('/home');
 

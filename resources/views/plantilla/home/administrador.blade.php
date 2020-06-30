@@ -106,6 +106,20 @@
                       <a href="{{route('pedido.consultar','recibido')}}" class="small-box-footer">Ver detalles<i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                   </div>
+                  <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-teal" >
+                      <div class="inner">
+                        <h3>{{$countPt}}</h3>
+        
+                        <p>Pagos pendientes a tiendas</p>
+                      </div>
+                      <div class="icon">
+                        <i class="ion ion-bag"></i>
+                      </div>
+                      <a href="{{url('/pagos-tiendas')}}" class="small-box-footer">Ver detalles<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                  </div>
                   <!-- ./col -->
                 </div>
   

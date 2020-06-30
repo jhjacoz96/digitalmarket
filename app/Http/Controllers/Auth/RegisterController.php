@@ -117,6 +117,7 @@ class RegisterController extends Controller
                 $tienda->nombre= $data['nombreEncargado'];
                 $tienda->apellido = $data['apellidoEncargado'];
                 $tienda->correo=$data['email'];
+                $tienda->telefono=$data['telefono'];
 
                 $numero=count(Tienda::All()) + 1;
                 $nombre=strtoupper($data['nombreTienda']);

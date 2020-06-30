@@ -233,6 +233,24 @@
             </ul>
           </li>
 
+          <li class="nav-header">Ajustes</li>
+          <li class="nav-item">
+            <a href="{{url('/moneda')}}" class="nav-link">
+                <i class="nav-icon fas fa-coins"></i>
+                <p>
+                  Monedas
+                </p>
+              </a>
+            </li>
+          <li class="nav-item">
+            <a href="{{url('/banner')}}" class="nav-link">
+                <i class="nav-icon fas fa-paint-brush"></i>
+                <p>
+                  Banner
+                </p>
+              </a>
+            </li>
+
 
 
           

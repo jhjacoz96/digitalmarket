@@ -48,7 +48,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Banco</label>
+                                <label for="exampleInputEmail1">Cuenta bancaria</label>
                             <input disabled type="text" value="{{$tienda->tiendaCuentaBancaria->cuenta}}"required="true"  class="form-control">
                             </div>
 
@@ -68,7 +68,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Telefono</label>
-                            <input disabled type="text" value="{{$tienda->tiendaCuentaBancaria->telefono}}{"required="true"  class="form-control">
+                            <input disabled type="text" value="{{$tienda->tiendaCuentaBancaria->telefono}}"required="true"  class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Correo</label>
@@ -88,7 +88,7 @@
                                 <input disabled type="text" value="{{$pagoTiendaPedido->tienda->codigo}}"required="true"  class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Nombre de la</label>
+                                <label for="exampleInputEmail1">Nombre de la tienda</label>
                                 <input disabled type="text" value="{{$pagoTiendaPedido->tienda->nombreTienda}}"required="true"  class="form-control">
                             </div>
                         </div>

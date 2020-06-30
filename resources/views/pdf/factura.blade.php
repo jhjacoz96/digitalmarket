@@ -36,7 +36,12 @@
             <div class="row">
               <div class="col-12">
                 <h4>
-                  <i class="fas fa-globe"></i> DigitalMarket
+                  <img src="{{asset('/imagenes/logo/logo.png')}}"
+                 alt="AdminLTE Logo"
+                 width="60"
+                class="brand-image "
+                 style="opacity: .8">
+                  <span class="brand-text font-weight-dark">DigitalMarket</span>
                   <small class="float-right">Fecha: {{$pedido->created_at->format('d-m-Y')}}</small>
                 </h4>
               </div>
@@ -71,7 +76,7 @@
               </div>
               <!-- /.col -->
               <div class="col-sm-4 invoice-col float-right ">
-                <b>Factura #{{$pedido->id}} 
+                <b>Factura #{{$pedido->codigo}} 
                   <span style="float: right;"><?php echo  DNS1D :: getBarcodeHTML ($pedido->id , 'C39' );?> </span> </b><br>
                 <br>
                 <b>Pedido ID:</b> {{$pedido->id}} <br>
@@ -150,8 +155,8 @@
                     <tr>
                       <th>Costo de envio</th>
                       <td>
-                        @if($pedido->envioGratis!='0')
-                          Bs{{$pedido->envioGratis}}
+                        @if($pedido->precioEnvio!='0')
+                          Bs{{$pedido->precioEnvio}}
                           @else
                           Envio gratis
                         @endif

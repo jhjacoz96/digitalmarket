@@ -9,6 +9,7 @@ use App\ProductoPedido;
 use App\MetodoPagoPedido;
 use App\MetodoPago;
 use App\MedioEnvio;
+use App\PagoTiendaPedido;
 use App\PlanAfilizacion;
 
 class HomeController extends Controller
@@ -38,8 +39,9 @@ class HomeController extends Controller
             $countPp=Pedido::where('status','preparandoPedido')->count();
             $countEc=Pedido::where('status','enviadoComprador')->count();
             $countCu=Pedido::where('status','culminado')->count();
+            $countPt=PagoTiendaPedido::where('status','espera')->count();
 
-            return view('home',compact('countEt','countPa','countPp','countEc','countCu'));
+            return view('home',compact('countEt','countPa','countPp','countEc','countCu','countPt'));
         }
         
         

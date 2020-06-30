@@ -40,7 +40,7 @@ class pedidoController extends Controller
             $q->where('tienda_id',\Auth::user()->tienda->id);
             }])->with(['pagoTiendaPedido'=>function($e){
                 $e->where('tienda_id',\Auth::user()->tienda->id);}])->findOrFail($id);
-    
+                
         $montoPedidotienda=0;
         
         foreach ($pedido->producto as $value) {

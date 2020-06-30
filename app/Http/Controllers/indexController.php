@@ -26,13 +26,13 @@ class indexController extends Controller
                 $plan->where('exposicion','Maxima');
         });
 
-        })->where('status','si')->with('imagen')->orderBy('ventas','desc')->get();
+        })->where('status','si')->with('imagen')->orderBy('ventas','desc')->limit(6)->get();
 
         $productoOferta=Producto::whereHas('tienda',function($tienda){
             $tienda->whereHas('planAfiliacion',function($plan){
                 $plan->where('exposicion','Maxima');
         });
-        })->with('imagen')->where('status','si')->where('porcentajeDescuento','!=',0)->get();
+        })->with('imagen')->where('status','si')->where('porcentajeDescuento','!=',0)->limit(6)->get();
 
         $categoria=Categoria::with('subCategoria')->get();
 

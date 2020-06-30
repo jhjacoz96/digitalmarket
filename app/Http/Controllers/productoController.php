@@ -1141,10 +1141,17 @@ class productoController extends Controller
             return redirect('/iniciar-sesion');
         }
 
+        
+
         $direcciones=Direccion::where('comprador_id',\Auth::user()->comprador->id)->get();
         
         $session_id=\Session::get('session_id');
         $userCarrito=\DB::table('carritos')->where(['comprador_id'=>\Auth::user()->comprador->id])->get(); 
+
+        if( count($userCarrito)<=0){
+            flash('El carrito se encuentra vacío')->warning()->important();
+            return redirect()->route('carrito');
+        }
        
         $totalPeso=0;
         foreach($userCarrito as $carrito){
@@ -1230,8 +1237,11 @@ class productoController extends Controller
             $metodoPago=json_decode($request['metodoPagos'],true);
             $metodoEnvio=json_decode($request['metodoEnvio'],true);
             $pedido=new Pedido();
-            $pedido->montoTotal=$request->precioFijoBs;
+            $d=count(Pedido::All())+1;
+            $pedido->codigo=00000 . $d;
             $pedido->codigoCupon=$request->codigoCupon;
+            $pedido->codigoCupon=$request->codigoCupon;
+
            
             $pedido->precioEnvio=floatval($request->envioGratis);
               

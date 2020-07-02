@@ -354,11 +354,11 @@ class pedidoController extends Controller
     }
 
     public function descargarEjemplo(){
-        $file=public_path()."/recurso/productos-copi.xlsx";
+        $file=public_path()."/recurso/productos.xlsx";
         $header=array(
             'Content-Type: application/xlsx',
         );
-        return \Response::download($file,"productos-copi.xlsx",$header);
+        return \Response::download($file,"productos.xlsx",$header);
     }
     
     public function pdfFactura($id){

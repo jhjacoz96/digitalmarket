@@ -344,7 +344,7 @@ class tiendaController extends Controller
         $tienda=Tienda::with('imagen')->with('tiendaCuentaBancaria')->findOrFail(\Auth::user()->tienda->id);
         $tiendaCuentaBancaria=$tienda->tiendaCuentaBancaria;
         if($tienda->tiendaCuentaBancaria){
-
+        
             return view('plantilla.contenido.tienda.perfil.actualizarCuentaBancaria',compact('tienda','user'));
         }else{
             $tiendaCuentaBancaria=new TiendaCuentaBancaria();

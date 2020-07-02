@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-          <h5>Cantidad de metodos de envios:{{count($envio)}}</h5>
+          <h5>Cantidad de medios de envío:{{count($envio)}}</h5>
           </div>
 
           <div class="col-sm-6">
@@ -33,7 +33,7 @@
                </div>
 
                 <div class="card-header">
-                  <h3 class="card-title">Consultar metodos de envios</h3>
+                  <h3 class="card-title">Consultar medios de envío</h3>
   
                   
                 </div>
@@ -49,7 +49,7 @@
                         <th>Nombre</th>
                         <th>Tiempo de entrega</th>
                         <th>Rango</th>
-                        <th>Envio gratis</th>
+                        <th>Envío gratis</th>
                         <th>Estado</th>
                         <th>Acción</th>
                       </tr>
@@ -115,7 +115,7 @@
                 </div>
 
                   <div class="box-footer p-3 float-right">
-                  <a href=" {{route('metodoEnvio.create')}} "  class="btn  btn-info ">Agregar metodo envio</a>
+                  <a href=" {{route('metodoEnvio.create')}} "  class="btn  btn-info ">Agregar medio de envío</a>
             
                   </div>
                 </div>

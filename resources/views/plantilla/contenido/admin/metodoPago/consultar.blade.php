@@ -47,7 +47,7 @@
                           <th>ID</th>
                           <th>Nombre</th>
                           <th>Tipo de medio de pago</th>
-                          <th>moneda</th>
+                          <th>Moneda</th>
                           <th>Banco asociado</th>
                           <th>Acción</th>
                         </tr>

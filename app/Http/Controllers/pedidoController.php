@@ -74,7 +74,7 @@ class pedidoController extends Controller
             
             return \redirect()->route('pedido.detalle',$pago->pedido_id);
         }
-        if($status=='aceptado'){
+        if($status=='aceptado'){        
         
             $pago->status='Aceptado';
             $pago->save();
@@ -247,10 +247,10 @@ class pedidoController extends Controller
 
         }*/
         
-        flash('Una vez el cliente haya calificado el pedido, se le trasferirá el monto obtenido por el pedido:  ' . $pedido->id .' ')->success()->important();
+        flash('Una vez el pedido sea enviado al comprador, se le trasferirá las ganancias obtenidas por el pedido:  ' . $pedido->id .' ')->success()->important();
         return redirect()->back();
     }
-      
+       
         $pedido=Pedido::findOrFail($id);
         
         if($request->referencia){
@@ -352,6 +352,14 @@ class pedidoController extends Controller
         $comprador=$pedido->comprador;
         return view('pdf.factura',compact('pedido','comprador'));
     }
+
+    public function descargarEjemplo(){
+        $file=public_path()."/recurso/productos-copi.xlsx";
+        $header=array(
+            'Content-Type: application/xlsx',
+        );
+        return \Response::download($file,"productos-copi.xlsx",$header);
+    }
     
     public function pdfFactura($id){
         $pedido=Pedido::with('producto')->with('metodoPago')->where('id',$id)->first();
@@ -374,10 +382,31 @@ class pedidoController extends Controller
             $pedido->status='preparandoPedido';
             $pedido->save();
 
+            $correo=$pedido->comprador->correo;
+
+            $datosMensaje=[
+                'correo'=>$correo,
+                'nombre'=>$pedido->comprador->nombre,
+                'pedido'=>$pedido
+            ];
+
+            Mail::send('correos.cambioEstado',$datosMensaje,function($mensaje) use($correo){
+                $mensaje->to($correo)->subject('Estado de pedido - DigitalMarket');
+            });
+
+            $comment = 'preparandoPedido'; 
+            $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
+
+            
+            flash('Todos los productos del pedido :' . $pedido->id . ', ya se encuentran listos para enviar')->success()->important();
+            return redirect()->back();
+
+        }else{
+
+            flash('Este producto ya se encuentra listo para el envio')->success()->important();
+            return redirect()->back();
         }
 
-        flash('Este producto ya se encuentra listo para el envio')->success()->important();
-        return redirect()->back();
    }
 
    

@@ -258,7 +258,7 @@
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <button onclick="return confirm('¿Esta seguro que desea modificar el estado del pedido?')" type="submit" class="btn btn-primary btn-sm">Modificar</button>
+                      <button onclick="return confirm('¿Esta seguro que desea modificar el estado de este pedido')" type="submit" class="btn btn-primary btn-sm">Modificar</button>
                     </div>
                   </div>
                   </form>

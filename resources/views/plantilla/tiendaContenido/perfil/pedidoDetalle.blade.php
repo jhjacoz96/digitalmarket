@@ -88,7 +88,7 @@ p.clasificacion input:checked ~ label {
               <div class="panel panel-primary mb-4 " >
                   <div class="panel-heading">
                       <span>
-                      <h5 class="card-title">Métodos de pago</h5>
+                      <h5 class="card-title">Medios de pago</h5>
                       </span>
                   </div>
                   <div class="panel-body">
@@ -96,8 +96,8 @@ p.clasificacion input:checked ~ label {
                       <table id="example" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Metodo de pago</th>
-                                <th>Tipo de metodo de pago</th>
+                                <th>Medio de pago</th>
+                                <th>Tipo de medio de pago</th>
                                 <th>Moneda</th>
                                 <th>Referencia</th>
                                 <th>Estado</th>
@@ -118,7 +118,13 @@ p.clasificacion input:checked ~ label {
                                         </td>
                                         <td>
                                            
-                                        <input class="form-control" value="{{$item->pivot->referencia}}" type="text" name="referencia">
+                                        <input class="form-control"
+                                        @if($item->pivot->status!='denegado' || $item->pivot->status!='espera')
+                                        @if($pedido->status!='esperaTransferencia')
+                                        disabled
+                                        @endif
+                                        @endif
+                                        value="{{$item->pivot->referencia}}" type="text" name="referencia">
 
                                         </td>
                                         <td>
@@ -136,13 +142,15 @@ p.clasificacion input:checked ~ label {
                                             @endif
                                         </td>
                                         <td>
+                                          @if($pedido->status=='esperaTranferencia')
+                                          @if($item->pivot->status=='espera')
+                                          <button type="submit" onclick="return confirm('Antes de enviar la referencia, por favor verifíquela.')" class="btn btn-default">Actualizar</button>
+                                          @endif
 
-                                            @if($item->pivot->status=='espera')
-                                            <button type="submit" class="btn btn-default">Actualizar</button>
-                                            @endif
+                                          @if($item->pivot->status=='Denegado')
+                                          <button type="submit" onclick="return confirm('Antes de enviar la referencia, por favor verifíquela.')" class="btn btn-default">Actualizar</button>
+                                          @endif
 
-                                            @if($item->pivot->status=='Denegado')
-                                            <button type="submit" class="btn btn-default">Actualizar</button>
                                             @endif
 
                                         </td>

@@ -84,7 +84,7 @@ window.data={
 
                   <div class="form-group col-md-6">
                     <label for="">Tiempo de entrega</label>
-                    <input  class="form-control" value="{{$envio['tiempoEntrega']}}" placeholder="24-48 horas" name="tiempoEntrega"  type="text">
+                    <input  class="form-control" value="{{$envio['tiempoEntrega']}}"  name="tiempoEntrega"  type="text">
                     {!!$errors->first('tiempoEntrega','<small>:message</small><br>')!!}
                   </div>
 

@@ -48,7 +48,7 @@
                       </div>
     
                       <div class="form-group col-md-6 ">
-                        <label for="">Tipo de metodo de pago*</label>
+                        <label for="">Tipo de medio de pago*</label>
                         <select name="tipoMetodo" class="form-control" id="">
                             <option value="">Seleccione una opción</option>
                             
@@ -83,7 +83,7 @@
                       </div>
 
                       <div class="form-group col-md-6">
-                        <label for="">Asociar una cuenta bancaria a este metodo de pago</label>
+                        <label for="">Asociar una cuenta bancaria a este medio de pago</label>
                         <select name="bancoMetodoPago" class="form-control" id="">
                             <option value="">Seleccione una cuenta</option>
                             @foreach ($cuenta as $item)

@@ -12,9 +12,11 @@ use App\PlanAfilizacion;
 use App\Tienda;
 use App\Calificacion;
 use App\Marca;
+use App\Divisa;
 class indexController extends Controller
 {
     public function index(){
+
         $banner=Banner::where('estatus','si')->get();
         
         $tienda=Tienda::whereHas('planAfiliacion',function($tienda){

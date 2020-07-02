@@ -108,6 +108,10 @@ class tiendaController extends Controller
         
         $tienda->save();
 
+        $tiendaCuentaBancaria=new TiendaCuentaBancaria();
+                $tiendaCuentaBancaria->tienda_id=$tienda->id;
+                $tiendaCuentaBancaria->save();
+
         \flash('Tienda agregada con exito')->success()->important();
 
         return \redirect()->route('tienda.index');
@@ -339,7 +343,16 @@ class tiendaController extends Controller
         $user=User::findOrFail(\Auth::user()->id);
         $tienda=Tienda::with('imagen')->with('tiendaCuentaBancaria')->findOrFail(\Auth::user()->tienda->id);
         $tiendaCuentaBancaria=$tienda->tiendaCuentaBancaria;
-        return view('plantilla.contenido.tienda.perfil.actualizarCuentaBancaria',compact('tienda','user'));
+        if($tienda->tiendaCuentaBancaria){
+
+            return view('plantilla.contenido.tienda.perfil.actualizarCuentaBancaria',compact('tienda','user'));
+        }else{
+            $tiendaCuentaBancaria=new TiendaCuentaBancaria();
+            $tiendaCuentaBancaria->tienda_id=$tienda->id;
+            $tiendaCuentaBancaria->save();
+            $tienda=Tienda::with('imagen')->with('tiendaCuentaBancaria')->findOrFail(\Auth::user()->tienda->id);
+            return view('plantilla.contenido.tienda.perfil.actualizarCuentaBancaria',compact('tienda','user'));
+        }
     } 
 
     public function modificarCuenta(Request $request,$id){

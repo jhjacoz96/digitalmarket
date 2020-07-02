@@ -185,15 +185,17 @@ class grupoAtributoController extends Controller
 
         $grupoAtributo->save();
     
-    
-    if(count($request->atributo)>0){
-        for ($i=0; $i < count($request->atributo) ; $i++) { 
-            
-            $atributo=new Atributo();
-            $atributo->nombre=$request->atributo[$i];
-            $atributo->grupoAtributo_id=$grupoAtributo->id;
-            $atributo->save();
-        }
+    if(!empty($request->atributo)){
+
+        if(count($request->atributo)>0){
+            for ($i=0; $i < count($request->atributo) ; $i++) { 
+                
+                $atributo=new Atributo();
+                $atributo->nombre=$request->atributo[$i];
+                $atributo->grupoAtributo_id=$grupoAtributo->id;
+                $atributo->save();
+            }
+    }
 
 
     }

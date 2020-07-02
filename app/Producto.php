@@ -23,7 +23,12 @@ class Producto extends Model
         'tipoCliente',
         'marca_id',
         'visitas',
-        'ventas'
+        'ventas',
+        'sliderPrincipal',
+        'peso',
+        'sku',
+        'tienda_id',
+        'notificarStock'
     ];
 
 
@@ -84,13 +89,59 @@ class Producto extends Model
     }
 
     public static function obtenerMoneda($precio){
+        
         $moneda=Divisa::where('status','A')->get();
-        foreach ($moneda as  $value) {
-            if($value->codigo=='USD'){
-                $usd=round($precio/$value->cambio,2);
+        if($moneda!=''){
+
+            $nombre=array();
+            $monto=array();
+            for ($i=0; $i <count($moneda) ; $i++) { 
+                array_push($nombre,$moneda[$i]['codigo']);
+                $valor=round($precio/$moneda[$i]['cambio'],2);
+                array_push($monto,$valor);
             }
+            $data=array("nombre"=>$nombre,"monto"=>$monto);
+            return $data;
+        }else{
+            $data='';
         }
-        return $usd;
+       
+    }
+    
+    public static function generarSku($sub){
+        $tiendaCodigo=\Auth::user()->tienda->codigo;
+        $subCategoria=SubCategoria::where('nombre',$sub)->first();
+        $subCategoriaId=strtoupper($subCategoria->id);
+        $categoria=Categoria::find($subCategoria->categoria->id);
+        $categoriaId=strtoupper($categoria->id);
+        $numero=count(Producto::All()) + 1;
+
+        $sku=$tiendaCodigo.'-'. 0 .$categoriaId.'-'. 0 . $subCategoriaId.'-'.'CM'.'-'.$numero;
+
+        return $sku;
+    }
+
+    public static function generarSub($sub){
+        $sub=SubCategoria::where('nombre',$sub)->first();
+        $nombre=$sub->id;
+        return $nombre;
+    }
+
+    public static function generarMarca($sub){
+        $sub=Marca::where('nombre',$sub)->first();
+        $nombre=$sub->id;
+        return $nombre;
+    }
+
+    public static function generarDescuento($precio,$porcentaje){
+        if($porcentaje>0){
+            $descuento=($precio*$porcentaje)/100;
+            $precioActual=$precio-$descuento;
+            return $precioActual;
+        }else{
+            return $precio;
+        }
+       
     }
 
    

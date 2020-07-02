@@ -61,7 +61,7 @@
                 
                 <h3 class="profile-username text-center">{{$tienda->nombreTienda}}</h3>
                 
-                <p class="text-muted text-center">Plan de afiliacion {{$tienda->planAfiliacion->nombre}}</p>
+                <p class="text-muted text-center">Plan de afiliación {{$tienda->planAfiliacion->nombre}}</p>
                 <div style="align-items: center; justify-content: center; display: flex;">
                 <a href="{{url('/tiendas/ver-cuenta')}}" class="btn btn-success" ><i class="fas fa-hand-holding-usd"></i></a>
                 </div>

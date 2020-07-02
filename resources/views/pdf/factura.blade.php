@@ -128,7 +128,7 @@
             <div class="row">
               <!-- accepted payments column -->
               <div class="col-6">
-                <p class="lead">Métodos de pagos:</p>
+                <p class="lead">Medios de pagos:</p>
                 @foreach ($pedido->metodoPago as $item)
 
                 <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
@@ -147,7 +147,7 @@
                   <table class="table">
                     <tr>
                             
-                      <th style="width:50%">Costo de envío:</th>
+                      <th style="width:50%">Total</th>
                       <td> 
                         Bs {{ $subTotal}}
                       </td>

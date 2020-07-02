@@ -215,7 +215,7 @@ route::get('/pedido/pago/{id}/{status}','pedidoController@cambiarStatusPago');
 route::put('/pedido/status/{id}','pedidoController@cambiarStatusPedido');
 
 route::get('/pedido-factura/{id}','pedidoController@verFactura');
-
+route::get('/descargar-ejemplo','pedidoController@descargarEjemplo');
 route::get('/pago-tienda/{id}','tiendaController@tiendaPago');
 route::get('/pagar/{id}','tiendaController@pagar');
 route::get('/pagos-tiendas','tiendaController@montrarPagos');
@@ -241,6 +241,8 @@ route::prefix('tiendas')->name('tiendas.')->middleware('auth')->group(function()
     route::put('actualizar-cuenta/{id}','tiendaController@modificarCuenta');
     route::get('cambiar-plan/{id}','tiendaController@cambiarPlan');
     route::resource('atributos','atributosController');
+    route::get('/productos-masa','productoController@productoMasa')->name('producto.masivo');
+    route::post('/productos-masas','productoController@productoMasas')->name('productos.masa');
 });
 
 ////////////////////////////////////////////////////////

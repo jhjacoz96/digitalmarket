@@ -104,7 +104,7 @@ use App\GrupoAtributo;
               <div class="card card-secondary ">
                 <div class="card-header">
                   <span class="far fa-money-bill-alt float-left"></span>
-                  <h3 class="card-title ml-1">Pago de pedido</h3>
+                  <h3 class="card-title ml-1">Ganancias</h3>
 
                 </div>
                 <!-- /.card-header -->
@@ -173,16 +173,16 @@ use App\GrupoAtributo;
                           <div class="modal-dialog">
                             <div class="modal-content">
                               <div class="modal-header">
-                                <h4 class="modal-title">Envio de productos</h4>
+                                <h4 class="modal-title">Envío de productos</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">&times;</span>
                                 </button>
                               </div>
                               <div class="modal-body">
                                 <div class="callout callout-info">
-                                  <h5>Reglas de envio</h5>
-                                  <p>Este pedido Debe ser enviado a la bodega de DigitalMarket localizada en av. las
-                                    industrias. Los productos debe estar embalados he identificados. Una vez el pedido haya sido enviodo al cliente, se procederá a cancelarle el monto obtenido por este pedido.</p>
+                                  <h5>Reglas de envío</h5>
+                                  <p>Los productos que se le han solicitado de este pedido, deben ser enviado a la bodega de DigitalMarket localizada en av. las
+                                    industrias. Los productos debe estar embalados he identificados. Una vez el pedido haya sido enviado al cliente, se procederá a cancelarle el monto obtenido por este pedido.</p>
                                 </div>
                               </div>
                             </div>

@@ -10,6 +10,7 @@ use App\Categoria;
 use App\SubCategoria;
 use App\Combinacion;
 use App\Atributo;
+use App\Imports\ProductosImport;
 use App\Tienda;
 use App\Direccion;
 use App\GrupoAtributo;
@@ -1410,7 +1411,7 @@ class productoController extends Controller
 
         $marca=Marca::All();
 
-        return view('plantilla.tiendaContenido.producto.listado',compact('producto','productoBuscado','categoria','marca'));
+        return view('plantilla.tiendaContenido.producto.listado',compact('producto','categoria','marca'));
     }   
 
     public function listaDeseo(){
@@ -1436,5 +1437,32 @@ class productoController extends Controller
         flash('Producto eliminado de la lista de deseo con exito')->success()->important();
         return redirect()->back();
     }
+
+    public function productoMasa(){
+
+    
+        return view('plantilla.contenido.tienda.producto.importarProductos');
+
+    }
+
+    public function productoMasas(Request $request){
+
+        $v=Validator::make($request->all(),[
+            'file'=>'required'
+        ]);
+
+        if ($v->fails()) {
+            return \redirect()->back()->withInput()->withErrors($v->errors());
+        }
+        
+        
+        $file=$request->file('file');
+        \Excel::import(new ProductosImport,$file);
+        flash('Productos agregados con exito')->important()->success();
+        return redirect()->route('tiendas.producto.masivo');
+
+    }
+
+    
     
 }

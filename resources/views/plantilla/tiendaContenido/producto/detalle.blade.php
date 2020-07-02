@@ -143,8 +143,19 @@
                                 @php
                                  $moneda=Producto::obtenerMoneda($producto->precioActual);   
                                 @endphp
-                             
-                                <h2>$ {{$moneda}}</h2>
+            
+
+                                   
+                                <h2> @foreach ($moneda['nombre'] as $nombre){{$nombre}}@endforeach @foreach ($moneda['monto'] as $monto){{$monto}}@endforeach
+                                </h2>
+                                    
+                                   
+                                        
+                                   
+                                    
+                                    
+                               
+
                                 <label>Cantidad:</label>
 
                                 <input type="text" v-model="cantidad"/>

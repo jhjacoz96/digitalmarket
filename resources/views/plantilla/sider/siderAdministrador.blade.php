@@ -87,7 +87,7 @@
             
               <i class="fas fa-store"></i>
               <p>
-                Adminisrar tiendas
+                Administrar tiendas
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -117,7 +117,7 @@
             <a href="#" class="nav-link ">
               <i class="fas fa-book-open"></i>
               <p>
-                Administrar catálago
+                Administrar catálogo
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>

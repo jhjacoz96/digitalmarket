@@ -51,6 +51,15 @@
                  </a>
                </li>
 
+               <li class="nav-item">
+               <a href="{{route('tiendas.producto.masivo')}}" class="nav-link">
+                   <i class="nav-icon fas fa-file-excel"></i>
+                   <p>
+                     Agregar productos en masa
+                   </p>
+                 </a>
+               </li>
+
                
 
          

@@ -30,7 +30,7 @@
             <!-- jquery validation -->
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title">Agregar metodo de pago</h3>
+                <h3 class="card-title">Agregar medio de pago</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -47,7 +47,7 @@
                   </div>
 
                   <div class="form-group col-md-6 ">
-                    <label for="">Tipo de metodo de pago*</label>
+                    <label for="">Tipo de medio de pago*</label>
                     <select name="tipoMetodo" class="form-control" id="">
                         <option value="">Seleccione una opción</option>
                         <option value="nacional">Transferencias en moneda nacional</option>
@@ -67,7 +67,7 @@
                   </div>
 
                   <div class="form-group col-md-6">
-                    <label for="">Asociar una cuenta bancaria a este metodo de pago</label>
+                    <label for="">Asociar una cuenta bancaria a este medio de pago</label>
                     <select name="bancoMetodoPago" class="form-control" id="">
                         <option value="">Seleccione una cuenta</option>
                         @foreach ($banco as $item)
@@ -90,15 +90,15 @@
 
 
                   <div class="form-group col-md-6">
-                    <label for="">Descipción</label>
+                    <label for="">Descripción</label>
                     <input  class="form-control" placeholder="" name="descripcion"  type="text">
                   </div>
 
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <a class="btn btn-secondary" href="{{route('metodoPago.index')}}">Atras</a>
-                  <button type="submit"  class="btn btn-primary float-right">Agregar metodo de pago</button>
+                    <a class="btn btn-secondary" href="{{route('metodoPago.index')}}">Atrás</a>
+                  <button type="submit"  class="btn btn-primary float-right">Agregar medio de pago</button>
                 </div>
 
               </form>

@@ -26,9 +26,9 @@
             <table id="example" class="table table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr>
-                        <th>ID orden</th>
+                        <th>Id pedido</th>
                         <th>Productos pedidos</th>
-                        <th>Metodos de pagos</th>
+                        <th>Medios de pago</th>
                         <th>Monto total</th>
                         <th>Fecha de solicitud</th>
                         <th>Estado</th>

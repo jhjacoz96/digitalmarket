@@ -8,7 +8,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-       <h1>Método pago</h1>
+       <h1>Banco para medio de pago</h1>
         </div>
 
         <div class="col-sm-6">
@@ -30,7 +30,7 @@
             <!-- jquery validation -->
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title">Actualizar método pago</h3>
+                <h3 class="card-title">Actualizar banco</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -44,14 +44,14 @@
 
                     <div class="form-group col-md-6">
                         <label for="exampleInputEmail1">Nombre del banco*</label>
-                    <input type="text" required="true" name="nombreBanco" class="form-control" id="nombreBanco" value="{{$banco->nombreBanco}}" placeholder="Provincial">
+                    <input type="text" required="true" name="nombreBanco" class="form-control" id="nombreBanco" value="{{$banco->nombreBanco}}" >
                         {!!$errors->first('nombreBanco','<small>:message</small><br>')!!}
     
                     </div>
     
                     <div class="form-group col-md-6">
                         <label for="exampleInputEmail1">Detalle de la cuenta*</label>
-                        <input type="text" value="{{$banco->detalleCuenta}}"  name="detalleCuenta" class="form-control" id="detalleCuenta"  placeholder="501878-20000-63926770">
+                        <input type="text" value="{{$banco->detalleCuenta}}"  name="detalleCuenta" class="form-control" id="detalleCuenta"  >
                         {!!$errors->first('detalleCuenta','<small>:message</small><br>')!!}
                     </div>
     
@@ -101,13 +101,13 @@
     
                       <div class="form-group col-md-6">
                         <label for="">Titular de la cuenta</label>
-                      <input  class="form-control" type="text" name="titularCuenta" value="{{$banco->titular}}" placeholder="Digital Market">
+                      <input  class="form-control" type="text" name="titularCuenta" value="{{$banco->titular}}">
                       </div>
     
                       <div class="form-group col-md-6">
                         <label for="">Tipo cuenta</label>
                       <input  class="form-control" type="text" name="tipoCuenta" value="{{$banco->tipoCuenta}}"
-                        placeholder="Corriente">
+                       >
                       </div>
 
                   
@@ -117,7 +117,7 @@
                 <div class="card-footer">
                     <a class="btn btn-secondary" href="{{route('bancoMetodoPago.index')}}">Atras</a>
 
-                  <button type="submit"  class="btn btn-primary float-right">Actualizar metodo de envio</button>
+                  <button type="submit"  class="btn btn-primary float-right">Actualizar banco</button>
                 </div>
 
               </form>

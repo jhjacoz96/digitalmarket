@@ -1,4 +1,12 @@
 @extends('layouts.frondTienda.design')
+@section('script')
+    <script>
+       
+        $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+    </script>
+@endsection
 @section('contenido')
 
 @php
@@ -161,9 +169,17 @@
                        <?php
                        $moneda=Producto::obtenerMoneda($montoTotal-\Session::get('$montoDescuentoTipoComrador'));
                     ?>
+                   
 
-                    <li>Monto total<span class="btn btn-secondary"  data-toggle="tooltip" data-html="true" title="{{$moneda}}" >Bs<?php echo $subMonto=$montoTotal-\Session::get('$montoDescuentoTipoComrador')-\Session::get('montoCupon'); ?></span></li>
+                    
+
+                    <li>Monto total<span>Bs<?php echo $subMonto=$montoTotal-\Session::get('$montoDescuentoTipoComrador')-\Session::get('montoCupon'); ?>
+                       
+                    </span></li>
+
                         @endif
+                        <li>Monto total<span>@foreach ($moneda['nombre'] as $nombre){{$nombre}}@endforeach @foreach ($moneda['monto'] as $monto){{$monto}}@endforeach
+                        </span></li>
                         
                         
                     </ul>

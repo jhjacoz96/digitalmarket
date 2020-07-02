@@ -44,14 +44,14 @@
 
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Nombre del banco*</label>
-                    <input type="text" required="true" name="nombreBanco" class="form-control" id="nombreBanco" placeholder="Provincial">
+                    <input type="text" required="true" name="nombreBanco" class="form-control" id="nombreBanco">
                     {!!$errors->first('nombreBanco','<small>:message</small><br>')!!}
 
                 </div>
 
                 <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Detalle de la cuenta*</label>
-                    <input type="text"  name="detalleCuenta" class="form-control" id="detalleCuenta"  placeholder="501878-20000-63926770">
+                    <input type="text"  name="detalleCuenta" class="form-control" id="detalleCuenta"  >
                     {!!$errors->first('detalleCuenta','<small>:message</small><br>')!!}
                 </div>
 
@@ -69,7 +69,7 @@
                             <option value="R-">R-Firmas Personales</option>
                             <option value="O">O-Organización Comunal</option>
                         </select>
-                    <input type="text" name="documentoIdentidad" class="form-control ml-1" id="documentoIdentidad"  placeholder="26378059">
+                    <input type="text" name="documentoIdentidad" class="form-control ml-1" id="documentoIdentidad"  >
                     </div>
 
                 </div>
@@ -77,12 +77,12 @@
 
                   <div class="form-group col-md-6">
                     <label for="">Titular de la cuenta</label>
-                    <input  class="form-control" type="text" name="titularCuenta" placeholder="Digital Market">
+                    <input  class="form-control" type="text" name="titularCuenta" >
                   </div>
 
                   <div class="form-group col-md-6">
                     <label for="">Tipo cuenta</label>
-                    <input  class="form-control" type="text" name="tipoCuenta" placeholder="Corriente">
+                    <input  class="form-control" type="text" name="tipoCuenta" >
                   </div>
 
                  

@@ -316,7 +316,7 @@ class pedidoController extends Controller
                 ->find($pedido->id);
              
                 $montoPedidotienda=0;
-                
+        
                 foreach ($pedidoTienda->producto as $value) {
                     $montoPedidotienda=$montoPedidotienda+($value->pivot->precioProducto*$value->pivot->cantidadProducto);
                 }

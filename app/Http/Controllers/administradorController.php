@@ -172,7 +172,7 @@ class administradorController extends Controller
             
             if($tienda->planAfilizacion_id!=$request->planAfiliacion){
 
-                if($pedido>=0){
+                if($pedido>0){
                     flash('Lo sentimos. No puede afiliarse a un plan si posee pedidos en proceso de compra.')->warning()->important();
                     return \redirect()->route('administrador.show',$user);
                 }else{
@@ -191,6 +191,14 @@ class administradorController extends Controller
             $tienda->save();
 
             if($request->imagen){
+
+                if($tienda->imagen){
+                    $imagenn=$tienda->imagen;
+                    $archivo=substr($imagenn->url,1);
+                    \File::delete($archivo);
+                    $imagenn->delete();
+                }
+
                 $imagen=$request->file('imagen');
                
                 $nombre=time().'_'.$imagen->getClientOriginalName();

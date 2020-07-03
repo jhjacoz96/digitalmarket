@@ -106,7 +106,7 @@
                         </button>
                         <div>&nbsp;</div>
                             <p>Sku: {{$producto->sku}}</p>
-                        
+                          
                             @if($producto->tipoCliente=='combinacion')
                             <input type="hidden" name="combinacion_id" v-model="combinacion_id">
                             <div v-if="count==1">
@@ -138,7 +138,7 @@
                             <span>
                                 <span>Bs {{$producto->precioActual}}</span><br>
                                 @if($producto->porcentajeDescuento!=0)
-                                <h4>Bs {{$producto->precioAnterior}}</h4>
+                                <h4 style="text-decoration: line-through;">Bs {{$producto->precioAnterior}}</h4>
                                 @endif
                                 @php
                                  $moneda=Producto::obtenerMoneda($producto->precioActual);   
@@ -206,7 +206,7 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="descripcionLarga" >
                            <div class="col-sm-12">
-                               <p>{!!$producto->descripcionLarga!!}</p>
+                               <p>{!!$producto->descripcionCorta!!}</p>
                            </div>
                        
                         </div>

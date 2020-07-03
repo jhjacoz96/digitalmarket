@@ -49,7 +49,7 @@
                     @if($plan->nombre=='Gratuita'||$plan->nombre=='gratuita')
                     readonly
                     @endif
-                    value="{{$plan->nombre}}" class="form-control" id="nombre" placeholder="Premium">
+                    value="{{$plan->nombre}}" class="form-control" id="nombre" >
                       {!!$errors->first('nombre','<small>:message</small><br>')!!}
   
                     </div>
@@ -88,21 +88,21 @@
                       value=" {{$plan->tiempoPublicacion}}"
                       @endif
                       {{$plan->tiempoPublicacion}}
-                       placeholder="60" name="tiempoPublicacion"  type="text">
+                        name="tiempoPublicacion"  type="text">
                        <small>(Si deja este campo vacio, el stock será ilimitado)</small>
                     </div>
   
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Descripción</label>
                       
-                      <textarea required="true" name="descripcion" id="descripcion" class="form-control" rows="3" laceholder="Descripción corta">{!!$plan->descripcion!!}
+                      <textarea required="true" name="descripcion" id="descripcion" class="form-control" rows="3" >{!!$plan->descripcion!!}
                       </textarea>
                       {!!$errors->first('descripcion','<small>:message</small><br>')!!}
                     </div>
   
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Porcentaje de costo por venta (Porcentaje)</label>
-                      <input type="text" required="true" value="{{$plan->precio}}" name="porcentaje" class="form-control" id="porcentaje"  placeholder="10">
+                      <input type="text" required="true" value="{{$plan->precio}}" name="porcentaje" class="form-control" id="porcentaje"  >
                       {!!$errors->first('porcentaje','<small>:message</small><br>')!!}
                     </div>
   
@@ -116,7 +116,7 @@
                       @else
                       value="{{$plan->cantidadPublicacion}}"
                       @endif
-                      name="cantidadPublicacion" placeholder="2">
+                      name="cantidadPublicacion" >
                       <small>(Si deja este campo vacio, la canidad será ilimitada)</small>
                     </div>
   

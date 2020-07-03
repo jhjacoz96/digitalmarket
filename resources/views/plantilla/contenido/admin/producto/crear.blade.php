@@ -194,7 +194,7 @@
                             <div class="col-md-6">
                              
                              
-                          <label>Sub categoria</label>
+                          <label>Sub categoria</label>Z
                           
                             <select v-model="selectedSubCategoria" name="subCategoria_id" id="subCategoria_id" data-old="{{old('subCategoria_id')}}" class="form-control select2" style="width: 100%;">
   

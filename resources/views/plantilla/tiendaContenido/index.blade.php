@@ -1,4 +1,5 @@
 @extends('layouts.frondTienda.design')
+
 @section('contenido')
 
 @php
@@ -57,7 +58,7 @@ use App\Producto;
             <div class="col-sm-9 padding-right">
                 <div class="features_items">
                     <!--features_items-->
-                    <h2 class="title text-center">Productos mas vendidos</h2>
+                    <h2 class="title text-center">Productos mas vistos</h2>
                      
                     @foreach ($producto as $productos)
 
@@ -105,7 +106,7 @@ use App\Producto;
                                   
                                     @if($productos->imagen->count()<=0) <img src="/imagenes/avatar.png">
                                     @else
-                                    <img style="width: 150px; height: 150px; " src="{{$productos->imagen->random()->url}}">
+                                    <img style="width: 150px; height: 150px; " src="{{$productos->imagen[0]->url}}">
                                     @endif
 
                                         <h2>Bs {{$productos->precioActual}}</h2>
@@ -129,7 +130,8 @@ use App\Producto;
 
                 </div>
                 <!--features_items-->
-
+               
+                
 
                 <div class="recommended_items">
                     <!--recommended_items-->
@@ -157,7 +159,7 @@ use App\Producto;
                                                         @if($item->imagen==null)
                                                         <img src="{{asset('/imagenes/tienda/tienda.png')}}" style="border-radius: 100px;" alt="" />
                                                         @else
-                                                        <img src="{{$item->imagen->url}}" style="border-radius: 100px; width: 150px;" alt="" />
+                                                        <img src="{{$item->imagen->url}}" style=" width: 150px;" alt="" />
                                                         @endif
                                                     </a>
                                                     

@@ -1239,7 +1239,7 @@ class productoController extends Controller
             $metodoEnvio=json_decode($request['metodoEnvio'],true);
             $pedido=new Pedido();
             $d=count(Pedido::All())+1;
-            $pedido->codigo=00000 . $d;
+            $pedido->codigo='00000' . $d;
             $pedido->codigoCupon=$request->codigoCupon;
             $pedido->codigoCupon=$request->codigoCupon;
 
@@ -1402,10 +1402,10 @@ class productoController extends Controller
         $busqueda=$request->nombre;
         $producto=Producto::where(function($query) use($busqueda){
             $query->where('nombre','like','%'.$busqueda.'%')
-            ->orWhere('descripcionLarga','like','%'.$busqueda.'%')
+            ->orWhere('descripcionCorta','like','%'.$busqueda.'%')
             ->orWhere('especificaciones','like','%'.$busqueda.'%')
             ->where('status','si');
-        })->paginate(12);
+        })->paginate(6);
         
         $categoria=Categoria::with('subCategoria')->get();
 

@@ -1,4 +1,5 @@
 @extends('layouts.frondTienda.design')
+
 @section('script')
 <script>
 	window.data={
@@ -720,7 +721,8 @@
 		
 								</div>
 		
-		
+								<!-- Material checked -->
+
 							
 								<div class="row">
 									<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">

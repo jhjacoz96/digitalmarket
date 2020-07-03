@@ -32,11 +32,11 @@
                                     @if($productos->imagen->count()<=0)
                                         <img  src="/imagenes/avatar.png" >
                                     @else
-                                        <img  src="{{$productos->imagen->random()->url}}" >
+                                        <img   src="{{$productos->imagen->random()->url}}" >
                                     @endif
                                 <h2>Bs {{$productos->precioActual}}</h2>
                                 @if($productos->porcentajeDescuento!=0)
-                                <h4>Bs {{$productos->precioAnterior}}</h4>
+                                <h4 style="text-decoration: line-through;">Bs {{$productos->precioAnterior}}</h4>
                                 @endif
                                     <p>{{$productos->nombre}}</p>
                                     <a href="{{url('/detalleProducto/'.$productos->slug)}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Ver detalles</a>

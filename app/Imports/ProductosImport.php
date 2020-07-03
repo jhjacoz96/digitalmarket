@@ -30,7 +30,7 @@ class ProductosImport implements ToModel
             
             /*'precioAnterior'=>$row[6],
             'porcentajeDescuento'=>$row[7],*/
-            'descripcionLarga'=>$row[7],
+            'descripcionCorta'=>$row[7],
             'especificaciones'=>$row[8],
             'peso'=>$row[9],
             'tipoCliente'=>'comun',

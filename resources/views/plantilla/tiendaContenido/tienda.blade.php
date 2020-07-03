@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
                         @if($tienda->imagen!=null)
-                        <img  src="{{$tienda->imagen->url}}" style="border-radius: 100px;" alt="" />
+                        <img  src="{{$tienda->imagen->url}}" style="width: 200px;" style="border-radius: 100px;" alt="" />
                         @else
                         <img src="{{asset('/imagenes/tienda/tienda.png')}}" style="border-radius: 100px;" alt="" />
                         @endif

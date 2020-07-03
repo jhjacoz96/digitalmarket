@@ -43,7 +43,7 @@
                  style="opacity: .8">
                   <span class="brand-text font-weight-dark">DigitalMarket</span>
                   <small class="float-right">Fecha: {{$pedido->created_at->format('d-m-Y')}}</small>
-                </h4>
+                </h4>p
               </div>
               <!-- /.col -->
             </div>

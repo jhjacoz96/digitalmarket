@@ -296,7 +296,9 @@ class tiendaController extends Controller
     }
 
     public function montrarPagos(){
-        $tiendaPago=PagoTiendaPedido::All();
+        $tiendaPago=PagoTiendaPedido::whereHas('pedido',function($q){
+            $q->where('status','enviadoComprador');
+        })->get();
         return view('plantilla.contenido.admin.pagos.consultar',compact('tiendaPago'));
     }
 
@@ -385,9 +387,8 @@ class tiendaController extends Controller
        $pedido=Pedido::whereHas('producto',function($q) use($tienda){
         $q->where('tienda_id',$tienda->id);
         })->where('status','!=','culminado')->count();
-        
-
-        if($pedido>=0){
+     
+        if($pedido>0){
             flash('Lo sentimos. No puede afiliarse a un plan si posee pedidos en proceso de compra.')->warning()->important();
 
             return \redirect('/home');

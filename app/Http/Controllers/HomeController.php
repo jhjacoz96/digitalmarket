@@ -40,7 +40,9 @@ class HomeController extends Controller
             $countEc=Pedido::where('status','enviadoComprador')->count();
             $countCu=Pedido::where('status','culminado')->count();
             $countPc=Pedido::where('status','cancelado')->count();
-            $countPt=PagoTiendaPedido::where('status','espera')->count();
+            $countPt=PagoTiendaPedido::whereHas('pedido',function($q){
+                $q->where('status','enviadoComprador');
+            })->where('status','espera')->count();
 
             return view('home',compact('countEt','countPa','countPp','countEc','countCu','countPt','countPc'));
         }

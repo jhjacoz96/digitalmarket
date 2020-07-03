@@ -28,8 +28,8 @@ class indexController extends Controller
                 $plan->where('exposicion','Maxima');
         });
 
-        })->where('status','si')->with('imagen')->orderBy('ventas','desc')->limit(6)->get();
-
+        })->where('status','si')->with('imagen')->orderBy('visitas','desc')->limit(6)->get();
+        
         $productoOferta=Producto::whereHas('tienda',function($tienda){
             $tienda->whereHas('planAfiliacion',function($plan){
                 $plan->where('exposicion','Maxima');

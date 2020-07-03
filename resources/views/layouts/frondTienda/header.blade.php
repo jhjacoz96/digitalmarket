@@ -22,8 +22,8 @@
                 <div class="col-sm-6">
                     <div class="contactinfo">
                         <ul class="nav nav-pills">
-                            <li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
-                            <li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+                            <li><a href="#"><i class="fa fa-phone"></i> 04149568372</a></li>
+                            <li><a href="#"><i class="fa fa-envelope"></i>apolosoft03@gmail.com</a></li>
                         </ul>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="logo pull-left">
-                    <a href="{{url('/')}}"><img width="60" src="{{asset('/imagenes/logo/logo.png')}}"/></a>
+                   <h4> <a href="{{url('/')}}"><img width="60" src="{{asset('/imagenes/logo/logo.png')}}"/></a>DigitalMarket</h4>
                     </div>
                     <div class="btn-group pull-right">
                         <!--

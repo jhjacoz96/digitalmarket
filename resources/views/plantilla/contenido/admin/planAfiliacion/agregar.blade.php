@@ -41,7 +41,7 @@
 
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Nombre</label>
-                    <input type="text" required="true" name="nombre" class="form-control" id="nombre" placeholder="Premium">
+                    <input type="text" required="true" name="nombre" class="form-control" id="nombre" >
                     {!!$errors->first('nombre','<small>:message</small><br>')!!}
 
                   </div>
@@ -58,20 +58,20 @@
 
                   <div class="form-group col-md-6">
                     <label for="">stock maximo por producto</label>
-                    <input  class="form-control" placeholder="60" name="tiempoPublicacion"  type="text">
+                    <input  class="form-control"  name="tiempoPublicacion"  type="text">
                     <small>(Si deja este campo vacio, el stock será ilimitado)</small>
                   </div>
                
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Descripción</label>
                     
-                    <textarea  name="descripcion" id="descripcion" class="form-control" rows="3" placeholder="Ingrese una descripcón corta"></textarea>
+                    <textarea  name="descripcion" id="descripcion" class="form-control" rows="3" ></textarea>
                     {!!$errors->first('descripcion','<small>:message</small><br>')!!}
                   </div>
 
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Porcentaje de costo por venta (Porcentaje)</label>
-                    <input type="text"  name="porcentaje" class="form-control" id="porcentaje"  placeholder="10">
+                    <input type="text"  name="porcentaje" class="form-control" id="porcentaje" >
                     {!!$errors->first('porcentaje','<small>:message</small><br>')!!}
                   </div>
 
@@ -79,7 +79,7 @@
 
                   <div class="form-group col-md-6">
                     <label for="">Cantidad de publicaciones activas</label>
-                    <input  class="form-control" type="text" name="cantidadPublicacion" placeholder="2">
+                    <input  class="form-control" type="text" name="cantidadPublicacion" >
                     <small>(Si deja este campo vacio, la canidad será ilimitada)</small>
                   </div>
 

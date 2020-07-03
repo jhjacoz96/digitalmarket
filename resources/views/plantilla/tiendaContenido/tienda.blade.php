@@ -21,7 +21,7 @@
                         @if($tienda->imagen!=null)
                         <img  src="{{$tienda->imagen->url}}" style="width: 200px;" style="border-radius: 100px;" alt="" />
                         @else
-                        <img src="{{asset('/imagenes/tienda/tienda.png')}}" style="border-radius: 100px;" alt="" />
+                        <img  src="{{asset('/imagenes/tienda/tienda.png')}}" style="border-radius: 100px;" alt="" />
                         @endif
                     </div>
                     <div class="col-sm-6 col-md-8">
@@ -158,7 +158,7 @@
                                 @if($productos->imagen->count()<=0)
                                     <img  src="/imagenes/avatar.png" >
                                 @else
-                                    <img style="width: 150px; height: 150px;"  src="{{$productos->imagen->random()->url}}" >
+                                    <img style="width: 150px; height: 150px;"  src="{{$productos->imagen[0]->url}}" >
                                 @endif
                             <h2>Bs {{$productos->precioActual}}</h2>
                             @if($productos->porcentajeDescuento!=0)

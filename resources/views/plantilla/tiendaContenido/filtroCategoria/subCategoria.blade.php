@@ -32,7 +32,7 @@
                                 @if($productos->imagen->count()<=0)
                                     <img  src="/imagenes/avatar.png" >
                                 @else
-                                    <img  src="{{$productos->imagen->random()->url}}" >
+                                    <img style="width: 150px; height: 150px;"  src="{{$productos->imagen->random()->url}}" >
                                 @endif
                             <h2>Bs {{$productos->precioActual}}</h2>
                             @if($productos->porcentajeDescuento!=0)

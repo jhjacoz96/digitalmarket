@@ -16182,9 +16182,9 @@ var metodoEnvio = new Vue({
         this.precio101kg200kg = data.datos.precio101kg200kg;
         this.precio201kg = data.datos.precio201kg;
 
-        if (data.datos.envioGratisMonto != '') {
+        if (data.datos.envioGratisMonto != 0) {
           this.envioGratisMonto = true;
-          this.envioGratisMonto = data.datos.envioGratisMonto;
+          this.montoMinimo = data.datos.envioGratisMonto;
         }
       }
     }
@@ -17098,6 +17098,27 @@ if (document.getElementById('detalleProducto')) {
 if (document.getElementById('checkout')) {
   __webpack_require__(/*! ./shop/checkout */ "./resources/js/shop/checkout.js");
 }
+
+if (document.getElementById('calificar')) {
+  __webpack_require__(/*! ./shop/calificar */ "./resources/js/shop/calificar.js");
+}
+
+/***/ }),
+
+/***/ "./resources/js/shop/calificar.js":
+/*!****************************************!*\
+  !*** ./resources/js/shop/calificar.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var calificar = new Vue({
+  el: '#calificar',
+  data: {
+    nombre: 'ffff'
+  },
+  methods: {}
+});
 
 /***/ }),
 

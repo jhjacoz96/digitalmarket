@@ -119,10 +119,15 @@ p.clasificacion input:checked ~ label {
                                         <td>
                                            
                                         <input class="form-control"
-                                        @if($item->pivot->status!='denegado' || $item->pivot->status!='espera')
-                                        @if($pedido->status!='esperaTransferencia')
+                                        @if( $item->pivot->status=='Confirmación')
+                                       
                                         disabled
+                                        
                                         @endif
+                                        @if( $pedido->status!='esperaTransferencia')
+                                       
+                                        disabled
+                                        
                                         @endif
                                         value="{{$item->pivot->referencia}}" type="text" name="referencia">
 
@@ -142,14 +147,12 @@ p.clasificacion input:checked ~ label {
                                             @endif
                                         </td>
                                         <td>
-                                          @if($pedido->status=='esperaTranferencia')
-                                          @if($item->pivot->status=='espera')
+                                          @if($pedido->status=='esperaTransferencia')
+                                          @if($item->pivot->status=='espera' ||$item->pivot->status=='Denegado')
                                           <button type="submit" onclick="return confirm('Antes de enviar la referencia, por favor verifíquela.')" class="btn btn-default">Actualizar</button>
                                           @endif
 
-                                          @if($item->pivot->status=='Denegado')
-                                          <button type="submit" onclick="return confirm('Antes de enviar la referencia, por favor verifíquela.')" class="btn btn-default">Actualizar</button>
-                                          @endif
+                                         
 
                                             @endif
 
@@ -202,7 +205,7 @@ p.clasificacion input:checked ~ label {
                                 <span class="label label-danger">Pedido cancelado</span>
                                 @endif
 
-                                @if($pedido->status=='preparado')
+                                @if($pedido->status=='preparandoPedido')
                                 <span class="label label-warning">Preparando pedido</span>
                                 @endif
                                 
@@ -269,20 +272,35 @@ p.clasificacion input:checked ~ label {
 
                     <div class="panel panel-primary mb-4 " >
                         <div class="panel-heading">
-                            <h5 class="panel-title">Productos de pedido</h5>  
+                            <h5 class="panel-title">Productos de pedido</h5> 
+                            <div class="pull-right">
+
+                            </div>
                         </div>
                         <div class="panel-body">
+                            @if($pedido->status=='culminado' || $pedido->status=='enviadoComprador')
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+
+                                        <button  type="button"  class="btn btn-info  " data-toggle="modal" data-target="#hola">Calificar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                         @endif 
                            <div class="row">
                                <div class="col-sm-12">
 
                                    <table id="example" class="table table-striped table-bordered" style="width:100%">
                                      <thead>
                                          <tr>
+                                             <th>Sku</th>
                                              <th>Producto</th>
                                              <th>Cantidad</th>
                                              <th>Precio unitario</th>
                                              <th>Precio total</th>
-                                             <th>Acción</th>
+                                         
                                          </tr>
                                      </thead>
                                      <tbody>
@@ -302,6 +320,7 @@ p.clasificacion input:checked ~ label {
        
        
                                          <tr>
+                                             <td>{{$item->sku}} <br>
                                              <td>{{$item->nombre}} <br>
                                                 @if($item->tipoCliente=='combinacion')
                                                <span>
@@ -329,80 +348,85 @@ p.clasificacion input:checked ~ label {
 
 
 
-                                           <td>
-
-
-                                            <div class="group-btn">
-                                             @if($pedido->status=='culminado' || $pedido->status=='enviadoComprador')
-                                                <button type="button"  class="btn btn-info " data-toggle="modal" data-target="#myModal">Calificar</button>
-                                             @endif
-                                                <!-- Modal -->
-                                                <div id="myModal" class="modal fade" role="dialog">
-                                                <div class="modal-dialog">
-                                            
-                                                <!-- Modal content-->
-                                                <div class="modal-content">
-                                                <form action="{{url('/comprador/calificar')}}" method="POST">
-                                                    @csrf
-                                                        <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <h4 class="modal-title"></h4>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            
-                                                        <input type="hidden" name="producto_id" value="{{$item->id}}">
-                                                        <input type="hidden" name="pedido_id" value="{{$pedido->id}}">
-                                                            <p class="clasificacion">
-                                                                <span>Nivel de calificacion<span>
-                                                                <input id="radio1" type="radio" name="estrellas" value="5"><!--
-                                                                --><label for="radio1"><i class="fa fa-star"></i></label><!--
-                                                                --><input id="radio2" type="radio" name="estrellas" value="4"><!--
-                                                                --><label for="radio2"><i class="fa fa-star"></i></label><!--
-                                                                --><input id="radio3" type="radio" name="estrellas" value="3"><!--
-                                                                --><label for="radio3"><i class="fa fa-star"></i></label><!--
-                                                                --><input id="radio4" type="radio" name="estrellas" value="2"><!--
-                                                                --><label for="radio4"><i class="fa fa-star"></i></label><!--
-                                                                --><input id="radio5" type="radio" name="estrellas" value="1"><!--
-                                                                --><label for="radio5"><i class="fa fa-star"></i></label>
-                                                            </p>
-
-
-                                                            <div class="form-group">
-                                                                <span >Titulo</span>
-                                                                <input type="text" name="titulo" class="form-control">
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <span>Comentario</span>
-                                                                <textarea name="comentario" class="form-control">
-                                                                </textarea>
-                                                            </div>
-
-
-
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                                                        <button type="submit" class="btn btn-info">Calificar</button>
-                                                        </div>
-
-                                                    </form>
-                                                </div>
-                                            
-                                                </div>
-                                                </div>
-
-                                            </div>
-
-                                           </td>
-
-
                                        </tr>
                                        @endforeach
                                         
                                      </tbody>
                                   
                                    </table>
+
+                                   <div id="hola" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                    
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                    <form action="{{url('/comprador/calificar')}}" method="POST">
+                                        @csrf
+                                            <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title"></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                           
+                                                
+
+
+            
+                                            <input type="hidden" name="pedido_id" value="{{$pedido->id}}">
+
+                                            
+
+                                                <p class="clasificacion">
+                                                    <span>Nivel de calificacin<span>
+                                                    <input id="radio1" type="radio" name="estrellas" value="5"><!--
+                                                    --><label for="radio1"><i class="fa fa-star"></i></label><!--
+                                                    --><input id="radio2" type="radio" name="estrellas" value="4"><!--
+                                                    --><label for="radio2"><i class="fa fa-star"></i></label><!--
+                                                    --><input id="radio3" type="radio" name="estrellas" value="3"><!--
+                                                    --><label for="radio3"><i class="fa fa-star"></i></label><!--
+                                                    --><input id="radio4" type="radio" name="estrellas" value="2"><!--
+                                                    --><label for="radio4"><i class="fa fa-star"></i></label><!--
+                                                    --><input id="radio5" type="radio" name="estrellas" value="1"><!--
+                                                    --><label for="radio5"><i class="fa fa-star"></i></label>
+                                                </p>
+                                            
+                                                <div class="form-group">
+                                                    <span >Titulo</span>
+
+                                                    <select name="producto_id" class="form-control">
+                                                     @foreach ($pedido->producto as $item)
+                                                    <option value="{{$item->id}}">{{$item->sku}}</option>
+                                                     @endforeach
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="form-group ">
+                                                    <span >Titulo</span>
+                                                    <input type="text" name="titulo" class="form-control">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <span>Comentario</span>
+                                                    <textarea name="comentario" class="form-control">
+                                                    </textarea>
+                                                </div>
+
+
+
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-info">Calificar</button>
+                                            </div>
+
+                                    </form>
+                                    </div>
+                                
+                                    </div>
+                                    </div>
+
+
                                </div>
                                
                             </div> 

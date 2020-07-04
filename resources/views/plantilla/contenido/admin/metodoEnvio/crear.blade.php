@@ -48,9 +48,9 @@
 
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Rango del envío</label>
-                    <select name="rango " class="form-control" id="">
+                    <select name="alcance" class="form-control" id="">
                       <option value="nacional">Todo el territo nacional</option>
-                      <option value="municipal">Solo barquisimeto</option>
+                      <option value="iribarren">Solo barquisimeto</option>
                     </select>
                     {!!$errors->first('alcance','<small>:message</small><br>')!!}
 

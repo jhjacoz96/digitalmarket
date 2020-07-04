@@ -31,7 +31,7 @@
             <!-- jquery validation -->
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title">Exportar productos masivamente</h3>
+                <h3 class="card-title">Importar productos masivamente</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -45,15 +45,28 @@
                       <div class="alert alert-info alert-dismissible">
                       
                         <h5><i class="icon fas fa-info"></i>Importante</h5>
-                      Para agregar productos masivamentes a DitalMarket debe exportar un archivo de tipo cvs o xlsx. El formato admitido es el siguiente: <a href="{{url('/descargar-ejemplo')}}">Descarguelo aqui</a>.
+                      Para agregar productos masivamentes a DigitalMarket debe importar un archivo de tipo cvs o xlsx. El formato admitido es el siguiente: <a href="{{url('/descargar-ejemplo')}}">Descarguelo aqui</a>.
                        </div>
                      </div>
    
-   
+                     <div class="callout callout-info">
+                      <h5>Campos obligatorios.</h5>
+                      A: Cantidad de mínima de stock <br>
+                      B: Nombre del producto<br>
+                      C: Nombre de la sub categoría<br>
+                      D: Nombre de la marca<br>
+                      E: Cantidad de productos<br>
+                      F:Precio del producto<br>
+                      G:Porcentaje de descuento (Ponga 0 si no desea aplicar un descuento)<br>
+                      H:Descripción<br>
+                      I:Especificaciones<br>
+                      J:Peso del producto<br>
+                      <p></p>
+                    </div>
                        <div class="form-group col-md-6">
                          
-                           <label for="file">Importar archivo exel</label> 
-                           
+                           <label for="file">Importar archivo excel</label> 
+
                              <input type="file" class="form-control-file" id="file" name="file"  
                              accept="file" >
                            

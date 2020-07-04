@@ -567,7 +567,7 @@
 										</td>
 										<td class="cart_description">
 
-											<h4><a href="">{{$producto->nombre}}</a></h4>
+											<h6><a href="">{{$producto->nombre}}</a></h6>
 											@if($producto->tipoCliente=='combinacion')
 
 											<p>
@@ -738,7 +738,7 @@
 										<div class="tab-pane active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 											
 											<div v-for="(pago,index) in arrayNacional" >
-												<div class="panel panel-primary mt-3  col-sm-4">
+												<div class="panel panel-primary mt-3  col-sm-3">
 													<div class="panel-heading">
 														<input type="checkbox" 
 																:value="pago" class="pull-right"
@@ -759,8 +759,8 @@
 										</div>
 										<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
 											
-											<div v-for="(pago,index)  in arrayInternacional" >
-												<div class="panel panel-primary mt-3 col-sm-4">
+											<div v-for="(pago,index)  in arrayInternacional"class="col-sm-3" >
+												<div style="margin-right: 2%; margin-top: 2%;" class="panel panel-primary  ">
 													<div class="panel-heading">
 														<div class="form-group">
 															<input type="checkbox"
@@ -770,7 +770,7 @@
 														</div>
 													</div>
 													<div class="panel-body">
-														<div class="form-group col-sm-6">
+														<div class="form-group col-sm-12">
 															<span><label class="mx-1" for="">Monto $</label><input class=" form-control pull-right"  v-model.numer="pago.cantidad" type="text"></span>
 														</div>
 													</div>

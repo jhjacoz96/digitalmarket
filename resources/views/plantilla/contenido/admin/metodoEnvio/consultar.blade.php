@@ -62,7 +62,7 @@
                            <td class="mailbox-star">{{$item->nombre}}</td>
                            <td class="mailbox-star">{{$item->tiempoEntrega}}</td>
                            <td class="mailbox-star">
-                            @if($item->dentroIribarren!=null)
+                            @if($item->dentroIribarren=='no')
                               Nacional
                             @else
                               Solo Iribarren

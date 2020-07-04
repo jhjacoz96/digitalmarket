@@ -12,14 +12,19 @@
             </div>
 
             <div class="row">
-              
+                @if (count(\Auth::user()->comprador->direccion)<=0)
+                <div style="align-items: center; justify-content: center; display: flex;">
+                  
+                  <p class="text-lead">No hay direcciones disponilbes</p>
+                </div>
+                @endif
                 @foreach (\Auth::user()->comprador->direccion as $item)
                 <div class="col-sm-4">
         
                         
                     <div class="panel panel-primary mb-3">
                       <div class="panel-heading">
-                        <h4>{{$item->nombre}} {{$item->apellido}}</h4>
+                        <h4 >{{$item->nombre}} {{$item->apellido}}</h4>
                       </div>
                       <div class="panel-body " >
                         
@@ -52,7 +57,7 @@
                 @endforeach
   
             </div>
-        <div class="row">
+        <div class="row pull-right">
           <a class="btn btn-primary" href="{{url('/comprador/direccion/create')}}">Agregar dirección</a>
         </div>
       </div>

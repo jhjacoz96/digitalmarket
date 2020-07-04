@@ -138,13 +138,20 @@ class userController extends Controller
        $comprador=\Auth::user()->comprador;
        $pedido=Pedido::where('comprador_id',$comprador->id)->with('producto')->get();
     
+       foreach (\Auth::user()->comprador->unreadNotifications as $notificacion) {
+       
+    
+        $notificacion->delete();
+           
+       }
+
        return view('plantilla.tiendaContenido.perfil.pedidos',compact('pedido'));
    }
 
    public function pedidoDetalle($id){
        $comprador=\Auth::user()->comprador;
        $pedido=Pedido::with('producto')->with('metodoPago')->findOrFail($id);
-       
+ 
        return view('plantilla.tiendaContenido.perfil.pedidoDetalle',compact('pedido'));
    }
 
@@ -163,12 +170,12 @@ class userController extends Controller
         $pago->referencia=$request->referencia;
         $pago->status='Confirmación';
         $pago->save();
-        flash('Su referencia a sido enviada. Una vez sus pagos sean validados se le notificará mediante un correo.')->success()->important();
+        flash('Su referencia ha sido enviada. Una vez sus pagos sean validados se le notificará mediante un correo.')->success()->important();
                 return redirect('/comprador/pedidoDetalle/'.$pago->pedido_id);
    }
 
    public function calificar(Request $request){
-       
+   
         $v=Validator::make($request->all(),[
             'estrellas'=>'required',
             'producto_id'=>'required',
@@ -178,9 +185,9 @@ class userController extends Controller
         if ($v->fails()) {
             return \redirect()->back()->withInput()->withErrors($v->errors());
         }
+        
 
         $c=Calificacion::where(['producto_id'=>$request->producto_id,'comprador_id'=>\Auth::user()->comprador->id])->count();
-        
         if($c>0){
             flash('Ya ha calificado este producto.')->warning()->important();
             return redirect()->back();

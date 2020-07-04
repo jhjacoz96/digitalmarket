@@ -81,8 +81,13 @@ class metodoEnvioController extends Controller
             $envio['mayorA201kg']=0;
         }else{
 
-            if($request->montoMinimo){
+           /* if($request->montoMinimo){
                 $envio['envioGratisApartir']=$request->montoMinimo;
+            }*/
+            if($request->envioGratisMonto){
+                $envio['envioGratisApartir']=$request->montoMinimo;
+            }else{
+                $envio['envioGratisApartir']=0;
             }
 
             $envio->envioGratis='I';
@@ -169,8 +174,10 @@ class metodoEnvioController extends Controller
             $envio['mayorA201kg']=0;
         }else{
 
-            if($request->montoMinimo){
+            if($request->envioGratisMonto){
                 $envio['envioGratisApartir']=$request->montoMinimo;
+            }else{
+                $envio['envioGratisApartir']=0;
             }
 
             $envio->envioGratis='I';
@@ -191,7 +198,7 @@ class metodoEnvioController extends Controller
    
     public function destroy($id)
     {
-        $envio=MedioEnvio::finPdOrfail($id);
+        $envio=MedioEnvio::findOrfail($id);
         $pedidos=$envio->pedido;
         if(count($pedidos)<=0){
          

@@ -84,6 +84,11 @@ if(document.getElementById('checkout')){
 
 }
 
+if(document.getElementById('calificar')){
+    require('./shop/calificar'); 
+
+}
+
 
 
 

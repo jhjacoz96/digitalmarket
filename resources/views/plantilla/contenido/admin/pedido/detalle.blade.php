@@ -229,7 +229,7 @@
                             selected
                             @endif
                             value="preparandoPedido">Preparando pedido</option>
-
+                          @endif
                             @if($pedido->status=='preparandoPedido')
 
                                 <option
@@ -237,7 +237,7 @@
                                 selected
                                 @endif
                                 value="enviadoComprador">Enviado al comprador</option>
-
+                          @endif
                                 @if($pedido->status=='enviadoComprador')
 
                                   <option
@@ -247,12 +247,6 @@
                                   value="culminado">Culminado</option>
 
                                 @endif
-
-                            @endif
-
-
-
-                          @endif
 
                         </select>
                       </div>

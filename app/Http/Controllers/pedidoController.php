@@ -171,7 +171,7 @@ class pedidoController extends Controller
 
                 $comment = 'metodoPagoAceptado'; 
                 $pedido->comprador->notify(new pedidoNotification($comment,$pedido->id));
-
+                $metodoPago=MetodoPago::findOrFail($pago->metodoPago_id);
                 $comprador=$pedido->comprador;
                 $correo=$pedido->comprador->correo;
                 $datosMensaje=[

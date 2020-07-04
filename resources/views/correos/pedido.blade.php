@@ -22,7 +22,7 @@
         <tr><td>&nbsp;</td></tr>
         <tr><td>Gracias por su compra con nosotros</td></tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>El pago de su pedido debe hacerlos a través de los siguientes métodos de pago:</td></tr>    
+        <tr><td>El pago de su pedido debe hacerlos a través de los siguientes medios de pago:</td></tr>    
         <tr><td>&nbsp;</td></tr>
         <tr><td>
             <div class="row">
@@ -90,10 +90,10 @@
                 <tr>
                     <td colspan="5" align="right">Gastos de envio</td>
                     
-                    @if($detalleProducto['envioGratis']=='0')
-                    <p>Envio gratis</p>
+                    @if($detalleProducto['precioEnvio']=='0')
+                    <p>Envío grátis</p>
                     @else
-                    <td >Bs {{$detalleProducto['envioGratis']}}</td>
+                    <td >Bs {{$detalleProducto['precioEnvio']}}</td>
                     @endif
             
                 </tr>
@@ -103,11 +103,20 @@
                     <td >BS {{$detalleProducto['cantidadCupon']}}</td>
                 </tr>
                 @endif
+               
+                    @if(!empty($detalleProducto['codigoCupon']))
                 <tr>
-                    
-                    <td colspan="5" align="right">Descuento adicional</td>
-                    <td >BS </td>
+                    <td colspan="5" align="right">Cupón de descuento</td>
+                    <td >BS {{$detalleProducto['cantidadCupon']}}</td>
                 </tr>
+                @endif
+                
+                @if(!empty($detalleProducto['descuentoAdicional']))
+                <tr>
+                    <td colspan="5" align="right">Descuento adicional</td>
+                    <td >BS {{$detalleProducto['descuentoAdicional']}}</td>
+                </tr>
+                @endif
                 <tr>
                     <td colspan="5" align="right">Monto total</td>
                     <td >BS {{$detalleProducto['montoTotal']-$detalleProducto['cantidadCupon']+$detalleProducto['medioEnvio']->precioEnvio}}</td>

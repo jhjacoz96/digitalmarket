@@ -59,7 +59,7 @@ window.data={
 
                   <div class="form-group col-md-6">
                     <label for="exampleInputEmail1">Rango del envío</label>
-                    <select name="rango " class="form-control"  id="">
+                    <select name="alcance" class="form-control"  id="">
 
                       <option 
                       @if($envio->dentroIribarren=='no')
@@ -70,7 +70,7 @@ window.data={
                       @if($envio->dentroIribarren=='si')
                       selected
                       @endif
-                      value="municipal">Solo barquisimeto</option>
+                      value="iribarren">Solo barquisimeto</option>
                     </select>
                     {!!$errors->first('alcance','<small>:message</small><br>')!!}
 
@@ -91,9 +91,7 @@ window.data={
                   <div class="form-group">
                     <div class="custom-control custom-switch ">
                       <input type="checkbox" 
-                      @if($envio->envioGratis=='A')
-                      checked
-                      @endif 
+                     
                       class="custom-control-input" id="envioGratis"   v-model="envioGratis"
                        name="envioGratis">
                       <label class="custom-control-label" for="envioGratis">Envio gratis</label>
@@ -103,9 +101,7 @@ window.data={
                   <div class="form-group" v-if="envioGratis==false">
                     <div class="custom-control custom-switch ">
                       <input type="checkbox" 
-                      @if($envio->envioGratisApartir)
-                        checked
-                      @endif
+                      
                       class="custom-control-input" id="envioGratisMonto"   v-model="envioGratisMonto"
                       name="envioGratisMonto">
                       <label class="custom-control-label" for="envioGratisMonto">Envío gratis a partir de un monto</label>
@@ -154,7 +150,7 @@ window.data={
                   <div class="form-group">
                     <div class="custom-control custom-switch">
                       <input type="checkbox"
-                      @if($envio->estatus)
+                      @if($envio->status)
                       checked
                       @endif
                       class="custom-control-input" id="activo" name="activo">

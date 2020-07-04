@@ -44,7 +44,7 @@
 
                         <tr>
                             <td class="cart_product">
-                            <a href="">
+                            <a href="{{'/detalleProducto/'.$producto->slug}}">
                                 @if($producto->imagen->count()<=0)
                                 <img style="width: 100px;"  src="/imagenes/avatar.png" >
                                  @else
@@ -56,7 +56,7 @@
                             </td>
                             <td class="cart_description">
 
-                            <h4><a href="">{{$producto->nombre}}</a></h4>
+                            <h6><a href="">{{$producto->nombre}}</a></h6>
                                 @if($producto->tipoCliente=='combinacion')
                                
                                 <p>
@@ -94,7 +94,7 @@
                                 <input type="hidden" name="combinacion_id" value="{{$item->combinacion_id}}">
                                 @endif
 
-                                <button class="btn btn-default cart" name="carritoBoton" value="agregar a carrito" type="submit"> <i class="fa fa-shopping-cart"></i> Agregar a carrito</button>
+                                <button class="btn btn-default cart" name="carritoBoton" value="agregar a carrito" type="submit"> <i class="fa fa-shopping-cart"></i>Carrito</button>
                                 
                                 <a class="cart_quantity_delete" href="{{url('/lista-deseo/eliminar/'.$item->id)}}"><i class="fa fa-times"></i></a>
                             </form>

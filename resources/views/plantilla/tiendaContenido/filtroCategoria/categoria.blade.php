@@ -32,8 +32,8 @@
                                     @if($productos->imagen->count()<=0)
                                         <img  src="/imagenes/avatar.png" >
                                     @else
-                                        <img   src="{{$productos->imagen->random()->url}}" >
-                                    @endif
+                                        <img  style="width: 150px; height: 150px;" src="{{$productos->imagen->random()->url}}" >
+                                    @endifrpo
                                 <h2>Bs {{$productos->precioActual}}</h2>
                                 @if($productos->porcentajeDescuento!=0)
                                 <h4 style="text-decoration: line-through;">Bs {{$productos->precioAnterior}}</h4>

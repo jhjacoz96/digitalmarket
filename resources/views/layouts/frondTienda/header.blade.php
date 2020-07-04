@@ -141,12 +141,9 @@
                                         </a>
                                     </li>
                                 @endif
-                                @endforeach
 
-                                <div class="dropdown-divider"></div>
 
-                                @foreach (\Auth::user()->comprador->unreadNotifications as $notificacion)
-
+                                
                                 @if($notificacion->data["estado"]=='metodoPagoDenegado')
                                     <li>
                                     <a href="{{url('/comprador/pedidoDetalle/'.$notificacion->data["pedido"])}}" onclick=" markNotificationAsRead('{{$notificacion->id}}')" class="dropdown-item">
@@ -163,8 +160,12 @@
                                     </li>
                                 @endif
 
-                                @endForeach
+                                @endforeach
 
+
+                                <div class="dropdown-divider"></div>
+
+                                
                                 
                                     
                               </ul>

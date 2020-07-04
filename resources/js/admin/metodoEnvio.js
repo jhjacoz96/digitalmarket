@@ -17,7 +17,7 @@ const metodoEnvio= new Vue({
         
     },
     methods: {
-        
+    
         
 
     },
@@ -32,9 +32,9 @@ const metodoEnvio= new Vue({
                 this.precio51kg100kg=data.datos.precio51kg100kg
                 this.precio101kg200kg=data.datos.precio101kg200kg
                 this.precio201kg=data.datos.precio201kg
-                if(data.datos.envioGratisMonto!=''){
+                if(data.datos.envioGratisMonto!=0){
                     this.envioGratisMonto=true
-                    this.envioGratisMonto=data.datos.envioGratisMonto
+                    this.montoMinimo=data.datos.envioGratisMonto
                 }
             }
         }

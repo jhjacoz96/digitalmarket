@@ -807,7 +807,7 @@ class productoController extends Controller
                 $countDc=Deseo::where(['comprador_id'=>\Auth::user()->comprador->id,'producto_id'=>$request['producto_id'],'combinacion_id'=>$request['combinacion_id']])->count();
 
                 if($countDc>0){
-                    flash('Ya ha agregado este producto a la lista de deseos')->important()->waring();
+                    flash('Ya ha agregado este producto a la lista de deseos')->important()->warning();
                     return \redirect()->back();
                 }else{
 
@@ -828,7 +828,7 @@ class productoController extends Controller
 
                 if($countDc>0){
 
-                    flash('Ya ha agregado este producto a la lista de deseos')->important()->waring();
+                    flash('Ya ha agregado este producto a la lista de deseos')->important()->warning();
                     return \redirect()->back();
 
                 }else{
@@ -1241,7 +1241,7 @@ class productoController extends Controller
             $d=count(Pedido::All())+1;
             $pedido->codigo='00000' . $d;
             $pedido->codigoCupon=$request->codigoCupon;
-            $pedido->codigoCupon=$request->codigoCupon;
+            $pedido->cantidadCupon=$request->cantidadCupon;
 
            
             $pedido->precioEnvio=floatval($request->envioGratis);

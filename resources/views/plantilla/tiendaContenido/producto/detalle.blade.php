@@ -287,7 +287,8 @@
                                 <div class="panel  panel-default ">   
                                     <div class="panel-body">         
                                         <h4 class="title-heading">
-
+                                         
+                                            
                                             <p  class="clasificacion">
                                                 <span >
 
@@ -337,11 +338,11 @@
                                                 
                                             
                                             </p>
+                                            <H6>{{$item->created_at->diffForHumans()}}</H6>
                                         </h4>
                                     
-                                        
                                         {{$item->comentario}}
-                                    
+                                        
                                     </div>
                                 </div>
                                 @endforeach
